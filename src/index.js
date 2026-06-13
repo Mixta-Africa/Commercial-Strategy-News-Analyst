@@ -3,12 +3,14 @@
  * Main Pipeline Orchestrator
  * 
  * Workflow:
- * 1. Collect articles from APIs, scraper, RSS feeds
- * 2. Filter by whitelist & deduplication
+ * 1. Collect articles (50-100)
+ * 2. Filter by whitelist & location
  * 3. Store in Google Sheets
- * 4. AI analysis (professional summaries + market impact flags)
- * 5. Generate email digest
- * 6. Commit to GitHub Pages
+ * 4. AI analysis (professional summaries)
+ * 5. Detect trends (7/30/90-day)
+ * 6. Detect anomalies
+ * 7. Send email via Apps Script
+ * 8. Update dashboard
  */
 
 const fs = require('fs');
@@ -61,7 +63,7 @@ class NewsPipeline {
   }
 
   /**
-   * PHASE 2: Filtering & Deduplication (target: 30-65 unique, reputable articles)
+   * PHASE 2: Filtering & Deduplication (target: 30-65 unique articles)
    */
   async filterArticles(rawArticles) {
     console.log('[PHASE 2] Filtering by whitelist and deduplication...');
@@ -78,7 +80,7 @@ class NewsPipeline {
       if (seen.has(normalizedTitle)) continue;
       seen.add(normalizedTitle);
 
-      // Check whitelist OR dynamic authority (appears 5+ times in 30 days)
+      // Check whitelist
       const isWhitelisted = whitelistSources.has(normalizedSource) ||
         whitelist.dynamicSources?.includes(normalizedSource);
 
@@ -87,14 +89,14 @@ class NewsPipeline {
         continue;
       }
 
-      // Location tag validation (Southwest Nigeria only)
-      const validLocations = ['Lagos', 'Ibeju-Lekki', 'Ibadan', 'Abeokuta', 'Ogun'];
+      // Location validation (Southwest Nigeria)
+      const validLocations = ['Lagos', 'Ibeju-Lekki', 'Ibadan', 'Abeokuta', 'Ogun', 'Nigeria'];
       const hasValidLocation = validLocations.some(loc => 
         article.title?.includes(loc) || article.content?.includes(loc)
       );
 
       if (!hasValidLocation) {
-        console.log(`[PHASE 2] Skipped non-Southwest Nigeria article: ${article.title}`);
+        console.log(`[PHASE 2] Skipped non-Southwest Nigeria article: ${article.title?.substring(0, 50)}`);
         continue;
       }
 
@@ -116,16 +118,16 @@ class NewsPipeline {
 
     try {
       const sheetsData = articles.map(a => [
-        new Date().toISOString().split('T')[0], // date
+        new Date().toISOString().split('T')[0],
         a.source || '',
         a.title || '',
         a.url || '',
-        'untagged', // category (updated by AI)
-        '', // location_tags (updated by AI)
-        '', // sentiment (updated by AI)
-        '', // summary (updated by AI)
-        '', // trending_topics (updated by AI)
-        new Date().toISOString(), // date_stored
+        'untagged',
+        '',
+        '',
+        '',
+        '',
+        new Date().toISOString(),
       ]);
 
       await this.sheetsClient.appendRows(sheetsData);
@@ -136,7 +138,7 @@ class NewsPipeline {
   }
 
   /**
-   * PHASE 4: AI Analysis (Professional summaries + Mixta Africa market impact)
+   * PHASE 4: AI Analysis
    */
   async analyzeArticles(articles) {
     console.log('[PHASE 4] Running AI analysis with professional prompts...');
@@ -151,11 +153,11 @@ class NewsPipeline {
           ...analysis,
         });
       } catch (error) {
-        console.error(`[PHASE 4] Analysis failed for "${article.title}":`, error.message);
+        console.error(`[PHASE 4] Analysis failed for "${article.title?.substring(0, 50)}"`, error.message);
         analyzed.push({
           ...article,
           sentiment: 'unknown',
-          summary: article.title,
+          summary: article.title || 'Unable to analyze',
           category: 'untagged',
         });
       }
@@ -166,7 +168,7 @@ class NewsPipeline {
   }
 
   /**
-   * PHASE 5: Trend Detection (7/30/90-day patterns)
+   * PHASE 5: Trend Detection
    */
   async detectTrends(articles) {
     console.log('[PHASE 5] Detecting trends across time horizons...');
@@ -231,7 +233,7 @@ class NewsPipeline {
 
     const alerts = [];
 
-    // Sudden spike detection
+    // Volume spike detection
     if (articles.length > 50) {
       alerts.push({
         type: 'volume_spike',
@@ -281,7 +283,7 @@ class NewsPipeline {
   }
 
   /**
-   * PHASE 8: Dashboard Updates (commit to GitHub Pages)
+   * PHASE 8: Dashboard Updates
    */
   async updateDashboard(articles, trends, alerts) {
     console.log('[PHASE 8] Updating GitHub Pages dashboard...');
@@ -290,19 +292,16 @@ class NewsPipeline {
       const dataDir = path.join(process.cwd(), 'data');
       if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
-      // Write articles archive
       fs.writeFileSync(
         path.join(dataDir, 'articles.json'),
         JSON.stringify(articles, null, 2)
       );
 
-      // Write trends analysis
       fs.writeFileSync(
         path.join(dataDir, 'trends.json'),
         JSON.stringify(trends, null, 2)
       );
 
-      // Write alerts
       fs.writeFileSync(
         path.join(dataDir, 'alerts.json'),
         JSON.stringify(alerts, null, 2)

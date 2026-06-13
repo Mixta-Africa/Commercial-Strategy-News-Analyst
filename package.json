@@ -1,1 +1,32 @@
-
+{
+  "name": "nigerian-re-news",
+  "version": "1.0.0",
+  "description": "Nigerian Real Estate News Intelligence System - Autonomous daily market analysis",
+  "main": "src/index.js",
+  "scripts": {
+    "pipeline": "node src/index.js",
+    "test": "node src/index.js --test"
+  },
+  "keywords": [
+    "real-estate",
+    "Nigeria",
+    "market-intelligence",
+    "news-aggregation",
+    "AI-analysis"
+  ],
+  "author": "Mixta Africa",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "googleapis": "^118.0.0",
+    "xml2js": "^0.6.0",
+    "puppeteer": "^21.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/nigeria-re-news"
+  }
+}

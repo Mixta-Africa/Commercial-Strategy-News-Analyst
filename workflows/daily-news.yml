@@ -1,0 +1,55 @@
+name: Nigerian Real Estate News Pipeline
+
+on:
+  schedule:
+    # 7am UTC = 8am Lagos time (UTC+1)
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+jobs:
+  news-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GOOGLE_SHEETS_API_KEY: ${{ secrets.GOOGLE_SHEETS_API_KEY }}
+      GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+      GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+      GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+      GNEWS_API_KEY: ${{ secrets.GNEWS_API_KEY }}
+      NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+      RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+      ADMIN_PASSWORD_HASH: ${{ secrets.ADMIN_PASSWORD_HASH }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run news pipeline
+        run: npm run pipeline
+
+      - name: Commit and push updates
+        run: |
+          git config user.name "news-bot"
+          git config user.email "news-bot@mixta-africa.local"
+          git add data/articles.json data/trends.json data/alerts.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Daily news update: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git push
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

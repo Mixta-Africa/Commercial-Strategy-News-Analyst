@@ -1,16 +1,15 @@
 /**
  * AI Agents Module
  * 
- * Implements 3-provider fallback chain:
- * 1. Groq (fastest, ideal for real-time)
+ * 3-provider fallback chain:
+ * 1. Groq (fastest, primary)
  * 2. Cerebras (generous free tier)
  * 3. Gemini (most reliable)
  * 
- * Professional analysis prompts emphasize:
- * - Market impact on Lagos/Southwest Nigeria real estate
- * - Relevance to Mixta Africa's strategic positions
- * - Competitive intelligence
- * - Sector trends & infrastructure context
+ * Professional analysis with:
+ * - Market impact assessment
+ * - Mixta Africa relevance flags
+ * - Sentiment classification
  */
 
 const axios = require('axios');
@@ -20,53 +19,49 @@ class Agents {
     this.groqApiKey = process.env.GROQ_API_KEY;
     this.cerebrasApiKey = process.env.CEREBRAS_API_KEY;
     this.geminiApiKey = process.env.GEMINI_API_KEY;
-    this.retryAttempts = 3;
-    this.retryDelay = 1000; // ms
   }
 
   /**
-   * Main analysis method: delegates to AI provider with fallback
+   * Main analysis method with fallback
    */
   async analyzeArticle(article) {
     const prompt = this.buildAnalysisPrompt(article);
 
-    // Try Groq first (fastest)
+    // Try Groq first
     try {
-      console.log(`[Groq] Analyzing: ${article.title.substring(0, 60)}...`);
+      console.log(`[Groq] Analyzing: ${article.title?.substring(0, 60)}...`);
       const result = await this.callGroqAPI(prompt);
       return this.parseAnalysis(result);
     } catch (error) {
-      console.warn(`[Groq] Failed: ${error.message}. Falling back to Cerebras.`);
+      console.warn(`[Groq] Failed: ${error.message}. Trying Cerebras.`);
     }
 
-    // Fall back to Cerebras
+    // Try Cerebras
     try {
-      console.log(`[Cerebras] Analyzing: ${article.title.substring(0, 60)}...`);
+      console.log(`[Cerebras] Analyzing: ${article.title?.substring(0, 60)}...`);
       const result = await this.callCerebasAPI(prompt);
       return this.parseAnalysis(result);
     } catch (error) {
-      console.warn(`[Cerebras] Failed: ${error.message}. Falling back to Gemini.`);
+      console.warn(`[Cerebras] Failed: ${error.message}. Trying Gemini.`);
     }
 
-    // Fall back to Gemini
+    // Try Gemini
     try {
-      console.log(`[Gemini] Analyzing: ${article.title.substring(0, 60)}...`);
+      console.log(`[Gemini] Analyzing: ${article.title?.substring(0, 60)}...`);
       const result = await this.callGeminiAPI(prompt);
       return this.parseAnalysis(result);
     } catch (error) {
-      console.error(`[Gemini] Failed: ${error.message}. Returning defaults.`);
+      console.error(`[Gemini] Failed: ${error.message}. Using defaults.`);
       return this.defaultAnalysis();
     }
   }
 
   /**
    * Enterprise-level analysis prompt
-   * Emphasizes professional context, market impact, and Mixta Africa relevance
    */
   buildAnalysisPrompt(article) {
-    return `
-You are a professional real estate analyst for a major Lagos-based developer.
-Analyze the following article with intellectual rigor and business acumen.
+    return `You are a professional real estate analyst for a major Lagos-based developer (Mixta Africa).
+Analyze this article with intellectual rigor and business acumen.
 
 ARTICLE:
 Title: ${article.title}
@@ -76,65 +71,52 @@ Content: ${(article.content || article.description || '').substring(0, 1000)}
 
 ANALYSIS REQUIREMENTS:
 
-1. PROFESSIONAL SUMMARY (2-3 sentences, intellectual tone):
-   - Avoid AI-sounding language ("This article discusses..." or "The article highlights...")
+1. PROFESSIONAL SUMMARY (2-3 sentences, analyst tone):
    - Write as a market analyst would brief an executive
-   - Focus on what this MEANS for the Lagos real estate market, not what it says
-   - Example: "Infrastructure delays in Lekki corridor threaten Q3 occupancy rates, pressuring new project launches in competing micro-markets." (NOT: "The article discusses delays in infrastructure.")
+   - Focus on what this MEANS for Lagos real estate market
+   - Example: "Infrastructure delays in Lekki threaten Q3 occupancy, pressuring new launches."
 
-2. MARKET IMPACT ANALYSIS:
-   - Rate severity: critical | high | medium | low | negligible
-   - Identify affected segments: affordable housing | mid-market | premium | commercial | industrial
-   - Geographic radius: Lagos | Southwest Nigeria | National | Continental
-   - Timeframe: immediate (0-3 months) | near-term (3-6 months) | medium-term (6-12 months) | long-term (12+ months)
+2. MARKET IMPACT:
+   - Severity: critical | high | medium | low | negligible
+   - Affected segments: affordable housing | mid-market | premium | commercial | industrial
+   - Geographic radius: Lagos | Southwest Nigeria | National
+   - Timeframe: immediate | near-term | medium-term | long-term
 
-3. MIXTA AFRICA RELEVANCE FLAGS (be specific):
-   - Direct impact: Does this affect Lakowe Crossings, Lakowe Annexe, Lagos New Town (LNT), or competitor projects?
-   - Indirect impact: Does this affect pricing, cost of capital, supply chain, or regulatory environment?
-   - Strategic opportunity: Does this create advantage (e.g., policy tailwind, competitor weakness)?
-   - Risk flag: Does this threaten execution (e.g., material shortage, permit delays)?
+3. MIXTA AFRICA RELEVANCE:
+   - Direct impact: Does this affect Lakowe Crossings, Lakowe Annexe, or Lagos New Town?
+   - Indirect impact: Does this affect pricing, costs, regulatory environment?
+   - Strategic opportunity: Does this create advantage?
+   - Risk flag: Does this threaten execution?
 
-4. SENTIMENT CLASSIFICATION:
-   - bullish (positive catalyst for sector/Mixta), bearish (headwind), or neutral
-   - Justify in 1 sentence
+4. SENTIMENT: bullish | bearish | neutral (justify in 1 sentence)
 
-5. LOCATION TAGS:
-   - List specific areas: Lagos, Lekki, Ibeju-Lekki, Victoria Island, Mainland, Ibadan, etc.
+5. LOCATION TAGS: Lagos, Lekki, Ibeju-Lekki, etc.
 
-6. CATEGORY CLASSIFICATION (pick 1-2 primary):
-   - property-market (pricing, transactions, supply/demand)
-   - policy (government, regulation, incentives)
-   - developer-news (company announcements, launches, performance)
-   - investment (capital flows, funding, DFI activity)
-   - infrastructure (roads, power, water, metro, ports)
-   - economy (macro, FX, inflation, employment)
-   - competitive-intelligence (competitor moves, market share shifts)
+6. CATEGORY: property-market | policy | developer-news | investment | infrastructure
 
-7. TRENDING TOPICS:
-   - Comma-separated tags: e.g., "prices, inflation, Green Line Metro, affordable housing, diaspora investment"
+7. TRENDING TOPICS: Comma-separated tags (e.g., "prices, inflation, infrastructure")
 
-RESPOND IN THIS JSON FORMAT ONLY (no markdown, no explanation):
+RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
 {
-  "summary": "Professional 2-3 sentence summary written as analyst briefing, not article description",
+  "summary": "Professional 2-3 sentence summary",
   "sentiment": "bullish|bearish|neutral",
   "location_tags": "Lagos,Lekki,Ibeju-Lekki",
   "category": "property-market,infrastructure",
-  "trending_topics": "prices,Green Line Metro,infrastructure",
+  "trending_topics": "prices,infrastructure",
   "market_impact_severity": "critical|high|medium|low|negligible",
-  "affected_segments": "affordable housing,premium,commercial",
+  "affected_segments": "affordable housing,premium",
   "market_impact_timeframe": "immediate|near-term|medium-term|long-term",
   "mixta_relevance": {
-    "direct_impact": "Affects Lakowe Annexe construction timeline due to supplier cost increases" | "None",
-    "indirect_impact": "May increase borrowing costs via regional capital tightening" | "None",
-    "strategic_opportunity": "Positions Mixta to capture diaspora buyers if currency stabilizes" | "None",
-    "risk_flag": "Potential permit delays in LNT due to new government transition" | "None"
+    "direct_impact": "Description or None",
+    "indirect_impact": "Description or None",
+    "strategic_opportunity": "Description or None",
+    "risk_flag": "Description or None"
   }
-}
-`;
+}`;
   }
 
   /**
-   * Groq API call (fastest, primary choice)
+   * Groq API call
    */
   async callGroqAPI(prompt) {
     const url = 'https://api.groq.com/openai/v1/chat/completions';
@@ -142,7 +124,7 @@ RESPOND IN THIS JSON FORMAT ONLY (no markdown, no explanation):
     const response = await axios.post(url, {
       model: 'mixtral-8x7b-32768',
       messages: [{ role: 'user', content: prompt }],
-      temperature: 0.3, // Lower for consistency
+      temperature: 0.3,
       max_tokens: 1000,
     }, {
       headers: { 'Authorization': `Bearer ${this.groqApiKey}` },
@@ -153,7 +135,7 @@ RESPOND IN THIS JSON FORMAT ONLY (no markdown, no explanation):
   }
 
   /**
-   * Cerebras API call (generous free tier, fallback 1)
+   * Cerebras API call
    */
   async callCerebasAPI(prompt) {
     const url = 'https://api.cerebras.ai/v1/chat/completions';
@@ -172,7 +154,7 @@ RESPOND IN THIS JSON FORMAT ONLY (no markdown, no explanation):
   }
 
   /**
-   * Gemini API call (most reliable, fallback 2)
+   * Gemini API call
    */
   async callGeminiAPI(prompt) {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.geminiApiKey}`;
@@ -198,7 +180,6 @@ RESPOND IN THIS JSON FORMAT ONLY (no markdown, no explanation):
    */
   parseAnalysis(responseText) {
     try {
-      // Extract JSON from response (AI sometimes adds preamble)
       const jsonMatch = responseText.match(/\{[\s\S]*\}/);
       if (!jsonMatch) throw new Error('No JSON found in response');
 
@@ -227,7 +208,7 @@ RESPOND IN THIS JSON FORMAT ONLY (no markdown, no explanation):
   }
 
   /**
-   * Normalize sentiment to valid values
+   * Normalize sentiment
    */
   normalizeSentiment(value) {
     const normalized = (value || '').toLowerCase().trim();
@@ -256,23 +237,6 @@ RESPOND IN THIS JSON FORMAT ONLY (no markdown, no explanation):
         risk_flag: 'Unable to determine',
       },
     };
-  }
-
-  /**
-   * Batch analysis for multiple articles
-   */
-  async analyzeMultiple(articles) {
-    const results = [];
-    for (const article of articles) {
-      try {
-        const analysis = await this.analyzeArticle(article);
-        results.push({ ...article, ...analysis });
-      } catch (error) {
-        console.error(`Batch analysis error for "${article.title}":`, error.message);
-        results.push({ ...article, ...this.defaultAnalysis() });
-      }
-    }
-    return results;
   }
 }
 

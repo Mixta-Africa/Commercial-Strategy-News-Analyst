@@ -1,1 +1,23 @@
-
+{
+  "coreSources": [
+    "ThisDay",
+    "Guardian",
+    "Premium Times",
+    "BusinessDay",
+    "Vanguard",
+    "Property Pro Africa",
+    "The Nation",
+    "Punch",
+    "Leadership",
+    "Daily Trust",
+    "Channels Television",
+    "Sahara Reporters",
+    "Naija247news",
+    "Legit Nigeria",
+    "Nigeria Real Estate Hub"
+  ],
+  "dynamicSources": [],
+  "version": "1.0",
+  "lastUpdated": "2025-06-13",
+  "description": "Whitelist of approved news sources for Nigerian real estate aggregation."
+}

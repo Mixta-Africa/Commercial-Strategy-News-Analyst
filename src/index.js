@@ -66,6 +66,19 @@ class NewsPipeline {
   async filterArticles(rawArticles) {
     console.log('[PHASE 2] Filtering by whitelist and deduplication...');
 
+    // Real estate keywords to identify relevant articles
+    const realEstateKeywords = [
+      'real estate', 'property', 'housing', 'land', 'developer',
+      'apartment', 'residential', 'commercial', 'retail', 'office',
+      'construction', 'building', 'infrastructure', 'lekki', 'ibeju-lekki',
+      'lagoon', 'ikoyi', 'victoria island', 'lagos', 'property market',
+      'home sales', 'real estate market', 'property prices', 'rent',
+      'mortgage', 'housing market', 'real estate sector', 'property developer',
+      'estate agent', 'property agent', 'real estate agent', 'realestate',
+      'realty', 'architectural', 'urban development', 'neighborhood',
+      'real-estate', 'homebuyers', 'homeowners', 'rental market'
+    ];
+
     const whitelistSources = new Set(
       whitelist.coreSources.map(s => s.toLowerCase())
     );
@@ -75,9 +88,13 @@ class NewsPipeline {
     for (const article of rawArticles) {
       const normalizedSource = (article.source || '').toLowerCase().trim();
       const normalizedTitle = (article.title || '').toLowerCase().trim();
+      const normalizedContent = ((article.content || article.description || '') || '').toLowerCase().substring(0, 500);
 
       // Skip if duplicate
-      if (seen.has(normalizedTitle)) continue;
+      if (seen.has(normalizedTitle)) {
+        console.log(`[PHASE 2] Skipped duplicate: ${article.title?.substring(0, 50)}`);
+        continue;
+      }
       seen.add(normalizedTitle);
 
       // Skip if no title
@@ -92,13 +109,22 @@ class NewsPipeline {
         continue;
       }
 
+      // Check for real estate relevance (content filter)
+      const titleMatch = realEstateKeywords.some(keyword => normalizedTitle.includes(keyword));
+      const contentMatch = realEstateKeywords.some(keyword => normalizedContent.includes(keyword));
+
+      if (!titleMatch && !contentMatch) {
+        console.log(`[PHASE 2] Skipped non-real-estate content: ${article.title?.substring(0, 50)}`);
+        continue;
+      }
+
       filtered.push({
         ...article,
         addedAt: this.timestamp,
       });
     }
 
-    console.log(`[PHASE 2] Filtered to ${filtered.length} unique articles`);
+    console.log(`[PHASE 2] Filtered to ${filtered.length} unique real estate articles`);
     return filtered;
   }
 

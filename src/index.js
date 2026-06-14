@@ -18,6 +18,7 @@ const path = require('path');
 const Agents = require('./agents');
 const DataSource = require('./datasource');
 const SheetsClient = require('./sheets-client');
+const Synthesizer = require('./synthesizer');
 const { generateEmailHTML, sendEmail } = require('./email-service');
 const whitelist = require('./whitelist.json');
 
@@ -29,6 +30,7 @@ class NewsPipeline {
     this.sheetsClient = new SheetsClient();
     this.datasource = new DataSource();
     this.agents = new Agents();
+    this.synthesizer = new Synthesizer(this.agents);
     this.timestamp = new Date().toISOString();
   }
 
@@ -280,12 +282,12 @@ class NewsPipeline {
   /**
    * PHASE 7: Email Generation & Delivery
    */
-  async generateAndSendEmail(articles, trends, alerts) {
+  async generateAndSendEmail(articles, trends, alerts, briefing) {
     console.log('[PHASE 7] Generating and sending email digest...');
 
     try {
-      // Pass ALL analyzed articles; the email service handles diverse selection
-      const htmlContent = generateEmailHTML(articles, trends, alerts);
+      // Pass ALL analyzed articles + the executive briefing
+      const htmlContent = generateEmailHTML(articles, trends, alerts, briefing);
       
       await sendEmail({
         to: process.env.RECIPIENT_EMAIL,
@@ -302,7 +304,7 @@ class NewsPipeline {
   /**
    * PHASE 8: Dashboard Updates
    */
-  async updateDashboard(articles, trends, alerts) {
+  async updateDashboard(articles, trends, alerts, briefing) {
     console.log('[PHASE 8] Updating dashboard data...');
 
     try {
@@ -323,6 +325,13 @@ class NewsPipeline {
         path.join(dataDir, 'alerts.json'),
         JSON.stringify(alerts, null, 2)
       );
+
+      if (briefing) {
+        fs.writeFileSync(
+          path.join(dataDir, 'briefing.json'),
+          JSON.stringify({ ...briefing, generatedAt: this.timestamp }, null, 2)
+        );
+      }
 
       console.log('[PHASE 8] Dashboard data updated');
     } catch (error) {
@@ -356,8 +365,9 @@ class NewsPipeline {
       const analyzed = await this.analyzeArticles(filtered);
       const trends = await this.detectTrends(analyzed);
       const alerts = await this.detectAnomalies(analyzed, trends);
-      await this.generateAndSendEmail(analyzed, trends, alerts);
-      await this.updateDashboard(analyzed, trends, alerts);
+      const briefing = await this.synthesizer.synthesize(analyzed);
+      await this.generateAndSendEmail(analyzed, trends, alerts, briefing);
+      await this.updateDashboard(analyzed, trends, alerts, briefing);
 
       console.log('='.repeat(60));
       console.log('Pipeline completed successfully');

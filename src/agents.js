@@ -45,6 +45,33 @@ class Agents {
     }
   }
 
+  /**
+   * Generic completion with the same Groq -> Cerebras -> Gemini fallback.
+   * Used by the synthesis layer for the executive briefing.
+   * Returns raw model text (no JSON parsing).
+   */
+  async generateCompletion(prompt, label = 'Synthesis') {
+    try {
+      console.log(`[Groq] ${label}...`);
+      return await this.callGroqAPI(prompt);
+    } catch (error) {
+      console.warn(`[Groq] ${label} failed: ${error.message}. Trying Cerebras.`);
+    }
+    try {
+      console.log(`[Cerebras] ${label}...`);
+      return await this.callCerebasAPI(prompt);
+    } catch (error) {
+      console.warn(`[Cerebras] ${label} failed: ${error.message}. Trying Gemini.`);
+    }
+    try {
+      console.log(`[Gemini] ${label}...`);
+      return await this.callGeminiAPI(prompt);
+    } catch (error) {
+      console.error(`[Gemini] ${label} failed: ${error.message}.`);
+      throw new Error('All providers failed for completion');
+    }
+  }
+
   buildAnalysisPrompt(article) {
     return `You are a professional real estate analyst for a major Lagos-based developer (Mixta Africa).
 Analyze this article with intellectual rigor and business acumen.

@@ -179,6 +179,8 @@ class NewsPipeline {
           category: 'untagged',
         });
       }
+      // Brief pause between calls to stay under Groq's rate limit (avoids 429s)
+      await new Promise(resolve => setTimeout(resolve, 2000));
     }
 
     console.log(`[PHASE 4] Analyzed ${analyzed.length} articles`);
@@ -282,8 +284,8 @@ class NewsPipeline {
     console.log('[PHASE 7] Generating and sending email digest...');
 
     try {
-      const topArticles = articles.slice(0, 5);
-      const htmlContent = generateEmailHTML(topArticles, trends, alerts);
+      // Pass ALL analyzed articles; the email service handles diverse selection
+      const htmlContent = generateEmailHTML(articles, trends, alerts);
       
       await sendEmail({
         to: process.env.RECIPIENT_EMAIL,

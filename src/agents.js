@@ -1,10 +1,10 @@
 /**
- * AI Agents Module - FIXED WITH CURRENT MODELS
- * 
- * Updated with working models:
- * - Groq: mixtral-8x7b-instruct-v0.1 (mixtral-8x7b-32768 is decommissioned)
- * - Cerebras: llama-3.1-8b (correct endpoint)
- * - Gemini: gemini-2.0-flash or gemini-pro (v1beta doesn't have gemini-1.5-flash)
+ * AI Agents Module - CURRENT MODELS (June 2026)
+ *
+ * Verified current models:
+ * - Groq:     llama-3.3-70b-versatile  (mixtral fully removed from Groq)
+ * - Cerebras: llama-3.3-70b            (llama-3.1-8b deprecated)
+ * - Gemini:   gemini-3.5-flash via v1beta  (2.0/1.5 returned 404 after June 1 2026 shutdown)
  */
 
 const axios = require('axios');
@@ -16,13 +16,9 @@ class Agents {
     this.geminiApiKey = process.env.GEMINI_API_KEY;
   }
 
-  /**
-   * Main analysis method with fallback chain
-   */
   async analyzeArticle(article) {
     const prompt = this.buildAnalysisPrompt(article);
 
-    // Try Groq first
     try {
       console.log(`[Groq] Analyzing: ${article.title?.substring(0, 60)}...`);
       const result = await this.callGroqAPI(prompt);
@@ -31,7 +27,6 @@ class Agents {
       console.warn(`[Groq] Failed: ${error.message}. Trying Cerebras.`);
     }
 
-    // Try Cerebras
     try {
       console.log(`[Cerebras] Analyzing: ${article.title?.substring(0, 60)}...`);
       const result = await this.callCerebasAPI(prompt);
@@ -40,7 +35,6 @@ class Agents {
       console.warn(`[Cerebras] Failed: ${error.message}. Trying Gemini.`);
     }
 
-    // Try Gemini
     try {
       console.log(`[Gemini] Analyzing: ${article.title?.substring(0, 60)}...`);
       const result = await this.callGeminiAPI(prompt);
@@ -51,9 +45,6 @@ class Agents {
     }
   }
 
-  /**
-   * Enterprise-level analysis prompt
-   */
   buildAnalysisPrompt(article) {
     return `You are a professional real estate analyst for a major Lagos-based developer (Mixta Africa).
 Analyze this article with intellectual rigor and business acumen.
@@ -111,27 +102,21 @@ RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
   }
 
   /**
-   * Groq API call - UPDATED MODEL
-   * mixtral-8x7b-32768 is decommissioned, using mixtral-8x7b-instruct-v0.1
+   * Groq API call - llama-3.3-70b-versatile (current production model)
    */
   async callGroqAPI(prompt) {
     const url = 'https://api.groq.com/openai/v1/chat/completions';
-    
-    if (!this.groqApiKey) {
-      throw new Error('GROQ_API_KEY not set in environment');
-    }
+    if (!this.groqApiKey) throw new Error('GROQ_API_KEY not set in environment');
 
-    console.log(`[Groq Debug] Using model: mixtral-8x7b-instruct-v0.1`);
-    
     const response = await axios.post(url, {
-      model: 'mixtral-8x7b-instruct-v0.1',  // UPDATED: was mixtral-8x7b-32768
+      model: 'llama-3.3-70b-versatile',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.3,
       max_tokens: 1000,
     }, {
-      headers: { 
+      headers: {
         'Authorization': `Bearer ${this.groqApiKey}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       timeout: 15000,
     });
@@ -140,26 +125,21 @@ RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
   }
 
   /**
-   * Cerebras API call
+   * Cerebras API call - llama-3.3-70b (current model)
    */
   async callCerebasAPI(prompt) {
     const url = 'https://api.cerebras.ai/v1/chat/completions';
-    
-    if (!this.cerebrasApiKey) {
-      throw new Error('CEREBRAS_API_KEY not set in environment');
-    }
+    if (!this.cerebrasApiKey) throw new Error('CEREBRAS_API_KEY not set in environment');
 
-    console.log(`[Cerebras Debug] Using model: llama-3.1-8b`);
-    
     const response = await axios.post(url, {
-      model: 'llama-3.1-8b',
+      model: 'llama-3.3-70b',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.3,
       max_tokens: 1000,
     }, {
-      headers: { 
+      headers: {
         'Authorization': `Bearer ${this.cerebrasApiKey}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       timeout: 15000,
     });
@@ -168,58 +148,45 @@ RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
   }
 
   /**
-   * Gemini API call - UPDATED MODEL
-   * gemini-1.5-flash doesn't exist in v1beta, trying gemini-2.0-flash or fallback to gemini-pro
+   * Gemini API call - gemini-3.5-flash via v1beta
+   * (gemini-1.5 and 2.0 were shut down June 1 2026, returning 404)
+   * Tries current models in order, falling through on 404.
    */
   async callGeminiAPI(prompt) {
-    if (!this.geminiApiKey) {
-      throw new Error('GEMINI_API_KEY not set in environment');
-    }
+    if (!this.geminiApiKey) throw new Error('GEMINI_API_KEY not set in environment');
 
-    // Try gemini-2.0-flash first, then gemini-pro as fallback
-    const models = [
-      'gemini-2.0-flash',
-      'gemini-pro'
-    ];
+    const models = ['gemini-3.5-flash', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 
     for (const model of models) {
       try {
-        const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${this.geminiApiKey}`;
-        
-        console.log(`[Gemini Debug] Trying model: ${model}`);
-        
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
         const response = await axios.post(url, {
-          contents: [{
-            parts: [{ text: prompt }],
-          }],
-          generationConfig: {
-            temperature: 0.3,
-            maxOutputTokens: 1000,
-          },
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.3, maxOutputTokens: 1000 },
         }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-goog-api-key': this.geminiApiKey,
+          },
           timeout: 15000,
         });
 
-        const text = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-        return text;
+        return response.data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
       } catch (error) {
-        console.warn(`[Gemini] ${model} failed: ${error.response?.status || error.message}`);
-        // Try next model in the loop
+        const status = error.response?.status;
+        console.warn(`[Gemini] ${model} failed (${status || error.message}).`);
+        // Only fall through to next model on 404 (model not found); rethrow otherwise
+        if (status && status !== 404) throw error;
       }
     }
 
-    // If both models failed
     throw new Error('No available Gemini models');
   }
 
-  /**
-   * Parse AI response into structured analysis
-   */
   parseAnalysis(responseText) {
     try {
       const jsonMatch = responseText.match(/\{[\s\S]*\}/);
       if (!jsonMatch) throw new Error('No JSON found in response');
-
       const parsed = JSON.parse(jsonMatch[0]);
 
       return {
@@ -244,9 +211,6 @@ RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
     }
   }
 
-  /**
-   * Normalize sentiment
-   */
   normalizeSentiment(value) {
     const normalized = (value || '').toLowerCase().trim();
     if (normalized.includes('bull')) return 'bullish';
@@ -254,9 +218,6 @@ RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
     return 'neutral';
   }
 
-  /**
-   * Default analysis fallback
-   */
   defaultAnalysis() {
     return {
       summary: 'Unable to generate professional summary due to AI provider unavailability.',

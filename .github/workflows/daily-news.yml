@@ -37,10 +37,10 @@ jobs:
           APPS_SCRIPT_SECRET: ${{ secrets.APPS_SCRIPT_SECRET }}
         run: npm run pipeline
 
-      - name: Commit and push data
+     - name: Commit and push data
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/
+          git add data/articles.json data/trends.json data/alerts.json
           git commit -m "Update articles and trends data" || true
-          git push
+          git push || echo "Push failed, continuing..."

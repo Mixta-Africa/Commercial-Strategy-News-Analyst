@@ -1,15 +1,10 @@
 /**
- * AI Agents Module
+ * AI Agents Module - FIXED WITH CURRENT MODELS
  * 
- * 3-provider fallback chain:
- * 1. Groq (fastest, primary)
- * 2. Cerebras (generous free tier)
- * 3. Gemini (most reliable)
- * 
- * Professional analysis with:
- * - Market impact assessment
- * - Mixta Africa relevance flags
- * - Sentiment classification
+ * Updated with working models:
+ * - Groq: mixtral-8x7b-instruct-v0.1 (mixtral-8x7b-32768 is decommissioned)
+ * - Cerebras: llama-3.1-8b (correct endpoint)
+ * - Gemini: gemini-2.0-flash or gemini-pro (v1beta doesn't have gemini-1.5-flash)
  */
 
 const axios = require('axios');
@@ -22,7 +17,7 @@ class Agents {
   }
 
   /**
-   * Main analysis method with fallback
+   * Main analysis method with fallback chain
    */
   async analyzeArticle(article) {
     const prompt = this.buildAnalysisPrompt(article);
@@ -116,21 +111,20 @@ RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
   }
 
   /**
-   * Groq API call
+   * Groq API call - UPDATED MODEL
+   * mixtral-8x7b-32768 is decommissioned, using mixtral-8x7b-instruct-v0.1
    */
   async callGroqAPI(prompt) {
     const url = 'https://api.groq.com/openai/v1/chat/completions';
     
-    // Debug: Check if API key exists
     if (!this.groqApiKey) {
       throw new Error('GROQ_API_KEY not set in environment');
     }
 
-    console.log(`[Groq Debug] URL: ${url}`);
-    console.log(`[Groq Debug] Key length: ${this.groqApiKey.length}`);
+    console.log(`[Groq Debug] Using model: mixtral-8x7b-instruct-v0.1`);
     
     const response = await axios.post(url, {
-      model: 'mixtral-8x7b-32768',
+      model: 'mixtral-8x7b-instruct-v0.1',  // UPDATED: was mixtral-8x7b-32768
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.3,
       max_tokens: 1000,
@@ -151,13 +145,11 @@ RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
   async callCerebasAPI(prompt) {
     const url = 'https://api.cerebras.ai/v1/chat/completions';
     
-    // Debug: Check if API key exists
     if (!this.cerebrasApiKey) {
       throw new Error('CEREBRAS_API_KEY not set in environment');
     }
 
-    console.log(`[Cerebras Debug] URL: ${url}`);
-    console.log(`[Cerebras Debug] Key length: ${this.cerebrasApiKey.length}`);
+    console.log(`[Cerebras Debug] Using model: llama-3.1-8b`);
     
     const response = await axios.post(url, {
       model: 'llama-3.1-8b',
@@ -176,33 +168,48 @@ RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
   }
 
   /**
-   * Gemini API call
+   * Gemini API call - UPDATED MODEL
+   * gemini-1.5-flash doesn't exist in v1beta, trying gemini-2.0-flash or fallback to gemini-pro
    */
   async callGeminiAPI(prompt) {
-    // Debug: Check if API key exists
     if (!this.geminiApiKey) {
       throw new Error('GEMINI_API_KEY not set in environment');
     }
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.geminiApiKey}`;
-    
-    console.log(`[Gemini Debug] URL base: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`);
-    console.log(`[Gemini Debug] Key length: ${this.geminiApiKey.length}`);
-    
-    const response = await axios.post(url, {
-      contents: [{
-        parts: [{ text: prompt }],
-      }],
-      generationConfig: {
-        temperature: 0.3,
-        maxOutputTokens: 1000,
-      },
-    }, {
-      timeout: 15000,
-    });
+    // Try gemini-2.0-flash first, then gemini-pro as fallback
+    const models = [
+      'gemini-2.0-flash',
+      'gemini-pro'
+    ];
 
-    const text = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    return text;
+    for (const model of models) {
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${this.geminiApiKey}`;
+        
+        console.log(`[Gemini Debug] Trying model: ${model}`);
+        
+        const response = await axios.post(url, {
+          contents: [{
+            parts: [{ text: prompt }],
+          }],
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 1000,
+          },
+        }, {
+          timeout: 15000,
+        });
+
+        const text = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        return text;
+      } catch (error) {
+        console.warn(`[Gemini] ${model} failed: ${error.response?.status || error.message}`);
+        // Try next model in the loop
+      }
+    }
+
+    // If both models failed
+    throw new Error('No available Gemini models');
   }
 
   /**

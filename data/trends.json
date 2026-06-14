@@ -2,30 +2,30 @@
   "7day": {
     "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 10,
+      "neutral": 9,
       "bullish": 3,
-      "bearish": 1
+      "bearish": 2
     },
     "topTopics": [
       {
         "topic": "infrastructure",
-        "count": 5
+        "count": 8
       },
       {
         "topic": "prices",
-        "count": 4
+        "count": 3
+      },
+      {
+        "topic": "investor confidence",
+        "count": 3
+      },
+      {
+        "topic": "elections",
+        "count": 2
       },
       {
         "topic": "security",
         "count": 2
-      },
-      {
-        "topic": "investor confidence",
-        "count": 2
-      },
-      {
-        "topic": "elections",
-        "count": 1
       }
     ],
     "averageSentiment": "neutral"
@@ -33,30 +33,30 @@
   "30day": {
     "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 10,
+      "neutral": 9,
       "bullish": 3,
-      "bearish": 1
+      "bearish": 2
     },
     "topTopics": [
       {
         "topic": "infrastructure",
-        "count": 5
+        "count": 8
       },
       {
         "topic": "prices",
-        "count": 4
+        "count": 3
+      },
+      {
+        "topic": "investor confidence",
+        "count": 3
+      },
+      {
+        "topic": "elections",
+        "count": 2
       },
       {
         "topic": "security",
         "count": 2
-      },
-      {
-        "topic": "investor confidence",
-        "count": 2
-      },
-      {
-        "topic": "elections",
-        "count": 1
       }
     ],
     "averageSentiment": "neutral"
@@ -64,30 +64,30 @@
   "90day": {
     "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 10,
+      "neutral": 9,
       "bullish": 3,
-      "bearish": 1
+      "bearish": 2
     },
     "topTopics": [
       {
         "topic": "infrastructure",
-        "count": 5
+        "count": 8
       },
       {
         "topic": "prices",
-        "count": 4
+        "count": 3
+      },
+      {
+        "topic": "investor confidence",
+        "count": 3
+      },
+      {
+        "topic": "elections",
+        "count": 2
       },
       {
         "topic": "security",
         "count": 2
-      },
-      {
-        "topic": "investor confidence",
-        "count": 2
-      },
-      {
-        "topic": "elections",
-        "count": 1
       }
     ],
     "averageSentiment": "neutral"

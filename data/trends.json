@@ -2,22 +2,18 @@
   "7day": {
     "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 9,
-      "bullish": 3,
+      "neutral": 8,
+      "bullish": 4,
       "bearish": 2
     },
     "topTopics": [
       {
         "topic": "infrastructure",
-        "count": 8
+        "count": 6
       },
       {
         "topic": "prices",
-        "count": 3
-      },
-      {
-        "topic": "investor confidence",
-        "count": 3
+        "count": 5
       },
       {
         "topic": "elections",
@@ -25,6 +21,10 @@
       },
       {
         "topic": "security",
+        "count": 2
+      },
+      {
+        "topic": "investor confidence",
         "count": 2
       }
     ],
@@ -33,22 +33,18 @@
   "30day": {
     "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 9,
-      "bullish": 3,
+      "neutral": 8,
+      "bullish": 4,
       "bearish": 2
     },
     "topTopics": [
       {
         "topic": "infrastructure",
-        "count": 8
+        "count": 6
       },
       {
         "topic": "prices",
-        "count": 3
-      },
-      {
-        "topic": "investor confidence",
-        "count": 3
+        "count": 5
       },
       {
         "topic": "elections",
@@ -56,6 +52,10 @@
       },
       {
         "topic": "security",
+        "count": 2
+      },
+      {
+        "topic": "investor confidence",
         "count": 2
       }
     ],
@@ -64,22 +64,18 @@
   "90day": {
     "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 9,
-      "bullish": 3,
+      "neutral": 8,
+      "bullish": 4,
       "bearish": 2
     },
     "topTopics": [
       {
         "topic": "infrastructure",
-        "count": 8
+        "count": 6
       },
       {
         "topic": "prices",
-        "count": 3
-      },
-      {
-        "topic": "investor confidence",
-        "count": 3
+        "count": 5
       },
       {
         "topic": "elections",
@@ -87,6 +83,10 @@
       },
       {
         "topic": "security",
+        "count": 2
+      },
+      {
+        "topic": "investor confidence",
         "count": 2
       }
     ],

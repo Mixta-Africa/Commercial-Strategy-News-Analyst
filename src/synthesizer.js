@@ -183,16 +183,35 @@ Respond ONLY with valid JSON in EXACTLY this shape (no markdown, no commentary o
     const memory = this.loadMemory();
     const prompt = this.buildPrompt(articles, context, memory);
 
+    // Cooldown: the synthesis call follows many rapid article calls.
+    // Give the rate-limit window time to reset before the big call.
+    console.log('[Synthesis] Cooling down before synthesis call...');
+    await new Promise(r => setTimeout(r, 15000));
+
+    // Try up to 3 times; on a rate-limit (429) wait longer and retry.
     let briefing = null;
-    try {
-      const raw = await this.agents.generateCompletion(prompt, 'Executive briefing');
-      briefing = this.parseBriefing(raw);
-    } catch (e) {
-      console.error('[Synthesis] Generation failed:', e.message);
-      return null;
+    const maxAttempts = 3;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        const raw = await this.agents.generateCompletion(prompt, `Executive briefing (attempt ${attempt})`);
+        briefing = this.parseBriefing(raw);
+        if (briefing) break;
+        console.warn(`[Synthesis] Attempt ${attempt}: empty/unparseable response.`);
+      } catch (e) {
+        const is429 = /429/.test(e.message || '');
+        console.warn(`[Synthesis] Attempt ${attempt} failed: ${e.message}`);
+        if (attempt < maxAttempts) {
+          const wait = is429 ? 30000 : 8000;
+          console.log(`[Synthesis] Waiting ${wait / 1000}s before retry...`);
+          await new Promise(r => setTimeout(r, wait));
+        }
+      }
     }
 
-    if (!briefing) return null;
+    if (!briefing) {
+      console.error('[Synthesis] Could not produce briefing after retries.');
+      return null;
+    }
 
     // Attach resolved source articles to each theme for rendering (url + title)
     for (const theme of briefing.themes) {

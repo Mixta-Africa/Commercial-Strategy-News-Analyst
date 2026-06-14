@@ -37,7 +37,7 @@ jobs:
           APPS_SCRIPT_SECRET: ${{ secrets.APPS_SCRIPT_SECRET }}
         run: npm run pipeline
 
-     - name: Commit and push data
+      - name: Commit and push data
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"

@@ -1,0 +1,98 @@
+{
+  "_instructions": "This file is the brain of the intelligence layer. The synthesis engine injects it into every reasoning prompt so news gets connected to Mixta's actual position. Replace every FILL_IN with real figures. The more accurate this is, the sharper the briefing. Safe to edit by hand; it is plain JSON.",
+
+  "company": {
+    "name": "Mixta Africa",
+    "description": "Nigerian real estate developer building affordable-to-premium residential communities, primarily along the Lagos / Ibeju-Lekki corridor.",
+    "strategic_priorities_2026": [
+      "Hit FILL_IN_REVENUE_TARGET (e.g. ₦70Bn) in 2026 revenue",
+      "Recover concentrated receivables (~₦9.5Bn outstanding, heavily concentrated in FILL_IN_PROJECT)",
+      "Shift new-sales mix toward higher-margin / faster-converting segments",
+      "Pursue institutional / bulk transactions and corporate mortgage programmes",
+      "Maintain DFI credibility (EBRD, IFC) for ongoing capital raises"
+    ]
+  },
+
+  "active_projects": [
+    {
+      "name": "Lakowe Crossings",
+      "location": "Lakowe, Ibeju-Lekki corridor, Lagos",
+      "segment": "FILL_IN (e.g. premium / mid-premium residential)",
+      "price_band_naira_per_sqm": "FILL_IN",
+      "typical_unit_price_naira": "FILL_IN",
+      "status": "Active construction / sales",
+      "notes": "FILL_IN any positioning notes — what makes it distinct, target buyer profile"
+    },
+    {
+      "name": "Lakowe Annexe",
+      "location": "Lakowe, Ibeju-Lekki corridor, Lagos",
+      "segment": "FILL_IN (e.g. affordable / mid-market)",
+      "price_band_naira_per_sqm": "FILL_IN",
+      "typical_unit_price_naira": "FILL_IN",
+      "status": "Active construction; provisional layout approval pending",
+      "open_issues": [
+        "Provisional layout approval stalled by escalating government fees",
+        "BAFF contractor payment delays",
+        "Second-lane drainage construction progress",
+        "Road QA/QC failures",
+        "Manhole installation behind target",
+        "Growing sales receivables gap"
+      ]
+    },
+    {
+      "name": "Lagos New Town",
+      "location": "Lagos",
+      "segment": "FILL_IN",
+      "price_band_naira_per_sqm": "FILL_IN",
+      "status": "FILL_IN",
+      "notes": "FILL_IN or remove if not active"
+    }
+  ],
+
+  "competitors": [
+    {
+      "name": "FILL_IN_COMPETITOR_1",
+      "note": "From the Ibeju-Lekki corridor CMA — replace with the 13 competitors you benchmarked. Add price band and segment where known."
+    }
+  ],
+  "_competitor_note": "Populate from your affordable-housing CMA deck (the 13 corridor competitors with TCO normalization). Even just names helps the engine flag competitor moves.",
+
+  "watch_list": [
+    {
+      "topic": "Government layout-approval fees",
+      "why": "Escalating fees are stalling Lakowe Annexe provisional approval and delaying launch timing."
+    },
+    {
+      "topic": "BAFF contractor / contractor payments",
+      "why": "Payment delays risk schedule slippage on Annexe."
+    },
+    {
+      "topic": "Infrastructure on the Ibeju-Lekki corridor (roads, rail, Lekki deep sea port, Dangote refinery effects)",
+      "why": "Corridor infrastructure directly drives land values and demand around both Lakowe projects."
+    },
+    {
+      "topic": "Mortgage availability / NMRC / corporate mortgage schemes",
+      "why": "Near-zero mortgage uptake is a structural drag on sales conversion; any easing is a demand unlock."
+    },
+    {
+      "topic": "Naira / FX / inflation / cement & construction input costs",
+      "why": "Directly hits build costs (BAFF, drainage, roadworks) and real pricing power."
+    },
+    {
+      "topic": "Affordable housing policy (FG 100,000 homes, state housing programmes)",
+      "why": "Public supply in the affordable band competes directly with Lakowe Annexe positioning."
+    },
+    {
+      "topic": "Insecurity / kidnapping affecting site access and buyer sentiment",
+      "why": "Escort withdrawal and insecurity have already been cited as stalling real estate delivery."
+    }
+  ],
+
+  "data_hooks": {
+    "_note": "Optional but powerful. If you later expose live numbers (from the commercial dashboard), drop the latest values here so the engine can quote them. Update manually for now if useful.",
+    "outstanding_receivables_naira": "FILL_IN (e.g. ₦9.5Bn)",
+    "receivables_concentration": "FILL_IN (which project holds most of it)",
+    "mortgage_uptake": "near-zero",
+    "revenue_target_2026_naira": "FILL_IN"
+  }
+}

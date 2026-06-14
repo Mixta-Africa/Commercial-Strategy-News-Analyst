@@ -18,79 +18,115 @@ class DataSource {
   }
 
   /**
-   * GNews API
+   * GNews API — targeted real estate query
    */
   async fetchGNews() {
     console.log('[GNews] Fetching articles...');
-    
-    try {
-      const response = await axios.get('https://gnews.io/api/v4/search', {
-        params: {
-          q: '(real estate OR property OR housing OR construction) AND (Lagos OR Nigeria)',
-          lang: 'en',
-          sortby: 'publishedAt',
-          limit: 30,
-          apikey: this.gNewsApiKey,
-        },
-        timeout: this.timeout,
-      });
 
-      const articles = response.data?.articles || [];
-      console.log(`[GNews] Fetched ${articles.length} articles`);
+    const queries = [
+      '"real estate" Lagos',
+      'property market Nigeria',
+    ];
 
-      return articles.map(a => ({
-        title: a.title,
-        description: a.description,
-        content: a.content,
-        url: a.url,
-        source: a.source?.name || 'GNews',
-        publishedAt: a.publishedAt,
-        image: a.image,
-      }));
-    } catch (error) {
-      console.error('[GNews] Error:', error.message);
-      return [];
+    const seen = new Set();
+    const allArticles = [];
+
+    for (const q of queries) {
+      try {
+        const response = await axios.get('https://gnews.io/api/v4/search', {
+          params: {
+            q,
+            lang: 'en',
+            country: 'ng',
+            sortby: 'publishedAt',
+            limit: 10,
+            apikey: this.gNewsApiKey,
+          },
+          timeout: this.timeout,
+        });
+
+        const articles = response.data?.articles || [];
+        console.log(`[GNews] Query "${q}" → ${articles.length} articles`);
+
+        for (const a of articles) {
+          const key = (a.title || '').toLowerCase().trim();
+          if (!key || seen.has(key)) continue;
+          seen.add(key);
+          allArticles.push({
+            title: a.title,
+            description: a.description,
+            content: a.content,
+            url: a.url,
+            source: a.source?.name || 'GNews',
+            publishedAt: a.publishedAt,
+            image: a.image,
+          });
+        }
+      } catch (error) {
+        console.error(`[GNews] Error on query "${q}":`, error.message);
+      }
     }
+
+    console.log(`[GNews] Fetched ${allArticles.length} total articles`);
+    return allArticles;
   }
 
   /**
-   * NewsAPI
+   * NewsAPI — strict real estate query
    */
   async fetchNewsAPI() {
     console.log('[NewsAPI] Fetching articles...');
-    
-    try {
-      const response = await axios.get('https://newsapi.org/v2/everything', {
-        params: {
-          q: '(real estate OR property OR housing OR construction) AND (Lagos OR Nigeria)',
-          language: 'en',
-          sortBy: 'publishedAt',
-          pageSize: 40,
-          apiKey: this.newsApiKey,
-        },
-        timeout: this.timeout,
-      });
 
-      const articles = response.data?.articles || [];
-      console.log(`[NewsAPI] Fetched ${articles.length} articles`);
+    // Run two targeted queries and merge results
+    const queries = [
+      '"real estate" AND (Lagos OR Nigeria)',
+      '(property market OR housing market OR property developer OR mortgage) AND (Lagos OR Nigeria)',
+    ];
 
-      return articles.map(a => ({
-        title: a.title,
-        description: a.description,
-        content: a.content,
-        url: a.url,
-        source: a.source?.name || 'NewsAPI',
-        publishedAt: a.publishedAt,
-        image: a.urlToImage,
-      }));
-    } catch (error) {
-      console.error('[NewsAPI] Error:', error.message);
-      return [];
+    const seen = new Set();
+    const allArticles = [];
+
+    for (const q of queries) {
+      try {
+        const response = await axios.get('https://newsapi.org/v2/everything', {
+          params: {
+            q,
+            language: 'en',
+            sortBy: 'publishedAt',
+            pageSize: 20,
+            apiKey: this.newsApiKey,
+          },
+          timeout: this.timeout,
+        });
+
+        const articles = response.data?.articles || [];
+        console.log(`[NewsAPI] Query "${q.substring(0, 40)}..." → ${articles.length} articles`);
+
+        for (const a of articles) {
+          const key = (a.title || '').toLowerCase().trim();
+          if (!key || seen.has(key)) continue;
+          seen.add(key);
+          allArticles.push({
+            title: a.title,
+            description: a.description,
+            content: a.content,
+            url: a.url,
+            source: a.source?.name || 'NewsAPI',
+            publishedAt: a.publishedAt,
+            image: a.urlToImage,
+          });
+        }
+      } catch (error) {
+        console.error(`[NewsAPI] Error on query "${q.substring(0, 40)}...":`, error.message);
+      }
     }
+
+    console.log(`[NewsAPI] Fetched ${allArticles.length} total articles`);
+    return allArticles;
   }
 
   /**
-   * RSS Feeds
+   * RSS Feeds — real estate keyword filter applied at source
    */
   async fetchRSSFeeds() {
     console.log('[RSS] Fetching from RSS feeds...');
@@ -100,6 +136,18 @@ class DataSource {
       { url: 'https://www.premiumtimesng.com/feed', source: 'Premium Times' },
       { url: 'https://businessday.ng/feed', source: 'BusinessDay' },
       { url: 'https://guardian.ng/feed', source: 'Guardian' },
+      { url: 'https://punchng.com/feed', source: 'The Punch' },
+      { url: 'https://www.vanguardngr.com/feed', source: 'Vanguard' },
+    ];
+
+    // Real estate keywords to filter RSS items at the source
+    const realEstateKeywords = [
+      'real estate', 'property', 'housing', 'land', 'developer',
+      'apartment', 'residential', 'commercial', 'construction',
+      'building', 'lekki', 'ibeju-lekki', 'ikoyi', 'victoria island',
+      'property market', 'home sales', 'property prices', 'rent',
+      'mortgage', 'housing market', 'estate agent', 'realty',
+      'urban development', 'rental market', 'property developer',
     ];
 
     const parser = new xml2js.Parser();
@@ -120,18 +168,13 @@ class DataSource {
         const articles = items
           .filter(item => {
             const title = (item.title?.[0] || '').toLowerCase();
-            return title.includes('real estate') ||
-                   title.includes('property') ||
-                   title.includes('housing') ||
-                   title.includes('construction') ||
-                   title.includes('lagos') ||
-                   title.includes('lekki') ||
-                   title.includes('mortgage');
+            const desc = (item.description?.[0] || '').toLowerCase().substring(0, 300);
+            return realEstateKeywords.some(kw => title.includes(kw) || desc.includes(kw));
           })
           .map(item => ({
             title: item.title?.[0] || '',
             description: item.description?.[0] || '',
-            content: item.content || '',
+            content: item['content:encoded']?.[0] || item.description?.[0] || '',
             url: item.link?.[0] || '',
             source: feed.source,
             publishedAt: item.pubDate?.[0] || new Date().toISOString(),
@@ -139,7 +182,7 @@ class DataSource {
           .slice(0, 10);
 
         allArticles.push(...articles);
-        console.log(`[RSS] ${feed.source}: ${articles.length} articles`);
+        console.log(`[RSS] ${feed.source}: ${articles.length} real estate articles`);
       } catch (error) {
         console.warn(`[RSS] Error fetching ${feed.source}:`, error.message);
       }

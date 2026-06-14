@@ -33,25 +33,23 @@ class NewsPipeline {
   }
 
   /**
-   * PHASE 1: Data Collection (target: 50-100 raw articles)
+   * PHASE 1: Data Collection
    */
   async collectArticles() {
     console.log('[PHASE 1] Collecting articles from all sources...');
     
     try {
-      const [gNewsArticles, newsApiArticles, rssArticles, scrapedArticles] = 
+      const [gNewsArticles, newsApiArticles, rssArticles] = 
         await Promise.all([
           this.datasource.fetchGNews(),
           this.datasource.fetchNewsAPI(),
           this.datasource.fetchRSSFeeds(),
-          this.datasource.scrapeNewsWebsites(),
         ]);
 
       const allArticles = [
         ...gNewsArticles,
         ...newsApiArticles,
         ...rssArticles,
-        ...scrapedArticles,
       ];
 
       console.log(`[PHASE 1] Collected ${allArticles.length} raw articles`);
@@ -63,40 +61,34 @@ class NewsPipeline {
   }
 
   /**
-   * PHASE 2: Filtering & Deduplication (target: 30-65 unique articles)
+   * PHASE 2: Filtering & Deduplication
    */
   async filterArticles(rawArticles) {
     console.log('[PHASE 2] Filtering by whitelist and deduplication...');
 
-    const whitelistSources = new Set(whitelist.coreSources);
+    const whitelistSources = new Set(
+      whitelist.coreSources.map(s => s.toLowerCase())
+    );
     const seen = new Set();
     const filtered = [];
 
     for (const article of rawArticles) {
-      const normalizedSource = article.source?.toLowerCase() || '';
-      const normalizedTitle = article.title?.toLowerCase().trim() || '';
+      const normalizedSource = (article.source || '').toLowerCase().trim();
+      const normalizedTitle = (article.title || '').toLowerCase().trim();
 
-      // Skip if seen before
+      // Skip if duplicate
       if (seen.has(normalizedTitle)) continue;
       seen.add(normalizedTitle);
 
+      // Skip if no title
+      if (!normalizedTitle) continue;
+
       // Check whitelist
       const isWhitelisted = whitelistSources.has(normalizedSource) ||
-        whitelist.dynamicSources?.includes(normalizedSource);
+        (whitelist.dynamicSources || []).map(s => s.toLowerCase()).includes(normalizedSource);
 
       if (!isWhitelisted) {
         console.log(`[PHASE 2] Skipped non-whitelisted source: ${article.source}`);
-        continue;
-      }
-
-      // Location validation (Southwest Nigeria)
-      const validLocations = ['Lagos', 'Ibeju-Lekki', 'Ibadan', 'Abeokuta', 'Ogun', 'Nigeria'];
-      const hasValidLocation = validLocations.some(loc => 
-        article.title?.includes(loc) || article.content?.includes(loc)
-      );
-
-      if (!hasValidLocation) {
-        console.log(`[PHASE 2] Skipped non-Southwest Nigeria article: ${article.title?.substring(0, 50)}`);
         continue;
       }
 
@@ -106,7 +98,7 @@ class NewsPipeline {
       });
     }
 
-    console.log(`[PHASE 2] Filtered to ${filtered.length} unique, reputable articles`);
+    console.log(`[PHASE 2] Filtered to ${filtered.length} unique articles`);
     return filtered;
   }
 
@@ -141,7 +133,7 @@ class NewsPipeline {
    * PHASE 4: AI Analysis
    */
   async analyzeArticles(articles) {
-    console.log('[PHASE 4] Running AI analysis with professional prompts...');
+    console.log('[PHASE 4] Running AI analysis...');
 
     const analyzed = [];
 
@@ -156,7 +148,7 @@ class NewsPipeline {
         console.error(`[PHASE 4] Analysis failed for "${article.title?.substring(0, 50)}"`, error.message);
         analyzed.push({
           ...article,
-          sentiment: 'unknown',
+          sentiment: 'neutral',
           summary: article.title || 'Unable to analyze',
           category: 'untagged',
         });
@@ -171,7 +163,7 @@ class NewsPipeline {
    * PHASE 5: Trend Detection
    */
   async detectTrends(articles) {
-    console.log('[PHASE 5] Detecting trends across time horizons...');
+    console.log('[PHASE 5] Detecting trends...');
 
     const trends = {
       '7day': this.calculateTrends(articles, 7),
@@ -196,9 +188,10 @@ class NewsPipeline {
     for (const article of relevant) {
       sentiments[article.sentiment] = (sentiments[article.sentiment] || 0) + 1;
       
-      const articleTopics = article.trending_topics?.split(',') || [];
+      const articleTopics = (article.trending_topics || '').split(',');
       for (const topic of articleTopics) {
-        topics[topic.trim()] = (topics[topic.trim()] || 0) + 1;
+        const t = topic.trim();
+        if (t) topics[t] = (topics[t] || 0) + 1;
       }
     }
 
@@ -214,14 +207,14 @@ class NewsPipeline {
   }
 
   calculateAverageSentiment(sentiments) {
-    const bullishCount = sentiments['bullish'] || 0;
-    const bearishCount = sentiments['bearish'] || 0;
-    const neutralCount = sentiments['neutral'] || 0;
-    const total = bullishCount + bearishCount + neutralCount;
+    const bullish = sentiments['bullish'] || 0;
+    const bearish = sentiments['bearish'] || 0;
+    const neutral = sentiments['neutral'] || 0;
+    const total = bullish + bearish + neutral;
 
     if (total === 0) return 'neutral';
-    if (bullishCount > total * 0.5) return 'bullish';
-    if (bearishCount > total * 0.3) return 'bearish';
+    if (bullish > total * 0.5) return 'bullish';
+    if (bearish > total * 0.3) return 'bearish';
     return 'neutral';
   }
 
@@ -229,24 +222,20 @@ class NewsPipeline {
    * PHASE 6: Anomaly Detection
    */
   async detectAnomalies(articles, trends) {
-    console.log('[PHASE 6] Detecting anomalies and sentiment reversals...');
+    console.log('[PHASE 6] Detecting anomalies...');
 
     const alerts = [];
 
-    // Volume spike detection
     if (articles.length > 50) {
       alerts.push({
         type: 'volume_spike',
         severity: 'high',
-        message: `Article volume spike: ${articles.length} articles collected today (normal: 30-50)`,
+        message: `Article volume spike: ${articles.length} articles today (normal: 30-50)`,
         timestamp: this.timestamp,
       });
     }
 
-    // Sentiment reversal detection
-    const bullishCount = articles.filter(a => a.sentiment === 'bullish').length;
     const bearishCount = articles.filter(a => a.sentiment === 'bearish').length;
-    
     if (bearishCount > articles.length * 0.4) {
       alerts.push({
         type: 'sentiment_reversal',
@@ -286,7 +275,7 @@ class NewsPipeline {
    * PHASE 8: Dashboard Updates
    */
   async updateDashboard(articles, trends, alerts) {
-    console.log('[PHASE 8] Updating GitHub Pages dashboard...');
+    console.log('[PHASE 8] Updating dashboard data...');
 
     try {
       const dataDir = path.join(process.cwd(), 'data');
@@ -314,7 +303,7 @@ class NewsPipeline {
   }
 
   /**
-   * Main Pipeline Orchestration
+   * Main Pipeline
    */
   async run() {
     console.log('='.repeat(60));
@@ -323,36 +312,23 @@ class NewsPipeline {
     console.log('='.repeat(60));
 
     try {
-      // Phase 1: Collect
       const rawArticles = await this.collectArticles();
       if (rawArticles.length === 0) {
         console.warn('No articles collected. Exiting.');
         return;
       }
 
-      // Phase 2: Filter
       const filtered = await this.filterArticles(rawArticles);
       if (filtered.length === 0) {
         console.warn('No articles passed filtering. Exiting.');
         return;
       }
 
-      // Phase 3: Store
       await this.storeArticles(filtered);
-
-      // Phase 4: Analyze
       const analyzed = await this.analyzeArticles(filtered);
-
-      // Phase 5: Detect Trends
       const trends = await this.detectTrends(analyzed);
-
-      // Phase 6: Detect Anomalies
       const alerts = await this.detectAnomalies(analyzed, trends);
-
-      // Phase 7: Email
       await this.generateAndSendEmail(analyzed, trends, alerts);
-
-      // Phase 8: Dashboard
       await this.updateDashboard(analyzed, trends, alerts);
 
       console.log('='.repeat(60));
@@ -365,6 +341,5 @@ class NewsPipeline {
   }
 }
 
-// Execute
 const pipeline = new NewsPipeline();
 pipeline.run();

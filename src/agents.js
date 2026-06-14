@@ -121,13 +121,24 @@ RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
   async callGroqAPI(prompt) {
     const url = 'https://api.groq.com/openai/v1/chat/completions';
     
+    // Debug: Check if API key exists
+    if (!this.groqApiKey) {
+      throw new Error('GROQ_API_KEY not set in environment');
+    }
+
+    console.log(`[Groq Debug] URL: ${url}`);
+    console.log(`[Groq Debug] Key length: ${this.groqApiKey.length}`);
+    
     const response = await axios.post(url, {
       model: 'mixtral-8x7b-32768',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.3,
       max_tokens: 1000,
     }, {
-      headers: { 'Authorization': `Bearer ${this.groqApiKey}` },
+      headers: { 
+        'Authorization': `Bearer ${this.groqApiKey}`,
+        'Content-Type': 'application/json'
+      },
       timeout: 15000,
     });
 
@@ -140,13 +151,24 @@ RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
   async callCerebasAPI(prompt) {
     const url = 'https://api.cerebras.ai/v1/chat/completions';
     
+    // Debug: Check if API key exists
+    if (!this.cerebrasApiKey) {
+      throw new Error('CEREBRAS_API_KEY not set in environment');
+    }
+
+    console.log(`[Cerebras Debug] URL: ${url}`);
+    console.log(`[Cerebras Debug] Key length: ${this.cerebrasApiKey.length}`);
+    
     const response = await axios.post(url, {
       model: 'llama-3.1-8b',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.3,
       max_tokens: 1000,
     }, {
-      headers: { 'Authorization': `Bearer ${this.cerebrasApiKey}` },
+      headers: { 
+        'Authorization': `Bearer ${this.cerebrasApiKey}`,
+        'Content-Type': 'application/json'
+      },
       timeout: 15000,
     });
 
@@ -157,7 +179,15 @@ RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
    * Gemini API call
    */
   async callGeminiAPI(prompt) {
+    // Debug: Check if API key exists
+    if (!this.geminiApiKey) {
+      throw new Error('GEMINI_API_KEY not set in environment');
+    }
+
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.geminiApiKey}`;
+    
+    console.log(`[Gemini Debug] URL base: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`);
+    console.log(`[Gemini Debug] Key length: ${this.geminiApiKey.length}`);
     
     const response = await axios.post(url, {
       contents: [{

@@ -60,9 +60,69 @@ function selectTopArticles(articles, limit = 6) {
 }
 
 /**
+ * Render the executive briefing block (the intelligence layer output).
+ * This leads the email; the article list below becomes supporting detail.
+ */
+function renderBriefing(briefing) {
+  if (!briefing || !briefing.themes || briefing.themes.length === 0) return '';
+
+  const noveltyStyle = {
+    new: { bg: '#e8f5e9', fg: '#1b5e20', label: 'NEW' },
+    building: { bg: '#fff8e1', fg: '#8a6d00', label: 'BUILDING' },
+    established: { bg: '#eceff1', fg: '#455a64', label: 'ESTABLISHED' },
+  };
+  const recColor = (rec = '') => {
+    const r = rec.toLowerCase();
+    if (r.startsWith('act')) return '#c41e3a';
+    if (r.startsWith('monitor')) return '#b8860b';
+    if (r.startsWith('watch')) return '#5b8db5';
+    return '#666';
+  };
+  const confColor = { high: '#155724', medium: '#8a6d00', low: '#721c24' };
+
+  const themes = briefing.themes.map(t => {
+    const nv = noveltyStyle[(t.novelty || 'established').toLowerCase()] || noveltyStyle.established;
+    const seen = t.timesSeen && t.timesSeen > 1 ? ` &bull; week ${t.timesSeen}` : '';
+    const srcLinks = (t.sourceArticles || [])
+      .map(s => `<a href="${s.url || '#'}" target="_blank" style="color:#888;text-decoration:underline;">${s.source || 'source'}</a>`)
+      .join(', ');
+    const conf = (t.confidence || 'medium').toLowerCase();
+
+    return `
+      <div style="background:#ffffff;border:1px solid #eee;border-left:4px solid ${recColor(t.recommendation)};border-radius:4px;padding:16px;margin-bottom:14px;">
+        <div style="margin-bottom:8px;">
+          <span style="font-size:15px;font-weight:700;color:#1a1a1a;">${t.label || 'Theme'}</span>
+          <span style="display:inline-block;background:${nv.bg};color:${nv.fg};font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px;">${nv.label}${seen}</span>
+        </div>
+        <p style="margin:6px 0;font-size:13px;color:#444;"><strong>What happened:</strong> ${t.what_happened || ''}</p>
+        <p style="margin:6px 0;font-size:13px;color:#0c5460;background:#eef6fb;border-radius:4px;padding:8px;"><strong>Why it matters to Mixta:</strong> ${t.why_it_matters_to_mixta || ''}</p>
+        <p style="margin:6px 0;font-size:13px;color:#1a1a1a;"><strong style="color:${recColor(t.recommendation)};">Recommendation:</strong> ${t.recommendation || ''}</p>
+        <div style="font-size:11px;color:#999;margin-top:8px;">
+          Confidence: <strong style="color:${confColor[conf] || '#666'};">${(t.confidence || 'medium').toUpperCase()}</strong>
+          ${srcLinks ? ` &bull; Sources: ${srcLinks}` : ''}
+        </div>
+      </div>`;
+  }).join('');
+
+  const watchHits = (briefing.watch_list_hits && briefing.watch_list_hits.length)
+    ? `<div style="margin-top:14px;padding:12px;background:#fbf7ef;border:1px solid #f0e6d2;border-radius:6px;font-size:12px;color:#7a5c1e;">
+         <strong>Watch-list activity today:</strong> ${briefing.watch_list_hits.join(' &bull; ')}
+       </div>`
+    : '';
+
+  return `
+    <div style="background:#fbfbfb;border:1px solid #e8e8e8;border-radius:8px;padding:20px;margin-bottom:25px;">
+      <div style="font-size:11px;letter-spacing:1px;color:#c41e3a;font-weight:700;text-transform:uppercase;margin-bottom:8px;">Executive Briefing</div>
+      <p style="font-size:15px;line-height:1.6;color:#1a1a1a;margin:0 0 18px 0;font-weight:500;">${briefing.executive_summary || ''}</p>
+      ${themes}
+      ${watchHits}
+    </div>`;
+}
+
+/**
  * Generate the email HTML digest
  */
-function generateEmailHTML(articles, trends, alerts) {
+function generateEmailHTML(articles, trends, alerts, briefing) {
   const topArticles = selectTopArticles(articles, 6);
 
   const sentimentColor = {
@@ -182,7 +242,9 @@ function generateEmailHTML(articles, trends, alerts) {
           })}</p>
         </div>
 
-        <h2 class="section-title">Today's Top Stories (${topArticles.length})</h2>
+        ${renderBriefing(briefing)}
+
+        <h2 class="section-title">Supporting Stories (${topArticles.length})</h2>
 
         ${topArticles.map(a => {
           const s = (a.sentiment || 'neutral').toLowerCase();

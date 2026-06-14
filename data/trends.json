@@ -1,19 +1,19 @@
 {
   "7day": {
-    "articleCount": 14,
+    "articleCount": 9,
     "sentimentBreakdown": {
-      "neutral": 8,
-      "bullish": 4,
-      "bearish": 2
+      "neutral": 5,
+      "bullish": 3,
+      "bearish": 1
     },
     "topTopics": [
       {
         "topic": "infrastructure",
-        "count": 6
+        "count": 4
       },
       {
         "topic": "prices",
-        "count": 5
+        "count": 3
       },
       {
         "topic": "elections",
@@ -31,20 +31,20 @@
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 14,
+    "articleCount": 9,
     "sentimentBreakdown": {
-      "neutral": 8,
-      "bullish": 4,
-      "bearish": 2
+      "neutral": 5,
+      "bullish": 3,
+      "bearish": 1
     },
     "topTopics": [
       {
         "topic": "infrastructure",
-        "count": 6
+        "count": 4
       },
       {
         "topic": "prices",
-        "count": 5
+        "count": 3
       },
       {
         "topic": "elections",
@@ -62,20 +62,20 @@
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 14,
+    "articleCount": 9,
     "sentimentBreakdown": {
-      "neutral": 8,
-      "bullish": 4,
-      "bearish": 2
+      "neutral": 5,
+      "bullish": 3,
+      "bearish": 1
     },
     "topTopics": [
       {
         "topic": "infrastructure",
-        "count": 6
+        "count": 4
       },
       {
         "topic": "prices",
-        "count": 5
+        "count": 3
       },
       {
         "topic": "elections",

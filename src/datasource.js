@@ -1,18 +1,14 @@
 /**
  * Data Source Module
  * 
- * Collects articles from 4 sources:
+ * Collects articles from 3 sources:
  * 1. GNews API (~15-30 articles)
  * 2. NewsAPI (~20-40 articles)
  * 3. RSS Feeds (~10-20 articles)
- * 4. Puppeteer Web Scraper (~15-25 articles)
- * 
- * Target: 50-100 raw articles per run
  */
 
 const axios = require('axios');
 const xml2js = require('xml2js');
-const puppeteer = require('puppeteer');
 
 class DataSource {
   constructor() {
@@ -22,7 +18,7 @@ class DataSource {
   }
 
   /**
-   * GNews API (Free: 100 req/day)
+   * GNews API
    */
   async fetchGNews() {
     console.log('[GNews] Fetching articles...');
@@ -58,7 +54,7 @@ class DataSource {
   }
 
   /**
-   * NewsAPI (Free: 100 req/day)
+   * NewsAPI
    */
   async fetchNewsAPI() {
     console.log('[NewsAPI] Fetching articles...');
@@ -94,136 +90,80 @@ class DataSource {
   }
 
   /**
-   * RSS Feeds (Property Pro Africa, Lagos State Gov, etc.)
+   * RSS Feeds
    */
   async fetchRSSFeeds() {
     console.log('[RSS] Fetching from RSS feeds...');
 
     const rssFeeds = [
-      'https://www.thisdaylive.com/feed',
-      'https://guardian.ng/feed',
-      'https://www.premiumtimesng.com/feed',
-      'https://businessday.ng/feed',
+      { url: 'https://www.thisdaylive.com/feed', source: 'ThisDay' },
+      { url: 'https://www.premiumtimesng.com/feed', source: 'Premium Times' },
+      { url: 'https://businessday.ng/feed', source: 'BusinessDay' },
+      { url: 'https://guardian.ng/feed', source: 'Guardian' },
     ];
 
     const parser = new xml2js.Parser();
     const allArticles = [];
 
-    for (const feedUrl of rssFeeds) {
+    for (const feed of rssFeeds) {
       try {
-        const response = await axios.get(feedUrl, { timeout: this.timeout });
+        const response = await axios.get(feed.url, {
+          timeout: this.timeout,
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; NewsBot/1.0)',
+          },
+        });
+
         const parsed = await parser.parseStringPromise(response.data);
-        
         const items = parsed?.rss?.channel?.[0]?.item || [];
-        
+
         const articles = items
           .filter(item => {
-            const title = item.title?.[0] || '';
-            return title.toLowerCase().includes('real estate') ||
-                   title.toLowerCase().includes('property') ||
-                   title.toLowerCase().includes('housing') ||
-                   title.toLowerCase().includes('construction');
+            const title = (item.title?.[0] || '').toLowerCase();
+            return title.includes('real estate') ||
+                   title.includes('property') ||
+                   title.includes('housing') ||
+                   title.includes('construction') ||
+                   title.includes('lagos') ||
+                   title.includes('lekki') ||
+                   title.includes('mortgage');
           })
           .map(item => ({
             title: item.title?.[0] || '',
             description: item.description?.[0] || '',
             content: item.content || '',
             url: item.link?.[0] || '',
-            source: feedUrl.split('/')[2] || 'RSS',
+            source: feed.source,
             publishedAt: item.pubDate?.[0] || new Date().toISOString(),
           }))
-          .slice(0, 5);
+          .slice(0, 10);
 
         allArticles.push(...articles);
+        console.log(`[RSS] ${feed.source}: ${articles.length} articles`);
       } catch (error) {
-        console.warn(`[RSS] Error fetching ${feedUrl}:`, error.message);
+        console.warn(`[RSS] Error fetching ${feed.source}:`, error.message);
       }
     }
 
-    console.log(`[RSS] Fetched ${allArticles.length} articles`);
+    console.log(`[RSS] Total: ${allArticles.length} articles`);
     return allArticles;
   }
 
   /**
-   * Web Scraper (Puppeteer) - Property Pro Africa website
-   */
-  async scrapeNewsWebsites() {
-    console.log('[Scraper] Scraping news websites...');
-
-    const websites = [
-      {
-        name: 'Property Pro Africa',
-        url: 'https://www.propertypro.ng',
-        selector: 'a[href*="/listings/"]',
-      },
-    ];
-
-    const allArticles = [];
-
-    for (const site of websites) {
-      try {
-        const articles = await this.scrapeSite(site);
-        allArticles.push(...articles);
-      } catch (error) {
-        console.warn(`[Scraper] Error scraping ${site.name}:`, error.message);
-      }
-    }
-
-    console.log(`[Scraper] Scraped ${allArticles.length} articles`);
-    return allArticles;
-  }
-
-  /**
-   * Individual site scraper
-   */
-  async scrapeSite(site) {
-    let browser;
-
-    try {
-      browser = await puppeteer.launch({ 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        headless: true,
-      });
-      
-      const page = await browser.newPage();
-      await page.goto(site.url, { waitUntil: 'networkidle2', timeout: 15000 });
-
-      const articles = await page.evaluate((selector) => {
-        const elements = document.querySelectorAll(selector);
-        return Array.from(elements)
-          .slice(0, 10)
-          .map(el => ({
-            title: el.textContent?.trim() || '',
-            url: el.href || '',
-            source: window.location.hostname,
-          }))
-          .filter(a => a.title && a.url);
-      }, site.selector);
-
-      await browser.close();
-      return articles;
-    } catch (error) {
-      if (browser) await browser.close();
-      throw error;
-    }
-  }
-
-  /**
-   * Fetch all sources in parallel
+   * Fetch all sources
    */
   async fetchAll() {
-    const [gnews, newsapi, rss, scraped] = await Promise.allSettled([
+    const [gnews, newsapi, rss] = await Promise.allSettled([
       this.fetchGNews(),
       this.fetchNewsAPI(),
       this.fetchRSSFeeds(),
-      this.scrapeNewsWebsites(),
     ]);
 
     return [
       gnews.status === 'fulfilled' ? gnews.value : [],
       newsapi.status === 'fulfilled' ? newsapi.value : [],
       rss.status === 'fulfilled' ? rss.value : [],
-      scraped.status === 'fulfilled' ? scraped.value : [],
+      [], // Empty array replacing scraper
     ];
   }
 }

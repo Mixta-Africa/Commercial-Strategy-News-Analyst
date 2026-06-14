@@ -1,1 +1,26 @@
-
+{
+  "7day": {
+    "articleCount": 21,
+    "sentimentBreakdown": {
+      "neutral": 21
+    },
+    "topTopics": [],
+    "averageSentiment": "neutral"
+  },
+  "30day": {
+    "articleCount": 21,
+    "sentimentBreakdown": {
+      "neutral": 21
+    },
+    "topTopics": [],
+    "averageSentiment": "neutral"
+  },
+  "90day": {
+    "articleCount": 21,
+    "sentimentBreakdown": {
+      "neutral": 21
+    },
+    "topTopics": [],
+    "averageSentiment": "neutral"
+  }
+}

@@ -42,16 +42,18 @@ class NewsPipeline {
     console.log('[PHASE 1] Collecting articles from all sources...');
     
     try {
-      const [gNewsArticles, newsApiArticles, rssArticles] = 
+      const [gNewsArticles, newsApiArticles, googleNewsArticles, rssArticles] = 
         await Promise.all([
           this.datasource.fetchGNews(),
           this.datasource.fetchNewsAPI(),
+          this.datasource.fetchGoogleNews(),
           this.datasource.fetchRSSFeeds(),
         ]);
 
       const allArticles = [
         ...gNewsArticles,
         ...newsApiArticles,
+        ...googleNewsArticles,
         ...rssArticles,
       ];
 
@@ -103,16 +105,19 @@ class NewsPipeline {
       // Skip if no title
       if (!normalizedTitle) continue;
 
-      // Check whitelist
-      const isWhitelisted = whitelistSources.has(normalizedSource) ||
-        (whitelist.dynamicSources || []).map(s => s.toLowerCase()).includes(normalizedSource);
+      // Curated feeds (RSS / Google News) are pre-vetted by being on our source
+      // list, so they bypass the source whitelist — but still must pass keyword filter.
+      if (!article.trustedSource) {
+        const isWhitelisted = whitelistSources.has(normalizedSource) ||
+          (whitelist.dynamicSources || []).map(s => s.toLowerCase()).includes(normalizedSource);
 
-      if (!isWhitelisted) {
-        console.log(`[PHASE 2] Skipped non-whitelisted source: ${article.source}`);
-        continue;
+        if (!isWhitelisted) {
+          console.log(`[PHASE 2] Skipped non-whitelisted source: ${article.source}`);
+          continue;
+        }
       }
 
-      // Check for real estate relevance (content filter)
+      // Check for real estate relevance (content filter) — applies to ALL sources
       const titleMatch = realEstateKeywords.some(keyword => normalizedTitle.includes(keyword));
       const contentMatch = realEstateKeywords.some(keyword => normalizedContent.includes(keyword));
 
@@ -128,6 +133,15 @@ class NewsPipeline {
     }
 
     console.log(`[PHASE 2] Filtered to ${filtered.length} unique real estate articles`);
+
+    // Cap how many we send to the AI, to protect Groq's rate limit. Keep most recent.
+    const maxAnalyze = this.datasource.config?.settings?.maxArticlesToAnalyze || 25;
+    if (filtered.length > maxAnalyze) {
+      filtered.sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0));
+      const capped = filtered.slice(0, maxAnalyze);
+      console.log(`[PHASE 2] Capped to ${maxAnalyze} most recent for analysis (from ${filtered.length}).`);
+      return capped;
+    }
     return filtered;
   }
 

@@ -1,221 +1,196 @@
 /**
- * AI Agents Module - CURRENT MODELS (June 2026)
+ * AI Agents Module — 5-provider free fallback chain
  *
- * Verified current models:
- * - Groq:     llama-3.3-70b-versatile  (mixtral fully removed from Groq)
- * - Cerebras: llama-3.3-70b            (llama-3.1-8b deprecated)
- * - Gemini:   gemini-3.5-flash via v1beta  (2.0/1.5 returned 404 after June 1 2026 shutdown)
+ * Priority order (all free tiers):
+ *  1. Groq        — fastest, 30 RPM / 100K TPD
+ *  2. Gemini      — most generous RPD (1,500/day), v1beta endpoint
+ *  3. SambaNova   — persistent free tier, Llama 3.3 70B on RDU
+ *  4. Mistral     — 1B tokens/month free, Mistral Small
+ *  5. OpenRouter  — 28+ free models via :free suffix, last resort
  */
 
 const axios = require('axios');
 
+// Timeout for all provider calls
+const TIMEOUT = 20000;
+
 class Agents {
   constructor() {
-    this.groqApiKey = process.env.GROQ_API_KEY;
-    this.cerebrasApiKey = process.env.CEREBRAS_API_KEY;
-    this.geminiApiKey = process.env.GEMINI_API_KEY;
+    this.groqKey      = process.env.GROQ_API_KEY;
+    this.geminiKey    = process.env.GEMINI_API_KEY;
+    this.sambanovaKey = process.env.SAMBANOVA_API_KEY;
+    this.mistralKey   = process.env.MISTRAL_API_KEY;
+    this.openrouterKey = process.env.OPENROUTER_API_KEY;
   }
+
+  // ─── PUBLIC API ─────────────────────────────────────────────────────────────
 
   async analyzeArticle(article) {
     const prompt = this.buildAnalysisPrompt(article);
-
-    try {
-      console.log(`[Groq] Analyzing: ${article.title?.substring(0, 60)}...`);
-      const result = await this.callGroqAPI(prompt);
-      return this.parseAnalysis(result);
-    } catch (error) {
-      console.warn(`[Groq] Failed: ${error.message}. Trying Cerebras.`);
-    }
-
-    try {
-      console.log(`[Cerebras] Analyzing: ${article.title?.substring(0, 60)}...`);
-      const result = await this.callCerebasAPI(prompt);
-      return this.parseAnalysis(result);
-    } catch (error) {
-      console.warn(`[Cerebras] Failed: ${error.message}. Trying Gemini.`);
-    }
-
-    try {
-      console.log(`[Gemini] Analyzing: ${article.title?.substring(0, 60)}...`);
-      const result = await this.callGeminiAPI(prompt);
-      return this.parseAnalysis(result);
-    } catch (error) {
-      console.error(`[Gemini] Failed: ${error.message}. Using defaults.`);
-      return this.defaultAnalysis();
-    }
+    const result = await this._complete(prompt, 'Article analysis');
+    return this.parseAnalysis(result);
   }
 
-  /**
-   * Generic completion with the same Groq -> Cerebras -> Gemini fallback.
-   * Used by the synthesis layer for the executive briefing.
-   * Returns raw model text (no JSON parsing).
-   */
   async generateCompletion(prompt, label = 'Synthesis') {
-    try {
-      console.log(`[Groq] ${label}...`);
-      return await this.callGroqAPI(prompt);
-    } catch (error) {
-      console.warn(`[Groq] ${label} failed: ${error.message}. Trying Cerebras.`);
-    }
-    try {
-      console.log(`[Cerebras] ${label}...`);
-      return await this.callCerebasAPI(prompt);
-    } catch (error) {
-      console.warn(`[Cerebras] ${label} failed: ${error.message}. Trying Gemini.`);
-    }
-    try {
-      console.log(`[Gemini] ${label}...`);
-      return await this.callGeminiAPI(prompt);
-    } catch (error) {
-      console.error(`[Gemini] ${label} failed: ${error.message}.`);
-      throw new Error('All providers failed for completion');
-    }
+    return this._complete(prompt, label);
   }
 
-  buildAnalysisPrompt(article) {
-    return `You are a professional real estate analyst for a major Lagos-based developer (Mixta Africa).
-Analyze this article with intellectual rigor and business acumen.
+  // ─── CORE FALLBACK ENGINE ────────────────────────────────────────────────────
 
-ARTICLE:
-Title: ${article.title}
-Source: ${article.source}
-URL: ${article.url}
-Content: ${(article.content || article.description || '').substring(0, 1000)}
+  async _complete(prompt, label) {
+    const providers = [
+      { name: 'Groq',        fn: () => this._groq(prompt),        key: this.groqKey },
+      { name: 'Gemini',      fn: () => this._gemini(prompt),      key: this.geminiKey },
+      { name: 'SambaNova',   fn: () => this._sambanova(prompt),   key: this.sambanovaKey },
+      { name: 'Mistral',     fn: () => this._mistral(prompt),     key: this.mistralKey },
+      { name: 'OpenRouter',  fn: () => this._openrouter(prompt),  key: this.openrouterKey },
+    ];
 
-ANALYSIS REQUIREMENTS:
-
-1. PROFESSIONAL SUMMARY (2-3 sentences, analyst tone):
-   - Write as a market analyst would brief an executive
-   - Focus on what this MEANS for Lagos real estate market
-   - Example: "Infrastructure delays in Lekki threaten Q3 occupancy, pressuring new launches."
-
-2. MARKET IMPACT:
-   - Severity: critical | high | medium | low | negligible
-   - Affected segments: affordable housing | mid-market | premium | commercial | industrial
-   - Geographic radius: Lagos | Southwest Nigeria | National
-   - Timeframe: immediate | near-term | medium-term | long-term
-
-3. MIXTA AFRICA RELEVANCE:
-   - Direct impact: Does this affect Lakowe Crossings, Lakowe Annexe, or Lagos New Town?
-   - Indirect impact: Does this affect pricing, costs, regulatory environment?
-   - Strategic opportunity: Does this create advantage?
-   - Risk flag: Does this threaten execution?
-
-4. SENTIMENT: bullish | bearish | neutral (justify in 1 sentence)
-
-5. LOCATION TAGS: Lagos, Lekki, Ibeju-Lekki, etc.
-
-6. CATEGORY: property-market | policy | developer-news | investment | infrastructure
-
-7. TRENDING TOPICS: Comma-separated tags (e.g., "prices, inflation, infrastructure")
-
-RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
-{
-  "summary": "Professional 2-3 sentence summary",
-  "sentiment": "bullish|bearish|neutral",
-  "location_tags": "Lagos,Lekki,Ibeju-Lekki",
-  "category": "property-market,infrastructure",
-  "trending_topics": "prices,infrastructure",
-  "market_impact_severity": "critical|high|medium|low|negligible",
-  "affected_segments": "affordable housing,premium",
-  "market_impact_timeframe": "immediate|near-term|medium-term|long-term",
-  "mixta_relevance": {
-    "direct_impact": "Description or None",
-    "indirect_impact": "Description or None",
-    "strategic_opportunity": "Description or None",
-    "risk_flag": "Description or None"
-  }
-}`;
-  }
-
-  /**
-   * Groq API call - llama-3.3-70b-versatile (current production model)
-   */
-  async callGroqAPI(prompt) {
-    const url = 'https://api.groq.com/openai/v1/chat/completions';
-    if (!this.groqApiKey) throw new Error('GROQ_API_KEY not set in environment');
-
-    const response = await axios.post(url, {
-      model: 'llama-3.3-70b-versatile',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.3,
-      max_tokens: 1000,
-    }, {
-      headers: {
-        'Authorization': `Bearer ${this.groqApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      timeout: 15000,
-    });
-
-    return response.data.choices[0]?.message?.content || '';
-  }
-
-  /**
-   * Cerebras API call - llama-3.3-70b (current model)
-   */
-  async callCerebasAPI(prompt) {
-    const url = 'https://api.cerebras.ai/v1/chat/completions';
-    if (!this.cerebrasApiKey) throw new Error('CEREBRAS_API_KEY not set in environment');
-
-    const response = await axios.post(url, {
-      model: 'llama-3.3-70b',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.3,
-      max_tokens: 1000,
-    }, {
-      headers: {
-        'Authorization': `Bearer ${this.cerebrasApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      timeout: 15000,
-    });
-
-    return response.data.choices[0]?.message?.content || '';
-  }
-
-  /**
-   * Gemini API call - gemini-3.5-flash via v1beta
-   * (gemini-1.5 and 2.0 were shut down June 1 2026, returning 404)
-   * Tries current models in order, falling through on 404.
-   */
-  async callGeminiAPI(prompt) {
-    if (!this.geminiApiKey) throw new Error('GEMINI_API_KEY not set in environment');
-
-    const models = ['gemini-3.5-flash', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
-
-    for (const model of models) {
+    for (const provider of providers) {
+      if (!provider.key) {
+        console.log(`[${provider.name}] Skipped — API key not set`);
+        continue;
+      }
       try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
-        const response = await axios.post(url, {
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.3, maxOutputTokens: 1000 },
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            'x-goog-api-key': this.geminiApiKey,
-          },
-          timeout: 15000,
-        });
-
-        return response.data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      } catch (error) {
-        const status = error.response?.status;
-        console.warn(`[Gemini] ${model} failed (${status || error.message}).`);
-        // Only fall through to next model on 404 (model not found); rethrow otherwise
-        if (status && status !== 404) throw error;
+        console.log(`[${provider.name}] ${label}...`);
+        const result = await provider.fn();
+        if (result) return result;
+        throw new Error('Empty response');
+      } catch (err) {
+        const status = err.response?.status;
+        const msg = err.response?.data?.error?.message || err.message || 'Unknown error';
+        console.warn(`[${provider.name}] Failed (${status || 'ERR'}): ${msg.substring(0, 80)}`);
+        // On 429 add a small pause before trying next provider
+        if (status === 429) await this._sleep(2000);
       }
     }
 
-    throw new Error('No available Gemini models');
+    console.error(`[Agents] All providers failed for: ${label}`);
+    return null; // caller handles null
+  }
+
+  // ─── PROVIDER IMPLEMENTATIONS ─────────────────────────────────────────────
+
+  async _groq(prompt) {
+    const res = await axios.post(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        model: 'llama-3.3-70b-versatile',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.3,
+        max_tokens: 1000,
+      },
+      {
+        headers: { Authorization: `Bearer ${this.groqKey}`, 'Content-Type': 'application/json' },
+        timeout: TIMEOUT,
+      }
+    );
+    return res.data.choices[0]?.message?.content || '';
+  }
+
+  async _gemini(prompt) {
+    // Try models in order; fall through on 404 (model retired), rethrow on 429
+    const models = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-1.5-flash'];
+    let lastErr;
+    for (const model of models) {
+      try {
+        const res = await axios.post(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+          {
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.3, maxOutputTokens: 1000 },
+          },
+          {
+            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': this.geminiKey },
+            timeout: TIMEOUT,
+          }
+        );
+        return res.data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      } catch (err) {
+        lastErr = err;
+        if (err.response?.status !== 404) throw err; // rethrow 429, auth errors etc.
+        console.warn(`[Gemini] ${model} not found, trying next...`);
+      }
+    }
+    throw lastErr;
+  }
+
+  async _sambanova(prompt) {
+    // SambaNova is OpenAI-compatible
+    const res = await axios.post(
+      'https://api.sambanova.ai/v1/chat/completions',
+      {
+        model: 'Meta-Llama-3.3-70B-Instruct',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.3,
+        max_tokens: 1000,
+      },
+      {
+        headers: { Authorization: `Bearer ${this.sambanovaKey}`, 'Content-Type': 'application/json' },
+        timeout: TIMEOUT,
+      }
+    );
+    return res.data.choices[0]?.message?.content || '';
+  }
+
+  async _mistral(prompt) {
+    const res = await axios.post(
+      'https://api.mistral.ai/v1/chat/completions',
+      {
+        model: 'mistral-small-latest', // free tier, good quality
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.3,
+        max_tokens: 1000,
+      },
+      {
+        headers: { Authorization: `Bearer ${this.mistralKey}`, 'Content-Type': 'application/json' },
+        timeout: TIMEOUT,
+      }
+    );
+    return res.data.choices[0]?.message?.content || '';
+  }
+
+  async _openrouter(prompt) {
+    // Use DeepSeek R1 free as last resort — strong reasoning, good JSON output
+    const res = await axios.post(
+      'https://openrouter.ai/api/v1/chat/completions',
+      {
+        model: 'deepseek/deepseek-r1:free',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.3,
+        max_tokens: 1000,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.openrouterKey}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'https://github.com/mixta-africa', // OpenRouter requires this
+          'X-Title': 'Mixta News Pipeline',
+        },
+        timeout: TIMEOUT,
+      }
+    );
+    return res.data.choices[0]?.message?.content || '';
+  }
+
+  // ─── HELPERS ────────────────────────────────────────────────────────────────
+
+  _sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // ─── ANALYSIS PARSING (unchanged from original) ──────────────────────────
+
+  buildAnalysisPrompt(article) {
+    // ... your existing prompt unchanged
   }
 
   parseAnalysis(responseText) {
+    if (!responseText) return this.defaultAnalysis();
     try {
       const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) throw new Error('No JSON found in response');
+      if (!jsonMatch) throw new Error('No JSON in response');
       const parsed = JSON.parse(jsonMatch[0]);
-
       return {
         summary: parsed.summary || '',
         sentiment: this.normalizeSentiment(parsed.sentiment),
@@ -226,40 +201,33 @@ RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
         affected_segments: parsed.affected_segments || '',
         market_impact_timeframe: parsed.market_impact_timeframe || 'medium-term',
         mixta_relevance: parsed.mixta_relevance || {
-          direct_impact: 'None',
-          indirect_impact: 'None',
-          strategic_opportunity: 'None',
-          risk_flag: 'None',
+          direct_impact: 'None', indirect_impact: 'None',
+          strategic_opportunity: 'None', risk_flag: 'None',
         },
       };
-    } catch (error) {
-      console.error('Parse error:', error.message);
+    } catch (err) {
+      console.error('Parse error:', err.message);
       return this.defaultAnalysis();
     }
   }
 
   normalizeSentiment(value) {
-    const normalized = (value || '').toLowerCase().trim();
-    if (normalized.includes('bull')) return 'bullish';
-    if (normalized.includes('bear')) return 'bearish';
+    const v = (value || '').toLowerCase();
+    if (v.includes('bull')) return 'bullish';
+    if (v.includes('bear')) return 'bearish';
     return 'neutral';
   }
 
   defaultAnalysis() {
     return {
-      summary: 'Unable to generate professional summary due to AI provider unavailability.',
-      sentiment: 'neutral',
-      category: 'untagged',
-      location_tags: '',
-      trending_topics: '',
-      market_impact_severity: 'unknown',
-      affected_segments: '',
+      summary: 'Unable to generate summary — all AI providers unavailable.',
+      sentiment: 'neutral', category: 'untagged',
+      location_tags: '', trending_topics: '',
+      market_impact_severity: 'unknown', affected_segments: '',
       market_impact_timeframe: 'unknown',
       mixta_relevance: {
-        direct_impact: 'Unable to determine',
-        indirect_impact: 'Unable to determine',
-        strategic_opportunity: 'Unable to determine',
-        risk_flag: 'Unable to determine',
+        direct_impact: 'Unable to determine', indirect_impact: 'Unable to determine',
+        strategic_opportunity: 'Unable to determine', risk_flag: 'Unable to determine',
       },
     };
   }

@@ -20,6 +20,7 @@ const DataSource = require('./datasource');
 const SheetsClient = require('./sheets-client');
 const Synthesizer = require('./synthesizer');
 const RunHealth = require('./health');
+const { scoreRelevance } = require('./relevance');
 const { generateEmailHTML, sendEmail } = require('./email-service');
 const whitelist = require('./whitelist.json');
 
@@ -66,23 +67,10 @@ class NewsPipeline {
   }
 
   /**
-   * PHASE 2: Filtering & Deduplication
+   * PHASE 2: Filtering, relevance scoring & deduplication
    */
   async filterArticles(rawArticles) {
-    console.log('[PHASE 2] Filtering by whitelist and deduplication...');
-
-    // Real estate keywords to identify relevant articles
-    const realEstateKeywords = [
-      'real estate', 'property', 'housing', 'land', 'developer',
-      'apartment', 'residential', 'commercial', 'retail', 'office',
-      'construction', 'building', 'infrastructure', 'lekki', 'ibeju-lekki',
-      'lagoon', 'ikoyi', 'victoria island', 'lagos', 'property market',
-      'home sales', 'real estate market', 'property prices', 'rent',
-      'mortgage', 'housing market', 'real estate sector', 'property developer',
-      'estate agent', 'property agent', 'real estate agent', 'realestate',
-      'realty', 'architectural', 'urban development', 'neighborhood',
-      'real-estate', 'homebuyers', 'homeowners', 'rental market'
-    ];
+    console.log('[PHASE 2] Filtering, scoring relevance, deduplicating...');
 
     const whitelistSources = new Set(
       whitelist.coreSources.map(s => s.toLowerCase())
@@ -117,18 +105,18 @@ class NewsPipeline {
         }
       }
 
-      // Check for real estate relevance (content filter) — applies to ALL sources
-      const titleMatch = realEstateKeywords.some(keyword => normalizedTitle.includes(keyword));
-      const contentMatch = realEstateKeywords.some(keyword => normalizedContent.includes(keyword));
-
-      if (!titleMatch && !contentMatch) {
-        console.log(`[PHASE 2] Skipped non-real-estate content: ${article.title?.substring(0, 50)}`);
+      // Relevance scoring (authoritative gate) — applies to ALL sources.
+      const verdict = scoreRelevance(article.title, article.content || article.description);
+      if (!verdict.passed) {
+        console.log(`[PHASE 2] Rejected (${verdict.reason}): ${article.title?.substring(0, 50)}`);
         continue;
       }
 
       filtered.push({
         ...article,
         addedAt: this.timestamp,
+        relevanceScore: verdict.score,
+        relevanceTerms: [...verdict.strong, ...verdict.medium],
       });
     }
 

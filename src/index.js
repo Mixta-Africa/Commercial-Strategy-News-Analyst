@@ -22,6 +22,7 @@ const Synthesizer = require('./synthesizer');
 const RunHealth = require('./health');
 const { scoreRelevance } = require('./relevance');
 const { getWatchListOverride, getSourcesOverride } = require('./config-loader');
+const { enrichArticles } = require('./content-enricher');
 const { generateEmailHTML, sendEmail } = require('./email-service');
 const whitelist = require('./whitelist.json');
 
@@ -412,7 +413,14 @@ class NewsPipeline {
       }
 
       await this.storeArticles(filtered);
-      const analyzed = await this.analyzeArticles(filtered);
+
+      // PHASE 2.5: Content enrichment
+      // Fetch full article text for articles where the API only gave us a headline or
+      // truncated snippet. This is the fix for the core flaw: AI analysing headlines only.
+      console.log('[PHASE 2.5] Enriching article content...');
+      const enriched = await enrichArticles(filtered);
+
+      const analyzed = await this.analyzeArticles(enriched);
 
       // Count AI fallbacks (articles that didn't get a real summary)
       const aiFallbacks = analyzed.filter(a =>

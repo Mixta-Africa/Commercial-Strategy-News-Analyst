@@ -2,26 +2,26 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 2,
-      "bullish": 5,
-      "neutral": 8
+      "bullish": 4,
+      "bearish": 4,
+      "neutral": 7
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 7
+        "count": 5
       },
       {
         "topic": "infrastructure",
-        "count": 6
-      },
-      {
-        "topic": "affordability",
-        "count": 4
+        "count": 5
       },
       {
         "topic": "affordable housing",
         "count": 3
+      },
+      {
+        "topic": "real estate demand",
+        "count": 2
       },
       {
         "topic": "rentals",
@@ -33,26 +33,26 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 2,
-      "bullish": 5,
-      "neutral": 8
+      "bullish": 4,
+      "bearish": 4,
+      "neutral": 7
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 7
+        "count": 5
       },
       {
         "topic": "infrastructure",
-        "count": 6
-      },
-      {
-        "topic": "affordability",
-        "count": 4
+        "count": 5
       },
       {
         "topic": "affordable housing",
         "count": 3
+      },
+      {
+        "topic": "real estate demand",
+        "count": 2
       },
       {
         "topic": "rentals",
@@ -64,26 +64,26 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 2,
-      "bullish": 5,
-      "neutral": 8
+      "bullish": 4,
+      "bearish": 4,
+      "neutral": 7
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 7
+        "count": 5
       },
       {
         "topic": "infrastructure",
-        "count": 6
-      },
-      {
-        "topic": "affordability",
-        "count": 4
+        "count": 5
       },
       {
         "topic": "affordable housing",
         "count": 3
+      },
+      {
+        "topic": "real estate demand",
+        "count": 2
       },
       {
         "topic": "rentals",

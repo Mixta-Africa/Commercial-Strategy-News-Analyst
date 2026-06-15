@@ -2,8 +2,7 @@ name: Daily News Pipeline
 
 on:
   schedule:
-    # 8:00 AM Lagos time (WAT = UTC+1) -> 07:00 UTC
-    - cron: '0 7 * * *'
+    - cron: '0 7 * * *'   # 8:00 AM Lagos time (WAT = UTC+1)
   workflow_dispatch:
 
 permissions:
@@ -26,18 +25,18 @@ jobs:
         run: npm install
 
       # ---------------------------------------------------------------
-      # PROVIDER HEALTH CHECK
-      # Tests all 5 providers + both Groq models.
-      # Kept in sync with agents.js: any model change there must be
-      # reflected here. continue-on-error: true so a failed key never
-      # blocks the pipeline from running.
+      # AI PROVIDER HEALTH CHECK
+      # Tests all 6 providers + both Groq models.
+      # Kept in sync with src/agents.js — model changes there must be
+      # reflected here. continue-on-error: true so a failing key never
+      # blocks the pipeline.
       # ---------------------------------------------------------------
       - name: Test all AI providers
         run: |
           npm install axios
           node - << 'SCRIPT'
           const axios = require('axios');
-          const TIMEOUT = 10000;
+          const T = 10000;
 
           const tests = [
             {
@@ -46,7 +45,7 @@ jobs:
               fn: async (key) => {
                 const r = await axios.post('https://api.groq.com/openai/v1/chat/completions',
                   { model: 'llama-3.1-8b-instant', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
-                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT });
+                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: T });
                 return `${r.data.choices[0]?.message?.content?.trim()} | RPD bucket: 14,400`;
               }
             },
@@ -56,7 +55,7 @@ jobs:
               fn: async (key) => {
                 const r = await axios.post('https://api.groq.com/openai/v1/chat/completions',
                   { model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
-                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT });
+                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: T });
                 return `${r.data.choices[0]?.message?.content?.trim()} | RPD bucket: 1,000`;
               }
             },
@@ -70,14 +69,29 @@ jobs:
                     const r = await axios.post(
                       `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`,
                       { contents: [{ parts: [{ text: 'Say OK' }] }], generationConfig: { maxOutputTokens: 5 } },
-                      { headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, timeout: TIMEOUT });
+                      { headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, timeout: T });
                     const text = r.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
                     return `${text} | model: ${m}`;
-                  } catch (e) {
-                    if (e.response?.status !== 404) throw e;
-                  }
+                  } catch (e) { if (e.response?.status !== 404) throw e; }
                 }
                 throw new Error('No Gemini model available');
+              }
+            },
+            {
+              name: 'Cerebras (gpt-oss-120b)',
+              key: process.env.CEREBRAS_API_KEY,
+              fn: async (key) => {
+                // llama-3.3-70b was deprecated on Cerebras; gpt-oss-120b is current
+                const models = ['gpt-oss-120b', 'llama3.1-8b'];
+                for (const m of models) {
+                  try {
+                    const r = await axios.post('https://api.cerebras.ai/v1/chat/completions',
+                      { model: m, messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
+                      { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: T });
+                    return `${r.data.choices[0]?.message?.content?.trim()} | model: ${m}`;
+                  } catch (e) { if (e.response?.status !== 404) throw e; }
+                }
+                throw new Error('No Cerebras model available');
               }
             },
             {
@@ -86,7 +100,7 @@ jobs:
               fn: async (key) => {
                 const r = await axios.post('https://api.sambanova.ai/v1/chat/completions',
                   { model: 'Meta-Llama-3.3-70B-Instruct', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
-                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT });
+                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: T });
                 return r.data.choices[0]?.message?.content?.trim();
               }
             },
@@ -96,29 +110,42 @@ jobs:
               fn: async (key) => {
                 const r = await axios.post('https://api.mistral.ai/v1/chat/completions',
                   { model: 'mistral-small-latest', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
-                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT });
+                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: T });
                 return r.data.choices[0]?.message?.content?.trim();
               }
             },
             {
-              name: 'OpenRouter (deepseek-r1:free)',
+              name: 'OpenRouter (free tier)',
               key: process.env.OPENROUTER_API_KEY,
               fn: async (key) => {
-                const r = await axios.post('https://openrouter.ai/api/v1/chat/completions',
-                  { model: 'deepseek/deepseek-r1:free', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
-                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', 'HTTP-Referer': 'https://github.com/mixta-africa', 'X-Title': 'Mixta News Pipeline' }, timeout: TIMEOUT });
-                return r.data.choices[0]?.message?.content?.trim();
+                // deepseek-r1:free was removed from free tier June 2026.
+                // Try two current free models in order; fall through on 404/400/422.
+                const models = ['meta-llama/llama-3.3-70b:free', 'openai/gpt-oss-20b:free'];
+                for (const m of models) {
+                  try {
+                    const r = await axios.post('https://openrouter.ai/api/v1/chat/completions',
+                      { model: m, messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
+                      { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', 'HTTP-Referer': 'https://github.com/mixta-africa', 'X-Title': 'Mixta News Pipeline' }, timeout: T });
+                    return `${r.data.choices[0]?.message?.content?.trim()} | model: ${m}`;
+                  } catch (e) {
+                    const s = e.response?.status;
+                    if (s !== 404 && s !== 400 && s !== 422) throw e;
+                    // continue to next model
+                  }
+                }
+                throw new Error('No OpenRouter free model available');
               }
             },
           ];
 
           (async () => {
-            console.log('\n' + '='.repeat(64));
-            console.log('AI PROVIDER HEALTH CHECK — all 5 providers, both Groq models');
-            console.log('='.repeat(64));
-            let working = 0;
+            console.log('\n' + '='.repeat(68));
+            console.log('AI PROVIDER HEALTH CHECK — 6 providers, both Groq model tiers');
+            console.log('='.repeat(68));
+            let working = 0, tested = 0;
             for (const t of tests) {
               if (!t.key) { console.log(`  SKIP   ${t.name} — key not set in GitHub Secrets`); continue; }
+              tested++;
               try {
                 const detail = await t.fn(t.key);
                 console.log(`  PASS   ${t.name} — ${detail || 'OK'}`);
@@ -129,27 +156,29 @@ jobs:
                 console.log(`  FAIL   ${t.name} — ${code}: ${msg}`);
               }
             }
-            console.log('='.repeat(64));
-            console.log(`  ${working}/${tests.filter(t => t.key).length} providers working`);
-            console.log('='.repeat(64) + '\n');
+            console.log('='.repeat(68));
+            console.log(`  ${working}/${tested} providers working`);
+            console.log('='.repeat(68) + '\n');
           })();
           SCRIPT
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
           SAMBANOVA_API_KEY: ${{ secrets.SAMBANOVA_API_KEY }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         continue-on-error: true
 
       # ---------------------------------------------------------------
-      # MAIN PIPELINE — all 5 provider keys injected
+      # MAIN PIPELINE — all 6 provider keys injected
       # ---------------------------------------------------------------
       - name: Run news pipeline
         run: npm run pipeline
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
           SAMBANOVA_API_KEY: ${{ secrets.SAMBANOVA_API_KEY }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-15T04:08:48.859Z",
+  "timestamp": "2026-06-15T06:24:18.747Z",
   "status": "degraded",
   "sources": {
     "gnews": {
@@ -18,7 +18,7 @@
       "error": null
     },
     "rss": {
-      "total": 12,
+      "total": 10,
       "feeds": {
         "ThisDay": {
           "ok": true,
@@ -37,7 +37,7 @@
         },
         "Nairametrics": {
           "ok": true,
-          "count": 3,
+          "count": 2,
           "error": null
         },
         "The Cable": {
@@ -72,7 +72,7 @@
         },
         "The Punch": {
           "ok": true,
-          "count": 4,
+          "count": 3,
           "error": null
         },
         "Vanguard": {
@@ -84,20 +84,20 @@
     }
   },
   "counts": {
-    "raw": 110,
-    "filtered": 25,
-    "analyzed": 25,
-    "aiFallbacks": 3
+    "raw": 108,
+    "filtered": 15,
+    "analyzed": 15,
+    "aiFallbacks": 15
   },
   "synthesis": {
-    "ok": false,
-    "themes": 0
+    "ok": true,
+    "themes": 3
   },
   "email": {
     "sent": true
   },
   "warnings": [
     "Sources down: GNews (HTTP 429); RSS The Cable (HTTP 403); RSS Leadership (HTTP 403); RSS Tribune (HTTP 403); RSS Ripples Nigeria (HTTP 403); RSS Guardian (HTTP 403); RSS Vanguard (HTTP 403)",
-    "Executive briefing failed to generate (digest fell back to article list)."
+    "100% of articles had no AI summary."
   ]
 }

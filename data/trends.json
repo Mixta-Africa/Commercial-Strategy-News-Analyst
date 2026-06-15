@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
+      "bearish": 8,
       "bullish": 5,
-      "bearish": 5,
-      "neutral": 5
+      "neutral": 2
     },
     "topTopics": [
-      {
-        "topic": "prices",
-        "count": 13
-      },
       {
         "topic": "infrastructure",
         "count": 12
       },
       {
-        "topic": "liquidity",
+        "topic": "prices",
+        "count": 11
+      },
+      {
+        "topic": "affordable housing",
+        "count": 2
+      },
+      {
+        "topic": "inflation",
         "count": 1
       },
       {
-        "topic": "mobility",
-        "count": 1
-      },
-      {
-        "topic": "sustainability",
+        "topic": "affordability",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
+      "bearish": 8,
       "bullish": 5,
-      "bearish": 5,
-      "neutral": 5
+      "neutral": 2
     },
     "topTopics": [
-      {
-        "topic": "prices",
-        "count": 13
-      },
       {
         "topic": "infrastructure",
         "count": 12
       },
       {
-        "topic": "liquidity",
+        "topic": "prices",
+        "count": 11
+      },
+      {
+        "topic": "affordable housing",
+        "count": 2
+      },
+      {
+        "topic": "inflation",
         "count": 1
       },
       {
-        "topic": "mobility",
-        "count": 1
-      },
-      {
-        "topic": "sustainability",
+        "topic": "affordability",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
+      "bearish": 8,
       "bullish": 5,
-      "bearish": 5,
-      "neutral": 5
+      "neutral": 2
     },
     "topTopics": [
-      {
-        "topic": "prices",
-        "count": 13
-      },
       {
         "topic": "infrastructure",
         "count": 12
       },
       {
-        "topic": "liquidity",
+        "topic": "prices",
+        "count": 11
+      },
+      {
+        "topic": "affordable housing",
+        "count": 2
+      },
+      {
+        "topic": "inflation",
         "count": 1
       },
       {
-        "topic": "mobility",
-        "count": 1
-      },
-      {
-        "topic": "sustainability",
+        "topic": "affordability",
         "count": 1
       }
     ],

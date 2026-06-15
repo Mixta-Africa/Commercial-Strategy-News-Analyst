@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-06-15T09:04:37.868Z",
-  "status": "healthy",
+  "timestamp": "2026-06-15T09:25:15.743Z",
+  "status": "failed",
   "sources": {
     "gnews": {
       "ok": false,
@@ -18,7 +18,7 @@
       "error": null
     },
     "rss": {
-      "total": 11,
+      "total": 10,
       "feeds": {
         "ThisDay": {
           "ok": true,
@@ -47,14 +47,14 @@
         },
         "The Punch": {
           "ok": true,
-          "count": 3,
+          "count": 2,
           "error": null
         }
       }
     }
   },
   "counts": {
-    "raw": 150,
+    "raw": 149,
     "filtered": 15,
     "analyzed": 15,
     "aiFallbacks": 0
@@ -64,9 +64,10 @@
     "themes": 3
   },
   "email": {
-    "sent": true
+    "sent": false
   },
   "warnings": [
-    "Sources down: GNews (HTTP 429)"
+    "Sources down: GNews (HTTP 429)",
+    "Digest email was NOT sent."
   ]
 }

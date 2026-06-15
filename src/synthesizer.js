@@ -197,7 +197,7 @@ Respond ONLY with valid JSON in EXACTLY this shape (no markdown, no commentary o
     // Cooldown: the synthesis call follows many rapid article calls.
     // Give the rate-limit window time to reset before the big call.
     console.log('[Synthesis] Cooling down before synthesis call...');
-    await new Promise(r => setTimeout(r, 15000));
+    await new Promise(r => setTimeout(r, 60000));
 
     // Try up to 3 times; on a rate-limit (429) wait longer and retry.
     let briefing = null;

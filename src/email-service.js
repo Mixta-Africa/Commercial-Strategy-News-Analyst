@@ -87,12 +87,16 @@ function renderBriefing(briefing) {
       .map(s => `<a href="${s.url || '#'}" target="_blank" style="color:#888;text-decoration:underline;">${s.source || 'source'}</a>`)
       .join(', ');
     const conf = (t.confidence || 'medium').toLowerCase();
+    const singleSrc = t.singleSource
+      ? `<span style="display:inline-block;background:#fbeaea;color:#a33;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-left:6px;">SINGLE SOURCE</span>`
+      : '';
 
     return `
       <div style="background:#ffffff;border:1px solid #eee;border-left:4px solid ${recColor(t.recommendation)};border-radius:4px;padding:16px;margin-bottom:14px;">
         <div style="margin-bottom:8px;">
           <span style="font-size:15px;font-weight:700;color:#1a1a1a;">${t.label || 'Theme'}</span>
           <span style="display:inline-block;background:${nv.bg};color:${nv.fg};font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px;">${nv.label}${seen}</span>
+          ${singleSrc}
         </div>
         <p style="margin:6px 0;font-size:13px;color:#444;"><strong>What happened:</strong> ${t.what_happened || ''}</p>
         <p style="margin:6px 0;font-size:13px;color:#0c5460;background:#eef6fb;border-radius:4px;padding:8px;"><strong>Why it matters to Mixta:</strong> ${t.why_it_matters_to_mixta || ''}</p>

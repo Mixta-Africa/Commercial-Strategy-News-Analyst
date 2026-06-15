@@ -182,8 +182,60 @@ class Agents {
   // ─── ANALYSIS PARSING (unchanged from original) ──────────────────────────
 
   buildAnalysisPrompt(article) {
-    // ... your existing prompt unchanged
+  return `You are a professional real estate analyst for a major Lagos-based developer (Mixta Africa).
+Analyze this article with intellectual rigor and business acumen.
+
+ARTICLE:
+Title: ${article.title}
+Source: ${article.source}
+URL: ${article.url}
+Content: ${(article.content || article.description || '').substring(0, 1000)}
+
+ANALYSIS REQUIREMENTS:
+
+1. PROFESSIONAL SUMMARY (2-3 sentences, analyst tone):
+   - Write as a market analyst would brief an executive
+   - Focus on what this MEANS for Lagos real estate market
+   - Example: "Infrastructure delays in Lekki threaten Q3 occupancy, pressuring new launches."
+
+2. MARKET IMPACT:
+   - Severity: critical | high | medium | low | negligible
+   - Affected segments: affordable housing | mid-market | premium | commercial | industrial
+   - Geographic radius: Lagos | Southwest Nigeria | National
+   - Timeframe: immediate | near-term | medium-term | long-term
+
+3. MIXTA AFRICA RELEVANCE:
+   - Direct impact: Does this affect Lakowe Crossings, Lakowe Annexe, or Lagos New Town?
+   - Indirect impact: Does this affect pricing, costs, regulatory environment?
+   - Strategic opportunity: Does this create advantage?
+   - Risk flag: Does this threaten execution?
+
+4. SENTIMENT: bullish | bearish | neutral (justify in 1 sentence)
+
+5. LOCATION TAGS: Lagos, Lekki, Ibeju-Lekki, etc.
+
+6. CATEGORY: property-market | policy | developer-news | investment | infrastructure
+
+7. TRENDING TOPICS: Comma-separated tags (e.g., "prices, inflation, infrastructure")
+
+RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
+{
+  "summary": "Professional 2-3 sentence summary",
+  "sentiment": "bullish|bearish|neutral",
+  "location_tags": "Lagos,Lekki,Ibeju-Lekki",
+  "category": "property-market,infrastructure",
+  "trending_topics": "prices,infrastructure",
+  "market_impact_severity": "critical|high|medium|low|negligible",
+  "affected_segments": "affordable housing,premium",
+  "market_impact_timeframe": "immediate|near-term|medium-term|long-term",
+  "mixta_relevance": {
+    "direct_impact": "Description or None",
+    "indirect_impact": "Description or None",
+    "strategic_opportunity": "Description or None",
+    "risk_flag": "Description or None"
   }
+}`;
+}
 
   parseAnalysis(responseText) {
     if (!responseText) return this.defaultAnalysis();

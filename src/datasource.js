@@ -9,18 +9,49 @@
 
 const axios = require('axios');
 const xml2js = require('xml2js');
+const sourcesConfig = require('./sources.json');
+
+// Realistic browser headers — the old 'NewsBot' UA was getting 403-blocked
+const BROWSER_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'Accept-Language': 'en-US,en;q=0.9',
+};
 
 class DataSource {
   constructor() {
     this.gNewsApiKey = process.env.GNEWS_API_KEY;
     this.newsApiKey = process.env.NEWSAPI_KEY;
-    this.timeout = 10000;
+    this.timeout = 12000;
+    this.config = sourcesConfig;
     // Per-source health for the reliability layer, populated during fetches
     this.sourceHealth = {
       gnews: { ok: false, count: 0, error: null },
       newsapi: { ok: false, count: 0, error: null },
+      googlenews: { ok: false, count: 0, error: null },
       rss: { total: 0, feeds: {} },
     };
+  }
+
+  /**
+   * Real estate keywords used to filter feed items at the source.
+   */
+  get realEstateKeywords() {
+    return [
+      'real estate', 'property', 'properties', 'housing', 'land', 'developer',
+      'apartment', 'residential', 'commercial', 'construction', 'building',
+      'lekki', 'ibeju-lekki', 'ikoyi', 'victoria island', 'epe', 'ajah',
+      'property market', 'home sales', 'property prices', 'rent', 'rental',
+      'mortgage', 'housing market', 'estate agent', 'realty', 'real-estate',
+      'urban development', 'property developer', 'landlord', 'tenancy',
+      'house', 'homes', 'plot', 'estate', 'REIT', 'shortlet', 'duplex',
+    ];
+  }
+
+  matchesRealEstate(title, desc) {
+    const t = (title || '').toLowerCase();
+    const d = (desc || '').toLowerCase().substring(0, 400);
+    return this.realEstateKeywords.some(kw => t.includes(kw) || d.includes(kw));
   }
 
   /**
@@ -140,30 +171,14 @@ class DataSource {
   }
 
   /**
-   * RSS Feeds — real estate keyword filter applied at source
+   * RSS Feeds — config-driven, browser-headered, keyword-filtered at source.
+   * Articles are marked trustedSource so Phase 2 won't drop them on the source whitelist.
    */
   async fetchRSSFeeds() {
     console.log('[RSS] Fetching from RSS feeds...');
 
-    const rssFeeds = [
-      { url: 'https://www.thisdaylive.com/feed', source: 'ThisDay' },
-      { url: 'https://www.premiumtimesng.com/feed', source: 'Premium Times' },
-      { url: 'https://businessday.ng/feed', source: 'BusinessDay' },
-      { url: 'https://guardian.ng/feed', source: 'Guardian' },
-      { url: 'https://punchng.com/feed', source: 'The Punch' },
-      { url: 'https://www.vanguardngr.com/feed', source: 'Vanguard' },
-    ];
-
-    // Real estate keywords to filter RSS items at the source
-    const realEstateKeywords = [
-      'real estate', 'property', 'housing', 'land', 'developer',
-      'apartment', 'residential', 'commercial', 'construction',
-      'building', 'lekki', 'ibeju-lekki', 'ikoyi', 'victoria island',
-      'property market', 'home sales', 'property prices', 'rent',
-      'mortgage', 'housing market', 'estate agent', 'realty',
-      'urban development', 'rental market', 'property developer',
-    ];
-
+    const rssFeeds = this.config.rssFeeds || [];
+    const maxPer = this.config.settings?.maxPerRssFeed || 10;
     const parser = new xml2js.Parser();
     const allArticles = [];
 
@@ -171,20 +186,14 @@ class DataSource {
       try {
         const response = await axios.get(feed.url, {
           timeout: this.timeout,
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; NewsBot/1.0)',
-          },
+          headers: BROWSER_HEADERS,
         });
 
         const parsed = await parser.parseStringPromise(response.data);
         const items = parsed?.rss?.channel?.[0]?.item || [];
 
         const articles = items
-          .filter(item => {
-            const title = (item.title?.[0] || '').toLowerCase();
-            const desc = (item.description?.[0] || '').toLowerCase().substring(0, 300);
-            return realEstateKeywords.some(kw => title.includes(kw) || desc.includes(kw));
-          })
+          .filter(item => this.matchesRealEstate(item.title?.[0], item.description?.[0]))
           .map(item => ({
             title: item.title?.[0] || '',
             description: item.description?.[0] || '',
@@ -192,8 +201,9 @@ class DataSource {
             url: item.link?.[0] || '',
             source: feed.source,
             publishedAt: item.pubDate?.[0] || new Date().toISOString(),
+            trustedSource: true,
           }))
-          .slice(0, 10);
+          .slice(0, maxPer);
 
         allArticles.push(...articles);
         console.log(`[RSS] ${feed.source}: ${articles.length} real estate articles`);
@@ -210,6 +220,74 @@ class DataSource {
 
     console.log(`[RSS] Total: ${allArticles.length} articles`);
     this.sourceHealth.rss.total = allArticles.length;
+    return allArticles;
+  }
+
+  /**
+   * Google News RSS — query-based feeds. No API key, no rate limit, and it pulls
+   * content from publishers that block direct RSS (Guardian, Punch, etc.) because
+   * Google serves the feed. This is the primary breadth source.
+   */
+  async fetchGoogleNews() {
+    console.log('[GoogleNews] Fetching query-based feeds...');
+
+    const queries = this.config.googleNewsQueries || [];
+    const maxPer = this.config.settings?.maxPerGoogleQuery || 8;
+    const parser = new xml2js.Parser();
+    const seen = new Set();
+    const allArticles = [];
+    let lastError = null;
+
+    for (const query of queries) {
+      const url = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-NG&gl=NG&ceid=NG:en`;
+      try {
+        const response = await axios.get(url, {
+          timeout: this.timeout,
+          headers: BROWSER_HEADERS,
+        });
+
+        const parsed = await parser.parseStringPromise(response.data);
+        const items = parsed?.rss?.channel?.[0]?.item || [];
+
+        let added = 0;
+        for (const item of items) {
+          if (added >= maxPer) break;
+          const rawTitle = item.title?.[0] || '';
+          // Google News titles are "Headline - Publisher"; split publisher out
+          const sourceTag = item.source?.[0];
+          const publisher = (typeof sourceTag === 'object' ? sourceTag._ : sourceTag)
+            || (rawTitle.includes(' - ') ? rawTitle.split(' - ').pop() : 'Google News');
+          const title = rawTitle.includes(' - ')
+            ? rawTitle.substring(0, rawTitle.lastIndexOf(' - ')).trim()
+            : rawTitle;
+
+          const key = title.toLowerCase().trim();
+          if (!key || seen.has(key)) continue;
+          if (!this.matchesRealEstate(title, item.description?.[0])) continue;
+          seen.add(key);
+
+          allArticles.push({
+            title,
+            description: (item.description?.[0] || '').replace(/<[^>]+>/g, '').substring(0, 400),
+            content: (item.description?.[0] || '').replace(/<[^>]+>/g, ''),
+            url: item.link?.[0] || '',
+            source: publisher,
+            publishedAt: item.pubDate?.[0] || new Date().toISOString(),
+            trustedSource: true,
+          });
+          added++;
+        }
+        console.log(`[GoogleNews] "${query}": ${added} articles`);
+      } catch (error) {
+        lastError = error.response?.status ? `HTTP ${error.response.status}` : error.message;
+        console.warn(`[GoogleNews] Error on "${query}":`, error.message);
+      }
+    }
+
+    console.log(`[GoogleNews] Fetched ${allArticles.length} total articles`);
+    this.sourceHealth.googlenews.count = allArticles.length;
+    this.sourceHealth.googlenews.ok = allArticles.length > 0;
+    this.sourceHealth.googlenews.error = allArticles.length === 0 ? lastError : null;
     return allArticles;
   }
 

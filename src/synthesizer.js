@@ -60,16 +60,37 @@ class Synthesizer {
 
   /**
    * Compact the day's articles for the prompt. Index them so the model can cite sources.
+   * Flags content quality so the model knows when it's working from real article text
+   * vs a headline alone — this directly affects how it should qualify its analysis.
    */
   formatArticles(articles) {
+    const { cleanContent } = require('./content-enricher');
     return articles.map((a, i) => {
-      const summary = (a.summary && !a.summary.startsWith('Unable to generate'))
-        ? a.summary
-        : (a.description || a.title || '').substring(0, 200);
+      const rawContent = a.content || a.description || '';
+      const cleaned = cleanContent(rawContent).trim();
+      const hasBody = cleaned.length > 200;
+
+      // Prefer enriched body; fall back to AI summary if it's real; finally use cleaned raw
+      let bodyText;
+      if (hasBody) {
+        bodyText = cleaned.substring(0, 2000);
+      } else if (a.summary && !a.summary.startsWith('Unable to generate')) {
+        bodyText = a.summary;
+      } else {
+        bodyText = cleaned.substring(0, 300) || a.title || '';
+      }
+
+      const contentQuality = hasBody
+        ? 'FULL TEXT'
+        : (a.summary && !a.summary.startsWith('Unable to generate'))
+          ? 'AI SUMMARY ONLY'
+          : 'HEADLINE ONLY — treat all inferences as speculative';
+
       return `[${i}] (${a.source || 'Unknown'}) ${a.title}
-    Sentiment: ${a.sentiment || 'neutral'} | Severity: ${a.market_impact_severity || 'n/a'} | Topics: ${a.trending_topics || 'n/a'}
-    Note: ${summary}
-    URL: ${a.url || ''}`;
+  Content quality: ${contentQuality}
+  Sentiment: ${a.sentiment || 'neutral'} | Severity: ${a.market_impact_severity || 'n/a'} | Topics: ${a.trending_topics || 'n/a'}
+  Body: ${bodyText}
+  URL: ${a.url || ''}`;
     }).join('\n\n');
   }
 

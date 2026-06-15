@@ -1,0 +1,103 @@
+{
+  "timestamp": "2026-06-15T03:57:23.413Z",
+  "status": "degraded",
+  "sources": {
+    "gnews": {
+      "ok": false,
+      "count": 0,
+      "error": "HTTP 429"
+    },
+    "newsapi": {
+      "ok": true,
+      "count": 34,
+      "error": null
+    },
+    "googlenews": {
+      "ok": true,
+      "count": 64,
+      "error": null
+    },
+    "rss": {
+      "total": 12,
+      "feeds": {
+        "ThisDay": {
+          "ok": true,
+          "count": 1,
+          "error": null
+        },
+        "Premium Times": {
+          "ok": true,
+          "count": 1,
+          "error": null
+        },
+        "BusinessDay": {
+          "ok": true,
+          "count": 0,
+          "error": null
+        },
+        "Nairametrics": {
+          "ok": true,
+          "count": 3,
+          "error": null
+        },
+        "The Cable": {
+          "ok": false,
+          "count": 0,
+          "error": "HTTP 403"
+        },
+        "Leadership": {
+          "ok": false,
+          "count": 0,
+          "error": "HTTP 403"
+        },
+        "Daily Trust": {
+          "ok": true,
+          "count": 3,
+          "error": null
+        },
+        "Tribune": {
+          "ok": false,
+          "count": 0,
+          "error": "HTTP 403"
+        },
+        "Ripples Nigeria": {
+          "ok": false,
+          "count": 0,
+          "error": "HTTP 403"
+        },
+        "Guardian": {
+          "ok": false,
+          "count": 0,
+          "error": "HTTP 403"
+        },
+        "The Punch": {
+          "ok": true,
+          "count": 4,
+          "error": null
+        },
+        "Vanguard": {
+          "ok": false,
+          "count": 0,
+          "error": "HTTP 403"
+        }
+      }
+    }
+  },
+  "counts": {
+    "raw": 110,
+    "filtered": 25,
+    "analyzed": 25,
+    "aiFallbacks": 2
+  },
+  "synthesis": {
+    "ok": false,
+    "themes": 0
+  },
+  "email": {
+    "sent": true
+  },
+  "warnings": [
+    "Sources down: GNews (HTTP 429); RSS The Cable (HTTP 403); RSS Leadership (HTTP 403); RSS Tribune (HTTP 403); RSS Ripples Nigeria (HTTP 403); RSS Guardian (HTTP 403); RSS Vanguard (HTTP 403)",
+    "Executive briefing failed to generate (digest fell back to article list)."
+  ]
+}

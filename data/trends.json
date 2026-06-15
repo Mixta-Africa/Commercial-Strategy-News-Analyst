@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 9,
+    "articleCount": 25,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 3,
-      "bearish": 1
+      "neutral": 12,
+      "bearish": 3,
+      "bullish": 10
     },
     "topTopics": [
       {
+        "topic": "prices",
+        "count": 7
+      },
+      {
         "topic": "infrastructure",
+        "count": 7
+      },
+      {
+        "topic": "affordable housing",
+        "count": 5
+      },
+      {
+        "topic": "luxury real estate",
         "count": 4
       },
       {
-        "topic": "prices",
-        "count": 3
-      },
-      {
-        "topic": "elections",
-        "count": 2
-      },
-      {
-        "topic": "security",
-        "count": 2
-      },
-      {
-        "topic": "investor confidence",
+        "topic": "rentals",
         "count": 2
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 9,
+    "articleCount": 25,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 3,
-      "bearish": 1
+      "neutral": 12,
+      "bearish": 3,
+      "bullish": 10
     },
     "topTopics": [
       {
+        "topic": "prices",
+        "count": 7
+      },
+      {
         "topic": "infrastructure",
+        "count": 7
+      },
+      {
+        "topic": "affordable housing",
+        "count": 5
+      },
+      {
+        "topic": "luxury real estate",
         "count": 4
       },
       {
-        "topic": "prices",
-        "count": 3
-      },
-      {
-        "topic": "elections",
-        "count": 2
-      },
-      {
-        "topic": "security",
-        "count": 2
-      },
-      {
-        "topic": "investor confidence",
+        "topic": "rentals",
         "count": 2
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 9,
+    "articleCount": 25,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 3,
-      "bearish": 1
+      "neutral": 12,
+      "bearish": 3,
+      "bullish": 10
     },
     "topTopics": [
       {
+        "topic": "prices",
+        "count": 7
+      },
+      {
         "topic": "infrastructure",
+        "count": 7
+      },
+      {
+        "topic": "affordable housing",
+        "count": 5
+      },
+      {
+        "topic": "luxury real estate",
         "count": 4
       },
       {
-        "topic": "prices",
-        "count": 3
-      },
-      {
-        "topic": "elections",
-        "count": 2
-      },
-      {
-        "topic": "security",
-        "count": 2
-      },
-      {
-        "topic": "investor confidence",
+        "topic": "rentals",
         "count": 2
       }
     ],

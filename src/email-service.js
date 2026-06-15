@@ -5,7 +5,7 @@
  *
  * CHANGES:
  * - Removed emojis (they were corrupting into "??????" through the Apps Script JSON hop).
- *   Replaced with clean styled text labels for a minimal, light aesthetic.
+ * Replaced with clean styled text labels for a minimal, light aesthetic.
  * - Added source-diversified article selection so the digest isn't dominated by one outlet.
  * - Added charset=utf-8 to the POST Content-Type for good measure.
  */
@@ -13,33 +13,50 @@
 const axios = require('axios');
 
 /**
- * Select a diverse, high-quality set of articles for the digest.
- *
- * Priority:
- *  1. Spread across distinct sources (round-robin) so no single outlet dominates.
- *  2. Within each source, prefer articles that received a real AI summary
- *     (not the "Unable to generate..." fallback).
+ * Helper function to strip [0], [1], etc., from LLM generated text.
  */
-function selectTopArticles(articles, limit = 6) {
+function cleanLLMText(text) {
+  if (!text) return text;
+  return text.replace(/\[\d+\]/g, '').trim();
+}
+
+/**
+ * Select a diverse, high-quality set of articles for the digest,
+ * excluding articles that have already been used in the main executive briefing.
+ */
+function selectTopArticles(articles, briefing, limit = 6) {
   const FALLBACK = 'Unable to generate professional summary';
 
   const hasRealSummary = (a) =>
     a.summary && !a.summary.startsWith(FALLBACK) && a.summary.trim().length > 0;
 
-  // Group articles by source
+  // 1. Find all article URLs already cited in the main briefing
+  const usedUrls = new Set();
+  if (briefing && briefing.themes) {
+    briefing.themes.forEach(t => {
+      if (t.sourceArticles) {
+        t.sourceArticles.forEach(s => usedUrls.add(s.url));
+      }
+    });
+  }
+
+  // 2. Filter out articles that are already in the briefing
+  const freshArticles = articles.filter(a => !usedUrls.has(a.url));
+
+  // 3. Group fresh articles by source
   const bySource = {};
-  for (const a of articles) {
+  for (const a of freshArticles) {
     const src = a.source || 'Unknown';
     if (!bySource[src]) bySource[src] = [];
     bySource[src].push(a);
   }
 
-  // Within each source, articles with real summaries come first
+  // 4. Within each source, articles with real summaries come first
   for (const src of Object.keys(bySource)) {
     bySource[src].sort((x, y) => (hasRealSummary(y) ? 1 : 0) - (hasRealSummary(x) ? 1 : 0));
   }
 
-  // Round-robin across sources: one from each source per pass
+  // 5. Round-robin across sources: one from each source per pass
   const sources = Object.keys(bySource);
   const selected = [];
   let pass = 0;
@@ -63,19 +80,6 @@ function selectTopArticles(articles, limit = 6) {
  * Render the executive briefing block (the intelligence layer output).
  * This leads the email; the article list below becomes supporting detail.
  */
-
-// Add this helper function to strip [0], [1], etc.
-function cleanLLMText(text) {
-    if (!text) return text;
-    // Regex matches a literal '[', followed by one or more digits, followed by a literal ']'
-    // Replaces them with an empty string.
-    return text.replace(/\[\d+\]/g, '').trim();
-}
-
-// Example usage inside your existing rendering logic:
-const cleanWhatHappened = cleanLLMText(theme.what_happened);
-// Inject cleanWhatHappened into your HTML template instead of the raw theme.what_happened
-
 function renderBriefing(briefing) {
   if (!briefing || !briefing.themes || briefing.themes.length === 0) return '';
 
@@ -111,7 +115,7 @@ function renderBriefing(briefing) {
           <span style="display:inline-block;background:${nv.bg};color:${nv.fg};font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px;">${nv.label}${seen}</span>
           ${singleSrc}
         </div>
-        <p style="margin:6px 0;font-size:13px;color:#444;"><strong>What happened:</strong> ${t.what_happened || ''}</p>
+        <p style="margin:6px 0;font-size:13px;color:#444;"><strong>What happened:</strong> ${cleanLLMText(t.what_happened || '')}</p>
         <p style="margin:6px 0;font-size:13px;color:#0c5460;background:#eef6fb;border-radius:4px;padding:8px;"><strong>Why it matters to Mixta:</strong> ${t.why_it_matters_to_mixta || ''}</p>
         <p style="margin:6px 0;font-size:13px;color:#1a1a1a;"><strong style="color:${recColor(t.recommendation)};">Recommendation:</strong> ${t.recommendation || ''}</p>
         <div style="font-size:11px;color:#999;margin-top:8px;">
@@ -140,7 +144,8 @@ function renderBriefing(briefing) {
  * Generate the email HTML digest
  */
 function generateEmailHTML(articles, trends, alerts, briefing) {
-  const topArticles = selectTopArticles(articles, 6);
+  // We now pass 'briefing' into selectTopArticles so it can filter out used stories
+  const topArticles = selectTopArticles(articles, briefing, 6);
 
   const sentimentColor = {
     bullish: { bg: '#d4edda', fg: '#155724' },

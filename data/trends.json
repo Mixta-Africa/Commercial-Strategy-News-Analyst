@@ -2,18 +2,14 @@
   "7day": {
     "articleCount": 25,
     "sentimentBreakdown": {
-      "neutral": 12,
-      "bearish": 3,
+      "neutral": 14,
+      "bearish": 1,
       "bullish": 10
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 7
-      },
-      {
-        "topic": "infrastructure",
-        "count": 7
+        "count": 6
       },
       {
         "topic": "affordable housing",
@@ -22,6 +18,10 @@
       {
         "topic": "luxury real estate",
         "count": 4
+      },
+      {
+        "topic": "infrastructure",
+        "count": 3
       },
       {
         "topic": "rentals",
@@ -33,18 +33,14 @@
   "30day": {
     "articleCount": 25,
     "sentimentBreakdown": {
-      "neutral": 12,
-      "bearish": 3,
+      "neutral": 14,
+      "bearish": 1,
       "bullish": 10
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 7
-      },
-      {
-        "topic": "infrastructure",
-        "count": 7
+        "count": 6
       },
       {
         "topic": "affordable housing",
@@ -53,6 +49,10 @@
       {
         "topic": "luxury real estate",
         "count": 4
+      },
+      {
+        "topic": "infrastructure",
+        "count": 3
       },
       {
         "topic": "rentals",
@@ -64,18 +64,14 @@
   "90day": {
     "articleCount": 25,
     "sentimentBreakdown": {
-      "neutral": 12,
-      "bearish": 3,
+      "neutral": 14,
+      "bearish": 1,
       "bullish": 10
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 7
-      },
-      {
-        "topic": "infrastructure",
-        "count": 7
+        "count": 6
       },
       {
         "topic": "affordable housing",
@@ -84,6 +80,10 @@
       {
         "topic": "luxury real estate",
         "count": 4
+      },
+      {
+        "topic": "infrastructure",
+        "count": 3
       },
       {
         "topic": "rentals",

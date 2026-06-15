@@ -27,6 +27,7 @@ class Agents {
     this.sambanovaKey  = process.env.SAMBANOVA_API_KEY;
     this.mistralKey    = process.env.MISTRAL_API_KEY;
     this.openrouterKey = process.env.OPENROUTER_API_KEY;
+    this.cerebrasKey   = process.env.CEREBRAS_API_KEY;
   }
 
   // ─── PUBLIC API ─────────────────────────────────────────────────────────────
@@ -103,6 +104,7 @@ class Agents {
     return [
       { name: 'Groq-8b',     fn: () => this._groqFast(prompt),    key: this.groqKey },
       { name: 'SambaNova',   fn: () => this._sambanova(prompt),   key: this.sambanovaKey },
+      { name: 'Cerebras',    fn: () => this._cerebras(prompt),    key: this.cerebrasKey },
       { name: 'Mistral',     fn: () => this._mistral(prompt),     key: this.mistralKey },
       { name: 'OpenRouter',  fn: () => this._openrouter(prompt),  key: this.openrouterKey },
       { name: 'Gemini',      fn: () => this._gemini(prompt),      key: this.geminiKey },
@@ -116,6 +118,7 @@ class Agents {
   _synthesisProviders(prompt) {
     return [
       { name: 'Groq-70b',    fn: () => this._groq70b(prompt),    key: this.groqKey },
+      { name: 'Cerebras',    fn: () => this._cerebras(prompt),   key: this.cerebrasKey },
       { name: 'SambaNova',   fn: () => this._sambanova(prompt),  key: this.sambanovaKey },
       { name: 'Gemini',      fn: () => this._gemini(prompt),     key: this.geminiKey },
       { name: 'Mistral',     fn: () => this._mistral(prompt),    key: this.mistralKey },
@@ -222,6 +225,40 @@ class Agents {
     return res.data.choices[0]?.message?.content || '';
   }
 
+  async _cerebras(prompt) {
+    // gpt-oss-120b is the current Cerebras flagship (llama-3.3-70b was deprecated).
+    // Falls through to llama3.1-8b if gpt-oss-120b is unavailable (404).
+    const models = ['gpt-oss-120b', 'llama3.1-8b'];
+    let lastErr;
+    for (const model of models) {
+      try {
+        const res = await axios.post(
+          'https://api.cerebras.ai/v1/chat/completions',
+          {
+            model,
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.3,
+            max_tokens: 1000,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.cerebrasKey}`,
+              'Content-Type': 'application/json',
+            },
+            timeout: TIMEOUT,
+          }
+        );
+        return res.data.choices[0]?.message?.content || '';
+      } catch (err) {
+        lastErr = err;
+        const status = err.response?.status;
+        if (status !== 404) throw err; // only fall through on 404
+        console.warn(`[Cerebras] ${model} not found (404), trying next...`);
+      }
+    }
+    throw lastErr;
+  }
+
   async _mistral(prompt) {
     const res = await axios.post(
       'https://api.mistral.ai/v1/chat/completions',
@@ -243,26 +280,45 @@ class Agents {
   }
 
   async _openrouter(prompt) {
-    // DeepSeek R1 free — strong reasoning, reliable JSON output
-    const res = await axios.post(
-      'https://openrouter.ai/api/v1/chat/completions',
-      {
-        model: 'deepseek/deepseek-r1:free',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.3,
-        max_tokens: 1000,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.openrouterKey}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://github.com/mixta-africa',
-          'X-Title': 'Mixta News Pipeline',
-        },
-        timeout: TIMEOUT,
+    // Free model list changes frequently on OpenRouter. We try two proven free models
+    // in order, falling through on 404 (model no longer free/available).
+    // deepseek/deepseek-r1:free was deprecated from free tier June 2026.
+    const models = [
+      'meta-llama/llama-3.3-70b:free',
+      'openai/gpt-oss-20b:free',
+    ];
+    let lastErr;
+    for (const model of models) {
+      try {
+        const res = await axios.post(
+          'https://openrouter.ai/api/v1/chat/completions',
+          {
+            model,
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.3,
+            max_tokens: 1000,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.openrouterKey}`,
+              'Content-Type': 'application/json',
+              'HTTP-Referer': 'https://github.com/mixta-africa',
+              'X-Title': 'Mixta News Pipeline',
+            },
+            timeout: TIMEOUT,
+          }
+        );
+        return res.data.choices[0]?.message?.content || '';
+      } catch (err) {
+        lastErr = err;
+        const status = err.response?.status;
+        // Fall through on 404 (model unavailable) or 400/422 (model no longer free — OpenRouter
+        // returns 400 with "This model is unavailable for free" for paywalled models).
+        if (status !== 404 && status !== 400 && status !== 422) throw err;
+        console.warn(`[OpenRouter] ${model} unavailable (${status}), trying next...`);
       }
-    );
-    return res.data.choices[0]?.message?.content || '';
+    }
+    throw lastErr;
   }
 
   // ─── HELPERS ────────────────────────────────────────────────────────────────

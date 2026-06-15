@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "bearish": 7,
-      "neutral": 2
+      "bullish": 5,
+      "bearish": 6,
+      "neutral": 4
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 13
+        "count": 12
       },
       {
         "topic": "infrastructure",
-        "count": 13
-      },
-      {
-        "topic": "affordable housing",
-        "count": 1
+        "count": 12
       },
       {
         "topic": "affordability",
+        "count": 2
+      },
+      {
+        "topic": "rentals",
         "count": 1
       },
       {
-        "topic": "innovation",
+        "topic": "home ownership",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "bearish": 7,
-      "neutral": 2
+      "bullish": 5,
+      "bearish": 6,
+      "neutral": 4
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 13
+        "count": 12
       },
       {
         "topic": "infrastructure",
-        "count": 13
-      },
-      {
-        "topic": "affordable housing",
-        "count": 1
+        "count": 12
       },
       {
         "topic": "affordability",
+        "count": 2
+      },
+      {
+        "topic": "rentals",
         "count": 1
       },
       {
-        "topic": "innovation",
+        "topic": "home ownership",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "bearish": 7,
-      "neutral": 2
+      "bullish": 5,
+      "bearish": 6,
+      "neutral": 4
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 13
+        "count": 12
       },
       {
         "topic": "infrastructure",
-        "count": 13
-      },
-      {
-        "topic": "affordable housing",
-        "count": 1
+        "count": 12
       },
       {
         "topic": "affordability",
+        "count": 2
+      },
+      {
+        "topic": "rentals",
         "count": 1
       },
       {
-        "topic": "innovation",
+        "topic": "home ownership",
         "count": 1
       }
     ],

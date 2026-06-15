@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-06-15T06:24:18.747Z",
-  "status": "degraded",
+  "timestamp": "2026-06-15T06:37:13.238Z",
+  "status": "healthy",
   "sources": {
     "gnews": {
       "ok": false,
@@ -14,7 +14,7 @@
     },
     "googlenews": {
       "ok": true,
-      "count": 64,
+      "count": 104,
       "error": null
     },
     "rss": {
@@ -40,64 +40,33 @@
           "count": 2,
           "error": null
         },
-        "The Cable": {
-          "ok": false,
-          "count": 0,
-          "error": "HTTP 403"
-        },
-        "Leadership": {
-          "ok": false,
-          "count": 0,
-          "error": "HTTP 403"
-        },
         "Daily Trust": {
           "ok": true,
           "count": 3,
           "error": null
         },
-        "Tribune": {
-          "ok": false,
-          "count": 0,
-          "error": "HTTP 403"
-        },
-        "Ripples Nigeria": {
-          "ok": false,
-          "count": 0,
-          "error": "HTTP 403"
-        },
-        "Guardian": {
-          "ok": false,
-          "count": 0,
-          "error": "HTTP 403"
-        },
         "The Punch": {
           "ok": true,
           "count": 3,
           "error": null
-        },
-        "Vanguard": {
-          "ok": false,
-          "count": 0,
-          "error": "HTTP 403"
         }
       }
     }
   },
   "counts": {
-    "raw": 108,
+    "raw": 148,
     "filtered": 15,
     "analyzed": 15,
-    "aiFallbacks": 15
+    "aiFallbacks": 0
   },
   "synthesis": {
     "ok": true,
-    "themes": 3
+    "themes": 4
   },
   "email": {
     "sent": true
   },
   "warnings": [
-    "Sources down: GNews (HTTP 429); RSS The Cable (HTTP 403); RSS Leadership (HTTP 403); RSS Tribune (HTTP 403); RSS Ripples Nigeria (HTTP 403); RSS Guardian (HTTP 403); RSS Vanguard (HTTP 403)",
-    "100% of articles had no AI summary."
+    "Sources down: GNews (HTTP 429)"
   ]
 }

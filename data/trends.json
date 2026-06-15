@@ -2,25 +2,94 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 15
+      "bearish": 2,
+      "bullish": 5,
+      "neutral": 8
     },
-    "topTopics": [],
+    "topTopics": [
+      {
+        "topic": "prices",
+        "count": 7
+      },
+      {
+        "topic": "infrastructure",
+        "count": 6
+      },
+      {
+        "topic": "affordability",
+        "count": 4
+      },
+      {
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "rentals",
+        "count": 2
+      }
+    ],
     "averageSentiment": "neutral"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 15
+      "bearish": 2,
+      "bullish": 5,
+      "neutral": 8
     },
-    "topTopics": [],
+    "topTopics": [
+      {
+        "topic": "prices",
+        "count": 7
+      },
+      {
+        "topic": "infrastructure",
+        "count": 6
+      },
+      {
+        "topic": "affordability",
+        "count": 4
+      },
+      {
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "rentals",
+        "count": 2
+      }
+    ],
     "averageSentiment": "neutral"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 15
+      "bearish": 2,
+      "bullish": 5,
+      "neutral": 8
     },
-    "topTopics": [],
+    "topTopics": [
+      {
+        "topic": "prices",
+        "count": 7
+      },
+      {
+        "topic": "infrastructure",
+        "count": 6
+      },
+      {
+        "topic": "affordability",
+        "count": 4
+      },
+      {
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "rentals",
+        "count": 2
+      }
+    ],
     "averageSentiment": "neutral"
   }
 }

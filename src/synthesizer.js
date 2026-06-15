@@ -87,6 +87,12 @@ ${this.formatArticles(articles)}
 === YOUR TASK ===
 Identify the 3 to 5 themes that genuinely matter to Mixta today. Cluster related articles. For each theme, connect it explicitly to Mixta's projects (Lakowe Crossings, Lakowe Annexe, Lagos New Town), pricing, receivables, competitors, or watch-list. Judge novelty against the theme history. Give a clear recommendation. Be specific and commercial; avoid generic commentary. If something in the news directly intersects a watch-list item or a project's open issues, say so plainly.
 
+TRUST RULES (critical — leadership relies on this):
+- Every theme MUST cite at least one real article [index] from the list above. Never invent a source or cite an index that is not listed.
+- In "what_happened", state ONLY what the sources actually report. In "why_it_matters_to_mixta", clearly mark your reasoning as inference about Mixta — never present an implication as established fact.
+- If a theme rests on a single source, its confidence CANNOT be "high".
+- If you are unsure or the evidence is thin, say so and use lower confidence. It is better to under-claim than to mislead leadership.
+
 Also write a 2-3 sentence EXECUTIVE SUMMARY at the top: the single most important takeaway for leadership today.
 
 Respond ONLY with valid JSON in EXACTLY this shape (no markdown, no commentary outside the JSON):
@@ -213,12 +219,43 @@ Respond ONLY with valid JSON in EXACTLY this shape (no markdown, no commentary o
       return null;
     }
 
-    // Attach resolved source articles to each theme for rendering (url + title)
+    // Hallucination guard: keep only citations that point to real articles.
+    // Drop themes with no valid source; cap confidence for single-source themes.
+    let invalidCitations = 0;
+    const validThemes = [];
     for (const theme of briefing.themes) {
-      theme.sourceArticles = (theme.sources || [])
+      const rawSources = Array.isArray(theme.sources) ? theme.sources : [];
+      const validIdx = rawSources.filter(i => Number.isInteger(i) && i >= 0 && i < articles.length);
+      invalidCitations += (rawSources.length - validIdx.length);
+
+      if (validIdx.length === 0) {
+        // No real source backs this theme — do not show it to leadership.
+        console.warn(`[Synthesis] Dropping unsupported theme: "${theme.label}"`);
+        continue;
+      }
+
+      theme.sources = validIdx;
+      theme.sourceArticles = validIdx
         .map(idx => articles[idx])
         .filter(Boolean)
         .map(a => ({ title: a.title, url: a.url, source: a.source }));
+
+      // Trust rule: a single-source theme cannot be "high" confidence.
+      if (theme.sourceArticles.length < 2 && (theme.confidence || '').toLowerCase() === 'high') {
+        theme.confidence = 'medium';
+      }
+      theme.singleSource = theme.sourceArticles.length < 2;
+
+      validThemes.push(theme);
+    }
+    briefing.themes = validThemes;
+
+    if (invalidCitations > 0) {
+      console.warn(`[Synthesis] Removed ${invalidCitations} invalid source citation(s).`);
+    }
+    if (briefing.themes.length === 0) {
+      console.error('[Synthesis] No themes survived citation validation.');
+      return null;
     }
 
     const dateStr = new Date().toISOString().split('T')[0];

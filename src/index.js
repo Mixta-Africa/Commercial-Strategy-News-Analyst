@@ -186,7 +186,7 @@ class NewsPipeline {
         });
       }
       // Brief pause between calls to stay under Groq's rate limit (avoids 429s)
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 4000));
     }
 
     console.log(`[PHASE 4] Analyzed ${analyzed.length} articles`);

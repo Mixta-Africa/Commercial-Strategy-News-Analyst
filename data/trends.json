@@ -2,94 +2,94 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 8,
+      "bearish": 4,
       "bullish": 5,
-      "neutral": 2
+      "neutral": 6
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
-        "count": 12
-      },
-      {
-        "topic": "prices",
-        "count": 11
+        "topic": "Lagos real estate",
+        "count": 3
       },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "inflation",
+        "topic": "arson",
         "count": 1
       },
       {
-        "topic": "affordability",
+        "topic": "property-targeting",
+        "count": 1
+      },
+      {
+        "topic": "UK-Prime-Minister",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 8,
+      "bearish": 4,
       "bullish": 5,
-      "neutral": 2
+      "neutral": 6
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
-        "count": 12
-      },
-      {
-        "topic": "prices",
-        "count": 11
+        "topic": "Lagos real estate",
+        "count": 3
       },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "inflation",
+        "topic": "arson",
         "count": 1
       },
       {
-        "topic": "affordability",
+        "topic": "property-targeting",
+        "count": 1
+      },
+      {
+        "topic": "UK-Prime-Minister",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 8,
+      "bearish": 4,
       "bullish": 5,
-      "neutral": 2
+      "neutral": 6
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
-        "count": 12
-      },
-      {
-        "topic": "prices",
-        "count": 11
+        "topic": "Lagos real estate",
+        "count": 3
       },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "inflation",
+        "topic": "arson",
         "count": 1
       },
       {
-        "topic": "affordability",
+        "topic": "property-targeting",
+        "count": 1
+      },
+      {
+        "topic": "UK-Prime-Minister",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   }
 }

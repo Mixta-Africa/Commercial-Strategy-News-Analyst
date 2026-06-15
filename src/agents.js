@@ -55,20 +55,22 @@ class Agents {
 
   // ─── CORE FALLBACK ENGINE ────────────────────────────────────────────────────
 
+  /**
+   * Per-article analysis: uses llama-3.1-8b-instant on Groq.
+   * This is a SEPARATE Groq rate-limit bucket from the synthesis call:
+   *   8b:  14,400 RPD / 30,000 TPM
+   *   70b:  1,000 RPD / 12,000 TPM
+   * Keeping them on different models means 25 article calls cannot exhaust
+   * the budget for the single synthesis call that produces the briefing.
+   */
   async _complete(prompt, label) {
-    // Guard: never send an empty or whitespace-only prompt to any provider
     if (!prompt || !prompt.trim()) {
       console.error(`[Agents] Refusing to send empty prompt for: ${label}`);
       return null;
     }
 
-    const providers = [
-      { name: 'Groq',       fn: () => this._groq(prompt),       key: this.groqKey },
-      { name: 'Gemini',     fn: () => this._gemini(prompt),     key: this.geminiKey },
-      { name: 'SambaNova',  fn: () => this._sambanova(prompt),  key: this.sambanovaKey },
-      { name: 'Mistral',    fn: () => this._mistral(prompt),    key: this.mistralKey },
-      { name: 'OpenRouter', fn: () => this._openrouter(prompt), key: this.openrouterKey },
-    ];
+    const isArticle = label.startsWith('Analyzing:');
+    const providers = isArticle ? this._articleProviders(prompt) : this._synthesisProviders(prompt);
 
     for (const provider of providers) {
       if (!provider.key) {
@@ -84,7 +86,6 @@ class Agents {
         const status = err.response?.status;
         const msg = err.response?.data?.error?.message || err.message || 'Unknown error';
         console.warn(`[${provider.name}] Failed (${status || 'ERR'}): ${msg.substring(0, 120)}`);
-        // Brief pause after rate-limit before trying next provider
         if (status === 429) await this._sleep(2000);
       }
     }
@@ -93,9 +94,61 @@ class Agents {
     return null;
   }
 
+  /**
+   * Provider chain for per-article analysis.
+   * Groq 8b leads — fast, generous daily limit, adequate quality for summaries.
+   * Synthesis-quality models (70b) are preserved for the briefing.
+   */
+  _articleProviders(prompt) {
+    return [
+      { name: 'Groq-8b',     fn: () => this._groqFast(prompt),    key: this.groqKey },
+      { name: 'SambaNova',   fn: () => this._sambanova(prompt),   key: this.sambanovaKey },
+      { name: 'Mistral',     fn: () => this._mistral(prompt),     key: this.mistralKey },
+      { name: 'OpenRouter',  fn: () => this._openrouter(prompt),  key: this.openrouterKey },
+      { name: 'Gemini',      fn: () => this._gemini(prompt),      key: this.geminiKey },
+    ];
+  }
+
+  /**
+   * Provider chain for synthesis (executive briefing).
+   * 70b leads for reasoning depth. Groq 8b is fallback — better than nothing.
+   */
+  _synthesisProviders(prompt) {
+    return [
+      { name: 'Groq-70b',    fn: () => this._groq70b(prompt),    key: this.groqKey },
+      { name: 'SambaNova',   fn: () => this._sambanova(prompt),  key: this.sambanovaKey },
+      { name: 'Gemini',      fn: () => this._gemini(prompt),     key: this.geminiKey },
+      { name: 'Mistral',     fn: () => this._mistral(prompt),    key: this.mistralKey },
+      { name: 'OpenRouter',  fn: () => this._openrouter(prompt), key: this.openrouterKey },
+      { name: 'Groq-8b',    fn: () => this._groqFast(prompt),   key: this.groqKey },
+    ];
+  }
+
   // ─── PROVIDER IMPLEMENTATIONS ─────────────────────────────────────────────
 
-  async _groq(prompt) {
+  /** Groq fast (llama-3.1-8b-instant) — 14,400 RPD / 30K TPM. Used for per-article analysis. */
+  async _groqFast(prompt) {
+    const res = await axios.post(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        model: 'llama-3.1-8b-instant',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.3,
+        max_tokens: 1000,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.groqKey}`,
+          'Content-Type': 'application/json',
+        },
+        timeout: TIMEOUT,
+      }
+    );
+    return res.data.choices[0]?.message?.content || '';
+  }
+
+  /** Groq 70b (llama-3.3-70b-versatile) — 1,000 RPD / 12K TPM. Reserved for synthesis. */
+  async _groq70b(prompt) {
     const res = await axios.post(
       'https://api.groq.com/openai/v1/chat/completions',
       {

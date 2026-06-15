@@ -4,10 +4,10 @@ on:
   schedule:
     # 8:00 AM Lagos time (WAT = UTC+1) -> 07:00 UTC
     - cron: '0 7 * * *'
-  workflow_dispatch:        # allows manual "Run workflow" button
+  workflow_dispatch:
 
 permissions:
-  contents: write           # needed to commit dashboard data back to repo
+  contents: write
 
 jobs:
   news-pipeline:
@@ -26,103 +26,133 @@ jobs:
         run: npm install
 
       # ---------------------------------------------------------------
-      # API KEY TEST (current models, June 2026)
-      # This step is independent of src/agents.js - it has its own
-      # model names, so keep them in sync with agents.js.
+      # PROVIDER HEALTH CHECK
+      # Tests all 5 providers + both Groq models.
+      # Kept in sync with agents.js: any model change there must be
+      # reflected here. continue-on-error: true so a failed key never
+      # blocks the pipeline from running.
       # ---------------------------------------------------------------
-      - name: Test API Keys
+      - name: Test all AI providers
         run: |
           npm install axios
-          cat > test-apis.js << 'SCRIPT'
+          node - << 'SCRIPT'
           const axios = require('axios');
+          const TIMEOUT = 10000;
 
-          async function testGroq() {
-            return axios.post('https://api.groq.com/openai/v1/chat/completions', {
-              model: 'llama-3.3-70b-versatile',
-              messages: [{ role: 'user', content: 'Say OK' }],
-              max_tokens: 5,
-            }, {
-              headers: {
-                'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
-                'Content-Type': 'application/json',
-              },
-              timeout: 10000,
-            });
-          }
-
-          async function testCerebras() {
-            return axios.post('https://api.cerebras.ai/v1/chat/completions', {
-              model: 'llama-3.3-70b',
-              messages: [{ role: 'user', content: 'Say OK' }],
-              max_tokens: 5,
-            }, {
-              headers: {
-                'Authorization': `Bearer ${process.env.CEREBRAS_API_KEY}`,
-                'Content-Type': 'application/json',
-              },
-              timeout: 10000,
-            });
-          }
-
-          async function testGemini() {
-            const models = ['gemini-3.5-flash', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
-            let lastErr;
-            for (const m of models) {
-              try {
-                await axios.post(
-                  `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`,
-                  { contents: [{ parts: [{ text: 'Say OK' }] }], generationConfig: { maxOutputTokens: 5 } },
-                  { headers: { 'Content-Type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY }, timeout: 10000 }
-                );
-                return m;
-              } catch (e) {
-                lastErr = e;
-                if (e.response?.status && e.response.status !== 404) throw e;
+          const tests = [
+            {
+              name: 'Groq-8b (llama-3.1-8b-instant)',
+              key: process.env.GROQ_API_KEY,
+              fn: async (key) => {
+                const r = await axios.post('https://api.groq.com/openai/v1/chat/completions',
+                  { model: 'llama-3.1-8b-instant', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
+                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT });
+                return `${r.data.choices[0]?.message?.content?.trim()} | RPD bucket: 14,400`;
               }
-            }
-            throw lastErr;
-          }
-
-          async function run(name, key, fn) {
-            if (!key) { console.log(`\u274c ${name}: KEY NOT SET`); return; }
-            try {
-              const result = await fn();
-              const extra = typeof result === 'string' ? ` (model: ${result})` : '';
-              console.log(`\u2705 ${name}: WORKING${extra}`);
-            } catch (e) {
-              const status = e.response?.status || e.code || 'UNKNOWN';
-              const msg = (e.response?.data?.error?.message || e.message || '').substring(0, 70);
-              console.log(`\u274c ${name}: ${status} - ${msg}`);
-            }
-          }
+            },
+            {
+              name: 'Groq-70b (llama-3.3-70b-versatile)',
+              key: process.env.GROQ_API_KEY,
+              fn: async (key) => {
+                const r = await axios.post('https://api.groq.com/openai/v1/chat/completions',
+                  { model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
+                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT });
+                return `${r.data.choices[0]?.message?.content?.trim()} | RPD bucket: 1,000`;
+              }
+            },
+            {
+              name: 'Gemini (v1beta auto-model)',
+              key: process.env.GEMINI_API_KEY,
+              fn: async (key) => {
+                const models = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-1.5-flash'];
+                for (const m of models) {
+                  try {
+                    const r = await axios.post(
+                      `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`,
+                      { contents: [{ parts: [{ text: 'Say OK' }] }], generationConfig: { maxOutputTokens: 5 } },
+                      { headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, timeout: TIMEOUT });
+                    const text = r.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+                    return `${text} | model: ${m}`;
+                  } catch (e) {
+                    if (e.response?.status !== 404) throw e;
+                  }
+                }
+                throw new Error('No Gemini model available');
+              }
+            },
+            {
+              name: 'SambaNova (Meta-Llama-3.3-70B-Instruct)',
+              key: process.env.SAMBANOVA_API_KEY,
+              fn: async (key) => {
+                const r = await axios.post('https://api.sambanova.ai/v1/chat/completions',
+                  { model: 'Meta-Llama-3.3-70B-Instruct', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
+                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT });
+                return r.data.choices[0]?.message?.content?.trim();
+              }
+            },
+            {
+              name: 'Mistral (mistral-small-latest)',
+              key: process.env.MISTRAL_API_KEY,
+              fn: async (key) => {
+                const r = await axios.post('https://api.mistral.ai/v1/chat/completions',
+                  { model: 'mistral-small-latest', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
+                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT });
+                return r.data.choices[0]?.message?.content?.trim();
+              }
+            },
+            {
+              name: 'OpenRouter (deepseek-r1:free)',
+              key: process.env.OPENROUTER_API_KEY,
+              fn: async (key) => {
+                const r = await axios.post('https://openrouter.ai/api/v1/chat/completions',
+                  { model: 'deepseek/deepseek-r1:free', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
+                  { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', 'HTTP-Referer': 'https://github.com/mixta-africa', 'X-Title': 'Mixta News Pipeline' }, timeout: TIMEOUT });
+                return r.data.choices[0]?.message?.content?.trim();
+              }
+            },
+          ];
 
           (async () => {
-            console.log('\n' + '='.repeat(60));
-            console.log('API KEY TEST');
-            console.log('='.repeat(60));
-            await run('Groq', process.env.GROQ_API_KEY, testGroq);
-            await run('Cerebras', process.env.CEREBRAS_API_KEY, testCerebras);
-            await run('Gemini', process.env.GEMINI_API_KEY, testGemini);
-            console.log('='.repeat(60) + '\n');
+            console.log('\n' + '='.repeat(64));
+            console.log('AI PROVIDER HEALTH CHECK — all 5 providers, both Groq models');
+            console.log('='.repeat(64));
+            let working = 0;
+            for (const t of tests) {
+              if (!t.key) { console.log(`  SKIP   ${t.name} — key not set in GitHub Secrets`); continue; }
+              try {
+                const detail = await t.fn(t.key);
+                console.log(`  PASS   ${t.name} — ${detail || 'OK'}`);
+                working++;
+              } catch (e) {
+                const code = e.response?.status || e.code || 'ERR';
+                const msg = (e.response?.data?.error?.message || e.message || '').substring(0, 80);
+                console.log(`  FAIL   ${t.name} — ${code}: ${msg}`);
+              }
+            }
+            console.log('='.repeat(64));
+            console.log(`  ${working}/${tests.filter(t => t.key).length} providers working`);
+            console.log('='.repeat(64) + '\n');
           })();
           SCRIPT
-
-          node test-apis.js
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SAMBANOVA_API_KEY: ${{ secrets.SAMBANOVA_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         continue-on-error: true
 
       # ---------------------------------------------------------------
-      # MAIN PIPELINE
+      # MAIN PIPELINE — all 5 provider keys injected
       # ---------------------------------------------------------------
       - name: Run news pipeline
         run: npm run pipeline
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SAMBANOVA_API_KEY: ${{ secrets.SAMBANOVA_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GNEWS_API_KEY: ${{ secrets.GNEWS_API_KEY }}
           NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
           SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
@@ -131,6 +161,8 @@ jobs:
           GOOGLE_APPS_SCRIPT_URL: ${{ secrets.GOOGLE_APPS_SCRIPT_URL }}
           APPS_SCRIPT_SECRET: ${{ secrets.APPS_SCRIPT_SECRET }}
           ADMIN_PASSWORD_HASH: ${{ secrets.ADMIN_PASSWORD_HASH }}
+          FIREBASE_DB_URL: ${{ secrets.FIREBASE_DB_URL }}
+          ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
 
       # ---------------------------------------------------------------
       # COMMIT DASHBOARD DATA BACK TO REPO (for GitHub Pages)

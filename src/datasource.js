@@ -15,6 +15,12 @@ class DataSource {
     this.gNewsApiKey = process.env.GNEWS_API_KEY;
     this.newsApiKey = process.env.NEWSAPI_KEY;
     this.timeout = 10000;
+    // Per-source health for the reliability layer, populated during fetches
+    this.sourceHealth = {
+      gnews: { ok: false, count: 0, error: null },
+      newsapi: { ok: false, count: 0, error: null },
+      rss: { total: 0, feeds: {} },
+    };
   }
 
   /**
@@ -64,10 +70,14 @@ class DataSource {
         }
       } catch (error) {
         console.error(`[GNews] Error on query "${q}":`, error.message);
+        this.sourceHealth.gnews.error = error.response?.status
+          ? `HTTP ${error.response.status}` : error.message;
       }
     }
 
     console.log(`[GNews] Fetched ${allArticles.length} total articles`);
+    this.sourceHealth.gnews.count = allArticles.length;
+    this.sourceHealth.gnews.ok = allArticles.length > 0;
     return allArticles;
   }
 
@@ -118,10 +128,14 @@ class DataSource {
         }
       } catch (error) {
         console.error(`[NewsAPI] Error on query "${q.substring(0, 40)}...":`, error.message);
+        this.sourceHealth.newsapi.error = error.response?.status
+          ? `HTTP ${error.response.status}` : error.message;
       }
     }
 
     console.log(`[NewsAPI] Fetched ${allArticles.length} total articles`);
+    this.sourceHealth.newsapi.count = allArticles.length;
+    this.sourceHealth.newsapi.ok = allArticles.length > 0;
     return allArticles;
   }
 
@@ -183,12 +197,19 @@ class DataSource {
 
         allArticles.push(...articles);
         console.log(`[RSS] ${feed.source}: ${articles.length} real estate articles`);
+        this.sourceHealth.rss.feeds[feed.source] = { ok: true, count: articles.length, error: null };
       } catch (error) {
         console.warn(`[RSS] Error fetching ${feed.source}:`, error.message);
+        this.sourceHealth.rss.feeds[feed.source] = {
+          ok: false,
+          count: 0,
+          error: error.response?.status ? `HTTP ${error.response.status}` : error.message,
+        };
       }
     }
 
     console.log(`[RSS] Total: ${allArticles.length} articles`);
+    this.sourceHealth.rss.total = allArticles.length;
     return allArticles;
   }
 

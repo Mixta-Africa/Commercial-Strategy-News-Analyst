@@ -116,8 +116,8 @@ function renderBriefing(briefing) {
           ${singleSrc}
         </div>
         <p style="margin:6px 0;font-size:13px;color:#444;"><strong>What happened:</strong> ${cleanLLMText(t.what_happened || '')}</p>
-        <p style="margin:6px 0;font-size:13px;color:#0c5460;background:#eef6fb;border-radius:4px;padding:8px;"><strong>Why it matters to Mixta:</strong> ${t.why_it_matters_to_mixta || ''}</p>
-        <p style="margin:6px 0;font-size:13px;color:#1a1a1a;"><strong style="color:${recColor(t.recommendation)};">Recommendation:</strong> ${t.recommendation || ''}</p>
+        <p style="margin:6px 0;font-size:13px;color:#0c5460;background:#eef6fb;border-radius:4px;padding:8px;"><strong>Why it matters to Mixta:</strong> ${cleanLLMText(t.why_it_matters_to_mixta || '')}</p>
+        <p style="margin:6px 0;font-size:13px;color:#1a1a1a;"><strong style="color:${recColor(t.recommendation)};">Recommendation:</strong> ${cleanLLMText(t.recommendation || '')}</p>
         <div style="font-size:11px;color:#999;margin-top:8px;">
           Confidence: <strong style="color:${confColor[conf] || '#666'};">${(t.confidence || 'medium').toUpperCase()}</strong>
           ${srcLinks ? ` &bull; Sources: ${srcLinks}` : ''}
@@ -134,7 +134,7 @@ function renderBriefing(briefing) {
   return `
     <div style="background:#fbfbfb;border:1px solid #e8e8e8;border-radius:8px;padding:20px;margin-bottom:25px;">
       <div style="font-size:11px;letter-spacing:1px;color:#c41e3a;font-weight:700;text-transform:uppercase;margin-bottom:8px;">Executive Briefing</div>
-      <p style="font-size:15px;line-height:1.6;color:#1a1a1a;margin:0 0 18px 0;font-weight:500;">${briefing.executive_summary || ''}</p>
+      <p style="font-size:15px;line-height:1.6;color:#1a1a1a;margin:0 0 18px 0;font-weight:500;">${cleanLLMText(briefing.executive_summary || '')}</p>
       ${themes}
       ${watchHits}
     </div>`;

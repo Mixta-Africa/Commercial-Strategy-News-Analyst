@@ -24,7 +24,12 @@ class Synthesizer {
   loadContext() {
     try {
       const raw = fs.readFileSync(this.contextPath, 'utf-8');
-      return JSON.parse(raw);
+      const context = JSON.parse(raw);
+      // Dashboard-edited watch-list overrides the file, if present
+      if (Array.isArray(this.watchListOverride) && this.watchListOverride.length) {
+        context.watch_list = this.watchListOverride;
+      }
+      return context;
     } catch (e) {
       console.warn('[Synthesis] Could not load mixta-context.json:', e.message);
       return null;

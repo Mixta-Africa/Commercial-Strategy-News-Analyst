@@ -10,6 +10,7 @@
 const axios = require('axios');
 const xml2js = require('xml2js');
 const sourcesConfig = require('./sources.json');
+const { quickMatch } = require('./relevance');
 
 // Realistic browser headers — the old 'NewsBot' UA was getting 403-blocked
 const BROWSER_HEADERS = {
@@ -49,9 +50,7 @@ class DataSource {
   }
 
   matchesRealEstate(title, desc) {
-    const t = (title || '').toLowerCase();
-    const d = (desc || '').toLowerCase().substring(0, 400);
-    return this.realEstateKeywords.some(kw => t.includes(kw) || d.includes(kw));
+    return quickMatch(title || '', desc || '');
   }
 
   /**

@@ -208,7 +208,16 @@ const firebaseConfig = {
   databaseURL: "FILL_IN",
   projectId: "FILL_IN"
 };
-const DATA_BASE = "../data";
+// Auto-detect the base path so this works on GitHub Pages (timilehin-taiwo.github.io/News-Fetcher/)
+// as well as locally. We strip the filename and any trailing slash, then append /data.
+// e.g.  https://timilehin-taiwo.github.io/News-Fetcher/  → .../News-Fetcher/data
+//        http://localhost:8080/public/dashboard-index.html → .../public/../data  → /data
+const DATA_BASE = (function() {
+  const loc = window.location.href;
+  // If served from the repo root (GitHub Pages with index redirect or direct path)
+  const base = loc.endsWith('/') ? loc.slice(0, -1) : loc.substring(0, loc.lastIndexOf('/'));
+  return base + '/data';
+})();
 
 let fb = null, db = null, firebaseReady = false;
 let articlesCache = [], briefingsIndex = [], archTab = 'briefings';
@@ -477,8 +486,14 @@ async function saveConfig() {
 }
 
 async function showReadonlyConfig() {
-  const ctx = await loadJSON('../src/mixta-context.json');
-  const src = await loadJSON('../src/sources.json');
+  // src/ files are not committed to data/ — fetch from GitHub raw directly.
+  // These are read-only display; editing requires Firebase.
+  const RAW = 'https://raw.githubusercontent.com/Timilehin-Taiwo/News-Fetcher/main/src';
+  async function rawJSON(file) {
+    try { const r = await fetch(`${RAW}/${file}`); return r.ok ? r.json() : null; } catch { return null; }
+  }
+  const ctx = await rawJSON('mixta-context.json');
+  const src = await rawJSON('sources.json');
   const el = document.getElementById('cfgReadonly');
   let html = '';
   if (ctx?.watch_list) html += `<div class="cfg-block"><h3>Watch-list (current)</h3>${ctx.watch_list.map(w => `<div class="theme-row"><span class="k">${esc(w.topic)}.</span> ${esc(w.why)}</div>`).join('')}</div>`;
@@ -500,8 +515,12 @@ async function loadConfigState() {
     } catch (e) { /* fall through */ }
   }
   if (!cfgWatch.length || !cfgRss.length) {
-    const ctx = await loadJSON('../src/mixta-context.json');
-    const src = await loadJSON('../src/sources.json');
+    const RAW = 'https://raw.githubusercontent.com/Timilehin-Taiwo/News-Fetcher/main/src';
+    async function rawJSON(file) {
+      try { const r = await fetch(`${RAW}/${file}`); return r.ok ? r.json() : null; } catch { return null; }
+    }
+    const ctx = await rawJSON('mixta-context.json');
+    const src = await rawJSON('sources.json');
     if (!cfgWatch.length && ctx?.watch_list) cfgWatch = ctx.watch_list.map(w => ({ topic: w.topic, why: w.why }));
     if (!cfgRss.length && src?.rssFeeds) cfgRss = src.rssFeeds.map(f => ({ source: f.source, url: f.url }));
     if (!cfgGoogle.length && src?.googleNewsQueries) cfgGoogle = src.googleNewsQueries.slice();

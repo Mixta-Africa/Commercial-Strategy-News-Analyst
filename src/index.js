@@ -19,6 +19,7 @@ const Agents = require('./agents');
 const DataSource = require('./datasource');
 const SheetsClient = require('./sheets-client');
 const Synthesizer = require('./synthesizer');
+const RunHealth = require('./health');
 const { generateEmailHTML, sendEmail } = require('./email-service');
 const whitelist = require('./whitelist.json');
 
@@ -296,8 +297,10 @@ class NewsPipeline {
       });
 
       console.log('[PHASE 7] Email sent successfully');
+      return true;
     } catch (error) {
       console.error('[PHASE 7] Email error:', error.message);
+      return false;
     }
   }
 
@@ -349,32 +352,91 @@ class NewsPipeline {
     console.log('='.repeat(60));
 
     try {
+      const health = new RunHealth(this.timestamp);
+
       const rawArticles = await this.collectArticles();
+      health.recordSources(this.datasource.sourceHealth);
+      health.recordCounts({ raw: rawArticles.length });
+
       if (rawArticles.length === 0) {
         console.warn('No articles collected. Exiting.');
+        health.finalize({ fatal: true });
+        health.persist();
+        await this.sendOperatorAlert(health);
         return;
       }
 
       const filtered = await this.filterArticles(rawArticles);
+      health.recordCounts({ filtered: filtered.length });
+
       if (filtered.length === 0) {
         console.warn('No articles passed filtering. Exiting.');
+        health.finalize({ fatal: true });
+        health.persist();
+        await this.sendOperatorAlert(health);
         return;
       }
 
       await this.storeArticles(filtered);
       const analyzed = await this.analyzeArticles(filtered);
+
+      // Count AI fallbacks (articles that didn't get a real summary)
+      const aiFallbacks = analyzed.filter(a =>
+        !a.summary || a.summary.startsWith('Unable to generate')
+      ).length;
+      health.recordCounts({ analyzed: analyzed.length, aiFallbacks });
+
       const trends = await this.detectTrends(analyzed);
       const alerts = await this.detectAnomalies(analyzed, trends);
       const briefing = await this.synthesizer.synthesize(analyzed);
-      await this.generateAndSendEmail(analyzed, trends, alerts, briefing);
+      health.recordSynthesis(briefing);
+
+      const emailSent = await this.generateAndSendEmail(analyzed, trends, alerts, briefing);
+      health.recordEmail(emailSent);
+
       await this.updateDashboard(analyzed, trends, alerts, briefing);
 
+      // Judge the run, persist health, alert operator if degraded/failed
+      health.finalize();
+      health.persist();
+      await this.sendOperatorAlert(health);
+
       console.log('='.repeat(60));
-      console.log('Pipeline completed successfully');
+      console.log(`Pipeline completed (status: ${health.record.status})`);
       console.log('='.repeat(60));
     } catch (error) {
       console.error('Fatal pipeline error:', error);
+      try {
+        const failHealth = new RunHealth(this.timestamp);
+        failHealth.recordSources(this.datasource.sourceHealth);
+        failHealth.addWarning(`Fatal error: ${error.message}`);
+        failHealth.finalize({ fatal: true });
+        failHealth.persist();
+        await this.sendOperatorAlert(failHealth);
+      } catch (e) {
+        console.error('Could not send failure alert:', e.message);
+      }
       process.exit(1);
+    }
+  }
+
+  /**
+   * Send operator alert (only when degraded/failed). Goes to ALERT_EMAIL if set,
+   * otherwise falls back to RECIPIENT_EMAIL. Separate from the leadership digest.
+   */
+  async sendOperatorAlert(health) {
+    if (!health.needsAlert()) return;
+    const to = process.env.ALERT_EMAIL || process.env.RECIPIENT_EMAIL;
+    if (!to) {
+      console.warn('[Health] No ALERT_EMAIL/RECIPIENT_EMAIL set; cannot send operator alert.');
+      return;
+    }
+    try {
+      const { subject, html } = health.buildAlertEmail();
+      await sendEmail({ to, subject, html });
+      console.log(`[Health] Operator alert sent (${health.record.status}).`);
+    } catch (e) {
+      console.error('[Health] Failed to send operator alert:', e.message);
     }
   }
 }

@@ -330,64 +330,55 @@ class Agents {
   // ─── PROMPT BUILDER ──────────────────────────────────────────────────────────
 
   buildAnalysisPrompt(article) {
-    // Null-safe field extraction — empty fields produce valid prompt sections,
-    // not undefined interpolations that make the content field blank.
     const title   = (article.title   || '').trim() || 'Untitled';
     const source  = (article.source  || '').trim() || 'Unknown source';
     const url     = (article.url     || '').trim() || 'No URL';
-    const content = (article.content || article.description || article.title || '').trim().substring(0, 1000);
 
-    return `You are a professional real estate analyst for a major Lagos-based developer (Mixta Africa).
-Analyze this article with intellectual rigor and business acumen.
+    // Use enriched content; clean and trim NewsAPI truncation markers
+    const rawContent = (article.content || article.description || article.title || '').trim();
+    const content = rawContent
+      .replace(/<[^>]+>/g, ' ')           // strip HTML
+      .replace(/\[(\+\d+\s*chars?)\]/g, '') // strip NewsAPI truncation markers like [+8047 chars]
+      .replace(/\s+/g, ' ')
+      .trim()
+      .substring(0, 2000);
+
+    const hasSubstantialContent = content.length > 200;
+    const contentNote = hasSubstantialContent
+      ? ''
+      : '\nNOTE: This article has limited content — only the headline and a short snippet are available. Qualify any inferences clearly as speculative rather than stated fact.';
+
+    return `You are a professional real estate analyst for Mixta Africa, a Lagos-based developer.
+Analyse this article and extract actionable intelligence for leadership.${contentNote}
 
 ARTICLE:
 Title: ${title}
 Source: ${source}
 URL: ${url}
-Content: ${content}
+Content (${content.length} chars): ${content}
 
-ANALYSIS REQUIREMENTS:
-
-1. PROFESSIONAL SUMMARY (2-3 sentences, analyst tone):
-   - Write as a market analyst would brief an executive
-   - Focus on what this MEANS for Lagos real estate market
-   - Example: "Infrastructure delays in Lekki threaten Q3 occupancy, pressuring new launches."
-
-2. MARKET IMPACT:
-   - Severity: critical | high | medium | low | negligible
-   - Affected segments: affordable housing | mid-market | premium | commercial | industrial
-   - Geographic radius: Lagos | Southwest Nigeria | National
-   - Timeframe: immediate | near-term | medium-term | long-term
-
-3. MIXTA AFRICA RELEVANCE:
-   - Direct impact: Does this affect Lakowe Crossings, Lakowe Annexe, or Lagos New Town?
-   - Indirect impact: Does this affect pricing, costs, regulatory environment?
-   - Strategic opportunity: Does this create advantage?
-   - Risk flag: Does this threaten execution?
-
-4. SENTIMENT: bullish | bearish | neutral (justify in 1 sentence)
-
-5. LOCATION TAGS: Lagos, Lekki, Ibeju-Lekki, etc.
-
-6. CATEGORY: property-market | policy | developer-news | investment | infrastructure
-
-7. TRENDING TOPICS: Comma-separated tags (e.g., "prices, inflation, infrastructure")
+TASK:
+Produce a structured analysis. Write as an analyst briefing a CEO — direct, specific, no padding.
+- summary: 2-3 sentences. State what the article actually reports, then what it means for the Lagos market. Use numbers if they appear in the text.
+- sentiment: bullish | bearish | neutral based on market implications, not just article tone.
+- If content is thin (headline only), say so in the summary and keep confidence low.
+- Connect to Mixta's live projects (Lakowe Crossings, Lakowe Annexe, Lagos New Town) where genuinely relevant — do not force a connection that isn't there.
 
 RESPOND ONLY IN THIS JSON FORMAT (no markdown, no explanation):
 {
-  "summary": "Professional 2-3 sentence summary",
+  "summary": "What it reports + what it means for Lagos real estate. Use numbers from the text.",
   "sentiment": "bullish|bearish|neutral",
   "location_tags": "Lagos,Lekki,Ibeju-Lekki",
-  "category": "property-market,infrastructure",
-  "trending_topics": "prices,infrastructure",
+  "category": "property-market|policy|developer-news|investment|infrastructure",
+  "trending_topics": "comma-separated tags",
   "market_impact_severity": "critical|high|medium|low|negligible",
-  "affected_segments": "affordable housing,premium",
+  "affected_segments": "affordable housing|mid-market|premium|commercial|industrial",
   "market_impact_timeframe": "immediate|near-term|medium-term|long-term",
   "mixta_relevance": {
-    "direct_impact": "Description or None",
-    "indirect_impact": "Description or None",
-    "strategic_opportunity": "Description or None",
-    "risk_flag": "Description or None"
+    "direct_impact": "Specific named impact on Lakowe Crossings / Annexe / Lagos New Town, or None",
+    "indirect_impact": "Broader market effect on Mixta's position, or None",
+    "strategic_opportunity": "Specific opportunity created, or None",
+    "risk_flag": "Specific risk to execution, or None"
   }
 }`;
   }

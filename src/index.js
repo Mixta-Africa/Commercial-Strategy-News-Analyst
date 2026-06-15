@@ -21,6 +21,7 @@ const SheetsClient = require('./sheets-client');
 const Synthesizer = require('./synthesizer');
 const RunHealth = require('./health');
 const { scoreRelevance } = require('./relevance');
+const { getWatchListOverride, getSourcesOverride } = require('./config-loader');
 const { generateEmailHTML, sendEmail } = require('./email-service');
 const whitelist = require('./whitelist.json');
 
@@ -292,8 +293,12 @@ class NewsPipeline {
       // Pass ALL analyzed articles + the executive briefing
       const htmlContent = generateEmailHTML(articles, trends, alerts, briefing);
       
+      // Support multiple recipients (comma-separated) so leadership can subscribe
+      const recipients = (process.env.RECIPIENT_EMAIL || '')
+        .split(',').map(s => s.trim()).filter(Boolean).join(',');
+
       await sendEmail({
-        to: process.env.RECIPIENT_EMAIL,
+        to: recipients,
         subject: `Nigerian Real Estate News Digest - ${new Date().toDateString()}`,
         html: htmlContent,
       });
@@ -336,6 +341,30 @@ class NewsPipeline {
           path.join(dataDir, 'briefing.json'),
           JSON.stringify({ ...briefing, generatedAt: this.timestamp }, null, 2)
         );
+
+        // Archive: persist a dated copy + maintain a lightweight searchable index
+        const archiveDir = path.join(dataDir, 'archive');
+        if (!fs.existsSync(archiveDir)) fs.mkdirSync(archiveDir, { recursive: true });
+        const dateStr = this.timestamp.split('T')[0];
+        fs.writeFileSync(
+          path.join(archiveDir, `briefing-${dateStr}.json`),
+          JSON.stringify({ ...briefing, generatedAt: this.timestamp }, null, 2)
+        );
+
+        const indexPath = path.join(dataDir, 'briefings-index.json');
+        let index = [];
+        try { index = JSON.parse(fs.readFileSync(indexPath, 'utf-8')).briefings || []; } catch (e) { index = []; }
+        // Replace any existing entry for today, then prepend
+        index = index.filter(b => b.date !== dateStr);
+        index.unshift({
+          date: dateStr,
+          generatedAt: this.timestamp,
+          executive_summary: briefing.executive_summary || '',
+          themeCount: briefing.themes?.length || 0,
+          themeLabels: (briefing.themes || []).map(t => t.label),
+        });
+        index = index.slice(0, 180); // ~6 months of daily briefings
+        fs.writeFileSync(indexPath, JSON.stringify({ briefings: index }, null, 2));
       }
 
       console.log('[PHASE 8] Dashboard data updated');
@@ -355,6 +384,9 @@ class NewsPipeline {
 
     try {
       const health = new RunHealth(this.timestamp);
+
+      // Apply any dashboard-edited config (watch-list / sources) before collecting.
+      await this.applyRemoteConfig();
 
       const rawArticles = await this.collectArticles();
       health.recordSources(this.datasource.sourceHealth);
@@ -426,6 +458,32 @@ class NewsPipeline {
    * Send operator alert (only when degraded/failed). Goes to ALERT_EMAIL if set,
    * otherwise falls back to RECIPIENT_EMAIL. Separate from the leadership digest.
    */
+  /**
+   * Pull dashboard-edited config from Firebase (if configured) and apply it.
+   * Source overrides go to the datasource; watch-list overrides to the synthesizer.
+   */
+  async applyRemoteConfig() {
+    try {
+      const [sources, watchList] = await Promise.all([
+        getSourcesOverride(),
+        getWatchListOverride(),
+      ]);
+
+      if (sources) {
+        this.datasource.config = {
+          ...this.datasource.config,
+          ...(sources.rssFeeds ? { rssFeeds: sources.rssFeeds } : {}),
+          ...(sources.googleNewsQueries ? { googleNewsQueries: sources.googleNewsQueries } : {}),
+        };
+      }
+      if (watchList) {
+        this.synthesizer.watchListOverride = watchList;
+      }
+    } catch (e) {
+      console.warn('[Config] Remote config not applied:', e.message);
+    }
+  }
+
   async sendOperatorAlert(health) {
     if (!health.needsAlert()) return;
     const to = process.env.ALERT_EMAIL || process.env.RECIPIENT_EMAIL;

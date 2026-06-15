@@ -63,6 +63,19 @@ function selectTopArticles(articles, limit = 6) {
  * Render the executive briefing block (the intelligence layer output).
  * This leads the email; the article list below becomes supporting detail.
  */
+
+// Add this helper function to strip [0], [1], etc.
+function cleanLLMText(text) {
+    if (!text) return text;
+    // Regex matches a literal '[', followed by one or more digits, followed by a literal ']'
+    // Replaces them with an empty string.
+    return text.replace(/\[\d+\]/g, '').trim();
+}
+
+// Example usage inside your existing rendering logic:
+const cleanWhatHappened = cleanLLMText(theme.what_happened);
+// Inject cleanWhatHappened into your HTML template instead of the raw theme.what_happened
+
 function renderBriefing(briefing) {
   if (!briefing || !briefing.themes || briefing.themes.length === 0) return '';
 

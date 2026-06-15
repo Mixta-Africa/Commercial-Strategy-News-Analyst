@@ -43,7 +43,7 @@ function renderBriefing(briefing) {
 
   const themes = briefing.themes.map(t => {
     const nv = noveltyStyle[(t.novelty || 'established').toLowerCase()] || noveltyStyle.established;
-    const seen = t.timesSeen && t.timesSeen > 1 ? ` &bull; week ${t.timesSeen}` : '';
+    const seen = t.timesSeen && t.timesSeen > 1 ? ` &bull; day ${t.timesSeen}` : '';
     const srcLinks = (t.sourceArticles || [])
       .map(s => `<a href="${s.url || '#'}" target="_blank" style="color:#888;text-decoration:underline;">${s.source || 'source'}</a>`)
       .join(', ');
@@ -52,10 +52,16 @@ function renderBriefing(briefing) {
       ? `<span style="display:inline-block;background:#fbeaea;color:#a33;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-left:6px;">SINGLE SOURCE</span>`
       : '';
 
+    // Link the theme label to the first source article if available
+    const firstUrl = (t.sourceArticles && t.sourceArticles[0]?.url) || '#';
+    const labelHtml = firstUrl && firstUrl !== '#'
+      ? `<a href="${firstUrl}" target="_blank" style="font-size:15px;font-weight:700;color:#1a1a1a;text-decoration:none;">${t.label || 'Theme'}</a>`
+      : `<span style="font-size:15px;font-weight:700;color:#1a1a1a;">${t.label || 'Theme'}</span>`;
+
     return `
       <div style="background:#ffffff;border:1px solid #eee;border-left:4px solid ${recColor(t.recommendation)};border-radius:4px;padding:16px;margin-bottom:14px;">
         <div style="margin-bottom:8px;">
-          <span style="font-size:15px;font-weight:700;color:#1a1a1a;">${t.label || 'Theme'}</span>
+          ${labelHtml}
           <span style="display:inline-block;background:${nv.bg};color:${nv.fg};font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px;">${nv.label}${seen}</span>
           ${singleSrc}
         </div>
@@ -118,19 +124,44 @@ function generateEmailHTML(articles, trends, alerts, briefing) {
   const articleRow = (a, dimmed = false) => {
     const s = (a.sentiment || 'neutral').toLowerCase();
     const dot = sentimentDot[s] || sentimentDot.neutral;
-    const opacity = dimmed ? 'opacity:0.65;' : '';
+    const opacity = dimmed ? 'opacity:0.6;' : '';
+
+    // Build teaser: use the AI summary if real, else fall back to category/topics as context signal
+    const rawSummary = a.summary || '';
+    const hasSummary = rawSummary && !rawSummary.startsWith('Unable to generate') && rawSummary.trim().length > 20;
+    // Trim to one punchy sentence — everything up to first full stop after 40 chars
+    let teaser = '';
+    if (hasSummary) {
+      const firstStop = rawSummary.indexOf('.', 40);
+      teaser = firstStop > 0 ? rawSummary.substring(0, firstStop + 1) : rawSummary.substring(0, 120);
+    } else if (a.category && a.category !== 'untagged') {
+      // Use category + topics as a lightweight signal
+      const cats = (a.category || '').replace(/,/g, ' &middot; ');
+      teaser = `<em style="color:#aaa;">${cats}</em>`;
+    }
+
+    // Mixta relevance note — show indirect if direct is None
+    const direct = (a.mixta_relevance?.direct_impact || '');
+    const indirect = (a.mixta_relevance?.indirect_impact || '');
+    const relevanceNote = (direct && direct !== 'None' && direct !== 'Unable to determine')
+      ? direct
+      : (indirect && indirect !== 'None' && indirect !== 'Unable to determine')
+        ? indirect
+        : '';
+
     return `
       <tr>
-        <td style="${opacity}padding:8px 0;border-bottom:1px solid #f0f0f0;vertical-align:top;">
+        <td style="${opacity}padding:10px 0;border-bottom:1px solid #f0f0f0;vertical-align:top;">
           <a href="${a.url || '#'}" target="_blank"
-             style="font-size:13px;font-weight:600;color:#1a1a1a;text-decoration:none;line-height:1.4;">
+             style="font-size:13.5px;font-weight:600;color:#1a1a1a;text-decoration:none;line-height:1.4;display:block;">
             ${a.title || 'Untitled'}
           </a>
-          <div style="margin-top:3px;font-size:11px;color:#888;">
+          ${teaser ? `<div style="font-size:12px;color:#555;margin-top:4px;line-height:1.4;">${teaser}</div>` : ''}
+          ${relevanceNote && !dimmed ? `<div style="font-size:11.5px;color:#0c5460;background:#eef6fb;border-radius:3px;padding:3px 8px;margin-top:5px;display:inline-block;">${relevanceNote.substring(0, 100)}</div>` : ''}
+          <div style="margin-top:5px;font-size:11px;color:#888;">
             <span style="background:#f0f0f0;color:#444;padding:1px 7px;border-radius:3px;font-weight:600;">${a.source || '?'}</span>
-            &nbsp;
-            <span style="color:${dot.color};font-weight:600;">&bull; ${dot.label}</span>
-            ${dimmed ? `&nbsp;<span style="color:#aaa;font-style:italic;">Referenced in briefing</span>` : ''}
+            &nbsp;<span style="color:${dot.color};font-weight:600;">&bull; ${dot.label}</span>
+            ${dimmed ? `&nbsp;<span style="color:#bbb;font-style:italic;">— in briefing above</span>` : ''}
           </div>
         </td>
       </tr>`;

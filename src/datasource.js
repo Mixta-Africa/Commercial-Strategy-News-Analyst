@@ -1,12 +1,12 @@
 /**
- * Data Source Aggregator
+ * Data Source Aggregator - COMPLETE VERSION
  * 
- * Collects articles from multiple sources:
+ * Collects articles from 5 sources:
  * 1. GNews API
  * 2. NewsAPI
  * 3. Google News RSS
- * 4. Custom RSS feeds
- * 5. Direct URLs (user-configured)
+ * 4. Custom RSS feeds (ThisDay, Punch, Daily Trust, Nairametrics, etc)
+ * 5. Direct URLs (user-configured) - NEW
  */
 
 const axios = require('axios');
@@ -19,10 +19,9 @@ class DataSource {
     this.xmlParser = new xml2js.Parser();
   }
 
-  // ========================================================================
-  // EXISTING SOURCES (Keep as-is)
-  // ========================================================================
-
+  /**
+   * FETCH 1: GNews API
+   */
   async fetchGNews() {
     console.log('[GNews] Fetching articles...');
     const articles = [];
@@ -75,6 +74,9 @@ class DataSource {
     return articles;
   }
 
+  /**
+   * FETCH 2: NewsAPI
+   */
   async fetchNewsAPI() {
     console.log('[NewsAPI] Fetching articles...');
     const articles = [];
@@ -126,6 +128,9 @@ class DataSource {
     return articles;
   }
 
+  /**
+   * FETCH 3: Google News RSS Feeds
+   */
   async fetchGoogleNews() {
     console.log('[GoogleNews] Fetching query-based feeds...');
     const articles = [];
@@ -182,39 +187,36 @@ class DataSource {
     return articles;
   }
 
-  async fetchRSS() {
+  /**
+   * FETCH 4: Custom RSS Feeds
+   */
+  async fetchRSSFeeds() {
     console.log('[RSS] Fetching from RSS feeds...');
     const articles = [];
     const feeds = [
       {
         name: 'ThisDay',
         url: 'https://www.thisday.com.ng/feed/',
-        category: 'business',
       },
       {
         name: 'Premium Times',
         url: 'https://www.premiumtimesng.com/feed/',
-        category: 'business',
       },
       {
         name: 'BusinessDay',
         url: 'https://businessday.ng/feed/',
-        category: 'real-estate',
       },
       {
         name: 'Nairametrics',
         url: 'https://www.nairametrics.com/feed/',
-        category: 'real-estate',
       },
       {
         name: 'Daily Trust',
         url: 'https://dailytrust.com/feed/',
-        category: 'business',
       },
       {
         name: 'The Punch',
         url: 'https://punch.ng/feed/',
-        category: 'business',
       },
     ];
 
@@ -253,10 +255,13 @@ class DataSource {
     return articles;
   }
 
-  // ========================================================================
-  // NEW: DIRECT URL FETCHER
-  // ========================================================================
-
+  /**
+   * FETCH 5: Direct URLs - NEW FEATURE
+   * 
+   * Allows user to add custom news sources directly
+   * Fetches each URL and extracts title/description
+   * Gets priority boost (user-curated = high quality)
+   */
   async fetchDirectUrls() {
     let config;
     try {
@@ -284,11 +289,11 @@ class DataSource {
             },
           });
 
-          // Extract title from meta tags or <title>
+          // Extract title from <title> tag
           const titleMatch = response.data.match(/<title[^>]*>([^<]+)<\/title>/i);
           const title = titleMatch ? titleMatch[1].trim() : 'Real Estate Article';
 
-          // Extract description
+          // Extract description from meta tag
           const descMatch = response.data.match(/<meta\s+name="description"\s+content="([^"]+)"/i);
           const description = descMatch ? descMatch[1] : '';
 
@@ -298,7 +303,7 @@ class DataSource {
             url,
             source: 'Direct URL',
             pubDate: new Date().toISOString(),
-            trusted: true,
+            trusted: true,  // Mark as user-curated (high quality)
           });
 
           console.log(`[DirectURL] ✓ Added: ${title.substring(0, 60)}`);

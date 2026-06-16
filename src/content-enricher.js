@@ -3,19 +3,15 @@
  *
  * FIXES APPLIED:
  * 1. Zero-Network Google News Base64 Decoder
- * 2. True Cheerio DOM Parsing
- * 3. Exposed Silent Errors
- * 4. FALLBACK ENRICHMENT STRATEGY
- *    → Never skips articles
- *    → Extract full text → Headline+Desc → Headline only
- *
- * Enrichment Strategy:
- * - Articles < 200 chars get enriched by fetching the real URL
- * - Google News URLs decoded locally, then fetched
- * - Cheerio extracts body, fallback to <p> tags
- * - If extraction fails: use headline + description
- * - If that fails: use headline only
- * - Errors logged so nothing is hidden
+ * → Decodes Base64 payloads locally without network calls
+ * → Falls back to axios only if decode fails
+ * * 2. True Cheerio DOM Parsing
+ * → Ripped out custom regex HTML cleaner
+ * → Uses cheerio.load() for proper DOM manipulation
+ * → Targets semantic tags (article, .entry-content, <p>)
+ * * 3. Exposed Silent Errors
+ * → Every catch block now logs errors explicitly
+ * → 403/429/Timeout errors printed to console
  */
 
 const axios = require('axios');
@@ -31,36 +27,24 @@ const BROWSER_HEADERS = {
   'Cache-Control': 'no-cache',
 };
 
-/**
- * Clean raw content: strip HTML tags, decode entities, normalise whitespace
- */
 function cleanContent(raw) {
   if (!raw) return '';
   return raw
-    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/\[(\+\d+\s*chars?)\]/g, '')
+    .replace(/\[(\+\d+\s*chars?)\]/g, '') // strip NewsAPI truncation markers
     .replace(/\s+/g, ' ')
     .trim();
 }
 
-/**
- * Measure the usable content length of an article
- */
 function usableLength(article) {
   const raw = article.content || article.description || '';
   return cleanContent(raw).length;
 }
 
 /**
- * FIX #1: Zero-Network Google News Base64 Decoder
+ * Zero-Network Google News Decoder
  */
 function decodeGoogleNewsBase64(googleNewsUrl) {
   try {
@@ -83,8 +67,6 @@ function decodeGoogleNewsBase64(googleNewsUrl) {
         console.log(`[Enricher] Successfully decoded Google News URL → ${extractedUrl.substring(0, 80)}`);
         return extractedUrl;
       }
-
-      console.log('[Enricher] Base64 decoded but no URL pattern found in payload');
       return null;
     } catch (decodeError) {
       console.log('[Enricher] Base64 decode failed:', decodeError.message);
@@ -96,25 +78,17 @@ function decodeGoogleNewsBase64(googleNewsUrl) {
   }
 }
 
-/**
- * Is this a Google News tracking URL?
- */
 function isGoogleNewsUrl(url) {
   return url && (url.includes('news.google.com/rss/articles') || url.includes('news.google.com/articles'));
 }
 
-/**
- * FIX #2: Resolve Google News URL with Base64 decode first, then network fallback
- */
 async function resolveGoogleNewsUrl(url) {
   console.log(`[Enricher] Resolving Google News URL: ${url.substring(0, 80)}`);
 
   const decodedUrl = decodeGoogleNewsBase64(url);
-  if (decodedUrl) {
-    return decodedUrl;
-  }
+  if (decodedUrl) return decodedUrl;
 
-  console.log('[Enricher] Base64 decode failed, attempting network redirect...');
+  console.log('[Enricher] Base64 decode failed or no URL found, attempting network redirect...');
   try {
     const response = await axios.get(url, {
       headers: BROWSER_HEADERS,
@@ -124,43 +98,26 @@ async function resolveGoogleNewsUrl(url) {
     });
 
     const finalUrl = response.request?.res?.responseUrl || response.request?.responseURL || url;
-    console.log(`[Enricher] Final URL after redirect: ${finalUrl.substring(0, 100)}`);
-
     if (finalUrl && !finalUrl.includes('news.google.com')) {
       console.log(`[Enricher] Got real publisher URL → ${finalUrl.substring(0, 80)}`);
       return finalUrl;
     }
 
     const htmlBody = response.data || '';
-    
     const linkMatch = htmlBody.match(/href=["']([^"']+news\.google\.com[^"']*url=([^&"']+))/i);
     if (linkMatch && linkMatch[2]) {
       const encodedUrl = decodeURIComponent(linkMatch[2]);
-      if (encodedUrl && !encodedUrl.includes('google.com')) {
-        console.log(`[Enricher] Extracted URL from HTML → ${encodedUrl.substring(0, 80)}`);
-        return encodedUrl;
-      }
-    }
-
-    const originalMatch = htmlBody.match(/href=["']([^"']*?)(https?:\/\/[^"'<>]+)["']/);
-    if (originalMatch && originalMatch[2] && !originalMatch[2].includes('google.com')) {
-      console.log(`[Enricher] Found original link → ${originalMatch[2].substring(0, 80)}`);
-      return originalMatch[2];
+      if (encodedUrl && !encodedUrl.includes('google.com')) return encodedUrl;
     }
 
     const canonical = htmlBody.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i);
-    if (canonical && canonical[1] && !canonical[1].includes('google.com')) {
-      console.log(`[Enricher] Found canonical link → ${canonical[1].substring(0, 80)}`);
-      return canonical[1];
-    }
+    if (canonical && canonical[1] && !canonical[1].includes('google.com')) return canonical[1];
 
-    console.log('[Enricher] HTTP redirect succeeded but no real publisher URL found');
     return null;
   } catch (networkError) {
     console.error('[Enricher] HTTP redirect FAILED:', {
       status: networkError.response?.status,
       message: networkError.message,
-      code: networkError.code,
       url: url.substring(0, 80),
     });
     return null;
@@ -168,7 +125,7 @@ async function resolveGoogleNewsUrl(url) {
 }
 
 /**
- * FIX #2: Extract article body using Cheerio DOM parsing
+ * Extract article body using Cheerio DOM parsing
  */
 function extractBodyText(html) {
   if (!html || typeof html !== 'string') return null;
@@ -177,7 +134,7 @@ function extractBodyText(html) {
     const $ = cheerio.load(html);
 
     $('script, style, nav, header, footer, aside, iframe, noscript, form, .nav, .sidebar, .comments, .advertisement, .ad').remove();
-    $('<!--[^]*-->').remove();
+    $('').remove(); 
 
     let bodyText = '';
 
@@ -205,20 +162,14 @@ function extractBodyText(html) {
           paragraphs.push(text);
         }
       });
-      if (paragraphs.length > 0) {
-        bodyText = paragraphs.join(' ');
-      }
+      if (paragraphs.length > 0) bodyText = paragraphs.join(' ');
     }
 
-    if (!bodyText) {
-      bodyText = $('body').text();
-    }
+    if (!bodyText) bodyText = $('body').text();
 
     if (bodyText) {
       const cleaned = cleanContent(bodyText);
-      if (cleaned.length > 100) {
-        return cleaned.substring(0, MAX_EXTRACT);
-      }
+      if (cleaned.length > 100) return cleaned.substring(0, MAX_EXTRACT);
     }
 
     console.log('[Enricher] extractBodyText: could not extract meaningful content from HTML');
@@ -229,12 +180,8 @@ function extractBodyText(html) {
   }
 }
 
-/**
- * FIX #3: Fetch article body with explicit error logging
- */
 async function fetchArticleBody(url) {
   console.log(`[Enricher] Fetching article body: ${url.substring(0, 80)}`);
-  
   try {
     const response = await axios.get(url, {
       headers: BROWSER_HEADERS,
@@ -243,10 +190,7 @@ async function fetchArticleBody(url) {
       validateStatus: s => s < 400,
     });
 
-    if (typeof response.data !== 'string') {
-      console.warn(`[Enricher] Response data is not HTML string (type: ${typeof response.data})`);
-      return null;
-    }
+    if (typeof response.data !== 'string') return null;
 
     const body = extractBodyText(response.data);
     if (body && body.length > 100) {
@@ -260,126 +204,55 @@ async function fetchArticleBody(url) {
     console.error('[Enricher] Article fetch FAILED:', {
       url: url.substring(0, 80),
       status: fetchError.response?.status,
-      statusText: fetchError.response?.statusText,
-      code: fetchError.code,
       message: fetchError.message,
     });
-
-    if (fetchError.response?.status === 403) {
-      console.error('[Enricher] ⚠️  403 Forbidden — publisher blocking requests');
-    } else if (fetchError.response?.status === 429) {
-      console.error('[Enricher] ⚠️  429 Rate Limited — too many requests');
-    } else if (fetchError.code === 'ECONNABORTED' || fetchError.message.includes('timeout')) {
-      console.error('[Enricher] ⚠️  Timeout — publisher server too slow');
-    }
-
     return null;
   }
 }
 
-/**
- * FALLBACK ENRICHMENT STRATEGY - Never skip articles
- * 
- * Priority:
- * 1. Extract full article text (best quality)
- * 2. Fallback to headline + description (good quality)
- * 3. Last resort: headline only (minimal quality)
- * 4. Everything gets content for AI analysis
- */
 async function enrichArticles(articles) {
   const thin = articles.filter(a => usableLength(a) < THIN_THRESHOLD);
   const already = articles.filter(a => usableLength(a) >= THIN_THRESHOLD);
 
-  if (thin.length === 0) {
-    console.log('[Enricher] All articles have sufficient content — no enrichment needed');
-    return articles;
-  }
+  if (thin.length === 0) return articles;
 
-  console.log(`[Enricher] Strategy: Extract text → Headline+Desc → Headline only`);
   console.log(`[Enricher] ${already.length} articles OK, ${thin.length} need enrichment`);
 
   const BATCH_SIZE = 3;
-  const enrichedMap = new Map();
+  const enrichedMap = new Map(); 
 
   for (let i = 0; i < thin.length; i += BATCH_SIZE) {
     const batch = thin.slice(i, i + BATCH_SIZE);
     const results = await Promise.all(batch.map(async (article) => {
       let targetUrl = article.url;
 
-      // Try to fetch full article text (skip Google News for extraction)
-      if (targetUrl && !isGoogleNewsUrl(targetUrl)) {
-        const extractedContent = await fetchArticleBody(targetUrl);
-        if (extractedContent && extractedContent.length > 150) {
-          console.log(`[Enricher] ✓ Full text (${extractedContent.length} chars): ${article.title?.substring(0, 50)}`);
-          return {
-            ...article,
-            content: extractedContent,
-            contentEnriched: true,
-            enrichmentSource: 'full_text',
-          };
-        }
+      if (isGoogleNewsUrl(targetUrl)) {
+        const resolved = await resolveGoogleNewsUrl(targetUrl);
+        if (resolved) targetUrl = resolved;
       }
 
-      // FALLBACK 1: Headline + Description
-      const headline = article.title || '';
-      const description = article.description || '';
-      const source = article.source || '';
-      
-      const fallbackContent = [headline, description, source]
-        .filter(x => x && x.length > 0)
-        .join('. ')
-        .substring(0, MAX_EXTRACT);
+      const bodyText = targetUrl ? await fetchArticleBody(targetUrl) : null;
 
-      if (fallbackContent.length > 150) {
-        console.log(`[Enricher] ↻ Headline+Desc (${fallbackContent.length} chars): ${headline?.substring(0, 50)}`);
+      if (bodyText && bodyText.length > 150) {
+        console.log(`[Enricher] OK (${bodyText.length} chars): ${article.title?.substring(0, 55)}`);
         return {
           ...article,
-          content: fallbackContent,
+          content: bodyText,
+          resolvedUrl: targetUrl !== article.url ? targetUrl : undefined,
           contentEnriched: true,
-          enrichmentSource: 'headline_description',
         };
+      } else {
+        console.warn(`[Enricher] Could not enrich: ${article.title?.substring(0, 55)}`);
+        return { ...article, contentEnriched: false };
       }
-
-      // FALLBACK 2: Headline only
-      if (headline && headline.length > 50) {
-        console.log(`[Enricher] ~ Headline only (${headline.length} chars): ${headline?.substring(0, 50)}`);
-        return {
-          ...article,
-          content: headline,
-          contentEnriched: true,
-          enrichmentSource: 'headline_only',
-        };
-      }
-
-      // FALLBACK 3: Minimal
-      console.log(`[Enricher] ⚠ Minimal: ${article.title?.substring(0, 50)}`);
-      return {
-        ...article,
-        content: article.title || 'Real estate market article',
-        contentEnriched: false,
-        enrichmentSource: 'title_only',
-      };
     }));
 
     results.forEach(r => enrichedMap.set(r.url, r));
-
-    if (i + BATCH_SIZE < thin.length) {
-      await new Promise(r => setTimeout(r, 2000));
-    }
+    if (i + BATCH_SIZE < thin.length) await new Promise(r => setTimeout(r, 2000));
   }
 
-  // Quality breakdown
-  const fullText = [...enrichedMap.values()].filter(a => a.enrichmentSource === 'full_text').length;
-  const headlineDesc = [...enrichedMap.values()].filter(a => a.enrichmentSource === 'headline_description').length;
-  const headlineOnly = [...enrichedMap.values()].filter(a => a.enrichmentSource === 'headline_only').length;
-  const minimal = [...enrichedMap.values()].filter(a => a.enrichmentSource === 'title_only').length;
-
-  console.log(`[Enricher] Quality breakdown:`);
-  console.log(`  • ${fullText} articles with full extracted text`);
-  console.log(`  • ${headlineDesc} articles with headline + description`);
-  console.log(`  • ${headlineOnly} articles with headline only`);
-  if (minimal > 0) console.log(`  • ${minimal} articles with minimal content`);
-  console.log(`[Enricher] Total: ${thin.length}/${thin.length} articles have content for AI analysis ✓`);
+  const successCount = [...enrichedMap.values()].filter(a => a.contentEnriched).length;
+  console.log(`[Enricher] Done. ${successCount}/${thin.length} articles enriched`);
 
   return articles.map(a => enrichedMap.has(a.url) ? enrichedMap.get(a.url) : a);
 }

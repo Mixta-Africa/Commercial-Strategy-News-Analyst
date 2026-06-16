@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-16T15:30:11.737Z",
+  "timestamp": "2026-06-16T15:39:10.651Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -18,7 +18,7 @@
       "error": null
     },
     "rss": {
-      "total": 12,
+      "total": 11,
       "feeds": {
         "ThisDay": {
           "ok": true,
@@ -42,7 +42,7 @@
         },
         "Daily Trust": {
           "ok": true,
-          "count": 3,
+          "count": 2,
           "error": null
         },
         "The Punch": {
@@ -59,7 +59,7 @@
     }
   },
   "counts": {
-    "raw": 154,
+    "raw": 153,
     "filtered": 15,
     "analyzed": 15,
     "aiFallbacks": 0

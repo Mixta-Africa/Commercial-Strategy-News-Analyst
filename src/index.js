@@ -39,7 +39,7 @@ class NewsPipeline {
 
   /**
    * PHASE 1: Data Collection
-   * FIX: Added fetchDirectUrls to the Promise.all array
+   * FIX: Added fetchDirectUrls() to the parallel collection array
    */
   async collectArticles() {
     console.log('[PHASE 1] Collecting articles from all sources...');
@@ -51,7 +51,7 @@ class NewsPipeline {
           this.datasource.fetchNewsAPI(),
           this.datasource.fetchGoogleNews(),
           this.datasource.fetchRSSFeeds(),
-          this.datasource.fetchDirectUrls(), // Newly wired source!
+          this.datasource.fetchDirectUrls(), // Wired into the main collection phase
         ]);
 
       const allArticles = [
@@ -59,7 +59,7 @@ class NewsPipeline {
         ...newsApiArticles,
         ...googleNewsArticles,
         ...rssArticles,
-        ...directArticles,
+        ...directArticles, // Spread manual injections into the main array
       ];
 
       console.log(`[PHASE 1] Collected ${allArticles.length} raw articles`);
@@ -97,7 +97,7 @@ class NewsPipeline {
       // Skip if no title
       if (!normalizedTitle) continue;
 
-      // Curated feeds (RSS / Google News / Direct URLs) are pre-vetted by being on our source
+      // Curated feeds (RSS / Google News) are pre-vetted by being on our source
       // list, so they bypass the source whitelist — but still must pass keyword filter.
       if (!article.trustedSource) {
         const isWhitelisted = whitelistSources.has(normalizedSource) ||

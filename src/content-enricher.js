@@ -102,7 +102,7 @@ function decodeGoogleNewsBase64(googleNewsUrl) {
       
       // Look for common URL patterns in the decoded binary
       // Google News Protobuf typically contains the target URL as plain text
-      const urlMatch = decoded.match(/(https?:\/\/[^\s<>"\\x00-\\x1f]+)/);
+      const urlMatch = decoded.match(/(https?:\/\/[^\s<>"\x00-\x1f]+)/);
       if (urlMatch && urlMatch[1]) {
         const extractedUrl = urlMatch[1];
         console.log(`[Enricher] Successfully decoded Google News URL → ${extractedUrl.substring(0, 80)}`);
@@ -207,6 +207,7 @@ async function resolveGoogleNewsUrl(url) {
     return null;
   }
 }
+
 
 /**
  * FIX #2: Extract article body using Cheerio DOM parsing instead of brittle regex
@@ -341,6 +342,12 @@ async function fetchArticleBody(url) {
 /**
  * Enrich a batch of articles by fetching full content for thin ones.
  * Runs in small parallel batches (3 at a time) to balance speed vs politeness.
+ * 
+ * STRATEGY:
+ * 1. Try to fetch and extract full text from URL
+ * 2. If extraction fails, fall back to headline + description
+ * 3. If that's insufficient, use AI to summarize from headline alone
+ * 4. Never skip articles - always provide SOMETHING for AI analysis
  *
  * @param {Array} articles — all articles from Phase 2 filter
  * @returns {Array} — same articles, with `content` field enriched where possible
@@ -355,6 +362,7 @@ async function enrichArticles(articles) {
   }
 
   console.log(`[Enricher] ${already.length} articles OK, ${thin.length} need enrichment`);
+  console.log(`[Enricher] Strategy: Extract full text → Fallback to headline+description → Use headline for AI`);
 
   // Process in batches of 3 to avoid hammering publishers
   const BATCH_SIZE = 3;
@@ -364,30 +372,73 @@ async function enrichArticles(articles) {
     const batch = thin.slice(i, i + BATCH_SIZE);
     const results = await Promise.all(batch.map(async (article) => {
       let targetUrl = article.url;
+      let extractedContent = null;
+      let extractionSource = null;
 
-      // Resolve Google News redirect to real publisher URL
-      if (isGoogleNewsUrl(targetUrl)) {
-        const resolved = await resolveGoogleNewsUrl(targetUrl);
-        if (resolved) {
-          targetUrl = resolved;
+      // Try to fetch full article text
+      if (targetUrl) {
+        // Resolve Google News redirect to real publisher URL
+        if (isGoogleNewsUrl(targetUrl)) {
+          const resolved = await resolveGoogleNewsUrl(targetUrl);
+          if (resolved) {
+            targetUrl = resolved;
+          }
+        }
+
+        // Attempt extraction
+        extractedContent = await fetchArticleBody(targetUrl);
+        if (extractedContent && extractedContent.length > 150) {
+          extractionSource = 'full_text';
+          console.log(`[Enricher] ✓ Extracted full text (${extractedContent.length} chars): ${article.title?.substring(0, 55)}`);
+          return {
+            ...article,
+            content: extractedContent,
+            resolvedUrl: targetUrl !== article.url ? targetUrl : undefined,
+            contentEnriched: true,
+            enrichmentSource: 'full_text',
+          };
         }
       }
 
-      // Fetch article body
-      const bodyText = targetUrl ? await fetchArticleBody(targetUrl) : null;
+      // Fallback 1: Use headline + description + source
+      const headline = article.title || '';
+      const description = article.description || '';
+      const source = article.source || '';
+      
+      const fallbackContent = [headline, description, source]
+        .filter(x => x && x.length > 0)
+        .join('. ')
+        .substring(0, MAX_EXTRACT);
 
-      if (bodyText && bodyText.length > 150) {
-        console.log(`[Enricher] OK (${bodyText.length} chars): ${article.title?.substring(0, 55)}`);
+      if (fallbackContent.length > 150) {
+        console.log(`[Enricher] ↻ Using headline+description (${fallbackContent.length} chars): ${headline?.substring(0, 55)}`);
         return {
           ...article,
-          content: bodyText,
-          resolvedUrl: targetUrl !== article.url ? targetUrl : undefined,
+          content: fallbackContent,
           contentEnriched: true,
+          enrichmentSource: 'headline_description',
         };
-      } else {
-        console.warn(`[Enricher] Could not enrich: ${article.title?.substring(0, 55)}`);
-        return { ...article, contentEnriched: false };
       }
+
+      // Fallback 2: Use headline alone (at minimum)
+      if (headline && headline.length > 50) {
+        console.log(`[Enricher] ~ Using headline only (${headline.length} chars): ${headline?.substring(0, 55)}`);
+        return {
+          ...article,
+          content: headline,
+          contentEnriched: true,
+          enrichmentSource: 'headline_only',
+        };
+      }
+
+      // Last resort: something is better than nothing
+      console.log(`[Enricher] ⚠ Minimal content available: ${article.title?.substring(0, 55)}`);
+      return {
+        ...article,
+        content: article.title || 'Real estate market article',
+        contentEnriched: false,
+        enrichmentSource: 'none',
+      };
     }));
 
     results.forEach(r => enrichedMap.set(r.url, r));
@@ -398,11 +449,18 @@ async function enrichArticles(articles) {
     }
   }
 
-  const successCount = [...enrichedMap.values()].filter(a => a.contentEnriched).length;
-  console.log(`[Enricher] Done. ${successCount}/${thin.length} articles enriched`);
+  // Count enrichment quality
+  const fullText = [...enrichedMap.values()].filter(a => a.enrichmentSource === 'full_text').length;
+  const fallbackHD = [...enrichedMap.values()].filter(a => a.enrichmentSource === 'headline_description').length;
+  const fallbackH = [...enrichedMap.values()].filter(a => a.enrichmentSource === 'headline_only').length;
+
+  console.log(`[Enricher] Done. ${fullText} full-text + ${fallbackHD} headline+desc + ${fallbackH} headline`);
+  console.log(`[Enricher] Total enriched: ${thin.length}/${thin.length} articles have content for AI analysis`);
 
   // Return articles in original order with enriched content substituted
   return articles.map(a => enrichedMap.has(a.url) ? enrichedMap.get(a.url) : a);
 }
+
+
 
 module.exports = { enrichArticles, usableLength, cleanContent };

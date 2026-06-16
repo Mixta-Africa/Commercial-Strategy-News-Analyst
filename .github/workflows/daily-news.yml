@@ -26,10 +26,7 @@ jobs:
 
       # ---------------------------------------------------------------
       # AI PROVIDER HEALTH CHECK
-      # Tests all 6 providers + both Groq models.
-      # Kept in sync with src/agents.js — model changes there must be
-      # reflected here. continue-on-error: true so a failing key never
-      # blocks the pipeline.
+      # FIX: Now handles comma-separated multi-keys!
       # ---------------------------------------------------------------
       - name: Test all AI providers
         run: |
@@ -38,10 +35,13 @@ jobs:
           const axios = require('axios');
           const T = 10000;
 
+          // Helper to safely grab the first key if multiple are provided
+          const getFirstKey = (keyString) => keyString ? keyString.split(',')[0].trim() : undefined;
+
           const tests = [
             {
               name: 'Groq-8b (llama-3.1-8b-instant)',
-              key: process.env.GROQ_API_KEY,
+              key: getFirstKey(process.env.GROQ_API_KEY),
               fn: async (key) => {
                 const r = await axios.post('https://api.groq.com/openai/v1/chat/completions',
                   { model: 'llama-3.1-8b-instant', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
@@ -51,7 +51,7 @@ jobs:
             },
             {
               name: 'Groq-70b (llama-3.3-70b-versatile)',
-              key: process.env.GROQ_API_KEY,
+              key: getFirstKey(process.env.GROQ_API_KEY),
               fn: async (key) => {
                 const r = await axios.post('https://api.groq.com/openai/v1/chat/completions',
                   { model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
@@ -61,7 +61,7 @@ jobs:
             },
             {
               name: 'Gemini (v1beta auto-model)',
-              key: process.env.GEMINI_API_KEY,
+              key: getFirstKey(process.env.GEMINI_API_KEY),
               fn: async (key) => {
                 const models = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-1.5-flash'];
                 for (const m of models) {
@@ -79,9 +79,8 @@ jobs:
             },
             {
               name: 'Cerebras (gpt-oss-120b)',
-              key: process.env.CEREBRAS_API_KEY,
+              key: getFirstKey(process.env.CEREBRAS_API_KEY),
               fn: async (key) => {
-                // llama-3.3-70b was deprecated on Cerebras; gpt-oss-120b is current
                 const models = ['gpt-oss-120b', 'llama3.1-8b'];
                 for (const m of models) {
                   try {
@@ -96,7 +95,7 @@ jobs:
             },
             {
               name: 'SambaNova (Meta-Llama-3.3-70B-Instruct)',
-              key: process.env.SAMBANOVA_API_KEY,
+              key: getFirstKey(process.env.SAMBANOVA_API_KEY),
               fn: async (key) => {
                 const r = await axios.post('https://api.sambanova.ai/v1/chat/completions',
                   { model: 'Meta-Llama-3.3-70B-Instruct', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
@@ -106,7 +105,7 @@ jobs:
             },
             {
               name: 'Mistral (mistral-small-latest)',
-              key: process.env.MISTRAL_API_KEY,
+              key: getFirstKey(process.env.MISTRAL_API_KEY),
               fn: async (key) => {
                 const r = await axios.post('https://api.mistral.ai/v1/chat/completions',
                   { model: 'mistral-small-latest', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
@@ -116,10 +115,8 @@ jobs:
             },
             {
               name: 'OpenRouter (free tier)',
-              key: process.env.OPENROUTER_API_KEY,
+              key: getFirstKey(process.env.OPENROUTER_API_KEY),
               fn: async (key) => {
-                // deepseek-r1:free was removed from free tier June 2026.
-                // Try two current free models in order; fall through on 404/400/422.
                 const models = ['meta-llama/llama-3.3-70b:free', 'openai/gpt-oss-20b:free'];
                 for (const m of models) {
                   try {
@@ -130,7 +127,6 @@ jobs:
                   } catch (e) {
                     const s = e.response?.status;
                     if (s !== 404 && s !== 400 && s !== 422) throw e;
-                    // continue to next model
                   }
                 }
                 throw new Error('No OpenRouter free model available');

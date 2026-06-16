@@ -2,94 +2,94 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "bearish": 2,
-      "neutral": 6
+      "bullish": 8,
+      "neutral": 6,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
+        "topic": "Lagos market",
         "count": 4
       },
       {
-        "topic": "Lagos property market",
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "Nigeria real estate",
         "count": 2
       },
       {
-        "topic": "competition",
+        "topic": "rental market",
         "count": 2
       },
       {
-        "topic": "Lagos market",
+        "topic": "luxury real estate",
         "count": 2
-      },
-      {
-        "topic": "Nigeria",
-        "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "bearish": 2,
-      "neutral": 6
+      "bullish": 8,
+      "neutral": 6,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
+        "topic": "Lagos market",
         "count": 4
       },
       {
-        "topic": "Lagos property market",
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "Nigeria real estate",
         "count": 2
       },
       {
-        "topic": "competition",
+        "topic": "rental market",
         "count": 2
       },
       {
-        "topic": "Lagos market",
+        "topic": "luxury real estate",
         "count": 2
-      },
-      {
-        "topic": "Nigeria",
-        "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "bearish": 2,
-      "neutral": 6
+      "bullish": 8,
+      "neutral": 6,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
+        "topic": "Lagos market",
         "count": 4
       },
       {
-        "topic": "Lagos property market",
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "Nigeria real estate",
         "count": 2
       },
       {
-        "topic": "competition",
+        "topic": "rental market",
         "count": 2
       },
       {
-        "topic": "Lagos market",
+        "topic": "luxury real estate",
         "count": 2
-      },
-      {
-        "topic": "Nigeria",
-        "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   }
 }

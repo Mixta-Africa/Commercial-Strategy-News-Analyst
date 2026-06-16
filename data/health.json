@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-16T09:59:36.989Z",
+  "timestamp": "2026-06-16T12:14:14.552Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -18,7 +18,7 @@
       "error": null
     },
     "rss": {
-      "total": 13,
+      "total": 11,
       "feeds": {
         "ThisDay": {
           "ok": true,
@@ -37,24 +37,24 @@
         },
         "Nairametrics": {
           "ok": true,
-          "count": 2,
+          "count": 1,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "The Punch": {
           "ok": true,
-          "count": 4,
+          "count": 2,
           "error": null
         }
       }
     }
   },
   "counts": {
-    "raw": 155,
+    "raw": 153,
     "filtered": 15,
     "analyzed": 15,
     "aiFallbacks": 0

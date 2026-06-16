@@ -151,24 +151,50 @@ async function resolveGoogleNewsUrl(url) {
     const response = await axios.get(url, {
       headers: BROWSER_HEADERS,
       timeout: 10000,
-      maxRedirects: 10,
+      maxRedirects: 5,
       validateStatus: s => s < 400,
     });
 
+    // Try to extract URL from response headers or body
     const finalUrl = response.request?.res?.responseUrl || response.request?.responseURL || url;
-    if (finalUrl && finalUrl !== url && !finalUrl.includes('news.google.com')) {
-      console.log(`[Enricher] HTTP redirect successful → ${finalUrl.substring(0, 80)}`);
+    
+    console.log(`[Enricher] Final URL after redirect: ${finalUrl.substring(0, 100)}`);
+
+    // If we got a real publisher URL (not Google News), use it
+    if (finalUrl && !finalUrl.includes('news.google.com')) {
+      console.log(`[Enricher] Got real publisher URL → ${finalUrl.substring(0, 80)}`);
       return finalUrl;
     }
 
-    // Fallback: look for canonical link in HTML
-    const canonical = (response.data || '').match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i);
-    if (canonical) {
+    // Google News pages often have a redirect URL in the HTML
+    // Look for "https://www.google.com/url?rct=j&q=&esrc=s&cd=&ved=...&url=" pattern
+    const htmlBody = response.data || '';
+    
+    // Pattern 1: Look for clickable link in the page
+    const linkMatch = htmlBody.match(/href=["']([^"']+news\.google\.com[^"']*url=([^&"']+))/i);
+    if (linkMatch && linkMatch[2]) {
+      const encodedUrl = decodeURIComponent(linkMatch[2]);
+      if (encodedUrl && !encodedUrl.includes('google.com')) {
+        console.log(`[Enricher] Extracted URL from HTML → ${encodedUrl.substring(0, 80)}`);
+        return encodedUrl;
+      }
+    }
+
+    // Pattern 2: Look for "view original" link
+    const originalMatch = htmlBody.match(/href=["']([^"']*?)(https?:\/\/[^"'<>]+)["']/);
+    if (originalMatch && originalMatch[2] && !originalMatch[2].includes('google.com')) {
+      console.log(`[Enricher] Found original link → ${originalMatch[2].substring(0, 80)}`);
+      return originalMatch[2];
+    }
+
+    // Pattern 3: Fallback - look for canonical link
+    const canonical = htmlBody.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i);
+    if (canonical && canonical[1] && !canonical[1].includes('google.com')) {
       console.log(`[Enricher] Found canonical link → ${canonical[1].substring(0, 80)}`);
       return canonical[1];
     }
 
-    console.log('[Enricher] HTTP redirect succeeded but no final URL found');
+    console.log('[Enricher] HTTP redirect succeeded but no real publisher URL found, staying on Google News');
     return null;
   } catch (networkError) {
     // FIX #3: Expose the error instead of silently returning null

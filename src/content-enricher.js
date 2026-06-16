@@ -30,7 +30,6 @@ async function enrichArticles(articles) {
 
   console.log(`[Enricher] ${already.length} articles OK, ${thin.length} need enrichment via Headless Browser`);
 
-  // Launch the invisible Chrome browser
   const browser = await puppeteer.launch({
     headless: "new",
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
@@ -40,41 +39,39 @@ async function enrichArticles(articles) {
 
   for (const article of thin) {
     const page = await browser.newPage();
-    
-    // Disguise the browser as a normal human on a laptop
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
     await page.setViewport({ width: 1280, height: 800 });
 
     try {
       console.log(`[Enricher] Browser navigating to: ${article.url.substring(0, 80)}...`);
       
-      // 'networkidle2' tells the browser to wait until the page fully stops loading resources.
-      // This is the magic key that bypasses JS redirects and Cloudflare waiting screens!
-      await page.goto(article.url, { waitUntil: 'networkidle2', timeout: 25000 });
+      // Load the page
+      await page.goto(article.url, { waitUntil: 'domcontentloaded', timeout: 25000 });
+      
+      // FIX 2: Wait 3.5 seconds unconditionally to allow Google News JS redirects 
+      // and Cloudflare checks to finish executing before we scrape.
+      await new Promise(r => setTimeout(r, 3500));
 
       const finalUrl = page.url();
       
-      // Inject code directly into the browser to scrape the text off the screen
       const extractedText = await page.evaluate(() => {
-        // Nuke ads, popups, and menus
+        // FIX 1: Safety check in case the publisher returns a broken page with no body
+        if (!document.body) return '';
+
         document.querySelectorAll('script, style, nav, header, footer, aside, iframe, noscript, form, .ad, .sidebar, .comments').forEach(el => el.remove());
 
-        // Try to find the main article block
         const articleTag = document.querySelector('article');
         if (articleTag && articleTag.innerText.trim().length > 200) return articleTag.innerText.trim();
 
-        // Try standard publisher containers
         const containers = ['.entry-content', '.post-content', '.article-body', '.article-content', 'main', '#main'];
         for (let selector of containers) {
           const el = document.querySelector(selector);
           if (el && el.innerText.trim().length > 200) return el.innerText.trim();
         }
 
-        // Fallback: grab all paragraphs
         const pTags = Array.from(document.querySelectorAll('p')).map(p => p.innerText.trim()).filter(text => text.length > 20);
         if (pTags.length > 0) return pTags.join(' ');
 
-        // Absolute fallback
         return document.body.innerText.trim();
       });
 

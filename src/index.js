@@ -1,17 +1,15 @@
 /**
  * Nigerian Real Estate News Research System
  * Main Pipeline Orchestrator
- * 
- * Workflow:
- * 1. Collect articles (50-100) - NOW WITH DIRECT URLS
+ * * Workflow:
+ * 1. Collect articles (50-100)
  * 2. Filter by whitelist & location
  * 3. Store in Google Sheets
- * 4. Enrich thin articles (fallback strategy)
- * 5. AI analysis (professional summaries)
- * 6. Detect trends (7/30/90-day)
- * 7. Detect anomalies
- * 8. Send email via Apps Script
- * 9. Update dashboard
+ * 4. AI analysis (professional summaries)
+ * 5. Detect trends (7/30/90-day)
+ * 6. Detect anomalies
+ * 7. Send email via Apps Script
+ * 8. Update dashboard
  */
 
 const fs = require('fs');
@@ -40,29 +38,28 @@ class NewsPipeline {
   }
 
   /**
-   * PHASE 1: Data Collection (NOW WITH DIRECT URLS)
+   * PHASE 1: Data Collection
+   * FIX: Added fetchDirectUrls to the Promise.all array
    */
   async collectArticles() {
     console.log('[PHASE 1] Collecting articles from all sources...');
     
     try {
-      // UPDATED: Added directUrlArticles to the Promise.all
-      const [gNewsArticles, newsApiArticles, googleNewsArticles, rssArticles, directUrlArticles] = 
+      const [gNewsArticles, newsApiArticles, googleNewsArticles, rssArticles, directArticles] = 
         await Promise.all([
           this.datasource.fetchGNews(),
           this.datasource.fetchNewsAPI(),
           this.datasource.fetchGoogleNews(),
           this.datasource.fetchRSSFeeds(),
-          this.datasource.fetchDirectUrls(),  // NEW: Direct URL fetcher
+          this.datasource.fetchDirectUrls(), // Newly wired source!
         ]);
 
-      // UPDATED: Added directUrlArticles to the collection
       const allArticles = [
         ...gNewsArticles,
         ...newsApiArticles,
         ...googleNewsArticles,
         ...rssArticles,
-        ...directUrlArticles,  // NEW: Include direct URLs
+        ...directArticles,
       ];
 
       console.log(`[PHASE 1] Collected ${allArticles.length} raw articles`);
@@ -97,87 +94,74 @@ class NewsPipeline {
       }
       seen.add(normalizedTitle);
 
-      // Check whitelist
-      if (whitelist.coreSources && whitelist.coreSources.length > 0) {
-        const isWhitelisted = Array.from(whitelistSources).some(ws => 
-          normalizedSource.includes(ws) || article.url?.includes(ws.replace(/\s+/g, ''))
-        );
-        
-        if (!isWhitelisted && !article.trusted) {
-          console.log(`[PHASE 2] Skipped non-whitelisted source: ${normalizedSource}`);
+      // Skip if no title
+      if (!normalizedTitle) continue;
+
+      // Curated feeds (RSS / Google News / Direct URLs) are pre-vetted by being on our source
+      // list, so they bypass the source whitelist — but still must pass keyword filter.
+      if (!article.trustedSource) {
+        const isWhitelisted = whitelistSources.has(normalizedSource) ||
+          (whitelist.dynamicSources || []).map(s => s.toLowerCase()).includes(normalizedSource);
+
+        if (!isWhitelisted) {
+          console.log(`[PHASE 2] Skipped non-whitelisted source: ${article.source}`);
           continue;
         }
       }
 
-      // Score relevance
-      const relevanceScore = scoreRelevance(article);
-      if (relevanceScore.score < 0.3) {
-        console.log(`[PHASE 2] Rejected (${relevanceScore.reason}): ${article.title?.substring(0, 70)}`);
+      // Relevance scoring (authoritative gate) — applies to ALL sources.
+      const verdict = scoreRelevance(article.title, article.content || article.description);
+      if (!verdict.passed) {
+        console.log(`[PHASE 2] Rejected (${verdict.reason}): ${article.title?.substring(0, 50)}`);
         continue;
       }
 
-      filtered.push({ ...article, relevanceScore: relevanceScore.score });
+      filtered.push({
+        ...article,
+        addedAt: this.timestamp,
+        relevanceScore: verdict.score,
+        relevanceTerms: [...verdict.strong, ...verdict.medium],
+      });
     }
-
-    // Sort by relevance, then by date
-    filtered.sort((a, b) => {
-      if (b.relevanceScore !== a.relevanceScore) {
-        return b.relevanceScore - a.relevanceScore;
-      }
-      const dateB = new Date(b.pubDate || 0).getTime();
-      const dateA = new Date(a.pubDate || 0).getTime();
-      return dateB - dateA;
-    });
 
     console.log(`[PHASE 2] Filtered to ${filtered.length} unique real estate articles`);
-    
-    // Cap at 15 most relevant for analysis
-    const capped = filtered.slice(0, 15);
-    console.log(`[PHASE 2] Capped to ${capped.length} most recent for analysis (from ${filtered.length}).`);
-    
-    return capped;
+
+    // Cap how many we send to the AI, to protect Groq's rate limit. Keep most recent.
+    const maxAnalyze = this.datasource.config?.settings?.maxArticlesToAnalyze || 25;
+    if (filtered.length > maxAnalyze) {
+      filtered.sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0));
+      const capped = filtered.slice(0, maxAnalyze);
+      console.log(`[PHASE 2] Capped to ${maxAnalyze} most recent for analysis (from ${filtered.length}).`);
+      return capped;
+    }
+    return filtered;
   }
 
   /**
-   * PHASE 3: Store in Google Sheets
+   * PHASE 3: Storage in Google Sheets
    */
-  async storeArticles(articles, health = null) {
+  async storeArticles(articles) {
     console.log('[PHASE 3] Storing articles in Google Sheets...');
-    
+
     try {
-      const rows = articles.map(a => [
-        a.title || '',
+      const sheetsData = articles.map(a => [
+        new Date().toISOString().split('T')[0],
         a.source || '',
-        a.pubDate || new Date().toISOString(),
+        a.title || '',
         a.url || '',
-        a.description || '',
+        'untagged',
+        '',
+        '',
+        '',
+        '',
+        new Date().toISOString(),
       ]);
 
-      const result = await this.sheetsClient.appendRows(rows);
-      console.log(`[Sheets] Appended ${result?.updatedRows || 0} rows`);
-      
-      if (result?.updatedRows > 0) {
-        console.log('[PHASE 3] Stored in Sheets successfully');
-        return true;
-      } else {
-        throw new Error('No rows were appended');
-      }
+      await this.sheetsClient.appendRows(sheetsData);
+      console.log('[PHASE 3] Stored in Sheets successfully');
     } catch (error) {
-      console.error('[PHASE 3] Google Sheets error:', error.message);
-      if (health) {
-        health.addWarning('[Sheets] Failed to store articles: ' + error.message);
-      }
-      return false;
+      console.error('[PHASE 3] Storage error:', error.message);
     }
-  }
-
-  /**
-   * PHASE 2.5: Enrich thin articles (FALLBACK STRATEGY)
-   */
-  async enrichContent(articles) {
-    console.log('[PHASE 2.5] Enriching article content...');
-    const enriched = await enrichArticles(articles);
-    return enriched;
   }
 
   /**
@@ -185,209 +169,343 @@ class NewsPipeline {
    */
   async analyzeArticles(articles) {
     console.log('[PHASE 4] Running AI analysis...');
-    
-    const analysisResults = [];
-    
+
+    const analyzed = [];
+
     for (const article of articles) {
       try {
-        const result = await this.agents.analyze(article);
-        analysisResults.push({
+        const analysis = await this.agents.analyzeArticle(article);
+        analyzed.push({
           ...article,
-          analysis: result,
+          ...analysis,
         });
       } catch (error) {
-        console.error(`[PHASE 4] Analysis error for "${article.title?.substring(0, 50)}":`, error.message);
-        analysisResults.push({
+        console.error(`[PHASE 4] Analysis failed for "${article.title?.substring(0, 50)}"`, error.message);
+        analyzed.push({
           ...article,
-          analysis: {
-            summary: article.description || article.title,
-            sentiment: 'neutral',
-            category: 'real_estate',
-            market_impact_severity: 'low',
-            mixta_relevance: 'indirect_impact',
-          },
+          sentiment: 'neutral',
+          summary: article.title || 'Unable to analyze',
+          category: 'untagged',
         });
       }
+      // Brief pause between calls to stay under Groq's rate limit (avoids 429s)
+      await new Promise(resolve => setTimeout(resolve, 4000));
     }
 
-    console.log(`[PHASE 4] Analyzed ${analysisResults.length} articles`);
-    return analysisResults;
+    console.log(`[PHASE 4] Analyzed ${analyzed.length} articles`);
+    return analyzed;
   }
 
   /**
-   * PHASES 5 & 6: Analytics (Trends & Anomalies)
+   * PHASE 5: Trend Detection
    */
-  async calculateTrends(analysisResults) {
-    console.log('[PHASES 5 & 6] Calculating trends and anomalies...');
-    
-    // Simple trend detection
-    const sentimentTally = { bullish: 0, bearish: 0, neutral: 0 };
-    analysisResults.forEach(a => {
-      if (a.analysis?.sentiment) {
-        sentimentTally[a.analysis.sentiment]++;
-      }
-    });
+  async detectTrends(articles) {
+    console.log('[PHASE 5] Detecting trends...');
 
-    this.trends = {
-      date: this.timestamp,
-      articles_analyzed: analysisResults.length,
-      sentiment_breakdown: sentimentTally,
-      calculated_at: new Date().toISOString(),
+    const trends = {
+      '7day': this.calculateTrends(articles, 7),
+      '30day': this.calculateTrends(articles, 30),
+      '90day': this.calculateTrends(articles, 90),
     };
 
-    // Anomalies (simple threshold)
-    this.alerts = [];
-    if (sentimentTally.bullish > analysisResults.length * 0.7) {
-      this.alerts.push({
-        type: 'bullish_spike',
-        message: 'Unusually high positive sentiment detected',
+    return trends;
+  }
+
+  calculateTrends(articles, days) {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+
+    const relevant = articles.filter(a => 
+      new Date(a.addedAt || this.timestamp) >= cutoff
+    );
+
+    const sentiments = {};
+    const topics = {};
+
+    for (const article of relevant) {
+      sentiments[article.sentiment] = (sentiments[article.sentiment] || 0) + 1;
+      
+      const articleTopics = (article.trending_topics || '').split(',');
+      for (const topic of articleTopics) {
+        const t = topic.trim();
+        if (t) topics[t] = (topics[t] || 0) + 1;
+      }
+    }
+
+    return {
+      articleCount: relevant.length,
+      sentimentBreakdown: sentiments,
+      topTopics: Object.entries(topics)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([topic, count]) => ({ topic, count })),
+      averageSentiment: this.calculateAverageSentiment(sentiments),
+    };
+  }
+
+  calculateAverageSentiment(sentiments) {
+    const bullish = sentiments['bullish'] || 0;
+    const bearish = sentiments['bearish'] || 0;
+    const neutral = sentiments['neutral'] || 0;
+    const total = bullish + bearish + neutral;
+
+    if (total === 0) return 'neutral';
+    if (bullish > total * 0.5) return 'bullish';
+    if (bearish > total * 0.3) return 'bearish';
+    return 'neutral';
+  }
+
+  /**
+   * PHASE 6: Anomaly Detection
+   */
+  async detectAnomalies(articles, trends) {
+    console.log('[PHASE 6] Detecting anomalies...');
+
+    const alerts = [];
+
+    if (articles.length > 50) {
+      alerts.push({
+        type: 'volume_spike',
+        severity: 'high',
+        message: `Article volume spike: ${articles.length} articles today (normal: 30-50)`,
+        timestamp: this.timestamp,
       });
     }
 
-    return { trends: this.trends, alerts: this.alerts };
-  }
-
-  /**
-   * PHASE 4.5: Synthesize Executive Briefing
-   */
-  async synthesizeBriefing(analysisResults) {
-    console.log('[PHASE 4.5] Synthesizing executive briefing...');
-    
-    try {
-      const briefing = await this.synthesizer.synthesize(analysisResults);
-      return briefing;
-    } catch (error) {
-      console.error('[PHASE 4.5] Synthesis error:', error.message);
-      return {
-        executive_summary: 'Unable to generate briefing',
-        themes: [],
-        watch_list_hits: [],
-      };
+    const bearishCount = articles.filter(a => a.sentiment === 'bearish').length;
+    if (bearishCount > articles.length * 0.4) {
+      alerts.push({
+        type: 'sentiment_reversal',
+        severity: 'medium',
+        message: `High bearish sentiment: ${bearishCount}/${articles.length} articles are bearish`,
+        timestamp: this.timestamp,
+      });
     }
+
+    console.log(`[PHASE 6] Detected ${alerts.length} anomalies`);
+    return alerts;
   }
 
   /**
-   * PHASES 7 & 8: Email & Dashboard Output
+   * PHASE 7: Email Generation & Delivery
    */
-  async deliverBriefing(briefing, articles) {
-    console.log('[PHASES 7 & 8] Delivering briefing...');
-    
+  async generateAndSendEmail(articles, trends, alerts, briefing) {
+    console.log('[PHASE 7] Generating and sending email digest...');
+
     try {
-      const html = generateEmailHTML(briefing, articles);
-      await sendEmail(html);
+      // Pass ALL analyzed articles + the executive briefing
+      const htmlContent = generateEmailHTML(articles, trends, alerts, briefing);
+      
+      // Support multiple recipients (comma-separated) so leadership can subscribe
+      const recipients = (process.env.RECIPIENT_EMAIL || '')
+        .split(',').map(s => s.trim()).filter(Boolean).join(',');
+
+      await sendEmail({
+        to: recipients,
+        subject: `Nigerian Real Estate News Digest - ${new Date().toDateString()}`,
+        html: htmlContent,
+      });
+
       console.log('[PHASE 7] Email sent successfully');
-      
-      // Update dashboard
-      const dashboardData = {
-        briefing,
-        articles,
-        trends: this.trends,
-        alerts: this.alerts,
-        generated_at: this.timestamp,
-      };
-      
-      fs.writeFileSync(
-        path.join(__dirname, '../data/briefing.json'),
-        JSON.stringify(dashboardData, null, 2)
-      );
-      console.log('[PHASE 8] Dashboard updated');
-      
       return true;
     } catch (error) {
-      console.error('[PHASES 7 & 8] Delivery error:', error.message);
+      console.error('[PHASE 7] Email error:', error.message);
       return false;
     }
   }
 
   /**
-   * Main Pipeline Runner
+   * PHASE 8: Dashboard Updates
    */
-  async run(health) {
-    console.log('============================================================');
-    console.log('Nigerian Real Estate News Pipeline Started');
-    console.log(`Timestamp: ${this.timestamp}`);
-    console.log('============================================================');
+  async updateDashboard(articles, trends, alerts, briefing) {
+    console.log('[PHASE 8] Updating dashboard data...');
 
     try {
-      // Phase 1: Collect
-      const rawArticles = await this.collectArticles();
-      if (!rawArticles.length) {
-        console.log('No articles collected, exiting');
-        return { success: false, message: 'No articles collected' };
+      const dataDir = path.join(process.cwd(), 'data');
+      if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+
+      fs.writeFileSync(
+        path.join(dataDir, 'articles.json'),
+        JSON.stringify(articles, null, 2)
+      );
+
+      fs.writeFileSync(
+        path.join(dataDir, 'trends.json'),
+        JSON.stringify(trends, null, 2)
+      );
+
+      fs.writeFileSync(
+        path.join(dataDir, 'alerts.json'),
+        JSON.stringify(alerts, null, 2)
+      );
+
+      if (briefing) {
+        fs.writeFileSync(
+          path.join(dataDir, 'briefing.json'),
+          JSON.stringify({ ...briefing, generatedAt: this.timestamp }, null, 2)
+        );
+
+        // Archive: persist a dated copy + maintain a lightweight searchable index
+        const archiveDir = path.join(dataDir, 'archive');
+        if (!fs.existsSync(archiveDir)) fs.mkdirSync(archiveDir, { recursive: true });
+        const dateStr = this.timestamp.split('T')[0];
+        fs.writeFileSync(
+          path.join(archiveDir, `briefing-${dateStr}.json`),
+          JSON.stringify({ ...briefing, generatedAt: this.timestamp }, null, 2)
+        );
+
+        const indexPath = path.join(dataDir, 'briefings-index.json');
+        let index = [];
+        try { index = JSON.parse(fs.readFileSync(indexPath, 'utf-8')).briefings || []; } catch (e) { index = []; }
+        // Replace any existing entry for today, then prepend
+        index = index.filter(b => b.date !== dateStr);
+        index.unshift({
+          date: dateStr,
+          generatedAt: this.timestamp,
+          executive_summary: briefing.executive_summary || '',
+          themeCount: briefing.themes?.length || 0,
+          themeLabels: (briefing.themes || []).map(t => t.label),
+        });
+        index = index.slice(0, 180); // ~6 months of daily briefings
+        fs.writeFileSync(indexPath, JSON.stringify({ briefings: index }, null, 2));
       }
 
-      // Phase 2: Filter
-      const filteredArticles = await this.filterArticles(rawArticles);
-      if (!filteredArticles.length) {
-        console.log('No articles passed filtering, exiting');
-        return { success: false, message: 'No articles after filtering' };
-      }
-
-      // Phase 3: Store in Sheets
-      const sheetsStored = await this.storeArticles(filteredArticles, health);
-
-      // Phase 2.5: Enrich
-      const enrichedArticles = await this.enrichContent(filteredArticles);
-
-      // Phase 4: Analyze
-      const analysisResults = await this.analyzeArticles(enrichedArticles);
-
-      // Phases 5 & 6: Trends
-      await this.calculateTrends(analysisResults);
-
-      // Phase 4.5: Synthesize
-      const briefing = await this.synthesizeBriefing(analysisResults);
-
-      // Phases 7 & 8: Deliver
-      await this.deliverBriefing(briefing, enrichedArticles);
-
-      console.log('============================================================');
-      console.log('Pipeline Completed Successfully');
-      console.log('============================================================');
-
-      return {
-        success: true,
-        articlesCollected: rawArticles.length,
-        articlesFiltered: filteredArticles.length,
-        briefing,
-      };
+      console.log('[PHASE 8] Dashboard data updated');
     } catch (error) {
-      console.error('[MAIN] Pipeline error:', error.message);
-      if (health) {
-        health.recordError('[MAIN] Pipeline error: ' + error.message);
+      console.error('[PHASE 8] Dashboard update error:', error.message);
+    }
+  }
+
+  /**
+   * Main Pipeline
+   */
+  async run() {
+    console.log('='.repeat(60));
+    console.log('Nigerian Real Estate News Pipeline Started');
+    console.log('Timestamp:', this.timestamp);
+    console.log('='.repeat(60));
+
+    try {
+      const health = new RunHealth(this.timestamp);
+
+      // Apply any dashboard-edited config (watch-list / sources) before collecting.
+      await this.applyRemoteConfig();
+
+      const rawArticles = await this.collectArticles();
+      health.recordSources(this.datasource.sourceHealth);
+      health.recordCounts({ raw: rawArticles.length });
+
+      if (rawArticles.length === 0) {
+        console.warn('No articles collected. Exiting.');
+        health.finalize({ fatal: true });
+        health.persist();
+        await this.sendOperatorAlert(health);
+        return;
       }
-      return { success: false, message: error.message };
+
+      const filtered = await this.filterArticles(rawArticles);
+      health.recordCounts({ filtered: filtered.length });
+
+      if (filtered.length === 0) {
+        console.warn('No articles passed filtering. Exiting.');
+        health.finalize({ fatal: true });
+        health.persist();
+        await this.sendOperatorAlert(health);
+        return;
+      }
+
+      await this.storeArticles(filtered);
+
+      // PHASE 2.5: Content enrichment
+      // Fetch full article text for articles where the API only gave us a headline or
+      // truncated snippet. This is the fix for the core flaw: AI analysing headlines only.
+      console.log('[PHASE 2.5] Enriching article content...');
+      const enriched = await enrichArticles(filtered);
+
+      const analyzed = await this.analyzeArticles(enriched);
+
+      // Count AI fallbacks (articles that didn't get a real summary)
+      const aiFallbacks = analyzed.filter(a =>
+        !a.summary || a.summary.startsWith('Unable to generate')
+      ).length;
+      health.recordCounts({ analyzed: analyzed.length, aiFallbacks });
+
+      const trends = await this.detectTrends(analyzed);
+      const alerts = await this.detectAnomalies(analyzed, trends);
+      const briefing = await this.synthesizer.synthesize(analyzed);
+      health.recordSynthesis(briefing);
+
+      const emailSent = await this.generateAndSendEmail(analyzed, trends, alerts, briefing);
+      health.recordEmail(emailSent);
+
+      await this.updateDashboard(analyzed, trends, alerts, briefing);
+
+      // Judge the run, persist health, alert operator if degraded/failed
+      health.finalize();
+      health.persist();
+      await this.sendOperatorAlert(health);
+
+      console.log('='.repeat(60));
+      console.log(`Pipeline completed (status: ${health.record.status})`);
+      console.log('='.repeat(60));
+    } catch (error) {
+      console.error('Fatal pipeline error:', error);
+      try {
+        const failHealth = new RunHealth(this.timestamp);
+        failHealth.recordSources(this.datasource.sourceHealth);
+        failHealth.addWarning(`Fatal error: ${error.message}`);
+        failHealth.finalize({ fatal: true });
+        failHealth.persist();
+        await this.sendOperatorAlert(failHealth);
+      } catch (e) {
+        console.error('Could not send failure alert:', e.message);
+      }
+      process.exit(1);
+    }
+  }
+
+  /**
+   * Pull dashboard-edited config from Firebase (if configured) and apply it.
+   * Source overrides go to the datasource; watch-list overrides to the synthesizer.
+   */
+  async applyRemoteConfig() {
+    try {
+      const [sources, watchList] = await Promise.all([
+        getSourcesOverride(),
+        getWatchListOverride(),
+      ]);
+
+      if (sources) {
+        this.datasource.config = {
+          ...this.datasource.config,
+          ...(sources.rssFeeds ? { rssFeeds: sources.rssFeeds } : {}),
+          ...(sources.googleNewsQueries ? { googleNewsQueries: sources.googleNewsQueries } : {}),
+        };
+      }
+      if (watchList) {
+        this.synthesizer.watchListOverride = watchList;
+      }
+    } catch (e) {
+      console.warn('[Config] Remote config not applied:', e.message);
+    }
+  }
+
+  async sendOperatorAlert(health) {
+    if (!health.needsAlert()) return;
+    const to = process.env.ALERT_EMAIL || process.env.RECIPIENT_EMAIL;
+    if (!to) {
+      console.warn('[Health] No ALERT_EMAIL/RECIPIENT_EMAIL set; cannot send operator alert.');
+      return;
+    }
+    try {
+      const { subject, html } = health.buildAlertEmail();
+      await sendEmail({ to, subject, html });
+      console.log(`[Health] Operator alert sent (${health.record.status}).`);
+    } catch (e) {
+      console.error('[Health] Failed to send operator alert:', e.message);
     }
   }
 }
 
-// ============================================================================
-// EXECUTION
-// ============================================================================
-
-async function main() {
-  const health = new RunHealth();
-
-  try {
-    const pipeline = new NewsPipeline();
-    const result = await pipeline.run(health);
-
-    // Save health report
-    const healthReport = health.getReport();
-    fs.writeFileSync(
-      path.join(__dirname, '../data/health.json'),
-      JSON.stringify(healthReport, null, 2)
-    );
-
-    process.exit(result.success ? 0 : 1);
-  } catch (error) {
-    console.error('Fatal error:', error.message);
-    process.exit(1);
-  }
-}
-
-if (require.main === module) {
-  main();
-}
-
-module.exports = NewsPipeline;
+const pipeline = new NewsPipeline();
+pipeline.run();

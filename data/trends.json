@@ -2,17 +2,16 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "neutral": 6,
-      "bearish": 3
+      "bullish": 8,
+      "neutral": 7
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 7
+        "count": 4
       },
       {
-        "topic": "infrastructure development",
+        "topic": "Lagos",
         "count": 2
       },
       {
@@ -20,30 +19,29 @@
         "count": 2
       },
       {
-        "topic": "2026",
-        "count": 1
+        "topic": "Lagos-real-estate",
+        "count": 2
       },
       {
-        "topic": "government focus",
-        "count": 1
+        "topic": "real estate awards",
+        "count": 2
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "neutral": 6,
-      "bearish": 3
+      "bullish": 8,
+      "neutral": 7
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 7
+        "count": 4
       },
       {
-        "topic": "infrastructure development",
+        "topic": "Lagos",
         "count": 2
       },
       {
@@ -51,30 +49,29 @@
         "count": 2
       },
       {
-        "topic": "2026",
-        "count": 1
+        "topic": "Lagos-real-estate",
+        "count": 2
       },
       {
-        "topic": "government focus",
-        "count": 1
+        "topic": "real estate awards",
+        "count": 2
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "neutral": 6,
-      "bearish": 3
+      "bullish": 8,
+      "neutral": 7
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 7
+        "count": 4
       },
       {
-        "topic": "infrastructure development",
+        "topic": "Lagos",
         "count": 2
       },
       {
@@ -82,14 +79,14 @@
         "count": 2
       },
       {
-        "topic": "2026",
-        "count": 1
+        "topic": "Lagos-real-estate",
+        "count": 2
       },
       {
-        "topic": "government focus",
-        "count": 1
+        "topic": "real estate awards",
+        "count": 2
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   }
 }

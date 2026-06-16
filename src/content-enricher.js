@@ -99,6 +99,7 @@ async function resolveGoogleNewsUrl(url) {
     if (canonical) return canonical[1];
     return null;
   } catch (e) {
+    console.log(`[Redirect Error] Failed to resolve Google News URL: ${e.message}`);
     return null;
   }
 }
@@ -155,6 +156,7 @@ async function fetchArticleBody(url) {
     const body = extractBodyText(response.data);
     return body.length > 100 ? body : null;
   } catch (e) {
+    console.log(`[Fetch Error] Failed to download article from ${url}: ${e.message}`);
     return null;
   }
 }

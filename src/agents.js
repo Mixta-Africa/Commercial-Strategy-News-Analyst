@@ -1,40 +1,43 @@
 /**
- * AI Agents Module — 5-provider free fallback chain
+ * AI Agents Module — Multi-Key Fallback Chain
  *
- * Priority order (all free tiers):
- *  1. Groq        — fastest, 30 RPM / 100K TPD
- *  2. Gemini      — most generous RPD (1,500/day), v1beta endpoint
- *  3. SambaNova   — persistent free tier, Llama 3.3 70B on RDU
- *  4. Mistral     — 1B tokens/month free, Mistral Small
- *  5. OpenRouter  — 28+ free models via :free suffix, last resort
+ * Priority order:
+ * 1. Groq        — fastest, adequate for summaries
+ * 2. SambaNova   — persistent free tier, excellent reasoning
+ * 3. Cerebras    — rapid generation
+ * 4. Mistral     — generous monthly limits
+ * 5. OpenRouter  — massive free model rotation
+ * 6. Gemini      — generous daily limits
  *
- * Fix log:
- *  - analyzeArticle: guard against articles with no usable content (caused 400s)
- *  - buildAnalysisPrompt: null-safe fallbacks on all article fields
- *  - _complete: validate prompt is non-empty string before calling any provider
- *  - _gemini: rethrow on 400 (bad request) not just non-404, to surface prompt issues clearly
+ * NEW: Multi-Key Support
+ * You can now pass multiple API keys separated by commas in your environment variables.
+ * E.g., GROQ_API_KEY="key1,key2". The system will automatically try Key 1, and if it
+ * rate-limits, it will seamlessly fall back to Key 2 before moving to SambaNova.
  */
 
 const axios = require('axios');
 
-// Timeout for all provider calls
 const TIMEOUT = 20000;
 
 class Agents {
   constructor() {
-    this.groqKey       = process.env.GROQ_API_KEY;
-    this.geminiKey     = process.env.GEMINI_API_KEY;
-    this.sambanovaKey  = process.env.SAMBANOVA_API_KEY;
-    this.mistralKey    = process.env.MISTRAL_API_KEY;
-    this.openrouterKey = process.env.OPENROUTER_API_KEY;
-    this.cerebrasKey   = process.env.CEREBRAS_API_KEY;
+    // Parse comma-separated keys into arrays
+    this.groqKeys       = this._parseKeys(process.env.GROQ_API_KEY);
+    this.geminiKeys     = this._parseKeys(process.env.GEMINI_API_KEY);
+    this.sambanovaKeys  = this._parseKeys(process.env.SAMBANOVA_API_KEY);
+    this.mistralKeys    = this._parseKeys(process.env.MISTRAL_API_KEY);
+    this.openrouterKeys = this._parseKeys(process.env.OPENROUTER_API_KEY);
+    this.cerebrasKeys   = this._parseKeys(process.env.CEREBRAS_API_KEY);
+  }
+
+  _parseKeys(keyString) {
+    if (!keyString) return [];
+    return keyString.split(',').map(k => k.trim()).filter(Boolean);
   }
 
   // ─── PUBLIC API ─────────────────────────────────────────────────────────────
 
   async analyzeArticle(article) {
-    // Guard: skip articles with no usable content — these produce empty prompts
-    // which every provider rejects with 400. Log and return default instead.
     const hasContent =
       (article.title && article.title.trim()) ||
       (article.description && article.description.trim()) ||
@@ -56,14 +59,6 @@ class Agents {
 
   // ─── CORE FALLBACK ENGINE ────────────────────────────────────────────────────
 
-  /**
-   * Per-article analysis: uses llama-3.1-8b-instant on Groq.
-   * This is a SEPARATE Groq rate-limit bucket from the synthesis call:
-   *   8b:  14,400 RPD / 30,000 TPM
-   *   70b:  1,000 RPD / 12,000 TPM
-   * Keeping them on different models means 25 article calls cannot exhaust
-   * the budget for the single synthesis call that produces the briefing.
-   */
   async _complete(prompt, label) {
     if (!prompt || !prompt.trim()) {
       console.error(`[Agents] Refusing to send empty prompt for: ${label}`);
@@ -73,11 +68,12 @@ class Agents {
     const isArticle = label.startsWith('Analyzing:');
     const providers = isArticle ? this._articleProviders(prompt) : this._synthesisProviders(prompt);
 
+    if (providers.length === 0) {
+      console.error(`[Agents] No API keys configured for any provider!`);
+      return null;
+    }
+
     for (const provider of providers) {
-      if (!provider.key) {
-        console.log(`[${provider.name}] Skipped — API key not set`);
-        continue;
-      }
       try {
         console.log(`[${provider.name}] ${label}...`);
         const result = await provider.fn();
@@ -87,235 +83,134 @@ class Agents {
         const status = err.response?.status;
         const msg = err.response?.data?.error?.message || err.message || 'Unknown error';
         console.warn(`[${provider.name}] Failed (${status || 'ERR'}): ${msg.substring(0, 120)}`);
-        if (status === 429) await this._sleep(2000);
+        if (status === 429) await this._sleep(2000); // Backoff before hitting the next key/provider
       }
     }
 
-    console.error(`[Agents] All providers failed for: ${label}`);
+    console.error(`[Agents] All providers and keys failed for: ${label}`);
     return null;
   }
 
   /**
-   * Provider chain for per-article analysis.
-   * Groq 8b leads — fast, generous daily limit, adequate quality for summaries.
-   * Synthesis-quality models (70b) are preserved for the briefing.
+   * Dynamically build the article provider chain based on available keys.
    */
   _articleProviders(prompt) {
-    return [
-      { name: 'Groq-8b',     fn: () => this._groqFast(prompt),    key: this.groqKey },
-      { name: 'SambaNova',   fn: () => this._sambanova(prompt),   key: this.sambanovaKey },
-      { name: 'Cerebras',    fn: () => this._cerebras(prompt),    key: this.cerebrasKey },
-      { name: 'Mistral',     fn: () => this._mistral(prompt),     key: this.mistralKey },
-      { name: 'OpenRouter',  fn: () => this._openrouter(prompt),  key: this.openrouterKey },
-      { name: 'Gemini',      fn: () => this._gemini(prompt),      key: this.geminiKey },
-    ];
+    const chain = [];
+    this.groqKeys.forEach((key, i) => chain.push({ name: `Groq-8b (#${i+1})`, fn: () => this._groqFast(prompt, key) }));
+    this.sambanovaKeys.forEach((key, i) => chain.push({ name: `SambaNova (#${i+1})`, fn: () => this._sambanova(prompt, key) }));
+    this.cerebrasKeys.forEach((key, i) => chain.push({ name: `Cerebras (#${i+1})`, fn: () => this._cerebras(prompt, key) }));
+    this.mistralKeys.forEach((key, i) => chain.push({ name: `Mistral (#${i+1})`, fn: () => this._mistral(prompt, key) }));
+    this.openrouterKeys.forEach((key, i) => chain.push({ name: `OpenRouter (#${i+1})`, fn: () => this._openrouter(prompt, key) }));
+    this.geminiKeys.forEach((key, i) => chain.push({ name: `Gemini (#${i+1})`, fn: () => this._gemini(prompt, key) }));
+    return chain;
   }
 
   /**
-   * Provider chain for synthesis (executive briefing).
-   * 70b leads for reasoning depth. Groq 8b is fallback — better than nothing.
+   * Dynamically build the synthesis provider chain based on available keys.
    */
   _synthesisProviders(prompt) {
-    return [
-      { name: 'Groq-70b',    fn: () => this._groq70b(prompt),    key: this.groqKey },
-      { name: 'Cerebras',    fn: () => this._cerebras(prompt),   key: this.cerebrasKey },
-      { name: 'SambaNova',   fn: () => this._sambanova(prompt),  key: this.sambanovaKey },
-      { name: 'Gemini',      fn: () => this._gemini(prompt),     key: this.geminiKey },
-      { name: 'Mistral',     fn: () => this._mistral(prompt),    key: this.mistralKey },
-      { name: 'OpenRouter',  fn: () => this._openrouter(prompt), key: this.openrouterKey },
-      { name: 'Groq-8b',    fn: () => this._groqFast(prompt),   key: this.groqKey },
-    ];
+    const chain = [];
+    this.groqKeys.forEach((key, i) => chain.push({ name: `Groq-70b (#${i+1})`, fn: () => this._groq70b(prompt, key) }));
+    this.cerebrasKeys.forEach((key, i) => chain.push({ name: `Cerebras (#${i+1})`, fn: () => this._cerebras(prompt, key) }));
+    this.sambanovaKeys.forEach((key, i) => chain.push({ name: `SambaNova (#${i+1})`, fn: () => this._sambanova(prompt, key) }));
+    this.geminiKeys.forEach((key, i) => chain.push({ name: `Gemini (#${i+1})`, fn: () => this._gemini(prompt, key) }));
+    this.mistralKeys.forEach((key, i) => chain.push({ name: `Mistral (#${i+1})`, fn: () => this._mistral(prompt, key) }));
+    this.openrouterKeys.forEach((key, i) => chain.push({ name: `OpenRouter (#${i+1})`, fn: () => this._openrouter(prompt, key) }));
+    this.groqKeys.forEach((key, i) => chain.push({ name: `Groq-8b-Fallback (#${i+1})`, fn: () => this._groqFast(prompt, key) }));
+    return chain;
   }
 
   // ─── PROVIDER IMPLEMENTATIONS ─────────────────────────────────────────────
 
-  /** Groq fast (llama-3.1-8b-instant) — 14,400 RPD / 30K TPM. Used for per-article analysis. */
-  async _groqFast(prompt) {
+  async _groqFast(prompt, key) {
     const res = await axios.post(
       'https://api.groq.com/openai/v1/chat/completions',
-      {
-        model: 'llama-3.1-8b-instant',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.3,
-        max_tokens: 1000,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.groqKey}`,
-          'Content-Type': 'application/json',
-        },
-        timeout: TIMEOUT,
-      }
+      { model: 'llama-3.1-8b-instant', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 1000 },
+      { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT }
     );
     return res.data.choices[0]?.message?.content || '';
   }
 
-  /** Groq 70b (llama-3.3-70b-versatile) — 1,000 RPD / 12K TPM. Reserved for synthesis. */
-  async _groq70b(prompt) {
+  async _groq70b(prompt, key) {
     const res = await axios.post(
       'https://api.groq.com/openai/v1/chat/completions',
-      {
-        model: 'llama-3.3-70b-versatile',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.3,
-        max_tokens: 1000,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.groqKey}`,
-          'Content-Type': 'application/json',
-        },
-        timeout: TIMEOUT,
-      }
+      { model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 1000 },
+      { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT }
     );
     return res.data.choices[0]?.message?.content || '';
   }
 
-  async _gemini(prompt) {
-    // Try models in order; fall through only on 404 (model retired).
-    // All other errors (429 rate limit, 400 bad request, 401 auth) are rethrown
-    // so the fallback chain can handle them correctly.
+  async _gemini(prompt, key) {
     const models = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-1.5-flash'];
     let lastErr;
     for (const model of models) {
       try {
         const res = await axios.post(
           `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-          {
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.3, maxOutputTokens: 1000 },
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'x-goog-api-key': this.geminiKey,
-            },
-            timeout: TIMEOUT,
-          }
+          { contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.3, maxOutputTokens: 1000 } },
+          { headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, timeout: TIMEOUT }
         );
         return res.data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
       } catch (err) {
         lastErr = err;
-        const status = err.response?.status;
-        if (status !== 404) throw err; // only fall through on 404 (model not found)
-        console.warn(`[Gemini] ${model} not found, trying next model...`);
+        if (err.response?.status !== 404) throw err; 
       }
     }
     throw lastErr;
   }
 
-  async _sambanova(prompt) {
-    // SambaNova is OpenAI-compatible
+  async _sambanova(prompt, key) {
     const res = await axios.post(
       'https://api.sambanova.ai/v1/chat/completions',
-      {
-        model: 'Meta-Llama-3.3-70B-Instruct',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.3,
-        max_tokens: 1000,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.sambanovaKey}`,
-          'Content-Type': 'application/json',
-        },
-        timeout: TIMEOUT,
-      }
+      { model: 'Meta-Llama-3.3-70B-Instruct', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 1000 },
+      { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT }
     );
     return res.data.choices[0]?.message?.content || '';
   }
 
-  async _cerebras(prompt) {
-    // gpt-oss-120b is the current Cerebras flagship (llama-3.3-70b was deprecated).
-    // Falls through to llama3.1-8b if gpt-oss-120b is unavailable (404).
+  async _cerebras(prompt, key) {
     const models = ['gpt-oss-120b', 'llama3.1-8b'];
     let lastErr;
     for (const model of models) {
       try {
         const res = await axios.post(
           'https://api.cerebras.ai/v1/chat/completions',
-          {
-            model,
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.3,
-            max_tokens: 1000,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${this.cerebrasKey}`,
-              'Content-Type': 'application/json',
-            },
-            timeout: TIMEOUT,
-          }
+          { model, messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 1000 },
+          { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT }
         );
         return res.data.choices[0]?.message?.content || '';
       } catch (err) {
         lastErr = err;
-        const status = err.response?.status;
-        if (status !== 404) throw err; // only fall through on 404
-        console.warn(`[Cerebras] ${model} not found (404), trying next...`);
+        if (err.response?.status !== 404) throw err;
       }
     }
     throw lastErr;
   }
 
-  async _mistral(prompt) {
+  async _mistral(prompt, key) {
     const res = await axios.post(
       'https://api.mistral.ai/v1/chat/completions',
-      {
-        model: 'mistral-small-latest',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.3,
-        max_tokens: 1000,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.mistralKey}`,
-          'Content-Type': 'application/json',
-        },
-        timeout: TIMEOUT,
-      }
+      { model: 'mistral-small-latest', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 1000 },
+      { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT }
     );
     return res.data.choices[0]?.message?.content || '';
   }
 
-  async _openrouter(prompt) {
-    // Free model list changes frequently on OpenRouter. We try two proven free models
-    // in order, falling through on 404 (model no longer free/available).
-    // deepseek/deepseek-r1:free was deprecated from free tier June 2026.
-    const models = [
-      'meta-llama/llama-3.3-70b:free',
-      'openai/gpt-oss-20b:free',
-    ];
+  async _openrouter(prompt, key) {
+    const models = ['meta-llama/llama-3.3-70b:free', 'openai/gpt-oss-20b:free'];
     let lastErr;
     for (const model of models) {
       try {
         const res = await axios.post(
           'https://openrouter.ai/api/v1/chat/completions',
-          {
-            model,
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.3,
-            max_tokens: 1000,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${this.openrouterKey}`,
-              'Content-Type': 'application/json',
-              'HTTP-Referer': 'https://github.com/mixta-africa',
-              'X-Title': 'Mixta News Pipeline',
-            },
-            timeout: TIMEOUT,
-          }
+          { model, messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 1000 },
+          { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', 'HTTP-Referer': 'https://github.com/mixta-africa', 'X-Title': 'Mixta News Pipeline' }, timeout: TIMEOUT }
         );
         return res.data.choices[0]?.message?.content || '';
       } catch (err) {
         lastErr = err;
         const status = err.response?.status;
-        // Fall through on 404 (model unavailable) or 400/422 (model no longer free — OpenRouter
-        // returns 400 with "This model is unavailable for free" for paywalled models).
         if (status !== 404 && status !== 400 && status !== 422) throw err;
-        console.warn(`[OpenRouter] ${model} unavailable (${status}), trying next...`);
       }
     }
     throw lastErr;
@@ -334,11 +229,10 @@ class Agents {
     const source  = (article.source  || '').trim() || 'Unknown source';
     const url     = (article.url     || '').trim() || 'No URL';
 
-    // Use enriched content; clean and trim NewsAPI truncation markers
     const rawContent = (article.content || article.description || article.title || '').trim();
     const content = rawContent
-      .replace(/<[^>]+>/g, ' ')           // strip HTML
-      .replace(/\[(\+\d+\s*chars?)\]/g, '') // strip NewsAPI truncation markers like [+8047 chars]
+      .replace(/<[^>]+>/g, ' ')           
+      .replace(/\[(\+\d+\s*chars?)\]/g, '') 
       .replace(/\s+/g, ' ')
       .trim()
       .substring(0, 2000);

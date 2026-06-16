@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-16T14:12:09.244Z",
+  "timestamp": "2026-06-16T14:37:04.828Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -32,7 +32,7 @@
         },
         "BusinessDay": {
           "ok": true,
-          "count": 1,
+          "count": 0,
           "error": null
         },
         "Nairametrics": {
@@ -47,7 +47,7 @@
         },
         "The Punch": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         }
       }

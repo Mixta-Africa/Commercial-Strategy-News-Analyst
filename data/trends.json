@@ -2,9 +2,9 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 6,
       "bullish": 7,
-      "bearish": 2
+      "neutral": 7,
+      "bearish": 1
     },
     "topTopics": [
       {
@@ -12,20 +12,20 @@
         "count": 6
       },
       {
-        "topic": "Lagos market",
+        "topic": "asset forfeiture",
         "count": 3
       },
       {
-        "topic": "land-documentation",
-        "count": 1
+        "topic": "real estate market",
+        "count": 2
       },
       {
-        "topic": "property-ownership",
-        "count": 1
+        "topic": "property market",
+        "count": 2
       },
       {
-        "topic": "Lagos-real-estate",
-        "count": 1
+        "topic": "Lagos market",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"
@@ -33,9 +33,9 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 6,
       "bullish": 7,
-      "bearish": 2
+      "neutral": 7,
+      "bearish": 1
     },
     "topTopics": [
       {
@@ -43,20 +43,20 @@
         "count": 6
       },
       {
-        "topic": "Lagos market",
+        "topic": "asset forfeiture",
         "count": 3
       },
       {
-        "topic": "land-documentation",
-        "count": 1
+        "topic": "real estate market",
+        "count": 2
       },
       {
-        "topic": "property-ownership",
-        "count": 1
+        "topic": "property market",
+        "count": 2
       },
       {
-        "topic": "Lagos-real-estate",
-        "count": 1
+        "topic": "Lagos market",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"
@@ -64,9 +64,9 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 6,
       "bullish": 7,
-      "bearish": 2
+      "neutral": 7,
+      "bearish": 1
     },
     "topTopics": [
       {
@@ -74,20 +74,20 @@
         "count": 6
       },
       {
-        "topic": "Lagos market",
+        "topic": "asset forfeiture",
         "count": 3
       },
       {
-        "topic": "land-documentation",
-        "count": 1
+        "topic": "real estate market",
+        "count": 2
       },
       {
-        "topic": "property-ownership",
-        "count": 1
+        "topic": "property market",
+        "count": 2
       },
       {
-        "topic": "Lagos-real-estate",
-        "count": 1
+        "topic": "Lagos market",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"

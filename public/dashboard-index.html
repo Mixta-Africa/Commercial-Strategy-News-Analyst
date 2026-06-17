@@ -3,63 +3,106 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mixta Market Intelligence</title>
+<title>Mixta Market Intelligence Terminal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --ink: #15191f; --ink-soft: #3d444e; --muted: #717a86; --faint: #9aa3ad;
-    --line: #e7e9ee; --line-soft: #f0f2f5; --bg: #ffffff; --bg-soft: #f7f8fa; --bg-sink: #f2f4f7;
-    --accent: #b8243f; --accent-soft: #fbe9ed;
-    --green: #1b7a4b; --green-soft: #e7f4ec; --amber: #9a6b00; --amber-soft: #fbf2dc;
-    --red: #c0392b; --red-soft: #fbe9e7; --blue: #3f6ea5; --blue-soft: #eaf1f8;
-    --radius: 10px; --shadow: 0 1px 2px rgba(20,25,31,.04), 0 6px 20px rgba(20,25,31,.05);
+    --ink: #0f172a; --ink-soft: #334155; --muted: #64748b; --faint: #94a3b8;
+    --line: #e2e8f0; --line-soft: #f1f5f9; --bg: #ffffff; --bg-soft: #f8fafc; --bg-sink: #f1f5f9;
+    --accent: #b8243f; --accent-soft: #fdf2f4;
+    --green: #15803d; --green-soft: #f0fdf4; --amber: #b45309; --amber-soft: #fef3c7;
+    --red: #b91c1c; --red-soft: #fef2f2; --blue: #1d4ed8; --blue-soft: #eff6ff;
+    --radius: 8px; --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
   }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: var(--bg-soft); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: var(--bg-soft); line-height: 1.5; -webkit-font-smoothing: antialiased; }
   a { color: inherit; }
 
-  .topbar { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.88); backdrop-filter: saturate(180%) blur(12px); border-bottom: 1px solid var(--line); }
-  .topbar-inner { max-width: 1040px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 18px; }
+  .topbar { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.85); backdrop-filter: saturate(180%) blur(12px); border-bottom: 1px solid var(--line); }
+  .topbar-inner { max-width: 1140px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 18px; }
   .brand { display: flex; flex-direction: column; line-height: 1.1; }
-  .brand .name { font-weight: 700; font-size: 15px; letter-spacing: -.01em; }
-  .brand .sub { font-size: 11px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
-  .status-pill { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 999px; background: var(--bg-sink); color: var(--ink-soft); }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
-  .status-pill.healthy { background: var(--green-soft); color: var(--green); } .status-pill.healthy .status-dot { background: var(--green); }
-  .status-pill.degraded { background: var(--amber-soft); color: var(--amber); } .status-pill.degraded .status-dot { background: var(--amber); }
-  .status-pill.failed { background: var(--red-soft); color: var(--red); } .status-pill.failed .status-dot { background: var(--red); }
+  .brand .name { font-weight: 700; font-size: 15px; letter-spacing: -.02em; color: #0f172a; }
+  .brand .sub { font-size: 10px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
+  .status-pill { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--bg-sink); color: var(--ink-soft); border: 1px solid var(--line); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--faint); }
+  .status-pill.healthy { background: var(--green-soft); color: var(--green); border-color: #bbf7d0; } .status-pill.healthy .status-dot { background: var(--green); }
+  .status-pill.degraded { background: var(--amber-soft); color: var(--amber); border-color: #fde68a; } .status-pill.degraded .status-dot { background: var(--amber); }
+  .status-pill.failed { background: var(--red-soft); color: var(--red); border-color: #fecaca; } .status-pill.failed .status-dot { background: var(--red); }
 
   .nav { border-bottom: 1px solid var(--line); background: var(--bg); }
-  .nav-inner { max-width: 1040px; margin: 0 auto; padding: 0 24px; display: flex; gap: 4px; }
-  .nav button { appearance: none; border: 0; background: none; cursor: pointer; font-family: inherit; font-size: 13.5px; font-weight: 500; color: var(--muted); padding: 14px 14px 12px; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .15s; }
+  .nav-inner { max-width: 1140px; margin: 0 auto; padding: 0 24px; display: flex; gap: 4px; }
+  .nav button { appearance: none; border: 0; background: none; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--muted); padding: 14px 16px 12px; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .15s; }
   .nav button:hover { color: var(--ink); }
   .nav button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
 
-  main { max-width: 1040px; margin: 0 auto; padding: 32px 24px 80px; }
-  .view { display: none; animation: fade .35s ease both; }
+  main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
+  .view { display: none; animation: fade .2s ease both; }
   .view.active { display: block; }
-  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { .view { animation: none; } }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
-  .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
-  .dateline { font-size: 13px; color: var(--muted); margin-bottom: 26px; }
+  .eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .dateline { font-size: 12.5px; color: var(--muted); margin-bottom: 24px; font-mono; }
 
-  .exec { font-family: 'Newsreader', Georgia, serif; font-size: 25px; line-height: 1.4; font-weight: 460; color: var(--ink); letter-spacing: -.005em; margin: 0 0 8px; max-width: 46ch; }
-  .exec-rule { width: 44px; height: 3px; background: var(--accent); border-radius: 2px; margin: 22px 0 30px; }
+  .terminal-layout { display: grid; grid-template-columns: 1fr; gap: 32px; }
+  
+  .exec-panel { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+  .exec { font-family: 'Newsreader', Georgia, serif; font-size: 23px; line-height: 1.45; font-weight: 400; color: var(--ink); letter-spacing: -.01em; margin: 0 0 16px; }
+  
+  /* THEME INTERACTIVE SELECTOR */
+  .theme-grid-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 24px 0 12px; display: flex; justify-content: space-between; align-items: center; }
+  .theme-selector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  
+  .theme-card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); text-align: left; position: relative; user-select: none; }
+  .theme-card:hover { border-color: var(--muted); background: var(--bg-soft); }
+  .theme-card.active { border-color: var(--ink); background: #0f172a; color: #ffffff; box-shadow: 0 4px 12px rgba(15,23,42,0.15); }
+  .theme-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .theme-card-title { font-size: 14.5px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); margin: 0; padding-right: 8px; }
+  .theme-card.active .theme-card-title { color: #ffffff; }
+  .theme-card-body { font-size: 12px; color: var(--ink-soft); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0; }
+  .theme-card.active .theme-card-body { color: #94a3b8; }
+  
+  .theme-meta-pills { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .meta-pill { font-size: 9.5px; font-weight: 600; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.02em; background: var(--line-soft); color: var(--ink-soft); }
+  .theme-card.active .meta-pill { background: #1e293b; color: #cbd5e1; }
+  .meta-pill.new { background: var(--green-soft); color: var(--green); }
+  .theme-card.active .meta-pill.new { background: #064e3b; color: #4ade80; }
+  .meta-pill.building { background: var(--amber-soft); color: var(--amber); }
+  .theme-card.active .meta-pill.building { background: #78350f; color: #fbbf24; }
+  
+  /* HIGH DENSITY EVIDENCE STREAM */
+  .evidence-panel-header { display: flex; justify-content: space-between; align-items: center; margin: 32px 0 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .evidence-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .evidence-filter-status { font-size: 11px; font-mono; color: var(--accent); font-weight: 600; }
+  
+  .terminal-table-container { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  .terminal-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13.5px; }
+  .terminal-table th { background: var(--line-soft); padding: 10px 16px; font-weight: 600; color: var(--ink-soft); font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--line); }
+  .terminal-table td { padding: 14px 16px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .terminal-table tr:last-child td { border-bottom: none; }
+  .terminal-table tr:hover td { background: var(--bg-soft); }
+  
+  .col-date { width: 100px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .col-source { width: 130px; white-space: nowrap; }
+  .source-tag { display: inline-block; background: var(--bg-sink); color: var(--ink-soft); font-size: 10.5px; font-weight: 600; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line); max-width: 110px; overflow: hidden; text-overflow: ellipsis; }
+  
+  .article-headline-link { font-size: 14px; font-weight: 600; color: var(--blue); text-decoration: none; display: inline-block; margin-bottom: 4px; line-height: 1.4; }
+  .article-headline-link:hover { text-decoration: underline; color: #1e40af; }
+  .article-summary-text { color: var(--ink-soft); font-size: 12.5px; margin: 0 0 8px 0; line-height: 1.5; }
+  .article-impact-badge { display: inline-block; background: #fffbeb; border: 1px solid #fef3c7; color: #92400e; font-size: 11.5px; padding: 6px 10px; border-radius: 6px; width: 100%; margin-top: 4px; }
+  .article-impact-label { font-weight: 700; text-transform: uppercase; font-size: 9.5px; letter-spacing: 0.05em; color: #b45309; display: block; margin-bottom: 2px; }
+  
+  .col-sentiment { width: 100px; text-align: right; }
+  .sentiment-pill { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.04em; border: 1px solid transparent; }
+  .sentiment-pill.bullish { background: var(--green-soft); color: var(--green); border-color: #bbf7d0; }
+  .sentiment-pill.bearish { background: var(--red-soft); color: var(--red); border-color: #fecaca; }
+  .sentiment-pill.neutral { background: var(--bg-sink); color: var(--muted); border-color: var(--line); }
 
-  .theme { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 16px; box-shadow: var(--shadow); border-left: 3px solid var(--line); }
-  .theme.rec-act { border-left-color: var(--accent); }
-  .theme.rec-monitor { border-left-color: var(--amber); }
-  .theme.rec-watch { border-left-color: var(--blue); }
-  .theme-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
-  .theme-label { font-size: 17px; font-weight: 650; letter-spacing: -.01em; }
-  .badge { font-size: 10.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px; letter-spacing: .04em; text-transform: uppercase; }
-  .badge.new { background: var(--green-soft); color: var(--green); }
-  .badge.building { background: var(--amber-soft); color: var(--amber); }
-  .badge.established { background: var(--bg-sink); color: var(--ink-soft); }
-  .badge.single { background: var(--red-soft); color: var(--red); }
+  .theme.rec-act { border-left: 4px solid var(--accent); }
+  .theme.rec-monitor { border-left: 4px solid var(--amber); }
+  .theme.rec-watch { border-left: 4px solid var(--blue); }
+
   .theme-row { margin: 9px 0; font-size: 14px; }
   .theme-row .k { font-weight: 600; color: var(--ink); }
   .why { background: var(--blue-soft); border-radius: 8px; padding: 11px 13px; color: #234; font-size: 13.5px; }
@@ -129,12 +172,11 @@
 
   .empty { text-align: center; padding: 60px 20px; color: var(--faint); font-size: 14px; }
   .loading { text-align: center; padding: 50px; color: var(--faint); font-size: 13px; }
-  footer { max-width: 1040px; margin: 0 auto; padding: 0 24px 50px; color: var(--faint); font-size: 11.5px; text-align: center; }
+  footer { max-width: 1140px; margin: 0 auto; padding: 0 24px 50px; color: var(--faint); font-size: 11.5px; text-align: center; }
 
-  @media (max-width: 640px) {
-    .exec { font-size: 21px; }
-    .nav-inner { overflow-x: auto; }
-    .topbar-inner { flex-wrap: wrap; }
+  @media (max-width: 768px) {
+    .terminal-table th:nth-child(1), .terminal-table td:nth-child(1) { display: none; }
+    .theme-selector-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -142,8 +184,8 @@
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <span class="name">Mixta Market Intelligence</span>
-        <span class="sub">Nigerian Real Estate &middot; Daily Briefing</span>
+        <span class="name">Mixta Market Intelligence Terminal</span>
+        <span class="sub">Autonomous Strategic Allocation Framework</span>
       </div>
       <span id="statusPill" class="status-pill"><span class="status-dot"></span><span id="statusText">Loading</span></span>
     </div>
@@ -151,19 +193,50 @@
 
   <nav class="nav">
     <div class="nav-inner">
-      <button data-view="briefing" class="active">Briefing</button>
+      <button data-view="briefing" class="active">Terminal</button>
       <button data-view="themes">Theme Tracker</button>
-      <button data-view="archive">Archive</button>
-      <button data-view="health">System Health</button>
+      <button data-view="archive">Archive Index</button>
+      <button data-view="health">System Operations</button>
       <button data-view="config">Settings</button>
     </div>
   </nav>
 
   <main>
     <section id="briefing" class="view active">
-      <div class="eyebrow">Executive Briefing</div>
-      <div id="briefingDate" class="dateline"></div>
-      <div id="briefingBody"><div class="loading">Loading today's briefing&hellip;</div></div>
+      <div class="terminal-layout">
+        
+        <!-- EXECUTIVE BREAKDOWN BRIEF -->
+        <div class="exec-panel">
+          <div class="eyebrow">Executive Summary Synthesis</div>
+          <div id="briefingDate" class="dateline"></div>
+          <div id="executiveSummaryContainer">
+            <div class="loading">Parsing framework environment...</div>
+          </div>
+        </div>
+
+        <!-- RELATIONAL INTERACTION MAP LAYER -->
+        <div>
+          <div class="theme-grid-label">
+            <span>Thematic Intelligence Cards</span>
+            <span style="font-weight:400; font-family:'IBM Plex Mono'; color:var(--accent); cursor:pointer;" id="clearThemeFilter" onclick="filterEvidenceStream('All')"></span>
+          </div>
+          <div id="themeSelectorGrid" class="theme-selector-grid">
+            <div class="loading">Clustering records...</div>
+          </div>
+        </div>
+
+        <!-- COMPACT DATA EVIDENCE ROW ENGINE -->
+        <div>
+          <div class="evidence-panel-header">
+            <div class="evidence-title" id="evidenceStreamTitle">Evidence Stream</div>
+            <div class="evidence-filter-status" id="evidenceFilterStatus">Showing All Records</div>
+          </div>
+          <div id="evidenceTableContainer" class="terminal-table-container">
+            <div class="loading">Streaming pipeline indexes...</div>
+          </div>
+        </div>
+
+      </div>
     </section>
 
     <section id="themes" class="view">
@@ -196,25 +269,20 @@
     </section>
   </main>
 
-  <footer>Mixta Market Intelligence &middot; Autonomous daily pipeline &middot; Generated by GitHub Actions</footer>
+  <footer>Mixta Market Intelligence Terminal &middot; Autonomous daily pipeline &middot; Real-time deployment</footer>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
-/* CONFIG — fill these in to enable the Settings editor. Leave as-is and the dashboard still works read-only. */
 const firebaseConfig = {
   apiKey: "FILL_IN",
   authDomain: "FILL_IN",
   databaseURL: "FILL_IN",
   projectId: "FILL_IN"
 };
-// Auto-detect the base path so this works on GitHub Pages (timilehin-taiwo.github.io/News-Fetcher/)
-// as well as locally. We strip the filename and any trailing slash, then append /data.
-// e.g.  https://timilehin-taiwo.github.io/News-Fetcher/  → .../News-Fetcher/data
-//        http://localhost:8080/public/dashboard-index.html → .../public/../data  → /data
+
 const DATA_BASE = (function() {
   const loc = window.location.href;
-  // If served from the repo root (GitHub Pages with index redirect or direct path)
   const base = loc.endsWith('/') ? loc.slice(0, -1) : loc.substring(0, loc.lastIndexOf('/'));
   return base + '/data';
 })();
@@ -222,6 +290,8 @@ const DATA_BASE = (function() {
 let fb = null, db = null, firebaseReady = false;
 let articlesCache = [], briefingsIndex = [], archTab = 'briefings';
 let cfgWatch = [], cfgRss = [], cfgGoogle = [];
+let activeGlobalThemeFilter = "All";
+let loadedBriefingCache = null;
 
 function initFirebase() {
   try {
@@ -260,58 +330,187 @@ function renderStatus(health) {
 }
 
 function esc(s) { return (s == null ? '' : String(s)).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-function recClass(rec) {
-  const r = (rec || '').toLowerCase();
-  if (r.startsWith('act')) return 'rec-act';
-  if (r.startsWith('monitor')) return 'rec-monitor';
-  if (r.startsWith('watch')) return 'rec-watch';
-  return '';
-}
 
 function renderBriefing(b) {
-  const el = document.getElementById('briefingBody');
+  loadedBriefingCache = b;
+  const execSummaryContainer = document.getElementById('executiveSummaryContainer');
+  const themeSelectorGrid = document.getElementById('themeSelectorGrid');
   const dateEl = document.getElementById('briefingDate');
+
   if (!b || !b.themes || !b.themes.length) {
-    el.innerHTML = '<div class="empty">No briefing available yet. It will appear after the next pipeline run.</div>';
+    execSummaryContainer.innerHTML = '<div class="empty">No active summary available.</div>';
+    themeSelectorGrid.innerHTML = '';
     return;
   }
+  
   if (b.generatedAt) {
-    dateEl.textContent = new Date(b.generatedAt).toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    dateEl.textContent = 'Data Sync Frame: ' + new Date(b.generatedAt).toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
   }
-  let html = `<p class="exec">${esc(b.executive_summary)}</p><div class="exec-rule"></div>`;
-  for (const t of b.themes) {
+
+  // Segment executive summaries cleanly by paragraph
+  const paragraphs = b.executive_summary.split('\n\n');
+  let execHtml = '';
+  paragraphs.forEach(p => {
+    if(p.trim()) execHtml += `<p class="exec">${esc(p.trim())}</p>`;
+  });
+  execSummaryContainer.innerHTML = execHtml;
+
+  // Render Interactive Theme Cards instead of large vertical blocks
+  renderThemeCards();
+  renderFilteredTable();
+}
+
+function renderThemeCards() {
+  const themeSelectorGrid = document.getElementById('themeSelectorGrid');
+  const clearButton = document.getElementById('clearThemeFilter');
+  
+  if (!loadedBriefingCache) return;
+
+  if (activeGlobalThemeFilter !== "All") {
+    clearButton.textContent = "[Reset Matrix Filter]";
+  } else {
+    clearButton.textContent = "";
+  }
+
+  let gridHtml = '';
+  loadedBriefingCache.themes.forEach((t, index) => {
+    const isSelected = activeGlobalThemeFilter === t.label;
     const nov = (t.novelty || 'established').toLowerCase();
-    const conf = (t.confidence || 'medium').toLowerCase();
-    const single = t.singleSource ? '<span class="badge single">Single source</span>' : '';
-    const seen = (t.timesSeen && t.timesSeen > 1) ? ` &middot; day ${t.timesSeen}` : '';
-    const srcs = (t.sourceArticles || []).map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.source)}</a>`).join(', ');
-    html += `
-      <div class="theme ${recClass(t.recommendation)}">
-        <div class="theme-head">
-          <span class="theme-label">${esc(t.label)}</span>
-          <span class="badge ${nov}">${esc(nov)}${seen}</span>
-          ${single}
+    const metricsCount = articlesCache.filter(a => {
+      // Direct category string matching or keyword lookup mapping
+      const categoryMatch = (a.category || '').toLowerCase().trim() === t.label.toLowerCase().trim();
+      const catStr = ((a.category || '') + ' ' + (a.trending_topics || '')).toLowerCase();
+      
+      let keywordMapped = false;
+      if (t.label.includes('Financing') && (catStr.includes('financ') || catStr.includes('capital') || catStr.includes('invest'))) keywordMapped = true;
+      if (t.label.includes('Regulatory') && (catStr.includes('policy') || catStr.includes('regulat') || catStr.includes('govern'))) keywordMapped = true;
+      if (t.label.includes('Demand') && (catStr.includes('demand') || catStr.includes('market') || catStr.includes('trend'))) keywordMapped = true;
+      if (t.label.includes('JV') && (catStr.includes('partner') || catStr.includes('jv') || catStr.includes('collaborat'))) keywordMapped = true;
+      if (t.label.includes('Risk') && (catStr.includes('geopolitic') || catStr.includes('risk') || catStr.includes('conflict'))) keywordMapped = true;
+      if (t.label.includes('Creation') && (catStr.includes('infrastructure') || catStr.includes('develop') || catStr.includes('creat'))) keywordMapped = true;
+
+      return categoryMatch || keywordMapped;
+    }).length;
+
+    gridHtml += `
+      <div class="theme-card ${isSelected ? 'active' : ''}" onclick="filterEvidenceStream('${esc(t.label)}')">
+        <div class="theme-card-header">
+          <h3 class="theme-card-title">${esc(t.label)}</h3>
+          <span class="sentiment-pill" style="font-family:'IBM Plex Mono'; font-size:10px; background:rgba(0,0,0,0.05); color:inherit; border:none; padding:2px 6px;">${metricsCount}</span>
         </div>
-        <div class="theme-row"><span class="k">What happened.</span> ${esc(t.what_happened)}</div>
-        <div class="theme-row why"><span class="k">Why it matters to Mixta.</span> ${esc(t.why_it_matters_to_mixta)}</div>
-        <div class="theme-row rec"><span class="k">Recommendation.</span> ${esc(t.recommendation)}</div>
-        <div class="theme-foot">
-          <span>Confidence <span class="conf ${conf}">${esc((t.confidence||'medium').toUpperCase())}</span></span>
-          ${srcs ? `<span class="src-links">Sources: ${srcs}</span>` : ''}
+        <p class="theme-card-body">${esc(t.why_it_matters_to_mixta)}</p>
+        <div class="theme-meta-pills">
+          <span class="meta-pill ${nov}">${esc(nov)}</span>
+          <span class="meta-pill">Confidence: ${esc(t.confidence)}</span>
         </div>
-      </div>`;
+      </div>
+    `;
+  });
+
+  themeSelectorGrid.innerHTML = gridHtml;
+}
+
+function filterEvidenceStream(themeLabel) {
+  if (activeGlobalThemeFilter === themeLabel) {
+    activeGlobalThemeFilter = "All";
+  } else {
+    activeGlobalThemeFilter = themeLabel;
   }
-  if (b.watch_list_hits && b.watch_list_hits.length) {
-    html += `<div class="watch-band"><span class="k">Watch-list activity today:</span> ${b.watch_list_hits.map(esc).join(' &middot; ')}</div>`;
+  renderThemeCards();
+  renderFilteredTable();
+}
+
+function renderFilteredTable() {
+  const container = document.getElementById('evidenceTableContainer');
+  const filterStatus = document.getElementById('evidenceFilterStatus');
+  const streamTitle = document.getElementById('evidenceStreamTitle');
+
+  if (!articlesCache || !articlesCache.length) {
+    container.innerHTML = '<div class="empty">No evidence matrix parsed for the tracking run.</div>';
+    return;
   }
-  el.innerHTML = html;
+
+  // Execution filter logic
+  let filtered = articlesCache;
+  if (activeGlobalThemeFilter !== "All") {
+    filterStatus.textContent = `Active Scope: ${activeGlobalThemeFilter}`;
+    streamTitle.textContent = "Supporting Evidence Core";
+
+    filtered = articlesCache.filter(a => {
+      const categoryMatch = (a.category || '').toLowerCase().trim() === activeGlobalThemeFilter.toLowerCase().trim();
+      const catStr = ((a.category || '') + ' ' + (a.trending_topics || '')).toLowerCase();
+      
+      let keywordMapped = false;
+      if (activeGlobalThemeFilter.includes('Financing') && (catStr.includes('financ') || catStr.includes('capital') || catStr.includes('invest'))) keywordMapped = true;
+      if (activeGlobalThemeFilter.includes('Regulatory') && (catStr.includes('policy') || catStr.includes('regulat') || catStr.includes('govern'))) keywordMapped = true;
+      if (activeGlobalThemeFilter.includes('Demand') && (catStr.includes('demand') || catStr.includes('market') || catStr.includes('trend'))) keywordMapped = true;
+      if (activeGlobalThemeFilter.includes('JV') && (catStr.includes('partner') || catStr.includes('jv') || catStr.includes('collaborat'))) keywordMapped = true;
+      if (activeGlobalThemeFilter.includes('Risk') && (catStr.includes('geopolitic') || catStr.includes('risk') || catStr.includes('conflict'))) keywordMapped = true;
+      if (activeGlobalThemeFilter.includes('Creation') && (catStr.includes('infrastructure') || catStr.includes('develop') || catStr.includes('creat'))) keywordMapped = true;
+
+      return categoryMatch || keywordMapped;
+    });
+  } else {
+    filterStatus.textContent = "Global Baseline Stream";
+    streamTitle.textContent = "Evidence Stream";
+  }
+
+  if (!filtered.length) {
+    container.innerHTML = `<div class="empty" style="padding:40px;">No articles specifically indexed inside the target domain theme.</div>`;
+    return;
+  }
+
+  let tableHtml = `
+    <table class="terminal-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Source</th>
+          <th>Intelligence Record & Analysis</th>
+          <th style="text-align:right">Sentiment</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  filtered.forEach(a => {
+    const sent = (a.sentiment || 'neutral').toLowerCase();
+    const dateStr = a.addedAt ? new Date(a.addedAt).toLocaleDateString('en-GB') : '\u2014';
+    
+    // Extraction for allocation impacts if present
+    let allocationBlock = '';
+    if (a.mixta_relevance && a.mixta_relevance.direct_impact && a.mixta_relevance.direct_impact !== 'None') {
+      allocationBlock = `
+        <div class="article-impact-badge">
+          <span class="article-impact-label">Strategic Allocation Impact</span>
+          ${esc(a.mixta_relevance.direct_impact)}
+        </div>
+      `;
+    }
+
+    tableHtml += `
+      <tr>
+        <td class="col-date">${esc(dateStr)}</td>
+        <td class="col-source"><span class="source-tag">${esc(a.source || 'Unknown')}</span></td>
+        <td>
+          <a href="${esc(a.url)}" target="_blank" rel="noopener noreferrer" class="article-headline-link">${esc(a.title)}</a>
+          <p class="article-summary-text">${esc(a.summary)}</p>
+          ${allocationBlock}
+        </td>
+        <td class="col-sentiment"><span class="sentiment-pill ${sent}">${esc(sent)}</span></td>
+      </tr>
+    `;
+  });
+
+  tableHtml += '</tbody></table>';
+  container.innerHTML = tableHtml;
 }
 
 function renderThemes(memory) {
   const el = document.getElementById('themesBody');
   const themes = (memory?.themes || []).slice().sort((a,b) => b.count - a.count || (a.lastSeen < b.lastSeen ? 1 : -1));
   if (!themes.length) {
-    el.innerHTML = '<div class="empty">No theme history yet. Themes accumulate as briefings are generated day over day.</div>';
+    el.innerHTML = '<div class="empty">No theme history yet.</div>';
     return;
   }
   const maxPips = 14;
@@ -486,8 +685,6 @@ async function saveConfig() {
 }
 
 async function showReadonlyConfig() {
-  // src/ files are not committed to data/ — fetch from GitHub raw directly.
-  // These are read-only display; editing requires Firebase.
   const RAW = 'https://raw.githubusercontent.com/Timilehin-Taiwo/News-Fetcher/main/src';
   async function rawJSON(file) {
     try { const r = await fetch(`${RAW}/${file}`); return r.ok ? r.json() : null; } catch { return null; }

@@ -2,91 +2,94 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 8,
-      "neutral": 7
+      "neutral": 7,
+      "bullish": 4,
+      "bearish": 4
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "Lagos",
         "count": 2
       },
       {
-        "topic": "investor confidence",
-        "count": 2
+        "topic": "land allocation",
+        "count": 1
       },
       {
-        "topic": "Lagos-real-estate",
-        "count": 2
+        "topic": "community relations",
+        "count": 1
       },
       {
-        "topic": "real estate awards",
-        "count": 2
+        "topic": "property market",
+        "count": 1
+      },
+      {
+        "topic": "insecurity",
+        "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 8,
-      "neutral": 7
+      "neutral": 7,
+      "bullish": 4,
+      "bearish": 4
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "Lagos",
         "count": 2
       },
       {
-        "topic": "investor confidence",
-        "count": 2
+        "topic": "land allocation",
+        "count": 1
       },
       {
-        "topic": "Lagos-real-estate",
-        "count": 2
+        "topic": "community relations",
+        "count": 1
       },
       {
-        "topic": "real estate awards",
-        "count": 2
+        "topic": "property market",
+        "count": 1
+      },
+      {
+        "topic": "insecurity",
+        "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 8,
-      "neutral": 7
+      "neutral": 7,
+      "bullish": 4,
+      "bearish": 4
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "Lagos",
         "count": 2
       },
       {
-        "topic": "investor confidence",
-        "count": 2
+        "topic": "land allocation",
+        "count": 1
       },
       {
-        "topic": "Lagos-real-estate",
-        "count": 2
+        "topic": "community relations",
+        "count": 1
       },
       {
-        "topic": "real estate awards",
-        "count": 2
+        "topic": "property market",
+        "count": 1
+      },
+      {
+        "topic": "insecurity",
+        "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   }
 }

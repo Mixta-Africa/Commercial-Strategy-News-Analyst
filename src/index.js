@@ -3,13 +3,14 @@
  * Main Pipeline Orchestrator
  * * Workflow:
  * 1. Collect articles (50-100)
- * 2. Filter by whitelist & location
- * 3. Store in Google Sheets
+ * 2. Filter by whitelist & location (Cross-checked with historical Google Sheets data)
+ * 3. Store in Google Sheets (Master Backup)
  * 4. AI analysis (professional summaries)
- * 5. Detect trends (7/30/90-day)
- * 6. Detect anomalies
- * 7. Send email via Apps Script
- * 8. Update dashboard
+ * 5. Update Google Sheets (Smart Tab Routing)
+ * 6. Detect trends (7/30/90-day)
+ * 7. Detect anomalies
+ * 8. Send email via Apps Script
+ * 9. Update dashboard
  */
 
 const fs = require('fs');
@@ -71,10 +72,25 @@ class NewsPipeline {
   }
 
   /**
-   * PHASE 2: Filtering, relevance scoring & deduplication
+   * PHASE 2: Filtering, relevance scoring & deduplication (WITH HISTORICAL MEMORY)
    */
   async filterArticles(rawArticles) {
     console.log('[PHASE 2] Filtering, scoring relevance, deduplicating...');
+
+    // --- NEW: Fetch historical data to prevent cross-run duplicates ---
+    let historicalTitles = new Set();
+    let historicalUrls = new Set();
+    try {
+      const historicalRows = await this.sheetsClient.getAllRows();
+      historicalRows.forEach(row => {
+        if (row[2]) historicalTitles.add(row[2].toLowerCase().trim()); // Column C is Title
+        if (row[3]) historicalUrls.add(row[3].toLowerCase().trim());   // Column D is URL
+      });
+      console.log(`[PHASE 2] Loaded ${historicalTitles.size} historical articles from Sheets to prevent duplicates.`);
+    } catch (e) {
+      console.warn('[PHASE 2] Could not load historical rows for deduplication:', e.message);
+    }
+    // -----------------------------------------------------------------
 
     const whitelistSources = new Set(
       whitelist.coreSources.map(s => s.toLowerCase())
@@ -85,14 +101,21 @@ class NewsPipeline {
     for (const article of rawArticles) {
       const normalizedSource = (article.source || '').toLowerCase().trim();
       const normalizedTitle = (article.title || '').toLowerCase().trim();
+      const normalizedUrl = (article.url || '').toLowerCase().trim();
       const normalizedContent = ((article.content || article.description || '') || '').toLowerCase().substring(0, 500);
 
-      // Skip if duplicate
+      // Skip if duplicate in the CURRENT batch
       if (seen.has(normalizedTitle)) {
-        console.log(`[PHASE 2] Skipped duplicate: ${article.title?.substring(0, 50)}`);
+        console.log(`[PHASE 2] Skipped duplicate in current batch: ${article.title?.substring(0, 50)}`);
         continue;
       }
       seen.add(normalizedTitle);
+
+      // --- NEW: Skip if duplicate in Google Sheets (Historical) ---
+      if (historicalTitles.has(normalizedTitle) || (normalizedUrl && historicalUrls.has(normalizedUrl))) {
+        console.log(`[PHASE 2] Skipped historical duplicate (already in Sheets): ${article.title?.substring(0, 50)}`);
+        continue;
+      }
 
       // Skip if no title
       if (!normalizedTitle) continue;
@@ -124,7 +147,7 @@ class NewsPipeline {
       });
     }
 
-    console.log(`[PHASE 2] Filtered to ${filtered.length} unique real estate articles`);
+    console.log(`[PHASE 2] Filtered to ${filtered.length} unique, fresh real estate articles`);
 
     // Cap how many we send to the AI, to protect Groq's rate limit. Keep most recent.
     const maxAnalyze = this.datasource.config?.settings?.maxArticlesToAnalyze || 25;
@@ -141,7 +164,7 @@ class NewsPipeline {
    * PHASE 3: Storage in Google Sheets
    */
   async storeArticles(articles) {
-    console.log('[PHASE 3] Storing articles in Google Sheets...');
+    console.log('[PHASE 3] Storing raw articles in Google Sheets...');
 
     try {
       const sheetsData = articles.map(a => [
@@ -197,28 +220,42 @@ class NewsPipeline {
   }
 
   /**
-   * PHASE 4.5: Update Sheets with Analyzed Data (Tab Routing)
+   * PHASE 4.5: Update Sheets with Analyzed Data (Smart Tab Routing)
    */
   async appendAnalyzedToSheets(analyzedArticles) {
-    console.log('[PHASE 4.5] Sorting articles by theme and appending to specific tabs...');
+    console.log('[PHASE 4.5] Sorting articles by dashboard theme and appending to specific tabs...');
     try {
-      // 1. Group articles by their Category/Theme
       const grouped = {};
       
       for (const a of analyzedArticles) {
-        // If the AI didn't tag a category, route it to an 'Uncategorized' tab
-        const theme = (a.category && a.category !== 'untagged') ? a.category : 'Uncategorized';
+        // --- SMART ROUTING: Map raw AI output to specific Dashboard Tabs ---
+        let dashboardTheme = 'Uncategorized';
+        const catStr = ((a.category || '') + ' ' + (a.trending_topics || '')).toLowerCase();
         
-        if (!grouped[theme]) {
-          grouped[theme] = [];
+        if (catStr.includes('financ') || catStr.includes('capital') || catStr.includes('invest') || catStr.includes('econom') || catStr.includes('fund')) {
+          dashboardTheme = 'Capital & Financing';
+        } else if (catStr.includes('policy') || catStr.includes('regulat') || catStr.includes('govern') || catStr.includes('law')) {
+          dashboardTheme = 'Land & Regulatory';
+        } else if (catStr.includes('demand') || catStr.includes('market') || catStr.includes('trend') || catStr.includes('sale')) {
+          dashboardTheme = 'Demand Intelligence';
+        } else if (catStr.includes('partner') || catStr.includes('jv') || catStr.includes('collaborat')) {
+          dashboardTheme = 'Partnership & JV';
+        } else if (catStr.includes('geopolitic') || catStr.includes('risk') || catStr.includes('conflict') || catStr.includes('crisis') || catStr.includes('protest')) {
+          dashboardTheme = 'Geopolitical Risk';
+        } else if (catStr.includes('infrastructure') || catStr.includes('develop') || catStr.includes('creat') || catStr.includes('construct') || catStr.includes('project')) {
+          dashboardTheme = 'Market Creation';
         }
 
-        grouped[theme].push([
+        if (!grouped[dashboardTheme]) {
+          grouped[dashboardTheme] = [];
+        }
+
+        grouped[dashboardTheme].push([
           new Date().toISOString().split('T')[0],
           a.source || 'N/A',
           a.title || 'N/A',
           a.url || 'N/A',
-          theme,
+          dashboardTheme,
           a.sentiment || 'neutral',
           a.summary || '',
           a.mixta_relevance?.direct_impact || a.mixta_flags || '',
@@ -227,17 +264,12 @@ class NewsPipeline {
         ]);
       }
 
-      // 2. Write each group to its specific Google Sheet tab
+      // Write each group to its specific Google Sheet tab
       for (const [theme, rows] of Object.entries(grouped)) {
-        // Clean up the theme name to ensure it is a valid tab name
-        const safeTabName = theme.replace(/[\[\]\*\\\?\:]/g, '').substring(0, 50).trim();
-        
         try {
-          // Send to the specific tab
-          await this.sheetsClient.appendRows(rows, safeTabName);
+          await this.sheetsClient.appendRows(rows, theme);
         } catch (tabError) {
-          // Fallback: Dump to Master Backup if the specific tab doesn't exist yet
-          console.warn(`[PHASE 4.5] Could not write to tab '${safeTabName}'. Ensure this tab exists! Falling back to Master Backup.`);
+          console.warn(`[PHASE 4.5] Tab '${theme}' not found. Falling back to Master Backup.`);
           await this.sheetsClient.appendRows(rows, 'Master Backup');
         }
       }
@@ -458,7 +490,7 @@ class NewsPipeline {
       health.recordCounts({ filtered: filtered.length });
 
       if (filtered.length === 0) {
-        console.warn('No articles passed filtering. Exiting.');
+        console.warn('No new articles passed filtering (all duplicates or irrelevant). Exiting.');
         health.finalize({ fatal: true });
         health.persist();
         await this.sendOperatorAlert(health);
@@ -468,18 +500,16 @@ class NewsPipeline {
       await this.storeArticles(filtered);
 
       // PHASE 2.5: Content enrichment
-      // Fetch full article text for articles where the API only gave us a headline or
-      // truncated snippet. This is the fix for the core flaw: AI analysing headlines only.
       console.log('[PHASE 2.5] Enriching article content...');
       const enriched = await enrichArticles(filtered);
 
       const analyzed = await this.analyzeArticles(enriched);
 
-      // --- NEW FIX: Append Analyzed Data to Sheets ---
+      // --- NEW FIX: Smart Tab Routing ---
       await this.appendAnalyzedToSheets(analyzed);
-      // -----------------------------------------------
+      // ----------------------------------
 
-      // Count AI fallbacks (articles that didn't get a real summary)
+      // Count AI fallbacks
       const aiFallbacks = analyzed.filter(a =>
         !a.summary || a.summary.startsWith('Unable to generate')
       ).length;
@@ -488,7 +518,6 @@ class NewsPipeline {
       const trends = await this.detectTrends(analyzed);
       const alerts = await this.detectAnomalies(analyzed, trends);
 
-      // Truncate text before final synthesis to prevent 413 Context Exceeded errors
       const safeBriefingData = analyzed.map(article => ({
         ...article,
         content: article.content ? article.content.substring(0, 1000) + '...' : ''
@@ -502,7 +531,6 @@ class NewsPipeline {
 
       await this.updateDashboard(analyzed, trends, alerts, briefing);
 
-      // Judge the run, persist health, alert operator if degraded/failed
       health.finalize();
       health.persist();
       await this.sendOperatorAlert(health);
@@ -526,10 +554,6 @@ class NewsPipeline {
     }
   }
 
-  /**
-   * Pull dashboard-edited config from Firebase (if configured) and apply it.
-   * Source overrides go to the datasource; watch-list overrides to the synthesizer.
-   */
   async applyRemoteConfig() {
     try {
       const [sources, watchList] = await Promise.all([

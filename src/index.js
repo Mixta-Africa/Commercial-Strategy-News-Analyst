@@ -432,7 +432,14 @@ class NewsPipeline {
 
       const trends = await this.detectTrends(analyzed);
       const alerts = await this.detectAnomalies(analyzed, trends);
-      const briefing = await this.synthesizer.synthesize(analyzed);
+
+      // Truncate text before final synthesis to prevent 413 Context Exceeded errors
+      const safeBriefingData = analyzed.map(article => ({
+        ...article,
+        content: article.content ? article.content.substring(0, 1000) + '...' : ''
+      }));
+
+      const briefing = await this.synthesizer.synthesize(safeBriefingData);
       health.recordSynthesis(briefing);
 
       const emailSent = await this.generateAndSendEmail(analyzed, trends, alerts, briefing);
@@ -508,4 +515,6 @@ class NewsPipeline {
 }
 
 const pipeline = new NewsPipeline();
-pipeline.run();
+pipeline.run().then(() => {
+  process.exit(0);
+});

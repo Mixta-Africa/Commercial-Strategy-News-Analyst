@@ -2,9 +2,9 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 7,
       "bullish": 5,
-      "bearish": 3
+      "neutral": 6,
+      "bearish": 4
     },
     "topTopics": [
       {
@@ -13,18 +13,18 @@
       },
       {
         "topic": "infrastructure",
-        "count": 9
+        "count": 10
       },
       {
-        "topic": "land reform",
+        "topic": "real estate",
+        "count": 2
+      },
+      {
+        "topic": "land allocation",
         "count": 1
       },
       {
-        "topic": "marketing",
-        "count": 1
-      },
-      {
-        "topic": "strategy",
+        "topic": "land-reform",
         "count": 1
       }
     ],
@@ -33,9 +33,9 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 7,
       "bullish": 5,
-      "bearish": 3
+      "neutral": 6,
+      "bearish": 4
     },
     "topTopics": [
       {
@@ -44,18 +44,18 @@
       },
       {
         "topic": "infrastructure",
-        "count": 9
+        "count": 10
       },
       {
-        "topic": "land reform",
+        "topic": "real estate",
+        "count": 2
+      },
+      {
+        "topic": "land allocation",
         "count": 1
       },
       {
-        "topic": "marketing",
-        "count": 1
-      },
-      {
-        "topic": "strategy",
+        "topic": "land-reform",
         "count": 1
       }
     ],
@@ -64,9 +64,9 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 7,
       "bullish": 5,
-      "bearish": 3
+      "neutral": 6,
+      "bearish": 4
     },
     "topTopics": [
       {
@@ -75,18 +75,18 @@
       },
       {
         "topic": "infrastructure",
-        "count": 9
+        "count": 10
       },
       {
-        "topic": "land reform",
+        "topic": "real estate",
+        "count": 2
+      },
+      {
+        "topic": "land allocation",
         "count": 1
       },
       {
-        "topic": "marketing",
-        "count": 1
-      },
-      {
-        "topic": "strategy",
+        "topic": "land-reform",
         "count": 1
       }
     ],

@@ -157,7 +157,7 @@ class NewsPipeline {
         new Date().toISOString(),
       ]);
 
-      await this.sheetsClient.appendRows(sheetsData);
+      await this.sheetsClient.appendRows(sheetsData, 'Master Backup');
       console.log('[PHASE 3] Stored in Sheets successfully');
     } catch (error) {
       console.error('[PHASE 3] Storage error:', error.message);
@@ -197,28 +197,53 @@ class NewsPipeline {
   }
 
   /**
-   * PHASE 4.5: Update Sheets with Analyzed Data
+   * PHASE 4.5: Update Sheets with Analyzed Data (Tab Routing)
    */
   async appendAnalyzedToSheets(analyzedArticles) {
-    console.log('[PHASE 4.5] Appending fully analyzed articles to Google Sheets...');
+    console.log('[PHASE 4.5] Sorting articles by theme and appending to specific tabs...');
     try {
-      const sheetsData = analyzedArticles.map(a => [
-        new Date().toISOString().split('T')[0],
-        a.source || 'N/A',
-        a.title || 'N/A',
-        a.url || 'N/A',
-        a.category || 'untagged',
-        a.sentiment || 'neutral',
-        a.summary || '',
-        a.mixta_relevance?.direct_impact || a.mixta_flags || '',
-        '', // Notes
-        new Date().toISOString()
-      ]);
+      // 1. Group articles by their Category/Theme
+      const grouped = {};
+      
+      for (const a of analyzedArticles) {
+        // If the AI didn't tag a category, route it to an 'Uncategorized' tab
+        const theme = (a.category && a.category !== 'untagged') ? a.category : 'Uncategorized';
+        
+        if (!grouped[theme]) {
+          grouped[theme] = [];
+        }
 
-      await this.sheetsClient.appendRows(sheetsData);
-      console.log(`[PHASE 4.5] Successfully appended ${sheetsData.length} analyzed rows to Google Sheets.`);
+        grouped[theme].push([
+          new Date().toISOString().split('T')[0],
+          a.source || 'N/A',
+          a.title || 'N/A',
+          a.url || 'N/A',
+          theme,
+          a.sentiment || 'neutral',
+          a.summary || '',
+          a.mixta_relevance?.direct_impact || a.mixta_flags || '',
+          '', // Notes
+          new Date().toISOString()
+        ]);
+      }
+
+      // 2. Write each group to its specific Google Sheet tab
+      for (const [theme, rows] of Object.entries(grouped)) {
+        // Clean up the theme name to ensure it is a valid tab name
+        const safeTabName = theme.replace(/[\[\]\*\\\?\:]/g, '').substring(0, 50).trim();
+        
+        try {
+          // Send to the specific tab
+          await this.sheetsClient.appendRows(rows, safeTabName);
+        } catch (tabError) {
+          // Fallback: Dump to Master Backup if the specific tab doesn't exist yet
+          console.warn(`[PHASE 4.5] Could not write to tab '${safeTabName}'. Ensure this tab exists! Falling back to Master Backup.`);
+          await this.sheetsClient.appendRows(rows, 'Master Backup');
+        }
+      }
+
     } catch (error) {
-      console.error('[PHASE 4.5] Failed to append analyzed data to Google Sheets:', error.message);
+      console.error('[PHASE 4.5] Failed to group and append data:', error.message);
     }
   }
 

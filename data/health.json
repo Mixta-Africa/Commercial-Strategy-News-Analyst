@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-17T11:27:33.071Z",
+  "timestamp": "2026-06-17T14:48:25.107Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -9,46 +9,46 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 39,
+      "count": 38,
       "error": null
     },
     "googlenews": {
       "ok": true,
-      "count": 102,
+      "count": 101,
       "error": null
     },
     "rss": {
-      "total": 12,
+      "total": 14,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 5,
+          "count": 6,
           "error": null
         },
         "Premium Times": {
           "ok": true,
-          "count": 0,
+          "count": 2,
           "error": null
         },
         "BusinessDay": {
           "ok": true,
-          "count": 0,
+          "count": 1,
           "error": null
         },
         "Nairametrics": {
           "ok": true,
-          "count": 4,
+          "count": 3,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 3,
+          "count": 2,
           "error": null
         },
         "The Punch": {
-          "ok": false,
+          "ok": true,
           "count": 0,
-          "error": "timeout of 12000ms exceeded"
+          "error": null
         }
       }
     },
@@ -72,6 +72,6 @@
     "sent": true
   },
   "warnings": [
-    "Sources down: GNews (HTTP 429); RSS The Punch (timeout of 12000ms exceeded)"
+    "Sources down: GNews (HTTP 429)"
   ]
 }

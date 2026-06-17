@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-06-17T15:09:47.193Z",
-  "status": "healthy",
+  "timestamp": "2026-06-17T15:39:37.338Z",
+  "status": "degraded",
   "sources": {
     "gnews": {
       "ok": false,
@@ -18,7 +18,7 @@
       "error": null
     },
     "rss": {
-      "total": 15,
+      "total": 14,
       "feeds": {
         "ThisDay": {
           "ok": true,
@@ -32,7 +32,7 @@
         },
         "BusinessDay": {
           "ok": true,
-          "count": 1,
+          "count": 0,
           "error": null
         },
         "Nairametrics": {
@@ -59,19 +59,20 @@
     }
   },
   "counts": {
-    "raw": 155,
+    "raw": 154,
     "filtered": 15,
     "analyzed": 15,
-    "aiFallbacks": 0
+    "aiFallbacks": 2
   },
   "synthesis": {
-    "ok": true,
-    "themes": 3
+    "ok": false,
+    "themes": 0
   },
   "email": {
     "sent": true
   },
   "warnings": [
-    "Sources down: GNews (HTTP 429)"
+    "Sources down: GNews (HTTP 429)",
+    "Executive briefing failed to generate (digest fell back to article list)."
   ]
 }

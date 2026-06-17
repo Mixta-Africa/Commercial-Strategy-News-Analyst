@@ -2,8 +2,8 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 5,
-      "neutral": 6,
+      "bullish": 6,
+      "neutral": 5,
       "bearish": 4
     },
     "topTopics": [
@@ -16,15 +16,15 @@
         "count": 10
       },
       {
-        "topic": "real estate",
+        "topic": "financing",
         "count": 2
       },
       {
-        "topic": "land allocation",
+        "topic": "supply",
         "count": 1
       },
       {
-        "topic": "land-reform",
+        "topic": "pricing",
         "count": 1
       }
     ],
@@ -33,8 +33,8 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 5,
-      "neutral": 6,
+      "bullish": 6,
+      "neutral": 5,
       "bearish": 4
     },
     "topTopics": [
@@ -47,15 +47,15 @@
         "count": 10
       },
       {
-        "topic": "real estate",
+        "topic": "financing",
         "count": 2
       },
       {
-        "topic": "land allocation",
+        "topic": "supply",
         "count": 1
       },
       {
-        "topic": "land-reform",
+        "topic": "pricing",
         "count": 1
       }
     ],
@@ -64,8 +64,8 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 5,
-      "neutral": 6,
+      "bullish": 6,
+      "neutral": 5,
       "bearish": 4
     },
     "topTopics": [
@@ -78,15 +78,15 @@
         "count": 10
       },
       {
-        "topic": "real estate",
+        "topic": "financing",
         "count": 2
       },
       {
-        "topic": "land allocation",
+        "topic": "supply",
         "count": 1
       },
       {
-        "topic": "land-reform",
+        "topic": "pricing",
         "count": 1
       }
     ],

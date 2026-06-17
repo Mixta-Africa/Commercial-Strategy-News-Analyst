@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const mixtaContext = require('./mixta-context.json');
 
 class Synthesizer {
   constructor(agents) {
@@ -95,56 +96,71 @@ class Synthesizer {
   }
 
   buildPrompt(articles, context, memory) {
-    const contextBlock = context
-      ? JSON.stringify(context, null, 2)
-      : 'No company context available.';
+    // 1. Core Corporate Anchors
+    const priorities = context?.company?.strategic_priorities_2026 || [];
+    const activeProjects = context?.active_projects || [];
+    const watchList = context?.watch_list || [];
+    const pricingView = context?.internal_pricing_strategy_view || {};
+    
+    // 2. Format a compact, ultra-focused context block to avoid 413 token bloating
+    const cleanPriorities = priorities.map(p => `- ${p}`).join('\n');
+    const cleanWatchList = watchList.map(w => `- ${w.topic}: ${w.why}`).join('\n');
+    
+    // 3. Strict Nigerian Asset Realities
+    const nigeriaProjects = activeProjects
+      .filter(p => (p.location || '').toLowerCase().includes('lagos') || (p.location || '').toLowerCase().includes('lekki'))
+      .map(p => `- ${p.name}: ${p.segment}. Open issues: ${(p.open_issues || []).join(', ') || 'None'}`).join('\n');
 
-    return `You are Mixta Africa's head of market intelligence, writing the daily briefing that lands in the CEO's inbox at 8am. This is the most important document produced today. It has one job: tell leadership what is actually happening in the Lagos real estate market, what it means for Mixta's live projects, and what needs to happen. 
+    return `You are The Tola Edge Brief intelligence synthesis engine, acting as the Head of Market Intelligence for Tola Akinsulire, Group Chief Commercial Officer at Mixta Africa. Your job is to convert raw Nigerian market signals into crisp, decision-grade executive briefs calibrated exclusively to Mixta's commercial runway.
 
-Your audience reads this before meetings. They are smart, time-poor, and intolerant of generic commentary. They will notice if you state the obvious. They will notice if you hedge everything. Write like a seasoned analyst who has earned the right to have a view.
+VOICE AND STYLE:
+- Write with ultimate business acumen: declarative, aggressive, and highly analytical[cite: 3].
+- Never use passive or tentative phrasing ("may potentially affect"). State exactly HOW and HOW MUCH a market shift impacts our pipeline, land position, or sales receivables[cite: 3].
+- The executive_summary MUST consist of exactly 4 clean, sequential paragraphs of prose (no markdown headings allowed)[cite: 3]:
+  * Paragraph 1: The highest-consequence Nigeria macro/market signal today[cite: 3].
+  * Paragraph 2: The key local financing, mortgage architecture, or banking partnership signal[cite: 3, 4].
+  * Paragraph 3: The most critical Market Creation signal (informal majority formalization, fintech convergence like OPay/Moniepoint, housing infrastructure)[cite: 3].
+  * Paragraph 4: Strategic synthesis — exactly what this collective intelligence implies for Mixta's Nigerian commercial execution this week[cite: 3].
 
-VOICE AND STYLE — follow these precisely:
-- Write declaratively, not tentatively. "Rental demand is compressing Annexe's addressable market" not "This trend may potentially impact..."
-- Use specific names: Lakowe Crossings, Lakowe Annexe, Lagos New Town, BAFF, FMBN, Ibeju-Lekki, Lekki Deep Seaport. Generic references to "our projects" or "the company" are not acceptable.
-- Use numbers when they exist in the sources. "Annual rents up 40%" beats "rents have risen significantly."
-- The executive_summary should open with the sharpest fact from today, not a scene-setter. It should be the kind of thing a good analyst would say out loud in a meeting.
-- theme labels should be sharp and specific. Not "Market Trends" or "Policy Update" — something like "Rental Surge Eroding Buyer Pool" or "FG Mortgage Push: Annexe Tailwind or Competitor Cover?"
-- what_happened: one sentence of fact. Direct. Quote the source if there is a number worth quoting.
-- why_it_matters_to_mixta: this is where your commercial judgment goes. Name the specific risk or opportunity. Connect to receivables, pricing, absorption pace, launch timing, competitor moves, or regulatory exposure. Do not say "this may affect Mixta" — say HOW and HOW MUCH if possible.
-- recommendation: frame it as a decision, not a to-do list. "Push the Annexe pricing review to this week's exec meeting — waiting costs optionality" beats "Monitor pricing strategies."
+======================================================================
+NIGERIA CORE STRATEGIC CHANNELS
+======================================================================
+Evaluate all incoming data points against these specific domestic parameters:
+- Focus Channels: CBN policy rate shifts, FMBN/NHF structural modifications, infrastructure arbitrage loops (Green Line Metro, Lekki-Epe Coastal Highway, Lekki Deep Seaport, Dangote Refinery).
+- Commercial Touchpoints: Escalate or de-risk land banks, track the cash receivables gap, monitor MOFI MREIF mortgage allocations, and drive diaspora channel traction via the "Own It 4 Sure" framework[cite: 4].
 
-=== MIXTA CONTEXT (proprietary — use it to connect news to our actual position) ===
-${contextBlock}
+=== ACTIVE PROJECTS IN COUNTRY SCOPE ===
+${nigeriaProjects}
 
-=== RECURRING THEME HISTORY (use to judge whether something is NEW, BUILDING, or ESTABLISHED) ===
+=== GENERAL MIXTA STRATEGIC ANCHORS ===
+${cleanPriorities}
+- Internal Pricing Matrix Strategy: ${pricingView.headline_argument || 'N/A'}
+
+=== TRACKED DOMAINS & WATCHLIST ===
+${cleanWatchList}
+
+=== RECURRING THEME HISTORY (Temporal Memory) ===
 ${this.summarizeMemory(memory)}
 
-=== TODAY'S ARTICLES (cite by [index]) ===
+=== TODAY'S ARTICLES DATA (Cite sources using [index] tokens) ===
 ${this.formatArticles(articles)}
 
-=== YOUR TASK ===
-Identify 3 to 5 themes that genuinely move the needle for Mixta. Cluster related articles. Every theme must be grounded in at least one article from the list above. Judge novelty against the theme history — if a theme has appeared 3+ times, say so and escalate the recommendation.
+=== EDITORIAL TASK ===
+Isolate 3 to 5 high-impact themes moving the needle for Mixta[cite: 2]. Group correlated articles[cite: 2]. Every theme must explicitly link back to its commercial consequence regarding Nigerian asset allocation, receivables, or named projects[cite: 2].
 
-TRUST RULES (non-negotiable — leadership relies on accuracy):
-- Cite only real article indices that exist in the list above. Never invent a source.
-- In "what_happened", state only what the sources actually say. In "why_it_matters_to_mixta", you are making an inference — own it as analysis, not established fact.
-- A single-source theme cannot claim "high" confidence.
-- If evidence is thin, say so directly rather than inflating the claim.
-
-Write the executive_summary LAST, after you have identified the themes — it should reflect the sharpest finding, not a generic intro.
-
-Respond ONLY with valid JSON in EXACTLY this shape (no markdown, no text outside the JSON):
+Respond ONLY with a valid JSON block matching this structural layout exactly (no markdown formatting, no preambles)[cite: 2]:
 {
-  "executive_summary": "The single sharpest takeaway for leadership today. Open with a specific fact or number, not a scene-setter. Max 2 sentences.",
+  "executive_summary": "Paragraph 1 prose here.\\n\\nParagraph 2 prose here.\\n\\nParagraph 3 prose here.\\n\\nParagraph 4 prose here.",
   "themes": [
     {
-      "label": "Sharp, specific theme name — not generic",
+      "label": "Sharp, specific theme name highlighting the structural shift",
+      "market": "Nigeria",
       "novelty": "new | building | established",
-      "what_happened": "One sentence of fact from the sources. Include numbers if they exist.",
-      "why_it_matters_to_mixta": "Specific commercial impact on named Mixta projects, pricing, receivables, or competitive position. This is your analysis — own it.",
-      "recommendation": "A decision, not a task. Who should do what, by when, and why now.",
+      "what_happened": "One sentence reporting the hard empirical facts from the sources, including explicit metrics or figures.",
+      "why_it_matters_to_mixta": "Clear commercial calculation of exposure or opportunity regarding asset allocation, receivables, or named projects.",
+      "recommendation": "A clean, actionable commercial decision or direct trade-off proposal addressed to the CCO.",
       "confidence": "high | medium | low",
-      "sources": [list of article index numbers, e.g. [0, 3]]
+      "sources": [0, 1]
     }
   ],
   "watch_list_hits": ["Short note for each watch-list topic that surfaced today, or empty array"]

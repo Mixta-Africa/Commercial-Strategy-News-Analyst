@@ -64,7 +64,15 @@ class SheetsClient {
         resource: resource,
       });
 
-      console.log(`[Sheets] Appended ${values.length} rows`);
+      // --- DIAGNOSTIC LOGS ADDED HERE ---
+      console.log(`[Sheets DIAGNOSTIC] Target Spreadsheet ID: ${this.spreadsheetId}`);
+      if (response.data && response.data.updates) {
+         console.log(`[Sheets DIAGNOSTIC] SUCCESS! Data written to exact range: ${response.data.updates.updatedRange}`);
+      } else {
+         console.log(`[Sheets DIAGNOSTIC] Weird response from Google: ${JSON.stringify(response.data)}`);
+      }
+      // ----------------------------------
+
       return response.data;
     } catch (error) {
       console.error('[Sheets] Append error:', error.message);

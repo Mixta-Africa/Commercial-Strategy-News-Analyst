@@ -59,7 +59,7 @@ class SheetsClient {
 
       const response = await this.sheets.spreadsheets.values.append({
         spreadsheetId: this.spreadsheetId,
-        range: 'Sheet1!A:J',
+        range: 'Sheet1!A1',
         valueInputOption: 'USER_ENTERED',
         resource: resource,
       });

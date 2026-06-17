@@ -1,21 +1,24 @@
 /**
- * Content Enricher v3.1 — Headless Browser Edition with Aggressive Retry & Session Recovery
+ * Content Enricher v4.0 — One Browser Per Article
  *
- * Following your brilliant intuition, this acts as the "extra step".
- * Instead of a dumb HTTP request, this opens a literal, invisible Chrome browser.
- * It automatically executes Google's JS redirects and waits out Cloudflare's
- * "Checking your browser" human-verification screens before scraping the text.
+ * ROOT CAUSE FIX: The GitHub Actions Chromium child process is killed by the
+ * OS mid-batch (memory pressure, OOM killer, resource limits). Retrying on
+ * the same dead browser instance never works. The only reliable fix is to
+ * spawn a fresh browser for EVERY article. If one browser dies, only that
+ * article is affected — the batch continues.
  *
- * PATCH v3.1: Adds per-article retry logic with exponential backoff and session recovery
- * to handle ProtocolError: Session with given id not found crashes mid-batch.
+ * Architecture change from v3.x:
+ *   BEFORE: 1 browser → N pages (cascade failure when browser dies)
+ *   AFTER:  N browsers → 1 page each (isolated, disposable, crash-safe)
  */
 
 const puppeteer = require('puppeteer');
 
 const THIN_THRESHOLD = 200;
 const MAX_EXTRACT = 3000;
-const MAX_RETRIES = 3;
-const BASE_BACKOFF_MS = 2000;
+const PAGE_TIMEOUT = 25000;
+const CLOUDFLARE_WAIT = 3500;
+const BETWEEN_ARTICLES_DELAY = 1500; // Give OS time to reclaim memory between launches
 
 function cleanContent(raw) {
   if (!raw) return '';
@@ -28,68 +31,58 @@ function usableLength(article) {
 }
 
 /**
- * Exponential backoff: 2s, 4s, 8s
+ * Safely close browser without throwing if already dead.
  */
-function getBackoffMs(attemptNumber) {
-  return BASE_BACKOFF_MS * Math.pow(2, attemptNumber - 1);
-}
-
-/**
- * Safely close a page without throwing if session is already dead.
- */
-async function safeClosePage(page) {
+async function safeBrowserClose(browser) {
   try {
-    if (page && !page.isClosed()) {
-      await page.close();
-    }
-  } catch (err) {
-    // Session might be dead; that's OK, we're moving on.
+    if (browser) await browser.close();
+  } catch (_) {
+    // Already dead — that's fine, we're isolating anyway
   }
 }
 
 /**
- * Check if browser is still connected before reusing it.
- * If disconnected, return true to signal restart needed.
+ * Extract article text using a fully isolated browser instance.
+ * Returns enriched article object on success, original article on failure.
  */
-async function isBrowserDead(browser) {
+async function enrichSingleArticle(article) {
+  let browser;
   try {
-    const version = await browser.version();
-    return !version; // If no version, browser is dead
-  } catch (err) {
-    return true; // Any error means the browser session is gone
-  }
-}
+    browser = await puppeteer.launch({
+      headless: 'new',
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--no-zygote',
+        '--single-process',           // Key: prevents child process spawning that OOM-kills
+        '--memory-pressure-off',
+        '--max_old_space_size=256'
+      ]
+    });
 
-/**
- * Single article enrichment with built-in retries and session recovery.
- */
-async function enrichSingleArticle(browser, article, attemptNumber = 1) {
-  if (attemptNumber > MAX_RETRIES) {
-    console.log(`[Enricher] MAX_RETRIES (${MAX_RETRIES}) exceeded for ${article.title.substring(0, 40)}`);
-    return { ...article, contentEnriched: false };
-  }
-
-  let page;
-  try {
-    // Check if browser session is still alive
-    if (await isBrowserDead(browser)) {
-      throw new Error('Browser session is dead');
-    }
-
-    page = await browser.newPage();
+    const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
     await page.setViewport({ width: 1280, height: 800 });
 
-    console.log(`[Enricher] Attempt ${attemptNumber}/${MAX_RETRIES}: ${article.url.substring(0, 80)}...`);
-    
-    // Load the page with aggressive timeout
-    await page.goto(article.url, { waitUntil: 'domcontentloaded', timeout: 25000 });
-    
-    // Wait 3.5 seconds unconditionally for JS redirects and Cloudflare checks
-    await new Promise(r => setTimeout(r, 3500));
+    // Block heavyweight assets — we only need text, not images/fonts/video
+    await page.setRequestInterception(true);
+    page.on('request', (req) => {
+      const type = req.resourceType();
+      if (['image', 'media', 'font', 'stylesheet', 'websocket', 'manifest'].includes(type)) {
+        req.abort();
+      } else {
+        req.continue();
+      }
+    });
+
+    console.log(`[Enricher] Navigating: ${article.url.substring(0, 80)}...`);
+    await page.goto(article.url, { waitUntil: 'domcontentloaded', timeout: PAGE_TIMEOUT });
+    await new Promise(r => setTimeout(r, CLOUDFLARE_WAIT));
 
     const finalUrl = page.url();
-    
+
     const extractedText = await page.evaluate(() => {
       if (!document.body) return '';
 
@@ -99,12 +92,14 @@ async function enrichSingleArticle(browser, article, attemptNumber = 1) {
       if (articleTag && articleTag.innerText.trim().length > 200) return articleTag.innerText.trim();
 
       const containers = ['.entry-content', '.post-content', '.article-body', '.article-content', 'main', '#main'];
-      for (let selector of containers) {
+      for (const selector of containers) {
         const el = document.querySelector(selector);
         if (el && el.innerText.trim().length > 200) return el.innerText.trim();
       }
 
-      const pTags = Array.from(document.querySelectorAll('p')).map(p => p.innerText.trim()).filter(text => text.length > 20);
+      const pTags = Array.from(document.querySelectorAll('p'))
+        .map(p => p.innerText.trim())
+        .filter(text => text.length > 20);
       if (pTags.length > 0) return pTags.join(' ');
 
       return document.body.innerText.trim();
@@ -113,38 +108,18 @@ async function enrichSingleArticle(browser, article, attemptNumber = 1) {
     const cleanText = cleanContent(extractedText).substring(0, MAX_EXTRACT);
 
     if (cleanText.length > 150) {
-      console.log(`[Enricher] SUCCESS (Attempt ${attemptNumber}): Grabbed ${cleanText.length} chars from ${finalUrl.substring(0, 60)}`);
-      return {
-        ...article,
-        content: cleanText,
-        resolvedUrl: finalUrl,
-        contentEnriched: true
-      };
+      console.log(`[Enricher] SUCCESS: ${cleanText.length} chars from ${finalUrl.substring(0, 60)}`);
+      await safeBrowserClose(browser);
+      return { ...article, content: cleanText, resolvedUrl: finalUrl, contentEnriched: true };
     } else {
-      console.log(`[Enricher] RETRY (Attempt ${attemptNumber}): Page rendered but no text found for ${article.title.substring(0, 40)}`);
-      await safeClosePage(page);
-      
-      const backoffMs = getBackoffMs(attemptNumber);
-      console.log(`[Enricher] Backing off ${backoffMs}ms before retry...`);
-      await new Promise(r => setTimeout(r, backoffMs));
-      
-      return enrichSingleArticle(browser, article, attemptNumber + 1);
+      console.log(`[Enricher] THIN: No usable text found for "${article.title.substring(0, 40)}"`);
+      await safeBrowserClose(browser);
+      return { ...article, contentEnriched: false };
     }
+
   } catch (err) {
-    console.error(`[Enricher] ERROR (Attempt ${attemptNumber}/${MAX_RETRIES}): ${article.title.substring(0, 40)} - ${err.message}`);
-    
-    // Clean up this page attempt
-    await safeClosePage(page);
-
-    // If it's a ProtocolError or session error, apply backoff and retry
-    if (err.message && (err.message.includes('ProtocolError') || err.message.includes('Session') || err.message.includes('Browser session'))) {
-      const backoffMs = getBackoffMs(attemptNumber);
-      console.log(`[Enricher] Session recovery: Backing off ${backoffMs}ms before retry...`);
-      await new Promise(r => setTimeout(r, backoffMs));
-      return enrichSingleArticle(browser, article, attemptNumber + 1);
-    }
-
-    // For other errors, mark as failed immediately
+    console.error(`[Enricher] FAILED: "${article.title.substring(0, 40)}" — ${err.message.split('\n')[0]}`);
+    await safeBrowserClose(browser);
     return { ...article, contentEnriched: false };
   }
 }
@@ -155,28 +130,22 @@ async function enrichArticles(articles) {
 
   if (thin.length === 0) return articles;
 
-  console.log(`[Enricher] ${already.length} articles OK, ${thin.length} need enrichment via Headless Browser`);
-
-  const browser = await puppeteer.launch({
-    headless: "new",
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
-  });
+  console.log(`[Enricher] ${already.length} articles OK, ${thin.length} need enrichment`);
 
   const enrichedMap = new Map();
 
-  // Process each article sequentially with retry logic
-  for (const article of thin) {
-    const enriched = await enrichSingleArticle(browser, article);
-    enrichedMap.set(article.url, enriched);
+  for (let i = 0; i < thin.length; i++) {
+    const article = thin[i];
+    const result = await enrichSingleArticle(article);
+    enrichedMap.set(article.url, result);
+
+    // Give the OS time to reclaim memory before next browser launch
+    if (i < thin.length - 1) {
+      await new Promise(r => setTimeout(r, BETWEEN_ARTICLES_DELAY));
+    }
   }
 
-  try {
-    await browser.close();
-  } catch (err) {
-    console.error(`[Enricher] Warning: Browser close error (non-fatal): ${err.message}`);
-  }
-  
-  console.log(`[Enricher] Browser closed. Done.`);
+  console.log(`[Enricher] Done. ${[...enrichedMap.values()].filter(a => a.contentEnriched).length}/${thin.length} enriched.`);
 
   return articles.map(a => enrichedMap.has(a.url) ? enrichedMap.get(a.url) : a);
 }

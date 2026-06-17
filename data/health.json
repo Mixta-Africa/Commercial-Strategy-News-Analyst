@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-06-17T10:39:38.567Z",
-  "status": "healthy",
+  "timestamp": "2026-06-17T10:58:12.813Z",
+  "status": "degraded",
   "sources": {
     "gnews": {
       "ok": false,
@@ -65,13 +65,14 @@
     "aiFallbacks": 0
   },
   "synthesis": {
-    "ok": true,
-    "themes": 3
+    "ok": false,
+    "themes": 0
   },
   "email": {
     "sent": true
   },
   "warnings": [
-    "Sources down: GNews (HTTP 429)"
+    "Sources down: GNews (HTTP 429)",
+    "Executive briefing failed to generate (digest fell back to article list)."
   ]
 }

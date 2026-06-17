@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 7,
-      "bullish": 4,
+      "neutral": 5,
+      "bullish": 6,
       "bearish": 4
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
+        "topic": "infrastructure",
+        "count": 11
+      },
+      {
+        "topic": "prices",
+        "count": 9
+      },
+      {
+        "topic": "regulation",
         "count": 2
       },
       {
-        "topic": "land allocation",
-        "count": 1
+        "topic": "rental market",
+        "count": 2
       },
       {
-        "topic": "community relations",
-        "count": 1
-      },
-      {
-        "topic": "property market",
-        "count": 1
-      },
-      {
-        "topic": "insecurity",
+        "topic": "regulatory",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 7,
-      "bullish": 4,
+      "neutral": 5,
+      "bullish": 6,
       "bearish": 4
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
+        "topic": "infrastructure",
+        "count": 11
+      },
+      {
+        "topic": "prices",
+        "count": 9
+      },
+      {
+        "topic": "regulation",
         "count": 2
       },
       {
-        "topic": "land allocation",
-        "count": 1
+        "topic": "rental market",
+        "count": 2
       },
       {
-        "topic": "community relations",
-        "count": 1
-      },
-      {
-        "topic": "property market",
-        "count": 1
-      },
-      {
-        "topic": "insecurity",
+        "topic": "regulatory",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 7,
-      "bullish": 4,
+      "neutral": 5,
+      "bullish": 6,
       "bearish": 4
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
+        "topic": "infrastructure",
+        "count": 11
+      },
+      {
+        "topic": "prices",
+        "count": 9
+      },
+      {
+        "topic": "regulation",
         "count": 2
       },
       {
-        "topic": "land allocation",
-        "count": 1
+        "topic": "rental market",
+        "count": 2
       },
       {
-        "topic": "community relations",
-        "count": 1
-      },
-      {
-        "topic": "property market",
-        "count": 1
-      },
-      {
-        "topic": "insecurity",
+        "topic": "regulatory",
         "count": 1
       }
     ],

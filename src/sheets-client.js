@@ -49,33 +49,27 @@ class SheetsClient {
   /**
    * Append rows to Google Sheet
    */
-  async appendRows(values) {
+  // Change 'Sheet1' to 'Master Backup'
+  async appendRows(values, tabName = 'Master Backup') {
     try {
       if (!this.sheets) throw new Error('Sheets not initialized');
 
-      const resource = {
-        values: values,
-      };
+      const resource = { values: values };
+
+      // This safely wraps Master Backup in quotes so the space doesn't break the API
+      const targetRange = `'${tabName}'!A1`; 
 
       const response = await this.sheets.spreadsheets.values.append({
         spreadsheetId: this.spreadsheetId,
-        range: 'Sheet1!A1',
+        range: targetRange,
         valueInputOption: 'USER_ENTERED',
         resource: resource,
       });
 
-      // --- DIAGNOSTIC LOGS ADDED HERE ---
-      console.log(`[Sheets DIAGNOSTIC] Target Spreadsheet ID: ${this.spreadsheetId}`);
-      if (response.data && response.data.updates) {
-         console.log(`[Sheets DIAGNOSTIC] SUCCESS! Data written to exact range: ${response.data.updates.updatedRange}`);
-      } else {
-         console.log(`[Sheets DIAGNOSTIC] Weird response from Google: ${JSON.stringify(response.data)}`);
-      }
-      // ----------------------------------
-
+      console.log(`[Sheets] Appended ${values.length} rows to ${tabName}`);
       return response.data;
     } catch (error) {
-      console.error('[Sheets] Append error:', error.message);
+      console.error(`[Sheets] Append error for tab ${tabName}:`, error.message);
       throw error;
     }
   }
@@ -89,11 +83,11 @@ class SheetsClient {
 
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId: this.spreadsheetId,
-        range: 'Sheet1!A:J',
+        // Update this range to point to Master Backup (notice the single quotes around the name)
+        range: "'Master Backup'!A:J", 
       });
 
       const rows = response.data?.values || [];
-      console.log(`[Sheets] Retrieved ${rows.length} total rows`);
       return rows;
     } catch (error) {
       console.error('[Sheets] Get error:', error.message);

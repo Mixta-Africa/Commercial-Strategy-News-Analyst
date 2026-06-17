@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 6,
-      "bearish": 4
+      "neutral": 7,
+      "bullish": 5,
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
-        "count": 11
+        "topic": "prices",
+        "count": 10
       },
       {
-        "topic": "prices",
+        "topic": "infrastructure",
         "count": 9
       },
       {
-        "topic": "regulation",
+        "topic": "competition",
         "count": 2
       },
       {
-        "topic": "rental market",
-        "count": 2
+        "topic": "land-reform",
+        "count": 1
       },
       {
-        "topic": "regulatory",
+        "topic": "property marketing",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 6,
-      "bearish": 4
+      "neutral": 7,
+      "bullish": 5,
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
-        "count": 11
+        "topic": "prices",
+        "count": 10
       },
       {
-        "topic": "prices",
+        "topic": "infrastructure",
         "count": 9
       },
       {
-        "topic": "regulation",
+        "topic": "competition",
         "count": 2
       },
       {
-        "topic": "rental market",
-        "count": 2
+        "topic": "land-reform",
+        "count": 1
       },
       {
-        "topic": "regulatory",
+        "topic": "property marketing",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 6,
-      "bearish": 4
+      "neutral": 7,
+      "bullish": 5,
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
-        "count": 11
+        "topic": "prices",
+        "count": 10
       },
       {
-        "topic": "prices",
+        "topic": "infrastructure",
         "count": 9
       },
       {
-        "topic": "regulation",
+        "topic": "competition",
         "count": 2
       },
       {
-        "topic": "rental market",
-        "count": 2
+        "topic": "land-reform",
+        "count": 1
       },
       {
-        "topic": "regulatory",
+        "topic": "property marketing",
         "count": 1
       }
     ],

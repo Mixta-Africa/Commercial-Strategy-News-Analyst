@@ -1,0 +1,74 @@
+name: Competitive Intelligence Pipeline
+
+on:
+  schedule:
+    # Runs at 09:00 WAT (08:00 UTC) — one hour AFTER the main news pipeline
+    # so the two never race on git push to the same repo.
+    - cron: '0 8 * * 1-5'   # Weekdays only — competitor moves are business-day events
+  workflow_dispatch:          # Manual trigger for on-demand runs
+
+permissions:
+  contents: write
+
+jobs:
+  competitive-intelligence:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Chromium for Puppeteer
+        run: |
+          npx puppeteer browsers install chrome
+        continue-on-error: true   # Non-fatal: Axios fallback handles JS-lite sites
+
+      # ---------------------------------------------------------------
+      # COMPETITIVE INTELLIGENCE PIPELINE
+      # Isolated from the main Nigerian briefing:
+      #   - Writes to separate Sheets tabs (Competitor News, Price Listings)
+      #   - Writes data/competitive-briefing.json and data/competitive-prices.json
+      #   - Does NOT touch articles.json, briefing.json, or themes.json
+      #   - Uses COMPETITIVE_* keys to preserve main pipeline RPD budgets
+      # ---------------------------------------------------------------
+      - name: Run competitive intelligence pipeline
+        run: node src/competitive-pipeline.js
+        env:
+          # ── AI Provider Keys (SEPARATE from main pipeline) ──────────────
+          # Create COMPETITIVE_GROQ_KEY etc. in GitHub Secrets.
+          # Falls back to main pipeline keys if competitive-specific ones aren't set.
+          COMPETITIVE_GROQ_KEY:    ${{ secrets.COMPETITIVE_GROQ_KEY }}
+          COMPETITIVE_GEMINI_KEY:  ${{ secrets.COMPETITIVE_GEMINI_KEY }}
+          COMPETITIVE_MISTRAL_KEY: ${{ secrets.COMPETITIVE_MISTRAL_KEY }}
+
+          # ── Fallback to main pipeline keys if competitive keys unset ─────
+          GROQ_API_KEY:    ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY:  ${{ secrets.GEMINI_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+
+          # ── Google Sheets (SAME spreadsheet, different tabs) ─────────────
+          SPREADSHEET_ID:             ${{ secrets.SPREADSHEET_ID }}
+          GOOGLE_SHEETS_CREDENTIALS:  ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
+
+      # ---------------------------------------------------------------
+      # COMMIT JSON OUTPUTS TO REPO (for future dashboard integration)
+      # ---------------------------------------------------------------
+      - name: Commit competitive intelligence data
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/competitive-briefing.json data/competitive-prices.json
+          if git diff --staged --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "Update competitive intelligence data [skip ci]"
+            git push
+          fi

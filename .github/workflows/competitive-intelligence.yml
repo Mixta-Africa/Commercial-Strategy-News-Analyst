@@ -55,7 +55,7 @@ jobs:
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
 
           # ── Google Sheets (SAME spreadsheet, different tabs) ─────────────
-          SPREADSHEET_ID:             ${{ secrets.SPREADSHEET_ID }}
+          COMPETITIVE_SPREADSHEET_ID: ${{ secrets.COMPETITIVE_SPREADSHEET_ID }}
           GOOGLE_SHEETS_CREDENTIALS:  ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
 
       # ---------------------------------------------------------------

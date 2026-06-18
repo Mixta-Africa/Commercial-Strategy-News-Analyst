@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-06-17T15:39:37.338Z",
-  "status": "degraded",
+  "timestamp": "2026-06-18T05:02:19.777Z",
+  "status": "healthy",
   "sources": {
     "gnews": {
       "ok": false,
@@ -14,21 +14,21 @@
     },
     "googlenews": {
       "ok": true,
-      "count": 102,
+      "count": 103,
       "error": null
     },
     "rss": {
-      "total": 14,
+      "total": 11,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 7,
+          "count": 3,
           "error": null
         },
         "Premium Times": {
-          "ok": true,
-          "count": 2,
-          "error": null
+          "ok": false,
+          "count": 0,
+          "error": "XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &"
         },
         "BusinessDay": {
           "ok": true,
@@ -37,7 +37,7 @@
         },
         "Nairametrics": {
           "ok": true,
-          "count": 3,
+          "count": 2,
           "error": null
         },
         "Daily Trust": {
@@ -47,7 +47,7 @@
         },
         "The Punch": {
           "ok": true,
-          "count": 0,
+          "count": 4,
           "error": null
         }
       }
@@ -59,20 +59,19 @@
     }
   },
   "counts": {
-    "raw": 154,
+    "raw": 152,
     "filtered": 15,
     "analyzed": 15,
-    "aiFallbacks": 2
+    "aiFallbacks": 1
   },
   "synthesis": {
-    "ok": false,
-    "themes": 0
+    "ok": true,
+    "themes": 3
   },
   "email": {
     "sent": true
   },
   "warnings": [
-    "Sources down: GNews (HTTP 429)",
-    "Executive briefing failed to generate (digest fell back to article list)."
+    "Sources down: GNews (HTTP 429); RSS Premium Times (XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &)"
   ]
 }

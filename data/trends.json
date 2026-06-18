@@ -2,94 +2,94 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "neutral": 5,
-      "bearish": 4
+      "bullish": 10,
+      "neutral": 3,
+      "bearish": 2
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 10
+        "count": 11
       },
       {
         "topic": "infrastructure",
         "count": 10
       },
       {
-        "topic": "financing",
-        "count": 2
-      },
-      {
-        "topic": "supply",
+        "topic": "FDI",
         "count": 1
       },
       {
-        "topic": "pricing",
+        "topic": "capital inflows",
+        "count": 1
+      },
+      {
+        "topic": "premium housing",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "neutral": 5,
-      "bearish": 4
+      "bullish": 10,
+      "neutral": 3,
+      "bearish": 2
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 10
+        "count": 11
       },
       {
         "topic": "infrastructure",
         "count": 10
       },
       {
-        "topic": "financing",
-        "count": 2
-      },
-      {
-        "topic": "supply",
+        "topic": "FDI",
         "count": 1
       },
       {
-        "topic": "pricing",
+        "topic": "capital inflows",
+        "count": 1
+      },
+      {
+        "topic": "premium housing",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "neutral": 5,
-      "bearish": 4
+      "bullish": 10,
+      "neutral": 3,
+      "bearish": 2
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 10
+        "count": 11
       },
       {
         "topic": "infrastructure",
         "count": 10
       },
       {
-        "topic": "financing",
-        "count": 2
-      },
-      {
-        "topic": "supply",
+        "topic": "FDI",
         "count": 1
       },
       {
-        "topic": "pricing",
+        "topic": "capital inflows",
+        "count": 1
+      },
+      {
+        "topic": "premium housing",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   }
 }

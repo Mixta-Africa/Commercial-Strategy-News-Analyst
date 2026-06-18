@@ -1,30 +1,36 @@
 {
-  "_instructions": "Add or remove sources here without touching code. 'rssFeeds' are direct publisher feeds. 'googleNewsQueries' become Google News RSS search feeds (no rate limit, no bot-blocking, pulls hundreds of publishers including ones that block direct RSS). Keyword filtering still applies to everything.",
+  "_instructions": "Add or remove sources here. 'rssFeeds' are direct feeds. 'googleNewsQueries' become Google News RSS feeds. Every source MUST have a 'geo' tag ('lagos', 'nigeria', 'africa', 'global') to successfully route data into the visual Geoslicer.",
 
   "rssFeeds": [
-  { "url": "https://www.thisdaylive.com/feed", "source": "ThisDay" },
-  { "url": "https://www.premiumtimesng.com/feed", "source": "Premium Times" },
-  { "url": "https://businessday.ng/feed", "source": "BusinessDay" },
-  { "url": "https://nairametrics.com/feed", "source": "Nairametrics" },
-  { "url": "https://dailytrust.com/feed", "source": "Daily Trust" },
-  { "url": "https://punchng.com/feed", "source": "The Punch" }
-],
+    { "url": "https://www.thisdaylive.com/feed", "source": "ThisDay", "geo": "nigeria" },
+    { "url": "https://www.premiumtimesng.com/feed", "source": "Premium Times", "geo": "nigeria" },
+    { "url": "https://businessday.ng/feed", "source": "BusinessDay", "geo": "nigeria" },
+    { "url": "https://nairametrics.com/feed", "source": "Nairametrics", "geo": "nigeria" },
+    { "url": "https://dailytrust.com/feed", "source": "Daily Trust", "geo": "nigeria" },
+    { "url": "https://punchng.com/feed", "source": "The Punch", "geo": "nigeria" },
+    { "url": "https://estateintel.com/feed/", "source": "Estate Intel", "geo": "africa" },
+    { "url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000115", "source": "Global Commercial Real Estate", "geo": "global" }
+  ],
 
   "googleNewsQueries": [
-  "Lagos real estate",
-  "Nigeria property market",
-  "Ibeju-Lekki property development",
-  "Nigeria housing policy",
-  "Lagos land prices",
-  "Nigeria mortgage affordable housing",
-  "Lekki property investment",
-  "Nigeria real estate developer",
-  "site:guardian.ng real estate OR property",
-  "site:vanguardngr.com real estate OR property",
-  "site:thecable.ng real estate OR property",
-  "site:leadership.ng real estate OR property",
-  "site:tribuneonlineng.com real estate OR property"
-],
+    { "query": "Lagos real estate", "geo": "lagos" },
+    { "query": "Ibeju-Lekki property development", "geo": "lagos" },
+    { "query": "Lagos land prices", "geo": "lagos" },
+    { "query": "Lekki property investment", "geo": "lagos" },
+    
+    { "query": "Nigeria property market", "geo": "nigeria" },
+    { "query": "Nigeria housing policy", "geo": "nigeria" },
+    { "query": "Nigeria mortgage affordable housing", "geo": "nigeria" },
+    { "query": "Nigeria real estate developer", "geo": "nigeria" },
+    { "query": "site:guardian.ng real estate OR property", "geo": "nigeria" },
+    { "query": "site:vanguardngr.com real estate OR property", "geo": "nigeria" },
+    { "query": "site:thecable.ng real estate OR property", "geo": "nigeria" },
+    { "query": "site:leadership.ng real estate OR property", "geo": "nigeria" },
+    { "query": "site:tribuneonlineng.com real estate OR property", "geo": "nigeria" },
+
+    { "query": "Africa commercial real estate OR housing market", "geo": "africa" },
+    { "query": "global real estate macro trends OR commercial property", "geo": "global" }
+  ],
 
   "settings": {
     "maxPerRssFeed": 10,

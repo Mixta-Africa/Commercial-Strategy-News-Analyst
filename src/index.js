@@ -523,7 +523,14 @@ class NewsPipeline {
         content: article.content ? article.content.substring(0, 1000) + '...' : ''
       }));
 
-      const briefing = await this.synthesizer.synthesize(safeBriefingData);
+      // --- NEW: AI Routing Gate (Geo-Fencing) ---
+      // Hides macro/global data from the Synthesizer so the executive text summary stays hyper-local
+      const localizedBriefingData = safeBriefingData.filter(article => 
+        article.geoScope === 'nigeria' || article.geoScope === 'lagos' || !article.geoScope
+      );
+      console.log(`[PHASE 6.5] Routing Gate: Withholding ${safeBriefingData.length - localizedBriefingData.length} macro articles from Executive Summary generation.`);
+
+      const briefing = await this.synthesizer.synthesize(localizedBriefingData);
       health.recordSynthesis(briefing);
 
       const emailSent = await this.generateAndSendEmail(analyzed, trends, alerts, briefing);

@@ -2,94 +2,94 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "neutral": 6,
-      "bearish": 2
+      "bearish": 5,
+      "bullish": 6,
+      "neutral": 4
     },
     "topTopics": [
+      {
+        "topic": "infrastructure",
+        "count": 13
+      },
       {
         "topic": "prices",
         "count": 12
       },
       {
-        "topic": "infrastructure",
-        "count": 10
-      },
-      {
-        "topic": "luxury properties",
+        "topic": "security",
         "count": 2
       },
       {
-        "topic": "innovative industries",
+        "topic": "confidence",
         "count": 1
       },
       {
-        "topic": "commercial property",
+        "topic": "demand",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "neutral": 6,
-      "bearish": 2
+      "bearish": 5,
+      "bullish": 6,
+      "neutral": 4
     },
     "topTopics": [
+      {
+        "topic": "infrastructure",
+        "count": 13
+      },
       {
         "topic": "prices",
         "count": 12
       },
       {
-        "topic": "infrastructure",
-        "count": 10
-      },
-      {
-        "topic": "luxury properties",
+        "topic": "security",
         "count": 2
       },
       {
-        "topic": "innovative industries",
+        "topic": "confidence",
         "count": 1
       },
       {
-        "topic": "commercial property",
+        "topic": "demand",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "neutral": 6,
-      "bearish": 2
+      "bearish": 5,
+      "bullish": 6,
+      "neutral": 4
     },
     "topTopics": [
+      {
+        "topic": "infrastructure",
+        "count": 13
+      },
       {
         "topic": "prices",
         "count": 12
       },
       {
-        "topic": "infrastructure",
-        "count": 10
-      },
-      {
-        "topic": "luxury properties",
+        "topic": "security",
         "count": 2
       },
       {
-        "topic": "innovative industries",
+        "topic": "confidence",
         "count": 1
       },
       {
-        "topic": "commercial property",
+        "topic": "demand",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   }
 }

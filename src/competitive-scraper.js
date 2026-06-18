@@ -1,27 +1,24 @@
 /**
- * Competitive Intelligence Scraper
- * ==================================
- * Two scraping lanes, fully isolated from the main briefing pipeline:
+ * Competitive Intelligence Scraper — v2
+ * =======================================
+ * Adds bedroom count extraction and amenity scraping to the base scraper.
  *
- * LANE A — Competitor News
- *   Google News RSS queries per competitor. No API key required.
- *   Returns press coverage, launches, deals, regulatory mentions.
+ * BEDROOM GROUPING STRATEGY (clutter reduction):
+ *   Raw listings are scraped individually but grouped before Sheet write.
+ *   Each Sheet row = one (PropertyType × Bedrooms × Location) group,
+ *   showing count, min/max/avg price, and the top amenities for that group.
+ *   Full raw listings are preserved in competitive-prices.json for the dashboard.
  *
- * LANE B — Property Price Listings
- *   Puppeteer (headless Chromium) + Cheerio for price extraction.
- *   Sites ranked by authenticity in competitive-config.js.
- *   Extracts: property type, location, price (NGN), bedrooms, source URL.
- *
- * Isolation guarantees:
- *   - Does NOT write to the main articles.json / briefing.json.
- *   - Does NOT consume agents.js Groq 8b/70b RPD buckets.
- *   - Uses its own per-article browser instance pattern (same as content-enricher.js).
+ * AMENITY EXTRACTION:
+ *   Extracted from listing cards using a broad keyword scanner.
+ *   Normalised into a standard taxonomy (pools, parking, gym, security, etc.)
+ *   so cross-site comparison is meaningful.
  */
 
-const axios = require('axios');
-const xml2js = require('xml2js');
+const axios   = require('axios');
+const xml2js  = require('xml2js');
 const cheerio = require('cheerio');
-const config = require('./competitive-config');
+const config  = require('./competitive-config');
 
 const BROWSER_HEADERS = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -29,23 +26,95 @@ const BROWSER_HEADERS = {
   'Accept-Language': 'en-US,en;q=0.9',
 };
 const TIMEOUT = 15000;
-const MAX_LISTINGS_PER_TYPE = 8; // listings per property type per site
+const MAX_LISTINGS_PER_TYPE = 12; // slightly more to improve grouping quality
 
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
+// ─── AMENITY TAXONOMY ─────────────────────────────────────────────────────────
+// Each entry: { key, label, patterns }
+// patterns are searched in the full listing text (title + description + card text).
+const AMENITY_TAXONOMY = [
+  { key: 'swimming_pool',   label: 'Swimming Pool',    patterns: ['pool', 'swimming'] },
+  { key: 'gym',             label: 'Gym / Fitness',    patterns: ['gym', 'fitness', 'exercise room'] },
+  { key: 'security',        label: '24hr Security',    patterns: ['security', 'gated', 'guarded', 'cctv'] },
+  { key: 'parking',         label: 'Parking',          patterns: ['parking', 'garage', 'car park', 'carport'] },
+  { key: 'generator',       label: 'Standby Generator',patterns: ['generator', 'gen', 'power backup'] },
+  { key: 'borehole',        label: 'Borehole / Water', patterns: ['borehole', 'water supply', 'treated water'] },
+  { key: 'serviced',        label: 'Serviced',         patterns: ['serviced', 'fully serviced'] },
+  { key: 'estate',          label: 'Estate / Compound',patterns: ['estate', 'compound', 'gated community'] },
+  { key: 'boys_quarters',   label: "Boys' Quarters",   patterns: ["boys' quarters", "bq", "boys quarter"] },
+  { key: 'smart_home',      label: 'Smart Home',       patterns: ['smart home', 'smart house', 'automated'] },
+  { key: 'solar',           label: 'Solar Power',      patterns: ['solar'] },
+  { key: 'air_conditioning',label: 'Air Conditioning', patterns: ['air condition', 'ac unit', 'a/c'] },
+  { key: 'fitted_kitchen',  label: 'Fitted Kitchen',   patterns: ['fitted kitchen', 'modern kitchen', 'equipped kitchen'] },
+  { key: 'pop_ceiling',     label: 'POP Ceiling',      patterns: ['pop ceiling', 'pop', 'plaster ceiling'] },
+  { key: 'balcony',         label: 'Balcony',          patterns: ['balcony', 'terrace'] },
+  { key: 'green_area',      label: 'Green Area / Garden', patterns: ['garden', 'green area', 'lawn'] },
+];
+
+// ─── BEDROOM NORMALISATION ────────────────────────────────────────────────────
+// Patterns to extract bedroom count from listing text.
+const BEDROOM_PATTERNS = [
+  /(\d+)\s*bed(?:room)?s?/i,
+  /(\d+)\s*br\b/i,
+  /(\d+)\s*bdrm/i,
+  /(\d+)-bed/i,
+];
+
+function extractBedrooms(text) {
+  if (!text) return null;
+  for (const pat of BEDROOM_PATTERNS) {
+    const m = text.match(pat);
+    if (m) {
+      const n = parseInt(m[1], 10);
+      if (n >= 1 && n <= 10) return n; // sanity gate
+    }
+  }
+  return null;
+}
+
+function bedroomLabel(n) {
+  if (!n) return 'Unspecified';
+  if (n === 1) return '1 Bedroom';
+  if (n >= 5) return '5+ Bedrooms';
+  return `${n} Bedrooms`;
+}
+
+// ─── AMENITY EXTRACTOR ────────────────────────────────────────────────────────
+
+function extractAmenities(text) {
+  const lower = (text || '').toLowerCase();
+  return AMENITY_TAXONOMY
+    .filter(a => a.patterns.some(p => lower.includes(p)))
+    .map(a => a.key);
+}
+
+function amenityLabels(keys) {
+  return keys.map(k => {
+    const a = AMENITY_TAXONOMY.find(t => t.key === k);
+    return a ? a.label : k;
+  });
+}
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function normalisePrice(rawText) {
   if (!rawText) return null;
-  const cleaned = rawText.replace(/[^\d,.]/g, '').replace(/,/g, '');
+  // Handle shorthand like "45M", "1.2B"
+  const shorthand = String(rawText).match(/([\d.]+)\s*([MB])/i);
+  if (shorthand) {
+    const val = parseFloat(shorthand[1]);
+    return shorthand[2].toUpperCase() === 'B' ? val * 1e9 : val * 1e6;
+  }
+  const cleaned = String(rawText).replace(/[^\d.]/g, '');
   const num = parseFloat(cleaned);
-  return isNaN(num) ? null : num;
+  return isNaN(num) || num < 500_000 ? null : num;
 }
 
 function formatPrice(num) {
   if (!num) return 'N/A';
-  if (num >= 1_000_000_000) return `₦${(num / 1_000_000_000).toFixed(2)}B`;
-  if (num >= 1_000_000) return `₦${(num / 1_000_000).toFixed(1)}M`;
+  if (num >= 1e9) return `₦${(num / 1e9).toFixed(2)}B`;
+  if (num >= 1e6) return `₦${(num / 1e6).toFixed(1)}M`;
   return `₦${num.toLocaleString()}`;
 }
 
@@ -68,31 +137,27 @@ function checkPriorityLocation(text) {
 // ─── LANE A: COMPETITOR NEWS ──────────────────────────────────────────────────
 
 class CompetitorNewsCollector {
-  constructor() {
-    this.parser = new xml2js.Parser();
-  }
+  constructor() { this.parser = new xml2js.Parser(); }
 
   async fetchCompetitorNews(competitor) {
     const url = `https://news.google.com/rss/search?q=${encodeURIComponent(competitor.newsQuery)}&hl=en-NG&gl=NG&ceid=NG:en`;
     const results = [];
-
     try {
-      const res = await axios.get(url, { timeout: TIMEOUT, headers: BROWSER_HEADERS });
+      const res    = await axios.get(url, { timeout: TIMEOUT, headers: BROWSER_HEADERS });
       const parsed = await this.parser.parseStringPromise(res.data);
-      const items = parsed?.rss?.channel?.[0]?.item || [];
+      const items  = parsed?.rss?.channel?.[0]?.item || [];
 
       for (const item of items.slice(0, 10)) {
-        const rawTitle = item.title?.[0] || '';
-        const sourceTag = item.source?.[0];
-        const publisher = (typeof sourceTag === 'object' ? sourceTag._ : sourceTag) || 'Google News';
-        const title = rawTitle.includes(' - ')
+        const rawTitle   = item.title?.[0] || '';
+        const sourceTag  = item.source?.[0];
+        const publisher  = (typeof sourceTag === 'object' ? sourceTag._ : sourceTag) || 'Google News';
+        const title      = rawTitle.includes(' - ')
           ? rawTitle.substring(0, rawTitle.lastIndexOf(' - ')).trim()
           : rawTitle;
-
         if (!title) continue;
 
-        const description = (item.description?.[0] || '').replace(/<[^>]+>/g, '').substring(0, 500);
-        const fullText = `${title} ${description}`;
+        const description  = (item.description?.[0] || '').replace(/<[^>]+>/g, '').substring(0, 500);
+        const fullText     = `${title} ${description}`;
         const watchlistHits = checkWatchlist(fullText);
 
         results.push({
@@ -133,50 +198,35 @@ class CompetitorNewsCollector {
 // ─── LANE B: PROPERTY PRICE LISTINGS ─────────────────────────────────────────
 
 class ListingPriceScraper {
-  constructor() {
-    this.puppeteer = null; // lazy-loaded
-  }
+  constructor() { this.puppeteer = null; }
 
   async getPuppeteer() {
     if (!this.puppeteer) this.puppeteer = require('puppeteer');
     return this.puppeteer;
   }
 
-  /**
-   * Scrape a single URL with Puppeteer (isolated browser per call, same
-   * pattern as content-enricher.js v4.1 to prevent OOM crashes).
-   */
   async scrapeWithBrowser(url) {
     const puppeteer = await this.getPuppeteer();
     let browser = null;
     try {
       browser = await puppeteer.launch({
         headless: true,
-        args: [
-          '--no-sandbox', '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage', '--disable-gpu',
-          '--single-process',
-        ],
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--single-process'],
       });
       const page = await browser.newPage();
       await page.setUserAgent(BROWSER_HEADERS['User-Agent']);
       await page.setDefaultNavigationTimeout(20000);
-
       await Promise.race([
         page.goto(url, { waitUntil: 'domcontentloaded' }),
         sleep(18000).then(() => { throw new Error('Navigation timeout'); }),
       ]);
-
-      await sleep(1500); // allow JS-rendered content to settle
+      await sleep(1500);
       return await page.content();
     } finally {
       if (browser) await browser.close().catch(() => {});
     }
   }
 
-  /**
-   * Axios fallback for sites that serve full HTML without JS rendering.
-   */
   async scrapeWithAxios(url) {
     const res = await axios.get(url, { timeout: TIMEOUT, headers: BROWSER_HEADERS });
     return res.data;
@@ -186,8 +236,7 @@ class ListingPriceScraper {
     const $ = cheerio.load(html);
     const listings = [];
 
-    // We try a broad set of selectors since listing site DOM structures vary.
-    // Each site's configured selectors are tried first; generic fallbacks after.
+    // ── Selector priority lists ──
     const priceSelectors = [
       site.priceSelector,
       '[class*="price"]', '[class*="Price"]', '[data-price]',
@@ -206,15 +255,25 @@ class ListingPriceScraper {
       '.area', '.neighbourhood',
     ].filter(Boolean);
 
-    // Build listing cards: zip title + price + location from parallel DOM positions.
+    // Bedroom selectors — Nigerian sites often put this in a features list.
+    const bedroomSelectors = [
+      '[class*="bed"]', '[data-beds]', '.beds', '.bedroom',
+      'span:contains("bed")', 'li:contains("bed")',
+    ];
+
+    // Amenity selectors — pull the full feature/description block.
+    const amenitySelectors = [
+      '[class*="feature"]', '[class*="amenity"]', '[class*="facility"]',
+      '.description', '.property-description', 'ul.features', 'ul.amenities',
+    ];
+
+    // ── Extract parallel arrays ──
     const prices = [];
     for (const sel of priceSelectors) {
       $(sel).each((_, el) => {
         const txt = $(el).text().trim();
         const num = normalisePrice(txt);
-        if (num && num > 500_000) { // filter out noise (page numbers, etc.)
-          prices.push({ raw: txt, value: num });
-        }
+        if (num) prices.push({ raw: txt, value: num });
       });
       if (prices.length) break;
     }
@@ -237,30 +296,54 @@ class ListingPriceScraper {
       if (locations.length) break;
     }
 
+    // Bedroom counts — try to extract one per listing position.
+    const bedroomTexts = [];
+    for (const sel of bedroomSelectors) {
+      try {
+        $(sel).each((_, el) => bedroomTexts.push($(el).text().trim()));
+        if (bedroomTexts.length) break;
+      } catch (_) {}
+    }
+
+    // Amenity text blocks — concatenated for keyword scanning.
+    const amenityBlocks = [];
+    for (const sel of amenitySelectors) {
+      $(sel).each((_, el) => amenityBlocks.push($(el).text()));
+    }
+    const globalAmenityText = amenityBlocks.join(' ');
+
+    // ── Build listing objects ──
     const count = Math.min(prices.length, MAX_LISTINGS_PER_TYPE);
     for (let i = 0; i < count; i++) {
+      const titleText    = titles[i] || '';
       const locationText = locations[i] || '';
-      const titleText = titles[i] || '';
-      const fullText = `${titleText} ${locationText}`;
+      const bedroomText  = bedroomTexts[i] || titleText; // title often contains "3 bed"
+      const fullText     = `${titleText} ${locationText} ${globalAmenityText}`;
+
+      const bedrooms      = extractBedrooms(bedroomText) || extractBedrooms(titleText);
+      const amenityKeys   = extractAmenities(fullText);
       const watchlistHits = checkWatchlist(fullText);
 
       listings.push({
-        type: 'price_listing',
-        source: site.name,
-        sourceDomain: site.domain,
-        sourceRank: site.rank,
-        sourceAuthenticity: site.authenticity,
-        propertyType: normaliseType(propertyType),
-        title: titleText,
-        location: locationText,
-        priceRaw: prices[i]?.raw || 'N/A',
-        priceValue: prices[i]?.value || null,
-        priceFormatted: formatPrice(prices[i]?.value),
-        priorityLocation: checkPriorityLocation(fullText),
+        type:              'price_listing',
+        source:            site.name,
+        sourceDomain:      site.domain,
+        sourceRank:        site.rank,
+        propertyType:      normaliseType(propertyType),
+        bedrooms,
+        bedroomLabel:      bedroomLabel(bedrooms),
+        title:             titleText,
+        location:          locationText,
+        priceRaw:          prices[i]?.raw || 'N/A',
+        priceValue:        prices[i]?.value || null,
+        priceFormatted:    formatPrice(prices[i]?.value),
+        amenityKeys,
+        amenityLabels:     amenityLabels(amenityKeys),
+        priorityLocation:  checkPriorityLocation(fullText),
         watchlistHits,
-        flagged: watchlistHits.length > 0,
-        scrapedAt: new Date().toISOString(),
-        listingUrl: site.searchUrl.replace('{TYPE}', propertyType),
+        flagged:           watchlistHits.length > 0,
+        scrapedAt:         new Date().toISOString(),
+        listingUrl:        site.searchUrl.replace('{TYPE}', propertyType),
       });
     }
     return listings;
@@ -273,25 +356,16 @@ class ListingPriceScraper {
     for (const pType of site.propertyTypes) {
       const url = site.searchUrl.replace('{TYPE}', pType);
       try {
-        // Try Axios first (fast, no overhead). Fall back to Puppeteer if it
-        // returns too little content (JS-rendered sites return a skeleton).
         let html = '';
-        try {
-          html = await this.scrapeWithAxios(url);
-        } catch (_) {
-          html = '';
-        }
-
-        // Heuristic: if Axios returned <5k chars, the page is likely JS-rendered.
+        try { html = await this.scrapeWithAxios(url); } catch (_) { html = ''; }
         if (html.length < 5000) {
           console.log(`[Listings] ${site.name}/${pType} — switching to Puppeteer`);
           html = await this.scrapeWithBrowser(url);
         }
-
         const listings = this.extractListings(html, site, pType);
         allListings.push(...listings);
-        console.log(`[Listings] ${site.name} / ${pType}: ${listings.length} listings`);
-        await sleep(1500); // polite crawl delay between property types
+        console.log(`[Listings] ${site.name}/${pType}: ${listings.length} listings`);
+        await sleep(1500);
       } catch (err) {
         console.warn(`[Listings] ${site.name}/${pType} failed: ${err.message}`);
       }
@@ -302,17 +376,107 @@ class ListingPriceScraper {
   async fetchAll() {
     console.log('\n[Listings] Starting property price collection...');
     const allListings = [];
-
-    // Process sites sequentially to avoid OOM from parallel Puppeteer instances.
     for (const site of config.listingSites) {
       const listings = await this.scrapeSite(site);
       allListings.push(...listings);
-      await sleep(2000); // inter-site delay
+      await sleep(2000);
     }
-
-    console.log(`[Listings] Total: ${allListings.length} price listings collected`);
+    console.log(`[Listings] Total: ${allListings.length} listings collected`);
     return allListings;
   }
+}
+
+// ─── GROUPING ENGINE ──────────────────────────────────────────────────────────
+/**
+ * Groups raw listings by (PropertyType × BedroomLabel × LocationBucket).
+ * This is the clutter-reduction layer: instead of 80 rows of raw Lekki
+ * apartments, the Sheet gets one row per group with aggregated stats.
+ *
+ * LocationBucket: "Priority" (Lekki/Ibeju-Lekki corridor) vs "Other Lagos".
+ * This keeps the Sheet readable while preserving granularity where it matters.
+ */
+function groupListings(listings) {
+  const groups = {};
+
+  for (const l of listings) {
+    if (!l.priceValue) continue; // skip listings with no price — noise
+
+    const locationBucket = l.priorityLocation ? 'Priority Corridor' : 'Other Lagos';
+    const key = `${l.propertyType}||${l.bedroomLabel}||${locationBucket}`;
+
+    if (!groups[key]) {
+      groups[key] = {
+        propertyType:   l.propertyType,
+        bedroomLabel:   l.bedroomLabel,
+        bedrooms:       l.bedrooms,
+        locationBucket,
+        prices:         [],
+        amenityCounts:  {},
+        sources:        new Set(),
+        flagged:        false,
+        watchlistHits:  new Set(),
+        sampleListings: [],
+      };
+    }
+
+    const g = groups[key];
+    g.prices.push(l.priceValue);
+    g.sources.add(l.source);
+    if (l.flagged) g.flagged = true;
+    l.watchlistHits.forEach(h => g.watchlistHits.add(h));
+
+    // Count amenity frequency across listings in the group.
+    for (const a of l.amenityKeys) {
+      g.amenityCounts[a] = (g.amenityCounts[a] || 0) + 1;
+    }
+
+    // Keep up to 3 sample listing titles for context in the Sheet.
+    if (g.sampleListings.length < 3 && l.title) {
+      g.sampleListings.push(l.title);
+    }
+  }
+
+  // Compute stats per group and pick top amenities.
+  return Object.values(groups).map(g => {
+    const sorted = g.prices.slice().sort((a, b) => a - b);
+    const avg    = g.prices.reduce((s, v) => s + v, 0) / g.prices.length;
+
+    // Top amenities = those present in >30% of listings in the group, sorted by frequency.
+    const threshold = Math.max(1, Math.ceil(g.prices.length * 0.3));
+    const topAmenities = Object.entries(g.amenityCounts)
+      .filter(([, count]) => count >= threshold)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6)
+      .map(([key]) => {
+        const a = AMENITY_TAXONOMY.find(t => t.key === key);
+        return a ? a.label : key;
+      });
+
+    return {
+      propertyType:    g.propertyType,
+      bedroomLabel:    g.bedroomLabel,
+      bedrooms:        g.bedrooms,
+      locationBucket:  g.locationBucket,
+      listingCount:    g.prices.length,
+      minPrice:        sorted[0],
+      maxPrice:        sorted[sorted.length - 1],
+      avgPrice:        Math.round(avg),
+      medianPrice:     sorted[Math.floor(sorted.length / 2)],
+      minFormatted:    formatPrice(sorted[0]),
+      maxFormatted:    formatPrice(sorted[sorted.length - 1]),
+      avgFormatted:    formatPrice(Math.round(avg)),
+      sources:         [...g.sources].join(', '),
+      topAmenities:    topAmenities.join(', ') || 'None detected',
+      flagged:         g.flagged,
+      watchlistHits:   [...g.watchlistHits].join(', ') || '',
+      sampleListings:  g.sampleListings.join(' | '),
+    };
+  }).sort((a, b) => {
+    // Sort: Priority Corridor first, then by property type, then bedrooms.
+    if (a.locationBucket !== b.locationBucket) return a.locationBucket === 'Priority Corridor' ? -1 : 1;
+    if (a.propertyType !== b.propertyType) return a.propertyType.localeCompare(b.propertyType);
+    return (a.bedrooms || 99) - (b.bedrooms || 99);
+  });
 }
 
 // ─── ORCHESTRATOR ─────────────────────────────────────────────────────────────
@@ -321,28 +485,26 @@ class CompetitiveScraper {
   async run() {
     console.log('\n[Competitive] ===== SCRAPE START =====');
 
-    const newsCollector = new CompetitorNewsCollector();
+    const newsCollector  = new CompetitorNewsCollector();
     const listingScraper = new ListingPriceScraper();
 
-    // News can run in parallel with the first listing site (they don't share resources).
     const [competitorNews, priceListings] = await Promise.all([
       newsCollector.fetchAll(),
       listingScraper.fetchAll(),
     ]);
 
-    const allData = { competitorNews, priceListings };
+    const groupedListings = groupListings(priceListings);
 
-    // Summary stats for the pipeline log.
-    const flaggedNews = competitorNews.filter(n => n.flagged).length;
+    const flaggedNews     = competitorNews.filter(n => n.flagged).length;
     const flaggedListings = priceListings.filter(l => l.flagged).length;
-    const priorityListings = priceListings.filter(l => l.priorityLocation).length;
+    const priorityGroups  = groupedListings.filter(g => g.locationBucket === 'Priority Corridor').length;
 
     console.log(`\n[Competitive] ===== SCRAPE COMPLETE =====`);
     console.log(`  Competitor news:    ${competitorNews.length} items (${flaggedNews} flagged)`);
-    console.log(`  Price listings:     ${priceListings.length} items (${flaggedListings} watchlist hits, ${priorityListings} priority locations)`);
+    console.log(`  Price listings:     ${priceListings.length} raw → ${groupedListings.length} groups (${priorityGroups} priority corridor)`);
 
-    return allData;
+    return { competitorNews, priceListings, groupedListings };
   }
 }
 
-module.exports = CompetitiveScraper;
+module.exports = { CompetitiveScraper, groupListings, AMENITY_TAXONOMY };

@@ -192,7 +192,64 @@
   @media (max-width: 768px) {
     .terminal-table th:nth-child(1), .terminal-table td:nth-child(1) { display: none; }
     .theme-selector-grid { grid-template-columns: 1fr; }
+    .pricing-narrative-grid { grid-template-columns: 1fr; }
+    .pricing-groups { grid-template-columns: 1fr; }
+    .pricing-filter-group { flex-direction: column; align-items: flex-start; }
   }
+
+  /* ── Competitive Pricing Tab ───────────────────────────────────────────── */
+  .pricing-controls { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 16px; }
+  .pricing-filter-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .pricing-filter-label { font-family: var(--mono-font); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); min-width: 100px; }
+  .pricing-chip-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pricing-chip { font-family: var(--mono-font); font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 20px; border: 1px solid var(--line); background: var(--bg-sink); color: var(--ink-soft); cursor: pointer; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+  .pricing-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .pricing-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .pricing-stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .pricing-stat { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; text-align: center; box-shadow: var(--shadow); }
+  .pricing-stat-value { font-family: var(--display-font); font-size: 22px; font-weight: 700; color: var(--primary-dark); }
+  .pricing-stat-label { font-family: var(--mono-font); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-top: 4px; }
+  .pricing-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .price-group-card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); transition: all 0.2s; position: relative; }
+  .price-group-card:hover { border-color: var(--muted); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.07); }
+  .price-group-card.flagged { border-left: 3px solid var(--accent); }
+  .price-group-card.priority { border-top: 2px solid var(--green); }
+  .pgc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px; }
+  .pgc-title { font-family: var(--display-font); font-size: 15px; font-weight: 700; color: var(--primary-dark); line-height: 1.3; }
+  .pgc-bed-badge { font-family: var(--mono-font); font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 12px; background: var(--primary-dark); color: #fff; white-space: nowrap; flex-shrink: 0; }
+  .pgc-location { font-family: var(--mono-font); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
+  .pgc-location.priority { color: var(--green); }
+  .pgc-location.other { color: var(--muted); }
+  .pgc-prices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .pgc-price-cell { background: var(--bg-sink); border-radius: 6px; padding: 10px 12px; }
+  .pgc-price-cell.avg { grid-column: span 2; background: var(--accent-soft); }
+  .pgc-price-amount { font-family: var(--display-font); font-size: 16px; font-weight: 700; color: var(--primary-dark); }
+  .pgc-price-cell.avg .pgc-price-amount { color: var(--accent); font-size: 18px; }
+  .pgc-price-tag { font-family: var(--mono-font); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-top: 2px; }
+  .pgc-amenities { margin-bottom: 12px; }
+  .pgc-amenities-label { font-family: var(--mono-font); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 6px; }
+  .pgc-amenity-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .pgc-amenity-tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; background: var(--bg-sink); color: var(--ink-soft); border: 1px solid var(--line); }
+  .pgc-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--line); }
+  .pgc-count { font-family: var(--mono-font); font-size: 11px; color: var(--muted); }
+  .pgc-sources { font-family: var(--mono-font); font-size: 10px; color: var(--faint); text-align: right; max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pgc-flag { position: absolute; top: 12px; right: 12px; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: var(--accent-soft); color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
+  .pricing-narrative-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+  .pricing-narrative-card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+  .narrative-body { font-size: 14px; color: var(--ink-soft); line-height: 1.8; white-space: pre-wrap; margin-top: 12px; }
+  .section-divider { font-family: var(--mono-font); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary-dark); padding-bottom: 10px; border-bottom: 1px solid var(--line); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+  .count-badge { font-weight: 600; color: var(--muted); }
+  .comp-news-item { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 10px; display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: start; transition: all 0.15s; }
+  .comp-news-item:hover { border-color: var(--muted); box-shadow: var(--shadow); }
+  .comp-news-item.flagged { border-left: 3px solid var(--accent); }
+  .comp-news-competitor { font-family: var(--mono-font); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); background: var(--accent-soft); padding: 4px 8px; border-radius: 4px; white-space: nowrap; }
+  .comp-news-title a { font-size: 14px; font-weight: 600; color: var(--primary-dark); text-decoration: none; display: block; margin-bottom: 4px; line-height: 1.4; }
+  .comp-news-title a:hover { color: var(--accent); }
+  .comp-news-meta { font-family: var(--mono-font); font-size: 11px; color: var(--muted); }
+  .comp-news-flag { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: var(--accent-soft); color: var(--accent); text-transform: uppercase; white-space: nowrap; align-self: center; }
+  .no-pricing-data { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .no-pricing-data p { font-size: 15px; margin-bottom: 8px; }
+  .no-pricing-data small { font-family: var(--mono-font); font-size: 12px; }
 </style>
 </head>
 <body>
@@ -215,6 +272,7 @@
       <button data-view="geospatial">Geospatial Intelligence</button>
       <button data-view="themes">Theme Tracker</button>
       <button data-view="archive">Archive Index</button>
+      <button data-view="pricing">Competitive Pricing</button>
       <button id="nav-health" data-view="health" style="display:none;">System Operations</button>
       <button id="nav-config" data-view="config" style="display:none;">Settings</button>
     </div>
@@ -290,6 +348,55 @@
       <div id="themeDetailBody"></div>
     </section>
 
+    <section id="pricing" class="view">
+      <div class="eyebrow">Competitive Pricing Intelligence</div>
+      <div class="dateline" id="pricingDate">Lagos market sale prices, grouped by property type and bedroom count.</div>
+
+      <div class="pricing-controls">
+        <div class="pricing-filter-group">
+          <label class="pricing-filter-label">Property Type</label>
+          <div id="pricingTypeFilters" class="pricing-chip-row"></div>
+        </div>
+        <div class="pricing-filter-group">
+          <label class="pricing-filter-label">Location</label>
+          <div class="pricing-chip-row">
+            <button class="pricing-chip active" onclick="setPricingLocation('all', this)">All Lagos</button>
+            <button class="pricing-chip" onclick="setPricingLocation('Priority Corridor', this)">Priority Corridor</button>
+            <button class="pricing-chip" onclick="setPricingLocation('Other Lagos', this)">Other Lagos</button>
+          </div>
+        </div>
+        <div class="pricing-filter-group">
+          <label class="pricing-filter-label">Bedrooms</label>
+          <div id="pricingBedroomFilters" class="pricing-chip-row"></div>
+        </div>
+      </div>
+
+      <div id="pricingStatsBar" class="pricing-stats-bar"></div>
+
+      <div id="pricingGroupsContainer" class="pricing-groups">
+        <div class="loading">Loading market pricing data&hellip;</div>
+      </div>
+
+      <div class="pricing-narrative-grid" id="pricingNarrativeGrid" style="display:none;">
+        <div class="pricing-narrative-card">
+          <div class="eyebrow">Market Price Analysis</div>
+          <div id="priceTrendBody" class="narrative-body"></div>
+        </div>
+        <div class="pricing-narrative-card">
+          <div class="eyebrow">Competitor Intelligence</div>
+          <div id="competitorIntelBody" class="narrative-body"></div>
+        </div>
+      </div>
+
+      <div id="competitorNewsSection" style="display:none;">
+        <div class="section-divider">
+          <span>Competitor News Feed</span>
+          <span id="compNewsBadge" class="count-badge"></span>
+        </div>
+        <div id="competitorNewsContainer"></div>
+      </div>
+    </section>
+
     <section id="archive" class="view">
       <div class="eyebrow">Intelligence Archive</div>
       <div class="dateline">Search historical briefings and source articles.</div>
@@ -351,6 +458,10 @@ let loadedBriefingCache = null;
 let geoMap = null;
 let mapMarkers = [];
 let geoCache = []; // ISOLATED: geoslicer.json data, map-exclusive, never mixed with articlesCache
+let competitiveCache = null; // competitive-briefing.json, pricing tab exclusive
+let pricingTypeFilter = 'all';
+let pricingLocationFilter = 'all';
+let pricingBedroomFilter = 'all';
 
 function initFirebase() {
   try {
@@ -1048,24 +1159,188 @@ function plotGeospatialData(articles) {
 
 (async function boot() {
   initFirebase();
-  const [briefing, memory, articles, health, history, bIndex, geo] = await Promise.all([
+  const [briefing, memory, articles, health, history, bIndex, geo, competitive] = await Promise.all([
     loadJSON('briefing.json'), loadJSON('themes.json'), loadJSON('articles.json'),
     loadJSON('health.json'), loadJSON('health-history.json'), loadJSON('briefings-index.json'),
     loadJSON('geoslicer.json'),
+    loadJSON('competitive-briefing.json'),
   ]);
   articlesCache = Array.isArray(articles) ? articles : [];
-  // Geoslicer lane is isolated: prefer geoslicer.json; if it hasn't generated
-  // yet (first run), fall back to the Nigerian articles so the map isn't blank.
   geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;
+  competitiveCache = competitive || null;
   briefingsIndex = bIndex?.briefings || [];
   renderStatus(health);
   renderBriefing(briefing);
   renderThemes(memory);
   renderHealth(health, history);
   renderArchive();
+  renderPricing(competitiveCache);
   await loadConfigState();
   renderConfig();
 })();
+
+// ── COMPETITIVE PRICING TAB ────────────────────────────────────────────────────
+
+function renderPricing(data) {
+  const container   = document.getElementById('pricingGroupsContainer');
+  const statsBar    = document.getElementById('pricingStatsBar');
+  const dateEl      = document.getElementById('pricingDate');
+  const narrative   = document.getElementById('pricingNarrativeGrid');
+  const newsSection = document.getElementById('competitorNewsSection');
+
+  if (!data || !data.groupedListings?.length) {
+    container.innerHTML = `
+      <div class="no-pricing-data">
+        <p>No pricing data available yet.</p>
+        <small>Run the Competitive Intelligence workflow to populate this tab.</small>
+      </div>`;
+    return;
+  }
+
+  if (data.generatedAt) {
+    dateEl.textContent = `Last scraped: ${new Date(data.generatedAt).toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}`;
+  }
+
+  buildPricingFilters(data.groupedListings);
+
+  const s = data.summary || {};
+  statsBar.innerHTML = [
+    { v: s.totalRawListings || 0, l: 'Listings Scraped' },
+    { v: s.totalGroups      || 0, l: 'Price Groups' },
+    { v: s.priorityGroups   || 0, l: 'Priority Corridor' },
+    { v: s.sitesScraped     || 0, l: 'Data Sources' },
+    { v: s.flaggedNews      || 0, l: 'Competitor Alerts' },
+  ].map(x => `
+    <div class="pricing-stat">
+      <div class="pricing-stat-value">${esc(String(x.v))}</div>
+      <div class="pricing-stat-label">${esc(x.l)}</div>
+    </div>`).join('');
+
+  renderPricingGroups(data.groupedListings);
+
+  if (data.priceTrendNarrative || data.competitorBriefing) {
+    narrative.style.display = 'grid';
+    document.getElementById('priceTrendBody').textContent     = data.priceTrendNarrative || 'Not available.';
+    document.getElementById('competitorIntelBody').textContent = data.competitorBriefing  || 'Not available.';
+  }
+
+  const news = data.competitorNews || [];
+  if (news.length) {
+    newsSection.style.display = 'block';
+    document.getElementById('compNewsBadge').textContent = `${news.length} articles`;
+    renderCompetitorNews(news);
+  }
+}
+
+function buildPricingFilters(groups) {
+  const types = ['all', ...new Set(groups.map(g => g.propertyType).filter(Boolean))];
+  document.getElementById('pricingTypeFilters').innerHTML = types.map((t, i) =>
+    `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingType('${esc(t)}',this)">${esc(t === 'all' ? 'All Types' : t)}</button>`
+  ).join('');
+
+  const beds = ['all', ...new Set(
+    groups.map(g => g.bedroomLabel).filter(Boolean)
+      .sort((a, b) => (parseInt(a) || 99) - (parseInt(b) || 99))
+  )];
+  document.getElementById('pricingBedroomFilters').innerHTML = beds.map((b, i) =>
+    `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingBedroom('${esc(b)}',this)">${esc(b === 'all' ? 'All Bedrooms' : b)}</button>`
+  ).join('');
+}
+
+function setPricingType(val, el) {
+  pricingTypeFilter = val;
+  el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  applyPricingFilters();
+}
+
+function setPricingLocation(val, el) {
+  pricingLocationFilter = val;
+  el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  applyPricingFilters();
+}
+
+function setPricingBedroom(val, el) {
+  pricingBedroomFilter = val;
+  el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  applyPricingFilters();
+}
+
+function applyPricingFilters() {
+  if (!competitiveCache?.groupedListings) return;
+  let groups = competitiveCache.groupedListings;
+  if (pricingTypeFilter     !== 'all') groups = groups.filter(g => g.propertyType  === pricingTypeFilter);
+  if (pricingLocationFilter !== 'all') groups = groups.filter(g => g.locationBucket === pricingLocationFilter);
+  if (pricingBedroomFilter  !== 'all') groups = groups.filter(g => g.bedroomLabel   === pricingBedroomFilter);
+  renderPricingGroups(groups);
+}
+
+function renderPricingGroups(groups) {
+  const container = document.getElementById('pricingGroupsContainer');
+  if (!groups.length) {
+    container.innerHTML = '<div class="empty" style="padding:40px;grid-column:1/-1;">No groups match the selected filters.</div>';
+    return;
+  }
+  container.innerHTML = groups.map(g => {
+    const isPriority = g.locationBucket === 'Priority Corridor';
+    const amenityTags = (g.topAmenities && g.topAmenities !== 'None detected')
+      ? g.topAmenities.split(', ').map(a => `<span class="pgc-amenity-tag">${esc(a)}</span>`).join('')
+      : '<span class="pgc-amenity-tag" style="color:var(--faint);">None detected</span>';
+    return `
+      <div class="price-group-card${g.flagged ? ' flagged' : ''}${isPriority ? ' priority' : ''}">
+        ${g.flagged ? '<span class="pgc-flag">&#9873; Alert</span>' : ''}
+        <div class="pgc-header">
+          <div class="pgc-title">${esc(g.propertyType)}</div>
+          <span class="pgc-bed-badge">${esc(g.bedroomLabel)}</span>
+        </div>
+        <div class="pgc-location ${isPriority ? 'priority' : 'other'}">
+          ${isPriority ? '&#9679; Priority Corridor' : '&#9675; Other Lagos'}
+        </div>
+        <div class="pgc-prices">
+          <div class="pgc-price-cell">
+            <div class="pgc-price-amount">${esc(g.minFormatted)}</div>
+            <div class="pgc-price-tag">Min</div>
+          </div>
+          <div class="pgc-price-cell">
+            <div class="pgc-price-amount">${esc(g.maxFormatted)}</div>
+            <div class="pgc-price-tag">Max</div>
+          </div>
+          <div class="pgc-price-cell avg">
+            <div class="pgc-price-amount">${esc(g.avgFormatted)}</div>
+            <div class="pgc-price-tag">Average &middot; ${esc(String(g.listingCount))} listings</div>
+          </div>
+        </div>
+        <div class="pgc-amenities">
+          <div class="pgc-amenities-label">Common Amenities</div>
+          <div class="pgc-amenity-tags">${amenityTags}</div>
+        </div>
+        <div class="pgc-footer">
+          <span class="pgc-count">${esc(String(g.listingCount))} listings</span>
+          <span class="pgc-sources" title="${esc(g.sources)}">${esc(g.sources)}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderCompetitorNews(news) {
+  const container = document.getElementById('competitorNewsContainer');
+  const sorted = news.slice().sort((a, b) => (b.flagged ? 1 : 0) - (a.flagged ? 1 : 0));
+  container.innerHTML = sorted.map(n => `
+    <div class="comp-news-item${n.flagged ? ' flagged' : ''}">
+      <span class="comp-news-competitor">${esc(n.competitor)}</span>
+      <div class="comp-news-title">
+        <a href="${esc(n.url)}" target="_blank" rel="noopener noreferrer">${esc(n.title)}</a>
+        <div class="comp-news-meta">
+          ${esc(n.publisher)}
+          ${n.publishedAt ? ' &middot; ' + new Date(n.publishedAt).toLocaleDateString() : ''}
+          ${n.watchlistHits?.length ? ' &middot; <strong style="color:var(--accent);">Hits: ' + esc(n.watchlistHits.join(', ')) + '</strong>' : ''}
+        </div>
+      </div>
+      ${n.flagged ? '<span class="comp-news-flag">&#9873; Flagged</span>' : '<span></span>'}
+    </div>`).join('');
+}
 </script>
 </body>
 </html>

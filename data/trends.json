@@ -2,94 +2,94 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 5,
-      "bullish": 6,
-      "neutral": 4
+      "bearish": 4,
+      "neutral": 3,
+      "bullish": 8
     },
     "topTopics": [
       {
         "topic": "infrastructure",
-        "count": 13
-      },
-      {
-        "topic": "prices",
         "count": 12
       },
       {
-        "topic": "security",
+        "topic": "prices",
+        "count": 9
+      },
+      {
+        "topic": "investment",
         "count": 2
       },
       {
-        "topic": "confidence",
+        "topic": "housing",
         "count": 1
       },
       {
-        "topic": "demand",
+        "topic": "investments",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "bullish"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 5,
-      "bullish": 6,
-      "neutral": 4
+      "bearish": 4,
+      "neutral": 3,
+      "bullish": 8
     },
     "topTopics": [
       {
         "topic": "infrastructure",
-        "count": 13
-      },
-      {
-        "topic": "prices",
         "count": 12
       },
       {
-        "topic": "security",
+        "topic": "prices",
+        "count": 9
+      },
+      {
+        "topic": "investment",
         "count": 2
       },
       {
-        "topic": "confidence",
+        "topic": "housing",
         "count": 1
       },
       {
-        "topic": "demand",
+        "topic": "investments",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "bullish"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 5,
-      "bullish": 6,
-      "neutral": 4
+      "bearish": 4,
+      "neutral": 3,
+      "bullish": 8
     },
     "topTopics": [
       {
         "topic": "infrastructure",
-        "count": 13
-      },
-      {
-        "topic": "prices",
         "count": 12
       },
       {
-        "topic": "security",
+        "topic": "prices",
+        "count": 9
+      },
+      {
+        "topic": "investment",
         "count": 2
       },
       {
-        "topic": "confidence",
+        "topic": "housing",
         "count": 1
       },
       {
-        "topic": "demand",
+        "topic": "investments",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "bullish"
   }
 }

@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-06-18T05:02:19.777Z",
-  "status": "healthy",
+  "timestamp": "2026-06-18T11:04:58.636Z",
+  "status": "degraded",
   "sources": {
     "gnews": {
       "ok": false,
@@ -14,21 +14,21 @@
     },
     "googlenews": {
       "ok": true,
-      "count": 103,
+      "count": 117,
       "error": null
     },
     "rss": {
-      "total": 11,
+      "total": 21,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 3,
+          "count": 6,
           "error": null
         },
         "Premium Times": {
-          "ok": false,
+          "ok": true,
           "count": 0,
-          "error": "XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &"
+          "error": null
         },
         "BusinessDay": {
           "ok": true,
@@ -47,7 +47,17 @@
         },
         "The Punch": {
           "ok": true,
-          "count": 4,
+          "count": 1,
+          "error": null
+        },
+        "Estate Intel": {
+          "ok": false,
+          "count": 0,
+          "error": "HTTP 403"
+        },
+        "Global Commercial Real Estate": {
+          "ok": true,
+          "count": 10,
           "error": null
         }
       }
@@ -59,19 +69,20 @@
     }
   },
   "counts": {
-    "raw": 152,
+    "raw": 176,
     "filtered": 15,
     "analyzed": 15,
-    "aiFallbacks": 1
+    "aiFallbacks": 0
   },
   "synthesis": {
-    "ok": true,
-    "themes": 3
+    "ok": false,
+    "themes": 0
   },
   "email": {
     "sent": true
   },
   "warnings": [
-    "Sources down: GNews (HTTP 429); RSS Premium Times (XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &)"
+    "Sources down: GNews (HTTP 429); RSS Estate Intel (HTTP 403)",
+    "Executive briefing failed to generate (digest fell back to article list)."
   ]
 }

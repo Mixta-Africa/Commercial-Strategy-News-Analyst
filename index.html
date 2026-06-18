@@ -822,14 +822,33 @@ function plotGeospatialData(articles) {
   mapMarkers = [];
 
   articles.forEach(article => {
-    const scope = (article.geoScope || 'nigeria').toLowerCase().trim().replace(/\s+/g, '_');
+    let scope = (article.geoScope || 'nigeria').toLowerCase().trim().replace(/\s+/g, '_');
+    
+    // --- SMART LOCATION EXTRACTOR ---
+    // If the backend stamped a generic 'nigeria', parse the text to find the actual city
+    if (scope === 'nigeria') {
+      const textSearch = `${article.title || ''} ${article.description || ''}`.toLowerCase();
+      
+      if (textSearch.includes('lagos') || textSearch.includes('lekki') || textSearch.includes('ikoyi') || textSearch.includes('victoria island')) {
+        scope = 'lagos';
+      } else if (textSearch.includes('abuja') || textSearch.includes('fct')) {
+        scope = 'abuja';
+      } else if (textSearch.includes('port harcourt') || textSearch.includes('rivers state')) {
+        scope = 'port_harcourt';
+      } else if (textSearch.includes('ibadan') || textSearch.includes('oyo')) {
+        scope = 'ibadan';
+      } else if (textSearch.includes('kano')) {
+        scope = 'kano';
+      }
+    }
+    // --------------------------------
     
     if (scope === 'global') return; // Hide global macro noise from regional map view
     
     // Assign coordinate anchor based on verified mapping array
     const anchor = geoAnchors[scope] || geoAnchors['nigeria'];
     
-    // Adaptive jitter scale dynamically adjusted according to zoom constraints to prevent stacked hidden points
+    // Adaptive jitter scale dynamically adjusted according to zoom constraints
     const jitterSpread = anchor.zoom > 7 ? 0.04 : 2.0; 
     const lat = anchor.lat + (Math.random() - 0.5) * jitterSpread;
     const lng = anchor.lng + (Math.random() - 0.5) * jitterSpread;
@@ -848,14 +867,14 @@ function plotGeospatialData(articles) {
       fillOpacity: 0.8
     }).addTo(geoMap);
 
-    // Interactive Popup Architecture: Title is now fully clickable, linked, and target isolated
+    // Interactive Popup Architecture
     marker.bindPopup(`
       <div style="min-width: 220px; padding: 4px 0;">
         <a href="${esc(article.url)}" target="_blank" rel="noopener noreferrer" class="geo-article-link">
           ${esc(article.title)}
         </a>
         <div style="font-size: 11px; font-family: var(--mono-font); color: var(--muted); text-transform: uppercase; margin-bottom: 10px;">
-          ${esc(article.source)} &middot; ${esc(article.geoScope || 'Nigeria')}
+          ${esc(article.source)} &middot; ${esc(scope.replace('_', ' '))}
         </div>
         <div style="display: inline-block; font-size: 9px; font-weight: 700; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; background: ${color}15; color: ${color}; border: 1px solid ${color}40;">
           ${esc(sent)} Signal

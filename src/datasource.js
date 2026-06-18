@@ -1,7 +1,6 @@
 /**
  * Data Source Module
- * 
- * Collects articles from 4 sources:
+ * * Collects articles from 4 sources:
  * 1. GNews API (~15-30 articles)
  * 2. NewsAPI (~20-40 articles)
  * 3. RSS Feeds (~10-20 articles)
@@ -104,6 +103,7 @@ class DataSource {
             source: a.source?.name || 'GNews',
             publishedAt: a.publishedAt,
             image: a.image,
+            geoScope: 'nigeria', // <-- NEW: GEOSLICER STAMP
           });
         }
       } catch (error) {
@@ -166,6 +166,7 @@ class DataSource {
             source: a.source?.name || 'NewsAPI',
             publishedAt: a.publishedAt,
             image: a.urlToImage,
+            geoScope: 'nigeria', // <-- NEW: GEOSLICER STAMP
           });
         }
       } catch (error) {
@@ -220,6 +221,7 @@ class DataSource {
             source: feed.source,
             publishedAt: item.pubDate?.[0] || new Date().toISOString(),
             trustedSource: true,
+            geoScope: feed.geo || 'global', // <-- NEW: GEOSLICER STAMP
           }))
           .slice(0, maxPer);
 
@@ -254,8 +256,12 @@ class DataSource {
     const allArticles = [];
     let lastError = null;
 
-    for (const query of queries) {
-      const url = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-NG&gl=NG&ceid=NG:en`;
+    for (const queryObj of queries) {
+      // Handle both old string format and new object format gracefully
+      const qString = typeof queryObj === 'string' ? queryObj : queryObj.query;
+      const geoTag = typeof queryObj === 'string' ? 'nigeria' : queryObj.geo;
+      
+      const url = `https://news.google.com/rss/search?q=${encodeURIComponent(qString)}&hl=en-NG&gl=NG&ceid=NG:en`;
       try {
         const response = await axios.get(url, {
           timeout: this.timeout,
@@ -289,13 +295,14 @@ class DataSource {
             source: publisher,
             publishedAt: item.pubDate?.[0] || new Date().toISOString(),
             trustedSource: true, // Forces bypass of standard whitelist gate in index.js
+            geoScope: geoTag, // <-- NEW: GEOSLICER STAMP
           });
           added++;
         }
-        console.log(`[GoogleNews] "${query}": ${added} articles`);
+        console.log(`[GoogleNews] "${qString}": ${added} articles`);
       } catch (error) {
         lastError = error.response?.status ? `HTTP ${error.response.status}` : error.message;
-        console.warn(`[GoogleNews] Error on "${query}":`, error.message);
+        console.warn(`[GoogleNews] Error on "${qString}":`, error.message);
       }
     }
 
@@ -350,6 +357,7 @@ class DataSource {
           source: 'Direct Configuration Override',
           publishedAt: new Date().toISOString(),
           trustedSource: true,  // Bypasses downstream gating strings entirely
+          geoScope: 'nigeria', // <-- NEW: GEOSLICER STAMP
         });
         console.log(`[DirectURL] Successfully extracted: ${title.substring(0, 50)}...`);
       } catch (error) {
@@ -367,10 +375,11 @@ class DataSource {
    * Fetch all sources
    */
   async fetchAll() {
-    const [gnews, newsapi, rss, direct] = await Promise.allSettled([
+    const [gnews, newsapi, rss, googlenews, direct] = await Promise.allSettled([
       this.fetchGNews(),
       this.fetchNewsAPI(),
       this.fetchRSSFeeds(),
+      this.fetchGoogleNews(), // <-- BUG FIXED: Executing Google News
       this.fetchDirectUrls(),
     ]);
 
@@ -378,6 +387,7 @@ class DataSource {
       gnews.status === 'fulfilled' ? gnews.value : [],
       newsapi.status === 'fulfilled' ? newsapi.value : [],
       rss.status === 'fulfilled' ? rss.value : [],
+      googlenews.status === 'fulfilled' ? googlenews.value : [], // <-- Added to payload
       direct.status === 'fulfilled' ? direct.value : [],
     ];
   }

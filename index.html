@@ -325,6 +325,7 @@ let activeGlobalThemeFilter = "All";
 let loadedBriefingCache = null;
 let geoMap = null;
 let mapMarkers = [];
+let geoCache = []; // ISOLATED: geoslicer.json data, map-exclusive, never mixed with articlesCache
 
 function initFirebase() {
   try {
@@ -355,7 +356,7 @@ document.querySelectorAll('.nav button').forEach(b => {
     if (b.dataset.view === 'geospatial') {
       if (!geoMap) {
         initGeospatialMap();
-        plotGeospatialData(articlesCache);
+        plotGeospatialData(geoCache);
       }
       // Give DOM time to un-hide the container, then recalculate Leaflet tiles
       setTimeout(() => geoMap.invalidateSize(), 150);
@@ -401,6 +402,18 @@ function renderBriefing(b) {
   renderFilteredTable();
 }
 
+function slugify(s) {
+  return String(s || '').toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+function openThemePage(label) {
+  // Pass both a resilient slug AND the raw label, so theme.html can match
+  // tolerantly even if the synthesizer rewords a label between runs.
+  const url = `theme.html?t=${encodeURIComponent(slugify(label))}&label=${encodeURIComponent(label)}`;
+  window.location.href = url;
+}
+
 function renderThemeCards() {
   const themeSelectorGrid = document.getElementById('themeSelectorGrid');
   const clearButton = document.getElementById('clearThemeFilter');
@@ -433,7 +446,7 @@ function renderThemeCards() {
     }).length;
 
     gridHtml += `
-      <div class="theme-card ${isSelected ? 'active' : ''}" onclick="filterEvidenceStream('${esc(t.label)}')">
+      <div class="theme-card" onclick="openThemePage('${esc(t.label)}')" title="Open full theme breakdown">
         <div class="theme-card-header">
           <h3 class="theme-card-title">${esc(t.label)}</h3>
           <span class="sentiment-pill" style="font-family:var(--mono-font); font-size:11px; background:rgba(0,0,0,0.05); color:inherit; border:none; padding:3px 8px;">${metricsCount} Sources</span>
@@ -442,6 +455,7 @@ function renderThemeCards() {
         <div class="theme-meta-pills">
           <span class="meta-pill ${nov}">${esc(nov)}</span>
           <span class="meta-pill">Confidence: ${esc(t.confidence)}</span>
+          <span class="meta-pill" style="margin-left:auto; font-family:var(--mono-font);">View &rarr;</span>
         </div>
       </div>
     `;
@@ -765,17 +779,28 @@ async function loadConfigState() {
 
 // Strategic Anchor Coordinates & Zoom Levels
 const geoAnchors = {
+  // Macro
+  'global':       { lat: 20.0, lng: 0.0, zoom: 2 },
   // Regions
   'africa':       { lat: 1.0, lng: 17.0, zoom: 3 },
   'west_africa':  { lat: 12.0, lng: 0.0, zoom: 5 },
   'north_africa': { lat: 28.0, lng: 10.0, zoom: 4 },
-  
+
   // Specific Market Precise Coordinates
   'nigeria':      { lat: 9.0820, lng: 8.6753, zoom: 6 },
   'lagos':        { lat: 6.5244, lng: 3.3792, zoom: 10 },
+  'abuja':        { lat: 9.0765, lng: 7.3986, zoom: 10 },
+  'port_harcourt':{ lat: 4.8156, lng: 7.0498, zoom: 10 },
+  'ibadan':       { lat: 7.3776, lng: 3.9470, zoom: 10 },
+  'kano':         { lat: 12.0022, lng: 8.5920, zoom: 10 },
   'senegal':      { lat: 14.7167, lng: -17.4677, zoom: 6 }, // Dakar
   'morocco':      { lat: 33.5731, lng: -7.5898, zoom: 6 }, // Casablanca
-  'ivory_coast':  { lat: 5.3320, lng: -4.0305, zoom: 6 }   // Abidjan
+  'ivory_coast':  { lat: 5.3320, lng: -4.0305, zoom: 6 },  // Abidjan
+  'kenya':        { lat: -1.2921, lng: 36.8219, zoom: 6 }, // Nairobi
+  'south_africa': { lat: -26.2041, lng: 28.0473, zoom: 6 },// Johannesburg
+  'ghana':        { lat: 5.6037, lng: -0.1870, zoom: 6 },  // Accra
+  'egypt':        { lat: 30.0444, lng: 31.2357, zoom: 6 }, // Cairo
+  'rwanda':       { lat: -1.9706, lng: 30.1044, zoom: 7 }  // Kigali
 };
 
 let currentGeoScope = 'nigeria';
@@ -811,51 +836,79 @@ function executeGeoFocus(regionKey) {
   });
 
   // Re-plot data boundaries to dynamically apply contextual layouts
-  plotGeospatialData(articlesCache);
+  plotGeospatialData(geoCache);
+}
+
+// Resolve the most specific anchor for an article given its stamped scope + text.
+function resolveScope(article) {
+  let scope = (article.geoScope || 'nigeria').toLowerCase().trim().replace(/\s+/g, '_');
+  const text = `${article.title || ''} ${article.description || ''}`.toLowerCase();
+
+  // Nigerian articles → pin to a specific city when the text names one.
+  if (scope === 'nigeria' || scope === 'lagos') {
+    if (text.includes('lagos') || text.includes('lekki') || text.includes('ikoyi') || text.includes('victoria island') || text.includes('ibeju')) return 'lagos';
+    if (text.includes('abuja') || text.includes('fct')) return 'abuja';
+    if (text.includes('port harcourt') || text.includes('rivers state')) return 'port_harcourt';
+    if (text.includes('ibadan') || text.includes('oyo')) return 'ibadan';
+    if (text.includes('kano')) return 'kano';
+    return scope === 'lagos' ? 'lagos' : 'nigeria';
+  }
+
+  // African articles → pin to a specific country/city hub when named.
+  if (scope === 'africa') {
+    if (text.includes('nairobi') || text.includes('kenya')) return 'kenya';
+    if (text.includes('johannesburg') || text.includes('cape town') || text.includes('south africa')) return 'south_africa';
+    if (text.includes('accra') || text.includes('ghana')) return 'ghana';
+    if (text.includes('cairo') || text.includes('egypt')) return 'egypt';
+    if (text.includes('casablanca') || text.includes('morocco')) return 'morocco';
+    if (text.includes('dakar') || text.includes('senegal')) return 'senegal';
+    if (text.includes('abidjan') || text.includes('ivory coast') || text.includes("cote d'ivoire")) return 'ivory_coast';
+    if (text.includes('kigali') || text.includes('rwanda')) return 'rwanda';
+    if (text.includes('lagos') || text.includes('nigeria')) return 'nigeria';
+    return 'africa';
+  }
+
+  return scope; // 'global' or any already-specific scope
+}
+
+// Which scopes are visible for a given dropdown granularity.
+function scopeVisibleAt(scope, granularity) {
+  const nigerianCities = ['nigeria', 'lagos', 'abuja', 'port_harcourt', 'ibadan', 'kano'];
+  const africanHubs = ['africa', 'kenya', 'south_africa', 'ghana', 'egypt', 'morocco', 'senegal', 'ivory_coast', 'rwanda', ...nigerianCities];
+
+  switch (granularity) {
+    case 'global':       return true;                          // everything
+    case 'africa':       return africanHubs.includes(scope);   // continent + below
+    case 'west_africa':  return ['west_africa', 'nigeria', 'lagos', 'abuja', 'port_harcourt', 'ibadan', 'kano', 'ghana', 'senegal', 'ivory_coast'].includes(scope);
+    case 'north_africa': return ['north_africa', 'egypt', 'morocco'].includes(scope);
+    case 'nigeria':      return nigerianCities.includes(scope);
+    case 'lagos':        return scope === 'lagos';
+    default:             return true;
+  }
 }
 
 function plotGeospatialData(articles) {
   if (!geoMap || !articles || !articles.length) return;
-  
+
   // Clear historical markers
   mapMarkers.forEach(m => geoMap.removeLayer(m));
   mapMarkers = [];
 
+  let plotted = 0;
   articles.forEach(article => {
-    let scope = (article.geoScope || 'nigeria').toLowerCase().trim().replace(/\s+/g, '_');
-    
-    // --- SMART LOCATION EXTRACTOR ---
-    // If the backend stamped a generic 'nigeria', parse the text to find the actual city
-    if (scope === 'nigeria') {
-      const textSearch = `${article.title || ''} ${article.description || ''}`.toLowerCase();
-      
-      if (textSearch.includes('lagos') || textSearch.includes('lekki') || textSearch.includes('ikoyi') || textSearch.includes('victoria island')) {
-        scope = 'lagos';
-      } else if (textSearch.includes('abuja') || textSearch.includes('fct')) {
-        scope = 'abuja';
-      } else if (textSearch.includes('port harcourt') || textSearch.includes('rivers state')) {
-        scope = 'port_harcourt';
-      } else if (textSearch.includes('ibadan') || textSearch.includes('oyo')) {
-        scope = 'ibadan';
-      } else if (textSearch.includes('kano')) {
-        scope = 'kano';
-      }
-    }
-    // --------------------------------
-    
-    if (scope === 'global') return; // Hide global macro noise from regional map view
-    
-    // Assign coordinate anchor based on verified mapping array
+    const scope = resolveScope(article);
+
+    // Granularity gate — show only what belongs at the current zoom level.
+    if (!scopeVisibleAt(scope, currentGeoScope)) return;
+
     const anchor = geoAnchors[scope] || geoAnchors['nigeria'];
-    
-    // Adaptive jitter scale dynamically adjusted according to zoom constraints
-    const jitterSpread = anchor.zoom > 7 ? 0.04 : 2.0; 
+
+    // Adaptive jitter: tight when zoomed into a city, wide for macro views.
+    const jitterSpread = anchor.zoom >= 9 ? 0.06 : anchor.zoom >= 5 ? 1.2 : 6.0;
     const lat = anchor.lat + (Math.random() - 0.5) * jitterSpread;
     const lng = anchor.lng + (Math.random() - 0.5) * jitterSpread;
 
     const sent = (article.sentiment || 'neutral').toLowerCase();
-    
-    // Adjust colors to ensure high visual contrast configuration against bright tiles
     const color = sent === 'bullish' ? '#059669' : sent === 'bearish' ? '#dc2626' : '#2563eb';
 
     const marker = L.circleMarker([lat, lng], {
@@ -867,14 +920,13 @@ function plotGeospatialData(articles) {
       fillOpacity: 0.8
     }).addTo(geoMap);
 
-    // Interactive Popup Architecture
     marker.bindPopup(`
       <div style="min-width: 220px; padding: 4px 0;">
         <a href="${esc(article.url)}" target="_blank" rel="noopener noreferrer" class="geo-article-link">
           ${esc(article.title)}
         </a>
         <div style="font-size: 11px; font-family: var(--mono-font); color: var(--muted); text-transform: uppercase; margin-bottom: 10px;">
-          ${esc(article.source)} &middot; ${esc(scope.replace('_', ' '))}
+          ${esc(article.source)} &middot; ${esc(scope.replace(/_/g, ' '))}
         </div>
         <div style="display: inline-block; font-size: 9px; font-weight: 700; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; background: ${color}15; color: ${color}; border: 1px solid ${color}40;">
           ${esc(sent)} Signal
@@ -883,16 +935,23 @@ function plotGeospatialData(articles) {
     `);
 
     mapMarkers.push(marker);
+    plotted++;
   });
+
+  console.log(`[Geoslicer Map] Plotted ${plotted}/${articles.length} markers at granularity '${currentGeoScope}'`);
 }
 
 (async function boot() {
   initFirebase();
-  const [briefing, memory, articles, health, history, bIndex] = await Promise.all([
+  const [briefing, memory, articles, health, history, bIndex, geo] = await Promise.all([
     loadJSON('briefing.json'), loadJSON('themes.json'), loadJSON('articles.json'),
     loadJSON('health.json'), loadJSON('health-history.json'), loadJSON('briefings-index.json'),
+    loadJSON('geoslicer.json'),
   ]);
   articlesCache = Array.isArray(articles) ? articles : [];
+  // Geoslicer lane is isolated: prefer geoslicer.json; if it hasn't generated
+  // yet (first run), fall back to the Nigerian articles so the map isn't blank.
+  geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;
   briefingsIndex = bIndex?.briefings || [];
   renderStatus(health);
   renderBriefing(briefing);

@@ -3,177 +3,147 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mixta Market Intelligence Terminal</title>
+<title>Commercial Strategy News Digest Analyst</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --ink: #0f172a; --ink-soft: #334155; --muted: #64748b; --faint: #94a3b8;
-    --line: #e2e8f0; --line-soft: #f1f5f9; --bg: #ffffff; --bg-soft: #f8fafc; --bg-sink: #f1f5f9;
-    --accent: #b8243f; --accent-soft: #fdf2f4;
-    --green: #15803d; --green-soft: #f0fdf4; --amber: #b45309; --amber-soft: #fef3c7;
-    --red: #b91c1c; --red-soft: #fef2f2; --blue: #1d4ed8; --blue-soft: #eff6ff;
-    --radius: 8px; --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    /* Premium Executive Palette */
+    --navy: #0A192F;
+    --navy-soft: #112240;
+    --ink: #1e293b; 
+    --ink-soft: #475569; 
+    --muted: #64748b; 
+    --faint: #94a3b8;
+    --line: #e2e8f0; 
+    --line-soft: #f8fafc; 
+    --bg: #ffffff; 
+    --bg-soft: #f8fafc; 
+    --bg-sink: #f1f5f9;
+    --accent: #1E40AF; /* Mixta Blue */
+    --accent-soft: #eff6ff;
+    --green: #059669; --green-soft: #ecfdf5; 
+    --amber: #d97706; --amber-soft: #fffbeb;
+    --red: #dc2626; --red-soft: #fef2f2; 
+    --radius: 10px; 
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    
+    --display-font: 'Playfair Display', Georgia, serif;
+    --sans-font: 'Inter', system-ui, sans-serif;
+    --mono-font: 'IBM Plex Mono', monospace;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: var(--bg-soft); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; font-family: var(--sans-font); color: var(--ink); background: var(--bg-soft); line-height: 1.6; -webkit-font-smoothing: antialiased; }
   a { color: inherit; }
 
-  .topbar { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.85); backdrop-filter: saturate(180%) blur(12px); border-bottom: 1px solid var(--line); }
-  .topbar-inner { max-width: 1140px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 18px; }
-  .brand { display: flex; flex-direction: column; line-height: 1.1; }
-  .brand .name { font-weight: 700; font-size: 15px; letter-spacing: -.02em; color: #0f172a; }
-  .brand .sub { font-size: 10px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
-  .status-pill { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--bg-sink); color: var(--ink-soft); border: 1px solid var(--line); }
+  /* Top Navigation Bar */
+  .topbar { position: sticky; top: 0; z-index: 50; background: var(--navy); border-bottom: 3px solid var(--accent); color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+  .topbar-inner { max-width: 1200px; margin: 0 auto; padding: 18px 24px; display: flex; align-items: center; gap: 18px; }
+  .brand { display: flex; flex-direction: column; line-height: 1.2; }
+  .brand .name { font-family: var(--display-font); font-weight: 700; font-size: 22px; letter-spacing: 0.02em; color: #ffffff; }
+  .brand .sub { font-size: 10px; color: #93c5fd; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; margin-top: 4px;}
+  
+  .status-pill { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 999px; background: rgba(255,255,255,0.1); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.2); }
   .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--faint); }
-  .status-pill.healthy { background: var(--green-soft); color: var(--green); border-color: #bbf7d0; } .status-pill.healthy .status-dot { background: var(--green); }
-  .status-pill.degraded { background: var(--amber-soft); color: var(--amber); border-color: #fde68a; } .status-pill.degraded .status-dot { background: var(--amber); }
-  .status-pill.failed { background: var(--red-soft); color: var(--red); border-color: #fecaca; } .status-pill.failed .status-dot { background: var(--red); }
+  .status-pill.healthy .status-dot { background: #34d399; }
+  .status-pill.degraded .status-dot { background: #fbbf24; }
+  .status-pill.failed .status-dot { background: #f87171; }
+  
+  .admin-badge { display: none; background: rgba(239, 68, 68, 0.2); color: #fca5a5; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(239, 68, 68, 0.3); text-transform: uppercase; letter-spacing: 0.05em; margin-left: 12px; }
 
-  .nav { border-bottom: 1px solid var(--line); background: var(--bg); }
-  .nav-inner { max-width: 1140px; margin: 0 auto; padding: 0 24px; display: flex; gap: 4px; }
-  .nav button { appearance: none; border: 0; background: none; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--muted); padding: 14px 16px 12px; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .15s; }
-  .nav button:hover { color: var(--ink); }
-  .nav button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+  /* Sub Navigation */
+  .nav { border-bottom: 1px solid var(--line); background: var(--bg); box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; gap: 8px; }
+  .nav button { appearance: none; border: 0; background: none; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--muted); padding: 16px 16px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .2s ease; text-transform: uppercase; letter-spacing: 0.03em;}
+  .nav button:hover { color: var(--navy); }
+  .nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-  main { max-width: 1140px; margin: 0 auto; padding: 32px 24px 80px; }
-  .view { display: none; animation: fade .2s ease both; }
+  main { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
+  .view { display: none; animation: fade .3s ease both; }
   .view.active { display: block; }
-  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
-  .eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
-  .dateline { font-size: 12.5px; color: var(--muted); margin-bottom: 24px; font-mono; }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .dateline { font-size: 13px; color: var(--muted); margin-bottom: 32px; font-family: var(--mono-font); font-weight: 500;}
 
-  .terminal-layout { display: grid; grid-template-columns: 1fr; gap: 32px; }
+  .terminal-layout { display: grid; grid-template-columns: 1fr; gap: 40px; }
   
-  .exec-panel { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
-  .exec { font-family: 'Newsreader', Georgia, serif; font-size: 23px; line-height: 1.45; font-weight: 400; color: var(--ink); letter-spacing: -.01em; margin: 0 0 16px; }
+  /* Executive Briefing Panel */
+  .exec-panel { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+  .exec-panel::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent); }
+  .exec { font-family: var(--display-font); font-size: 20px; line-height: 1.6; font-weight: 400; color: var(--navy); letter-spacing: 0.01em; margin: 0 0 20px; }
   
-  /* THEME INTERACTIVE SELECTOR */
-  .theme-grid-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 24px 0 12px; display: flex; justify-content: space-between; align-items: center; }
-  .theme-selector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  /* Theme Interactive Cards */
+  .theme-grid-label { font-size: 12px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.05em; margin: 32px 0 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 8px;}
+  .theme-selector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 32px; }
   
-  .theme-card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); text-align: left; position: relative; user-select: none; }
-  .theme-card:hover { border-color: var(--muted); background: var(--bg-soft); }
-  .theme-card.active { border-color: var(--ink); background: #0f172a; color: #ffffff; box-shadow: 0 4px 12px rgba(15,23,42,0.15); }
-  .theme-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-  .theme-card-title { font-size: 14.5px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); margin: 0; padding-right: 8px; }
+  .theme-card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); text-align: left; position: relative; user-select: none; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+  .theme-card:hover { border-color: var(--muted); box-shadow: var(--shadow); transform: translateY(-2px); }
+  .theme-card.active { border-color: var(--navy); background: var(--navy); color: #ffffff; box-shadow: 0 8px 20px rgba(10, 25, 47, 0.15); transform: translateY(-2px); }
+  
+  .theme-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .theme-card-title { font-family: var(--display-font); font-size: 18px; font-weight: 700; color: var(--navy); margin: 0; padding-right: 8px; line-height: 1.3;}
   .theme-card.active .theme-card-title { color: #ffffff; }
-  .theme-card-body { font-size: 12px; color: var(--ink-soft); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0; }
-  .theme-card.active .theme-card-body { color: #94a3b8; }
   
-  .theme-meta-pills { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
-  .meta-pill { font-size: 9.5px; font-weight: 600; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.02em; background: var(--line-soft); color: var(--ink-soft); }
-  .theme-card.active .meta-pill { background: #1e293b; color: #cbd5e1; }
-  .meta-pill.new { background: var(--green-soft); color: var(--green); }
-  .theme-card.active .meta-pill.new { background: #064e3b; color: #4ade80; }
-  .meta-pill.building { background: var(--amber-soft); color: var(--amber); }
-  .theme-card.active .meta-pill.building { background: #78350f; color: #fbbf24; }
+  .theme-card-body { font-size: 13px; color: var(--ink-soft); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0; }
+  .theme-card.active .theme-card-body { color: #cbd5e1; }
   
-  /* HIGH DENSITY EVIDENCE STREAM */
-  .evidence-panel-header { display: flex; justify-content: space-between; align-items: center; margin: 32px 0 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
-  .evidence-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  .evidence-filter-status { font-size: 11px; font-mono; color: var(--accent); font-weight: 600; }
+  .theme-meta-pills { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .meta-pill { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.05em; background: var(--bg-sink); color: var(--ink-soft); border: 1px solid var(--line); }
+  .theme-card.active .meta-pill { background: rgba(255,255,255,0.1); color: #e2e8f0; border-color: rgba(255,255,255,0.2); }
+  
+  /* Evidence Stream */
+  .evidence-panel-header { display: flex; justify-content: space-between; align-items: center; margin: 40px 0 16px; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+  .evidence-title { font-size: 12px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.05em; }
+  .evidence-filter-status { font-size: 11px; font-family: var(--mono-font); color: var(--accent); font-weight: 600; background: var(--accent-soft); padding: 4px 10px; border-radius: 6px;}
   
   .terminal-table-container { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
-  .terminal-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13.5px; }
-  .terminal-table th { background: var(--line-soft); padding: 10px 16px; font-weight: 600; color: var(--ink-soft); font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--line); }
-  .terminal-table td { padding: 14px 16px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
-  .terminal-table tr:last-child td { border-bottom: none; }
-  .terminal-table tr:hover td { background: var(--bg-soft); }
+  .terminal-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+  .terminal-table th { background: var(--bg-soft); padding: 12px 20px; font-weight: 700; color: var(--navy); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--line); }
+  .terminal-table td { padding: 16px 20px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .terminal-table tr:hover td { background: #fdfdfd; }
   
-  .col-date { width: 100px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); white-space: nowrap; }
-  .col-source { width: 130px; white-space: nowrap; }
-  .source-tag { display: inline-block; background: var(--bg-sink); color: var(--ink-soft); font-size: 10.5px; font-weight: 600; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line); max-width: 110px; overflow: hidden; text-overflow: ellipsis; }
+  .col-date { width: 110px; font-family: var(--mono-font); font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+  .col-source { width: 150px; white-space: nowrap; }
+  .source-tag { display: inline-block; background: var(--bg-sink); color: var(--navy); font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--line); max-width: 130px; overflow: hidden; text-overflow: ellipsis; }
   
-  .article-headline-link { font-size: 14px; font-weight: 600; color: var(--blue); text-decoration: none; display: inline-block; margin-bottom: 4px; line-height: 1.4; }
-  .article-headline-link:hover { text-decoration: underline; color: #1e40af; }
-  .article-summary-text { color: var(--ink-soft); font-size: 12.5px; margin: 0 0 8px 0; line-height: 1.5; }
-  .article-impact-badge { display: inline-block; background: #fffbeb; border: 1px solid #fef3c7; color: #92400e; font-size: 11.5px; padding: 6px 10px; border-radius: 6px; width: 100%; margin-top: 4px; }
-  .article-impact-label { font-weight: 700; text-transform: uppercase; font-size: 9.5px; letter-spacing: 0.05em; color: #b45309; display: block; margin-bottom: 2px; }
+  .article-headline-link { font-family: var(--display-font); font-size: 16px; font-weight: 700; color: var(--navy); text-decoration: none; display: inline-block; margin-bottom: 6px; line-height: 1.4; transition: color 0.2s; }
+  .article-headline-link:hover { color: var(--accent); text-decoration: underline; }
+  .article-summary-text { color: var(--ink-soft); font-size: 13px; margin: 0 0 10px 0; line-height: 1.6; }
   
-  .col-sentiment { width: 100px; text-align: right; }
-  .sentiment-pill { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.04em; border: 1px solid transparent; }
-  .sentiment-pill.bullish { background: var(--green-soft); color: var(--green); border-color: #bbf7d0; }
+  .article-impact-badge { background: #f8fafc; border: 1px solid #e2e8f0; border-left: 3px solid var(--accent); color: var(--ink-soft); font-size: 12px; padding: 8px 12px; border-radius: 0 6px 6px 0; margin-top: 8px; }
+  .article-impact-label { font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.05em; color: var(--accent); display: block; margin-bottom: 4px; }
+  
+  .col-sentiment { width: 110px; text-align: right; }
+  .sentiment-pill { display: inline-block; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid transparent; }
+  .sentiment-pill.bullish { background: var(--green-soft); color: var(--green); border-color: #a7f3d0; }
   .sentiment-pill.bearish { background: var(--red-soft); color: var(--red); border-color: #fecaca; }
   .sentiment-pill.neutral { background: var(--bg-sink); color: var(--muted); border-color: var(--line); }
 
-  .theme.rec-act { border-left: 4px solid var(--accent); }
-  .theme.rec-monitor { border-left: 4px solid var(--amber); }
-  .theme.rec-watch { border-left: 4px solid var(--blue); }
+  /* Utilities */
+  .empty { text-align: center; padding: 60px 20px; color: var(--faint); font-size: 14px; background: var(--bg); border-radius: var(--radius); border: 1px dashed var(--line); }
+  .loading { text-align: center; padding: 50px; color: var(--muted); font-size: 14px; font-weight: 500; }
+  footer { max-width: 1200px; margin: 0 auto; padding: 0 24px 50px; color: var(--muted); font-size: 12px; text-align: center; font-weight: 500; }
 
-  .theme-row { margin: 9px 0; font-size: 14px; }
-  .theme-row .k { font-weight: 600; color: var(--ink); }
-  .why { background: var(--blue-soft); border-radius: 8px; padding: 11px 13px; color: #234; font-size: 13.5px; }
-  .rec .k { color: var(--accent); }
-  .theme-foot { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line-soft); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
-  .conf { font-weight: 600; } .conf.high { color: var(--green); } .conf.medium { color: var(--amber); } .conf.low { color: var(--red); }
-  .src-links a { color: var(--blue); text-decoration: none; border-bottom: 1px solid transparent; }
-  .src-links a:hover { border-bottom-color: var(--blue); }
-  .watch-band { margin-top: 26px; padding: 14px 18px; background: var(--bg-sink); border-radius: 8px; font-size: 13px; color: var(--ink-soft); }
-  .watch-band .k { font-weight: 600; }
-
-  .tracker-row { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; padding: 15px 4px; border-bottom: 1px solid var(--line-soft); }
-  .tracker-row .label { font-weight: 550; font-size: 14.5px; }
-  .tracker-row .meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
-  .presence { display: flex; gap: 3px; align-items: center; }
-  .pip { width: 9px; height: 16px; border-radius: 2px; background: var(--line); }
-  .pip.on { background: var(--accent); }
-  .pip.on.fade { background: #e3a9b5; }
-  .count-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; color: var(--ink-soft); min-width: 56px; text-align: right; }
-
-  .search { width: 100%; font-family: inherit; font-size: 14px; color: var(--ink); padding: 12px 15px; border: 1px solid var(--line); border-radius: 9px; background: var(--bg); margin-bottom: 20px; }
+  /* Archive & Settings Overrides */
+  .search { width: 100%; font-family: var(--sans-font); font-size: 15px; color: var(--ink); padding: 14px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); margin-bottom: 24px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
   .search:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-  .arch-item { background: var(--bg); border: 1px solid var(--line); border-radius: 9px; padding: 16px 18px; margin-bottom: 10px; cursor: pointer; transition: border-color .15s; }
-  .arch-item:hover { border-color: var(--faint); }
-  .arch-date { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--accent); font-weight: 500; }
-  .arch-summary { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.45; margin: 6px 0 8px; }
-  .arch-themes { font-size: 12px; color: var(--muted); }
-  .art-row { display: grid; grid-template-columns: 1fr; gap: 4px; padding: 14px 4px; border-bottom: 1px solid var(--line-soft); }
-  .art-title { font-size: 14px; font-weight: 500; }
-  .art-title a { text-decoration: none; }
-  .art-title a:hover { color: var(--accent); }
-  .art-meta { font-size: 12px; color: var(--muted); display: flex; gap: 10px; flex-wrap: wrap; }
-  .chip { background: var(--bg-sink); border-radius: 5px; padding: 1px 7px; font-weight: 500; }
-  .chip.bullish { background: var(--green-soft); color: var(--green); }
-  .chip.bearish { background: var(--red-soft); color: var(--red); }
-  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-bottom: 18px; }
-  .seg button { border: 0; background: var(--bg); font-family: inherit; font-size: 12.5px; font-weight: 500; color: var(--muted); padding: 8px 16px; cursor: pointer; }
-  .seg button.active { background: var(--accent); color: #fff; }
-
-  .h-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 26px; }
-  .h-card { background: var(--bg); border: 1px solid var(--line); border-radius: 9px; padding: 16px; }
-  .h-card .n { font-family: 'IBM Plex Mono', monospace; font-size: 24px; font-weight: 500; letter-spacing: -.02em; }
-  .h-card .l { font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .src-line { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); font-size: 13.5px; }
-  .src-line .dot { width: 8px; height: 8px; border-radius: 50%; }
-  .src-line .dot.ok { background: var(--green); } .src-line .dot.down { background: var(--red); }
-  .src-line .cnt { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
-  .hist-strip { display: flex; gap: 3px; margin-top: 8px; flex-wrap: wrap; }
-  .hist-pip { width: 10px; height: 22px; border-radius: 2px; background: var(--line); }
-  .hist-pip.healthy { background: var(--green); } .hist-pip.degraded { background: var(--amber); } .hist-pip.failed { background: var(--red); }
-
-  .cfg-note { background: var(--blue-soft); border-radius: 9px; padding: 14px 16px; font-size: 13px; color: #234; margin-bottom: 22px; }
-  .cfg-note code { background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
-  .cfg-block { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 18px; }
-  .cfg-block h3 { margin: 0 0 4px; font-size: 15px; }
-  .cfg-block p.hint { margin: 0 0 14px; font-size: 12.5px; color: var(--muted); }
-  .cfg-item { display: flex; gap: 8px; margin-bottom: 8px; }
-  .cfg-item input { flex: 1; font-family: inherit; font-size: 13px; padding: 8px 11px; border: 1px solid var(--line); border-radius: 7px; }
-  .cfg-item input:focus { outline: none; border-color: var(--accent); }
-  .cfg-item button.del { border: 1px solid var(--line); background: var(--bg); color: var(--muted); border-radius: 7px; padding: 0 12px; cursor: pointer; }
-  .cfg-item button.del:hover { color: var(--red); border-color: var(--red); }
-  .btn { font-family: inherit; font-weight: 600; font-size: 13px; border-radius: 8px; padding: 9px 16px; cursor: pointer; border: 1px solid transparent; }
-  .btn.add { background: var(--bg-sink); color: var(--ink-soft); }
-  .btn.save { background: var(--accent); color: #fff; }
-  .btn.save:disabled { opacity: .5; cursor: not-allowed; }
-  .cfg-status { font-size: 12.5px; margin-left: 12px; color: var(--muted); }
-
-  .empty { text-align: center; padding: 60px 20px; color: var(--faint); font-size: 14px; }
-  .loading { text-align: center; padding: 50px; color: var(--faint); font-size: 13px; }
-  footer { max-width: 1140px; margin: 0 auto; padding: 0 24px 50px; color: var(--faint); font-size: 11.5px; text-align: center; }
-
+  .arch-item { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; margin-bottom: 12px; cursor: pointer; transition: all .2s; }
+  .arch-item:hover { border-color: var(--navy); box-shadow: var(--shadow); transform: translateX(4px); }
+  .arch-date { font-family: var(--mono-font); font-size: 12px; color: var(--accent); font-weight: 600; }
+  .arch-summary { font-family: var(--display-font); font-size: 16px; line-height: 1.5; margin: 8px 0 10px; color: var(--navy); font-weight: 500;}
+  
+  .cfg-block { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; margin-bottom: 24px; box-shadow: var(--shadow); }
+  .cfg-block h3 { margin: 0 0 6px; font-size: 16px; font-weight: 700; color: var(--navy); }
+  
+  /* Tracker */
+  .tracker-row { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; padding: 16px; border: 1px solid var(--line); background: var(--bg); border-radius: var(--radius); margin-bottom: 8px;}
+  .tracker-row .label { font-weight: 600; font-size: 15px; color: var(--navy); }
+  .pip { width: 10px; height: 20px; border-radius: 3px; background: var(--line); }
+  .pip.on { background: var(--accent); }
+  .pip.on.fade { background: #93c5fd; }
+  
   @media (max-width: 768px) {
     .terminal-table th:nth-child(1), .terminal-table td:nth-child(1) { display: none; }
     .theme-selector-grid { grid-template-columns: 1fr; }
@@ -184,20 +154,23 @@
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <span class="name">Mixta Market Intelligence Terminal</span>
-        <span class="sub">Autonomous Strategic Allocation Framework</span>
+        <span class="name">Commercial Strategy News Digest Analyst</span>
+        <span class="sub">Mixta Africa &bull; Executive Briefing</span>
       </div>
-      <span id="statusPill" class="status-pill"><span class="status-dot"></span><span id="statusText">Loading</span></span>
+      <div style="display: flex; align-items: center;">
+        <span id="statusPill" class="status-pill"><span class="status-dot"></span><span id="statusText">Loading</span></span>
+        <span id="adminBadge" class="admin-badge">Admin Mode</span>
+      </div>
     </div>
   </div>
 
   <nav class="nav">
     <div class="nav-inner">
-      <button data-view="briefing" class="active">Terminal</button>
+      <button data-view="briefing" class="active">Digest</button>
       <button data-view="themes">Theme Tracker</button>
       <button data-view="archive">Archive Index</button>
-      <button data-view="health">System Operations</button>
-      <button data-view="config">Settings</button>
+      <button id="nav-health" data-view="health" style="display:none;">System Operations</button>
+      <button id="nav-config" data-view="config" style="display:none;">Settings</button>
     </div>
   </nav>
 
@@ -205,27 +178,24 @@
     <section id="briefing" class="view active">
       <div class="terminal-layout">
         
-        <!-- EXECUTIVE BREAKDOWN BRIEF -->
         <div class="exec-panel">
           <div class="eyebrow">Executive Summary Synthesis</div>
           <div id="briefingDate" class="dateline"></div>
           <div id="executiveSummaryContainer">
-            <div class="loading">Parsing framework environment...</div>
+            <div class="loading">Gathering intelligence...</div>
           </div>
         </div>
 
-        <!-- RELATIONAL INTERACTION MAP LAYER -->
         <div>
           <div class="theme-grid-label">
-            <span>Thematic Intelligence Cards</span>
-            <span style="font-weight:400; font-family:'IBM Plex Mono'; color:var(--accent); cursor:pointer;" id="clearThemeFilter" onclick="filterEvidenceStream('All')"></span>
+            <span>Thematic Intelligence Index</span>
+            <span style="font-weight:600; font-family:var(--mono-font); color:var(--accent); cursor:pointer;" id="clearThemeFilter" onclick="filterEvidenceStream('All')"></span>
           </div>
           <div id="themeSelectorGrid" class="theme-selector-grid">
-            <div class="loading">Clustering records...</div>
+            <div class="loading">Structuring index...</div>
           </div>
         </div>
 
-        <!-- COMPACT DATA EVIDENCE ROW ENGINE -->
         <div>
           <div class="evidence-panel-header">
             <div class="evidence-title" id="evidenceStreamTitle">Evidence Stream</div>
@@ -241,16 +211,16 @@
 
     <section id="themes" class="view">
       <div class="eyebrow">Theme Tracker</div>
-      <div class="dateline">How stories build over time. Each bar is a day the theme appeared in a briefing.</div>
+      <div class="dateline">Historical persistence of strategic narratives over time.</div>
       <div id="themesBody"><div class="loading">Loading theme history&hellip;</div></div>
     </section>
 
     <section id="archive" class="view">
-      <div class="eyebrow">Archive</div>
-      <div class="dateline">Past briefings and the full article record.</div>
-      <div class="seg">
-        <button id="segBriefings" class="active" onclick="setArchTab('briefings')">Past briefings</button>
-        <button id="segArticles" onclick="setArchTab('articles')">Articles</button>
+      <div class="eyebrow">Intelligence Archive</div>
+      <div class="dateline">Search historical briefings and source articles.</div>
+      <div style="display: flex; gap: 8px; margin-bottom: 24px;">
+        <button id="segBriefings" class="active" style="padding: 8px 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); cursor: pointer; font-weight: 600;" onclick="setArchTab('briefings')">Past Briefings</button>
+        <button id="segArticles" style="padding: 8px 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); cursor: pointer; font-weight: 600;" onclick="setArchTab('articles')">Raw Articles</button>
       </div>
       <input id="archSearch" class="search" placeholder="Search by keyword, source, or theme&hellip;" oninput="renderArchive()" />
       <div id="archiveBody"><div class="loading">Loading archive&hellip;</div></div>
@@ -263,17 +233,28 @@
     </section>
 
     <section id="config" class="view">
-      <div class="eyebrow">Settings</div>
-      <div class="dateline">Adjust what the intelligence engine watches and where it looks. Changes apply on the next run.</div>
+      <div class="eyebrow">Pipeline Settings</div>
+      <div class="dateline">Configure the ingestion engines and watch-list parameters.</div>
       <div id="configBody"><div class="loading">Loading settings&hellip;</div></div>
     </section>
   </main>
 
-  <footer>Mixta Market Intelligence Terminal &middot; Autonomous daily pipeline &middot; Real-time deployment</footer>
+  <footer>Commercial Strategy News Digest Analyst &middot; Secure Executive Pipeline</footer>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
+// --- GHOST ADMIN LOGIC ---
+const urlParams = new URLSearchParams(window.location.search);
+const isAdmin = urlParams.get('admin') === 'true';
+
+if (isAdmin) {
+  document.getElementById('nav-health').style.display = 'inline-block';
+  document.getElementById('nav-config').style.display = 'inline-block';
+  document.getElementById('adminBadge').style.display = 'inline-block';
+}
+// -------------------------
+
 const firebaseConfig = {
   apiKey: "AIzaSyBmB2IAMT0yBPWh33Hu3KXhtmzWT22kDUk",
   authDomain: "cs-edge-brief.firebaseapp.com",
@@ -325,7 +306,7 @@ function renderStatus(health) {
   const text = document.getElementById('statusText');
   const s = health?.status || 'unknown';
   pill.className = 'status-pill ' + s;
-  const map = { healthy: 'All systems healthy', degraded: 'Running degraded', failed: 'Last run failed', unknown: 'Status unknown' };
+  const map = { healthy: 'Pipeline Active', degraded: 'Running Degraded', failed: 'Run Failed', unknown: 'Syncing' };
   text.textContent = map[s] || s;
 }
 
@@ -338,7 +319,7 @@ function renderBriefing(b) {
   const dateEl = document.getElementById('briefingDate');
 
   if (!b || !b.themes || !b.themes.length) {
-    execSummaryContainer.innerHTML = '<div class="empty">No active summary available.</div>';
+    execSummaryContainer.innerHTML = '<div class="empty">No active intelligence summary available.</div>';
     themeSelectorGrid.innerHTML = '';
     return;
   }
@@ -347,7 +328,6 @@ function renderBriefing(b) {
     dateEl.textContent = 'Data Sync Frame: ' + new Date(b.generatedAt).toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
   }
 
-  // Segment executive summaries cleanly by paragraph
   const paragraphs = b.executive_summary.split('\n\n');
   let execHtml = '';
   paragraphs.forEach(p => {
@@ -355,7 +335,6 @@ function renderBriefing(b) {
   });
   execSummaryContainer.innerHTML = execHtml;
 
-  // Render Interactive Theme Cards instead of large vertical blocks
   renderThemeCards();
   renderFilteredTable();
 }
@@ -367,7 +346,7 @@ function renderThemeCards() {
   if (!loadedBriefingCache) return;
 
   if (activeGlobalThemeFilter !== "All") {
-    clearButton.textContent = "[Reset Matrix Filter]";
+    clearButton.textContent = "[ Reset Focus Matrix ]";
   } else {
     clearButton.textContent = "";
   }
@@ -377,7 +356,6 @@ function renderThemeCards() {
     const isSelected = activeGlobalThemeFilter === t.label;
     const nov = (t.novelty || 'established').toLowerCase();
     const metricsCount = articlesCache.filter(a => {
-      // Direct category string matching or keyword lookup mapping
       const categoryMatch = (a.category || '').toLowerCase().trim() === t.label.toLowerCase().trim();
       const catStr = ((a.category || '') + ' ' + (a.trending_topics || '')).toLowerCase();
       
@@ -396,7 +374,7 @@ function renderThemeCards() {
       <div class="theme-card ${isSelected ? 'active' : ''}" onclick="filterEvidenceStream('${esc(t.label)}')">
         <div class="theme-card-header">
           <h3 class="theme-card-title">${esc(t.label)}</h3>
-          <span class="sentiment-pill" style="font-family:'IBM Plex Mono'; font-size:10px; background:rgba(0,0,0,0.05); color:inherit; border:none; padding:2px 6px;">${metricsCount}</span>
+          <span class="sentiment-pill" style="font-family:var(--mono-font); font-size:11px; background:rgba(0,0,0,0.05); color:inherit; border:none; padding:3px 8px;">${metricsCount} Sources</span>
         </div>
         <p class="theme-card-body">${esc(t.why_it_matters_to_mixta)}</p>
         <div class="theme-meta-pills">
@@ -430,7 +408,6 @@ function renderFilteredTable() {
     return;
   }
 
-  // Execution filter logic
   let filtered = articlesCache;
   if (activeGlobalThemeFilter !== "All") {
     filterStatus.textContent = `Active Scope: ${activeGlobalThemeFilter}`;
@@ -477,7 +454,6 @@ function renderFilteredTable() {
     const sent = (a.sentiment || 'neutral').toLowerCase();
     const dateStr = a.addedAt ? new Date(a.addedAt).toLocaleDateString('en-GB') : '\u2014';
     
-    // Extraction for allocation impacts if present
     let allocationBlock = '';
     if (a.mixta_relevance && a.mixta_relevance.direct_impact && a.mixta_relevance.direct_impact !== 'None') {
       allocationBlock = `
@@ -526,10 +502,10 @@ function renderThemes(memory) {
     const span = (t.firstSeen && t.lastSeen) ? `${t.firstSeen} &rarr; ${t.lastSeen}` : (t.lastSeen || '');
     html += `
       <div class="tracker-row">
-        <div><div class="label">${esc(t.label)}</div><div class="meta">${span}</div></div>
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div class="presence">${pips}</div>
-          <span class="count-num">${t.count} day${t.count===1?'':'s'}</span>
+        <div><div class="label">${esc(t.label)}</div><div style="font-size: 12px; color: var(--muted); margin-top: 4px;">${span}</div></div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="display: flex; gap: 4px; align-items: center;">${pips}</div>
+          <span style="font-family: var(--mono-font); font-size: 14px; font-weight: 600; color: var(--ink-soft); min-width: 60px; text-align: right;">${t.count} day${t.count===1?'':'s'}</span>
         </div>
       </div>`;
   }
@@ -538,8 +514,8 @@ function renderThemes(memory) {
 
 function setArchTab(tab) {
   archTab = tab;
-  document.getElementById('segBriefings').classList.toggle('active', tab === 'briefings');
-  document.getElementById('segArticles').classList.toggle('active', tab === 'articles');
+  document.getElementById('segBriefings').style.background = tab === 'briefings' ? 'var(--bg-sink)' : 'var(--bg)';
+  document.getElementById('segArticles').style.background = tab === 'articles' ? 'var(--bg-sink)' : 'var(--bg)';
   document.getElementById('archSearch').placeholder = tab === 'briefings'
     ? 'Search past briefings by summary or theme\u2026'
     : 'Search articles by title or source\u2026';
@@ -560,7 +536,7 @@ function renderArchive() {
       <div class="arch-item" onclick="openBriefing('${b.date}')">
         <div class="arch-date">${b.date}</div>
         <div class="arch-summary">${esc((b.executive_summary || '').slice(0, 220))}${(b.executive_summary||'').length > 220 ? '\u2026' : ''}</div>
-        <div class="arch-themes">${(b.themeLabels || []).map(esc).join(' &middot; ')}</div>
+        <div style="font-size: 12px; color: var(--muted); font-weight: 500;">${(b.themeLabels || []).map(esc).join(' &middot; ')}</div>
       </div>`).join('');
   } else {
     let items = articlesCache;
@@ -572,11 +548,11 @@ function renderArchive() {
     el.innerHTML = items.slice(0, 200).map(a => {
       const sent = (a.sentiment || 'neutral').toLowerCase();
       return `
-      <div class="art-row">
-        <div class="art-title"><a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.title)}</a></div>
-        <div class="art-meta">
-          <span class="chip">${esc(a.source || 'Unknown')}</span>
-          <span class="chip ${sent}">${esc(sent)}</span>
+      <div style="display: grid; grid-template-columns: 1fr; gap: 6px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 8px; background: var(--bg);">
+        <div style="font-size: 15px; font-weight: 600; font-family: var(--display-font);"><a href="${esc(a.url)}" target="_blank" rel="noopener" style="text-decoration:none; color: var(--navy);">${esc(a.title)}</a></div>
+        <div style="font-size: 11px; color: var(--muted); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; font-weight: 600;">
+          <span style="background: var(--bg-sink); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--line);">${esc(a.source || 'Unknown')}</span>
+          <span class="sentiment-pill ${sent}">${esc(sent)}</span>
           ${a.addedAt ? `<span>${new Date(a.addedAt).toLocaleDateString()}</span>` : ''}
         </div>
       </div>`;
@@ -584,17 +560,29 @@ function renderArchive() {
   }
 }
 
-async function openBriefing(date) {
-  const b = await loadJSON(`archive/briefing-${date}.json`);
-  if (!b) { alert('Could not load that briefing.'); return; }
-  document.querySelectorAll('.nav button').forEach(x => x.classList.remove('active'));
-  document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
-  document.querySelector('.nav button[data-view="briefing"]').classList.add('active');
-  document.getElementById('briefing').classList.add('active');
-  renderBriefing(b);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+  async function openBriefing(date) {
+  // 1. Find the specific briefing in the index
+  const item = briefingsIndex.find(b => b.date === date);
+  if (!item || !item.file) {
+    alert("Could not locate the file for this briefing.");
+    return;
+  }
 
+  // 2. Load that specific file from the data folder
+  const pastBriefing = await loadJSON(item.file);
+  if (pastBriefing) {
+    // 3. Switch the UI back to the main Digest view
+    document.querySelectorAll('.nav button').forEach(x => x.classList.remove('active'));
+    document.querySelector('.nav button[data-view="briefing"]').classList.add('active');
+    document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
+    document.getElementById('briefing').classList.add('active');
+
+    // 4. Render the historical briefing and scroll to top
+    renderBriefing(pastBriefing);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+  
 function renderHealth(health, history) {
   const el = document.getElementById('healthBody');
   const dateEl = document.getElementById('healthDate');
@@ -602,69 +590,56 @@ function renderHealth(health, history) {
   if (health.timestamp) dateEl.textContent = 'Last run ' + new Date(health.timestamp).toLocaleString();
   const c = health.counts || {};
   let html = `
-    <div class="h-grid">
-      <div class="h-card"><div class="n">${c.filtered ?? '\u2014'}</div><div class="l">Articles after filtering</div></div>
-      <div class="h-card"><div class="n">${c.analyzed ?? '\u2014'}</div><div class="l">Analyzed</div></div>
-      <div class="h-card"><div class="n">${health.synthesis?.themes ?? '\u2014'}</div><div class="l">Briefing themes</div></div>
-      <div class="h-card"><div class="n">${c.aiFallbacks ?? '\u2014'}</div><div class="l">AI fallbacks</div></div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px;">
+      <div class="cfg-block" style="margin:0; text-align: center;"><div style="font-family: var(--mono-font); font-size: 28px; font-weight: 600; color: var(--navy);">${c.filtered ?? '\u2014'}</div><div style="font-size: 12px; color: var(--muted); font-weight: 600;">Articles Extracted</div></div>
+      <div class="cfg-block" style="margin:0; text-align: center;"><div style="font-family: var(--mono-font); font-size: 28px; font-weight: 600; color: var(--navy);">${c.analyzed ?? '\u2014'}</div><div style="font-size: 12px; color: var(--muted); font-weight: 600;">Analyzed</div></div>
+      <div class="cfg-block" style="margin:0; text-align: center;"><div style="font-family: var(--mono-font); font-size: 28px; font-weight: 600; color: var(--accent);">${health.synthesis?.themes ?? '\u2014'}</div><div style="font-size: 12px; color: var(--muted); font-weight: 600;">Briefing Themes</div></div>
+      <div class="cfg-block" style="margin:0; text-align: center;"><div style="font-family: var(--mono-font); font-size: 28px; font-weight: 600; color: var(--red);">${c.aiFallbacks ?? '\u2014'}</div><div style="font-size: 12px; color: var(--muted); font-weight: 600;">AI Fallbacks</div></div>
     </div>`;
+  
   if (health.warnings && health.warnings.length) {
-    html += `<div class="cfg-note" style="background:var(--amber-soft);color:var(--amber);"><strong>Attention:</strong> ${health.warnings.map(esc).join(' &middot; ')}</div>`;
+    html += `<div style="background:var(--amber-soft); color:var(--amber); border: 1px solid #fcd34d; border-radius: var(--radius); padding: 16px; font-size: 13px; font-weight: 500; margin-bottom: 24px;"><strong>System Notice:</strong> ${health.warnings.map(esc).join(' &middot; ')}</div>`;
   }
-  const s = health.sources || {};
-  const lines = [];
-  const addLine = (name, ok, count, err) => lines.push(
-    `<div class="src-line"><span class="dot ${ok ? 'ok' : 'down'}"></span><span>${esc(name)}</span>${err ? `<span style="color:var(--red);font-size:12px;">${esc(err)}</span>` : ''}<span class="cnt">${count ?? 0}</span></div>`);
-  if (s.gnews) addLine('GNews API', s.gnews.ok, s.gnews.count, s.gnews.error);
-  if (s.newsapi) addLine('NewsAPI', s.newsapi.ok, s.newsapi.count, s.newsapi.error);
-  if (s.googlenews) addLine('Google News', s.googlenews.ok, s.googlenews.count, s.googlenews.error);
-  if (s.rss && s.rss.feeds) { for (const [n, f] of Object.entries(s.rss.feeds)) addLine('RSS \u2014 ' + n, f.ok, f.count, f.error); }
-  html += `<h3 style="font-size:14px;margin:26px 0 6px;">Source status</h3>${lines.join('')}`;
-  if (history?.runs?.length) {
-    const runs = history.runs.slice(-30);
-    html += `<h3 style="font-size:14px;margin:28px 0 6px;">Recent run history</h3>
-      <div class="hist-strip">${runs.map(r => `<span class="hist-pip ${r.status}" title="${r.timestamp} \u2014 ${r.status}"></span>`).join('')}</div>
-      <div style="font-size:11.5px;color:var(--muted);margin-top:8px;">Last ${runs.length} runs &middot; green healthy, amber degraded, red failed</div>`;
-  }
+  
   el.innerHTML = html;
 }
 
 function renderConfig() {
   const el = document.getElementById('configBody');
   if (!firebaseReady) {
-    el.innerHTML = `<div class="cfg-note">Editing is not connected yet. To enable in-dashboard editing of the watch-list and sources, add your Firebase Realtime Database details to <code>firebaseConfig</code> at the top of this file's script, and set <code>FIREBASE_DB_URL</code> as a GitHub secret so the pipeline reads your changes. Until then, edit <code>src/mixta-context.json</code> and <code>src/sources.json</code> directly.</div><div id="cfgReadonly"></div>`;
+    el.innerHTML = `<div style="background: var(--bg-sink); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; font-size: 13px; color: var(--navy); margin-bottom: 24px; font-weight: 500;">Live settings editing requires active Firebase connection parameters.</div><div id="cfgReadonly"></div>`;
     showReadonlyConfig();
     return;
   }
   el.innerHTML = `
-    <div class="cfg-block"><h3>Watch-list</h3><p class="hint">Topics the engine watches and connects to Mixta. Each needs a short note on why it matters.</p><div id="watchItems"></div><button class="btn add" onclick="addWatch()">+ Add topic</button></div>
-    <div class="cfg-block"><h3>Google News queries</h3><p class="hint">Search phrases turned into news feeds. Broad coverage, no rate limit.</p><div id="googleItems"></div><button class="btn add" onclick="addGoogle()">+ Add query</button></div>
-    <div class="cfg-block"><h3>RSS feeds</h3><p class="hint">Direct publisher feeds. Name plus feed URL.</p><div id="rssItems"></div><button class="btn add" onclick="addRss()">+ Add feed</button></div>
-    <div style="display:flex;align-items:center;"><button id="saveBtn" class="btn save" onclick="saveConfig()">Save changes</button><span id="cfgStatus" class="cfg-status"></span></div>`;
+    <div class="cfg-block"><h3>Intelligence Watch-list</h3><p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">Strategic topics the AI engine actively prioritizes.</p><div id="watchItems"></div><button style="padding: 8px 16px; font-weight: 600; background: var(--bg-sink); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer;" onclick="addWatch()">+ Append Topic</button></div>
+    <div class="cfg-block"><h3>Google News Parameters</h3><div id="googleItems"></div><button style="padding: 8px 16px; font-weight: 600; background: var(--bg-sink); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer;" onclick="addGoogle()">+ Add Query</button></div>
+    <div class="cfg-block"><h3>RSS Direct Feeds</h3><div id="rssItems"></div><button style="padding: 8px 16px; font-weight: 600; background: var(--bg-sink); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer;" onclick="addRss()">+ Add Feed</button></div>
+    <div style="display:flex;align-items:center;"><button id="saveBtn" style="padding: 12px 24px; font-weight: 600; font-size: 14px; background: var(--accent); color: white; border: none; border-radius: var(--radius); cursor: pointer;" onclick="saveConfig()">Commit Pipeline Changes</button><span id="cfgStatus" style="margin-left: 16px; font-size: 13px; font-weight: 600;"></span></div>`;
   drawWatch(); drawGoogle(); drawRss();
 }
 
 function drawWatch() {
   document.getElementById('watchItems').innerHTML = cfgWatch.map((w, i) => `
-    <div class="cfg-item">
-      <input value="${esc(w.topic || '')}" placeholder="Topic" oninput="cfgWatch[${i}].topic=this.value">
-      <input value="${esc(w.why || '')}" placeholder="Why it matters" oninput="cfgWatch[${i}].why=this.value">
-      <button class="del" onclick="cfgWatch.splice(${i},1);drawWatch()">Remove</button>
+    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+      <input style="flex: 1; padding: 10px; border: 1px solid var(--line); border-radius: 6px; font-family: var(--sans-font); font-size: 13px;" value="${esc(w.topic || '')}" placeholder="Topic" oninput="cfgWatch[${i}].topic=this.value">
+      <input style="flex: 2; padding: 10px; border: 1px solid var(--line); border-radius: 6px; font-family: var(--sans-font); font-size: 13px;" value="${esc(w.why || '')}" placeholder="Why it matters" oninput="cfgWatch[${i}].why=this.value">
+      <button style="padding: 0 16px; background: var(--red-soft); color: var(--red); border: 1px solid #fecaca; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;" onclick="cfgWatch.splice(${i},1);drawWatch()">Delete</button>
     </div>`).join('');
 }
 function drawGoogle() {
   document.getElementById('googleItems').innerHTML = cfgGoogle.map((q, i) => `
-    <div class="cfg-item">
-      <input value="${esc(q)}" placeholder="Search phrase" oninput="cfgGoogle[${i}]=this.value">
-      <button class="del" onclick="cfgGoogle.splice(${i},1);drawGoogle()">Remove</button>
+    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+      <input style="flex: 1; padding: 10px; border: 1px solid var(--line); border-radius: 6px; font-family: var(--sans-font); font-size: 13px;" value="${esc(q)}" placeholder="Search phrase" oninput="cfgGoogle[${i}]=this.value">
+      <button style="padding: 0 16px; background: var(--red-soft); color: var(--red); border: 1px solid #fecaca; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;" onclick="cfgGoogle.splice(${i},1);drawGoogle()">Delete</button>
     </div>`).join('');
 }
 function drawRss() {
   document.getElementById('rssItems').innerHTML = cfgRss.map((f, i) => `
-    <div class="cfg-item">
-      <input value="${esc(f.source || '')}" placeholder="Name" style="max-width:160px" oninput="cfgRss[${i}].source=this.value">
-      <input value="${esc(f.url || '')}" placeholder="https://feed-url" oninput="cfgRss[${i}].url=this.value">
-      <button class="del" onclick="cfgRss.splice(${i},1);drawRss()">Remove</button>
+    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+      <input style="width: 200px; padding: 10px; border: 1px solid var(--line); border-radius: 6px; font-family: var(--sans-font); font-size: 13px;" value="${esc(f.source || '')}" placeholder="Name" oninput="cfgRss[${i}].source=this.value">
+      <input style="flex: 1; padding: 10px; border: 1px solid var(--line); border-radius: 6px; font-family: var(--sans-font); font-size: 13px;" value="${esc(f.url || '')}" placeholder="https://feed-url" oninput="cfgRss[${i}].url=this.value">
+      <button style="padding: 0 16px; background: var(--red-soft); color: var(--red); border: 1px solid #fecaca; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;" onclick="cfgRss.splice(${i},1);drawRss()">Delete</button>
     </div>`).join('');
 }
 function addWatch() { cfgWatch.push({ topic: '', why: '' }); drawWatch(); }
@@ -674,13 +649,13 @@ function addRss() { cfgRss.push({ source: '', url: '' }); drawRss(); }
 async function saveConfig() {
   const btn = document.getElementById('saveBtn');
   const status = document.getElementById('cfgStatus');
-  btn.disabled = true; status.textContent = 'Saving\u2026'; status.style.color = 'var(--muted)';
+  btn.disabled = true; status.textContent = 'Committing changes...'; status.style.color = 'var(--muted)';
   try {
     await db.ref('config/watchlist').set({ items: cfgWatch.filter(w => w.topic) });
     await db.ref('config/sources').set({ rssFeeds: cfgRss.filter(f => f.url && f.source), googleNewsQueries: cfgGoogle.filter(Boolean) });
-    status.textContent = 'Saved. Takes effect on the next run.'; status.style.color = 'var(--green)';
+    status.textContent = 'Settings committed successfully.'; status.style.color = 'var(--green)';
   } catch (e) {
-    status.textContent = 'Save failed: ' + e.message; status.style.color = 'var(--red)';
+    status.textContent = 'Commit failed: ' + e.message; status.style.color = 'var(--red)';
   } finally { btn.disabled = false; }
 }
 
@@ -693,10 +668,10 @@ async function showReadonlyConfig() {
   const src = await rawJSON('sources.json');
   const el = document.getElementById('cfgReadonly');
   let html = '';
-  if (ctx?.watch_list) html += `<div class="cfg-block"><h3>Watch-list (current)</h3>${ctx.watch_list.map(w => `<div class="theme-row"><span class="k">${esc(w.topic)}.</span> ${esc(w.why)}</div>`).join('')}</div>`;
+  if (ctx?.watch_list) html += `<div class="cfg-block"><h3>Watch-list (GitHub Configuration)</h3>${ctx.watch_list.map(w => `<div style="margin: 12px 0; font-size: 14px; border-bottom: 1px solid var(--line-soft); padding-bottom: 8px;"><span style="font-weight: 600; color: var(--navy);">${esc(w.topic)}.</span> ${esc(w.why)}</div>`).join('')}</div>`;
   if (src) {
-    html += `<div class="cfg-block"><h3>Google News queries</h3><div>${(src.googleNewsQueries||[]).map(q => `<span class="chip" style="margin:2px;display:inline-block">${esc(q)}</span>`).join(' ')}</div></div>`;
-    html += `<div class="cfg-block"><h3>RSS feeds</h3>${(src.rssFeeds||[]).map(f => `<div class="theme-row"><span class="k">${esc(f.source)}</span> &middot; ${esc(f.url)}</div>`).join('')}</div>`;
+    html += `<div class="cfg-block"><h3>Google News queries</h3><div style="display:flex; flex-wrap: wrap; gap: 8px;">${(src.googleNewsQueries||[]).map(q => `<span style="background: var(--bg-sink); border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; font-size: 13px; font-weight: 500;">${esc(q)}</span>`).join('')}</div></div>`;
+    html += `<div class="cfg-block"><h3>RSS feeds</h3>${(src.rssFeeds||[]).map(f => `<div style="margin: 12px 0; font-size: 14px; border-bottom: 1px solid var(--line-soft); padding-bottom: 8px;"><span style="font-weight: 600; color: var(--navy);">${esc(f.source)}</span> &middot; <span style="font-family: var(--mono-font); font-size: 12px; color: var(--muted);">${esc(f.url)}</span></div>`).join('')}</div>`;
   }
   if (el) el.innerHTML = html;
 }
@@ -709,7 +684,7 @@ async function loadConfigState() {
       if (w && w.items) cfgWatch = w.items;
       if (s && s.rssFeeds) cfgRss = s.rssFeeds;
       if (s && s.googleNewsQueries) cfgGoogle = s.googleNewsQueries;
-    } catch (e) { /* fall through */ }
+    } catch (e) { }
   }
   if (!cfgWatch.length || !cfgRss.length) {
     const RAW = 'https://raw.githubusercontent.com/Timilehin-Taiwo/News-Fetcher/main/src';

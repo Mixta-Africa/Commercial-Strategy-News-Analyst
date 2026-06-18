@@ -765,14 +765,17 @@ async function loadConfigState() {
 
 // Strategic Anchor Coordinates & Zoom Levels
 const geoAnchors = {
+  // Regions
   'africa':       { lat: 1.0, lng: 17.0, zoom: 3 },
   'west_africa':  { lat: 12.0, lng: 0.0, zoom: 5 },
   'north_africa': { lat: 28.0, lng: 10.0, zoom: 4 },
+  
+  // Specific Market Precise Coordinates
   'nigeria':      { lat: 9.0820, lng: 8.6753, zoom: 6 },
   'lagos':        { lat: 6.5244, lng: 3.3792, zoom: 10 },
-  'senegal':      { lat: 14.4974, lng: -14.4524, zoom: 6 },
-  'morocco':      { lat: 31.7917, lng: -7.0926, zoom: 5 },
-  'ivory_coast':  { lat: 7.5400, lng: -5.5471, zoom: 6 }
+  'senegal':      { lat: 14.7167, lng: -17.4677, zoom: 6 }, // Dakar
+  'morocco':      { lat: 33.5731, lng: -7.5898, zoom: 6 }, // Casablanca
+  'ivory_coast':  { lat: 5.3320, lng: -4.0305, zoom: 6 }   // Abidjan
 };
 
 let currentGeoScope = 'nigeria';
@@ -818,9 +821,20 @@ function plotGeospatialData(articles) {
   mapMarkers.forEach(m => geoMap.removeLayer(m));
   mapMarkers = [];
 
-  articles.forEach(article => {
-    // Determine scope from payload structure or default safely to national tier
-    const scope = (article.geoScope || 'nigeria').toLowerCase().trim().replace(/\s+/g, '_');
+  // Inside plotGeospatialData function
+articles.forEach(article => {
+  const scope = (article.geoScope || 'nigeria').toLowerCase().trim().replace(/\s+/g, '_');
+  
+  // 1. Use anchor, fallback to Nigeria if scope is unknown
+  const anchor = geoAnchors[scope] || geoAnchors['nigeria'];
+  
+  // 2. Use a smaller, more controlled offset based on the specific city location
+  // This places them in the "general area" of the city rather than a random circle
+  const lat = anchor.lat + (Math.random() - 0.5) * 0.1;
+  const lng = anchor.lng + (Math.random() - 0.5) * 0.1;
+
+  // ... rest of your marker logic ...
+});
     if (scope === 'global') return; // Hide global macro noise from regional map view
     
     // Assign coordinate anchor based on verified mapping array

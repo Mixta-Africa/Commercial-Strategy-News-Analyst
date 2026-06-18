@@ -190,6 +190,20 @@ jobs:
           ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
 
       # ---------------------------------------------------------------
+      # GEOSLICER LANE — ISOLATED, DASHBOARD-EXCLUSIVE
+      # Runs AFTER the main pipeline has finished and (above) produced its
+      # data. continue-on-error guarantees a geoslicer failure (e.g. Google
+      # News 403/429) can never abort or corrupt the Nigerian briefing.
+      # Writes ONLY data/geoslicer.json. No Sheets, no email, no Groq buckets.
+      # ---------------------------------------------------------------
+      - name: Run geoslicer fetch (isolated)
+        run: node src/geoslicer-source.js
+        env:
+          # Optional, SEPARATE key. If unset, map markers default to neutral.
+          GEOSLICER_AI_KEY: ${{ secrets.GEOSLICER_AI_KEY }}
+        continue-on-error: true
+
+      # ---------------------------------------------------------------
       # COMMIT DASHBOARD DATA BACK TO REPO (for GitHub Pages)
       # ---------------------------------------------------------------
       - name: Commit dashboard data

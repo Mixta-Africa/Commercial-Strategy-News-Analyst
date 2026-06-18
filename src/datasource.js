@@ -1,6 +1,6 @@
 /**
  * Data Source Module
- * * Collects articles from 4 sources:
+ * Collects articles from 4 sources:
  * 1. GNews API (~15-30 articles)
  * 2. NewsAPI (~20-40 articles)
  * 3. RSS Feeds (~10-20 articles)

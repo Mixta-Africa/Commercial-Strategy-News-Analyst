@@ -147,11 +147,32 @@
   .cfg-block h3 { margin: 0 0 6px; font-size: 16px; font-weight: 700; color: var(--primary-dark); }
   
   /* Tracker */
-  .tracker-row { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; padding: 16px; border: 1px solid var(--line); background: var(--bg); border-radius: var(--radius); margin-bottom: 8px;}
+  .tracker-row { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; padding: 16px; border: 1px solid var(--line); background: var(--bg); border-radius: var(--radius); margin-bottom: 8px; cursor: pointer; transition: all 0.2s; }
+  .tracker-row:hover { border-color: var(--accent); box-shadow: var(--shadow); transform: translateX(4px); }
   .tracker-row .label { font-weight: 600; font-size: 15px; color: var(--primary-dark); }
   .pip { width: 10px; height: 20px; border-radius: 3px; background: var(--line); }
   .pip.on { background: var(--accent); }
   .pip.on.fade { background: #fca5a5; }
+
+  /* Theme Detail In-Page View */
+  .detail-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono-font); font-size: 13px; font-weight: 600; color: var(--accent); cursor: pointer; margin-bottom: 28px; background: none; border: none; padding: 0; }
+  .detail-back:hover { text-decoration: underline; }
+  .detail-hero { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow); margin-bottom: 28px; }
+  .detail-hero h1 { font-family: var(--display-font); font-size: 26px; font-weight: 700; color: var(--primary-dark); line-height: 1.25; margin-bottom: 16px; }
+  .detail-block { margin-top: 20px; }
+  .detail-block h3 { font-family: var(--mono-font); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 8px; }
+  .detail-block p { font-size: 15px; color: var(--ink-soft); line-height: 1.7; }
+  .detail-reco { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 6px; padding: 16px 18px; margin-top: 20px; }
+  .detail-reco h3 { font-family: var(--mono-font); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 8px; }
+  .detail-reco p { font-size: 15px; color: var(--accent-dark); font-weight: 500; line-height: 1.7; }
+  .detail-articles-label { font-family: var(--mono-font); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary-dark); margin: 8px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+  .detail-article { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 10px; transition: all 0.15s; }
+  .detail-article:hover { border-color: var(--muted); box-shadow: var(--shadow); }
+  .detail-article a { font-family: var(--display-font); font-size: 15px; font-weight: 600; color: var(--primary-dark); text-decoration: none; display: block; margin-bottom: 8px; line-height: 1.4; }
+  .detail-article a:hover { color: var(--accent); }
+  .detail-article .art-meta { font-family: var(--mono-font); font-size: 11px; color: var(--muted); text-transform: uppercase; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .sent-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .sent-dot.bullish { background: var(--green); } .sent-dot.bearish { background: var(--red); } .sent-dot.neutral { background: var(--blue); }
 
   /* Geospatial Map Overrides - BRIGHT/LIGHT MODE */
   #mapContainer { height: 600px; width: 100%; border-radius: var(--radius); border: 1px solid var(--line); z-index: 1; background: #e5e7eb; box-shadow: var(--shadow); }
@@ -263,6 +284,10 @@
       <div class="eyebrow">Theme Tracker</div>
       <div class="dateline">Historical persistence of strategic narratives over time.</div>
       <div id="themesBody"><div class="loading">Loading theme history&hellip;</div></div>
+    </section>
+
+    <section id="theme-detail" class="view">
+      <div id="themeDetailBody"></div>
     </section>
 
     <section id="archive" class="view">
@@ -407,11 +432,91 @@ function slugify(s) {
     .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
-function openThemePage(label) {
-  // Pass both a resilient slug AND the raw label, so theme.html can match
-  // tolerantly even if the synthesizer rewords a label between runs.
-  const url = `theme.html?t=${encodeURIComponent(slugify(label))}&label=${encodeURIComponent(label)}`;
-  window.location.href = url;
+// Navigate to the in-page theme detail view.
+// originView is the section id to return to when the user clicks Back.
+function openThemeDetail(label, originView) {
+  const themes = loadedBriefingCache?.themes || [];
+
+  // Tolerant match: exact label → slug match → partial slug overlap.
+  const slug = slugify(label);
+  let theme = themes.find(t => t.label === label)
+    || themes.find(t => slugify(t.label) === slug)
+    || themes.find(t => { const ts = slugify(t.label); return ts.includes(slug) || slug.includes(ts); });
+
+  const el = document.getElementById('themeDetailBody');
+
+  if (!theme) {
+    el.innerHTML = `
+      <button class="detail-back" onclick="returnFromDetail('${esc(originView || 'briefing')}')">&#8592; Back</button>
+      <div class="detail-hero">
+        <div class="eyebrow">Theme Breakdown</div>
+        <h1>${esc(label)}</h1>
+        <p style="color:var(--muted);font-size:14px;margin-top:16px;">This theme isn't in today's active briefing — it may have been reworded or rolled into another theme on the latest run.</p>
+      </div>`;
+  } else {
+    const articles = Array.isArray(theme.sourceArticles) ? theme.sourceArticles : [];
+    const nov = (theme.novelty || 'established').toLowerCase();
+
+    let html = `
+      <button class="detail-back" onclick="returnFromDetail('${esc(originView || 'briefing')}')">&#8592; Back</button>
+      <div class="detail-hero">
+        <div class="eyebrow">Theme Breakdown</div>
+        <h1>${esc(theme.label)}</h1>
+        <div class="pills" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
+          <span class="meta-pill ${nov === 'new' ? 'new' : ''}">${esc(nov)}</span>
+          <span class="meta-pill">Confidence: ${esc(theme.confidence || '—')}</span>
+          ${theme.singleSource ? `<span class="meta-pill">Single source</span>` : ''}
+          ${theme.timesSeen != null ? `<span class="meta-pill">Seen ${esc(String(theme.timesSeen))}&times;</span>` : ''}
+        </div>`;
+
+    if (theme.what_happened) {
+      html += `<div class="detail-block"><h3>What happened</h3><p>${esc(theme.what_happened)}</p></div>`;
+    }
+    if (theme.why_it_matters_to_mixta) {
+      html += `<div class="detail-block"><h3>Why it matters to Mixta</h3><p>${esc(theme.why_it_matters_to_mixta)}</p></div>`;
+    }
+    if (theme.recommendation) {
+      html += `<div class="detail-reco"><h3>Recommendation</h3><p>${esc(theme.recommendation)}</p></div>`;
+    }
+    html += `</div>`;
+
+    html += `<div class="detail-articles-label"><span>Source Articles</span><span style="color:var(--muted);font-weight:600;">${articles.length}</span></div>`;
+    if (articles.length) {
+      html += articles.map(a => {
+        const sent = (a.sentiment || 'neutral').toLowerCase();
+        return `
+          <div class="detail-article">
+            <a href="${esc(a.url || '#')}" target="_blank" rel="noopener noreferrer">${esc(a.title || 'Untitled')}</a>
+            <div class="art-meta">
+              <span class="sent-dot ${sent}"></span>
+              <span>${esc(a.source || 'Unknown')}</span>
+              ${a.publishedAt ? `<span>&middot; ${new Date(a.publishedAt).toLocaleDateString()}</span>` : ''}
+              <span>&middot; ${esc(sent)}</span>
+            </div>
+          </div>`;
+      }).join('');
+    } else {
+      html += `<div class="empty" style="padding:40px;">No source articles were attached to this theme.</div>`;
+    }
+
+    el.innerHTML = html;
+  }
+
+  // Switch the visible view to theme-detail.
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('theme-detail').classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Return to the section the user navigated from.
+function returnFromDetail(originView) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(originView).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b => {
+    if (b.dataset.view === originView) b.classList.add('active');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderThemeCards() {
@@ -446,7 +551,7 @@ function renderThemeCards() {
     }).length;
 
     gridHtml += `
-      <div class="theme-card" onclick="openThemePage('${esc(t.label)}')" title="Open full theme breakdown">
+      <div class="theme-card" onclick="openThemeDetail('${esc(t.label)}', 'briefing')" title="View all articles for this theme">
         <div class="theme-card-header">
           <h3 class="theme-card-title">${esc(t.label)}</h3>
           <span class="sentiment-pill" style="font-family:var(--mono-font); font-size:11px; background:rgba(0,0,0,0.05); color:inherit; border:none; padding:3px 8px;">${metricsCount} Sources</span>
@@ -577,7 +682,7 @@ function renderThemes(memory) {
     }
     const span = (t.firstSeen && t.lastSeen) ? `${t.firstSeen} &rarr; ${t.lastSeen}` : (t.lastSeen || '');
     html += `
-      <div class="tracker-row">
+      <div class="tracker-row" onclick="openThemeDetail('${esc(t.label)}', 'themes')" title="View all articles for this theme">
         <div><div class="label">${esc(t.label)}</div><div style="font-size: 12px; color: var(--muted); margin-top: 4px;">${span}</div></div>
         <div style="display:flex;align-items:center;gap:16px;">
           <div style="display: flex; gap: 4px; align-items: center;">${pips}</div>

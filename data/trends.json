@@ -2,94 +2,94 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 9,
-      "bearish": 3,
+      "bearish": 5,
+      "bullish": 7,
       "neutral": 3
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 12
+        "count": 14
       },
       {
         "topic": "infrastructure",
-        "count": 11
+        "count": 12
       },
       {
-        "topic": "affordable housing",
+        "topic": "trust",
         "count": 1
       },
       {
-        "topic": "regulations",
+        "topic": "lifestyle living",
         "count": 1
       },
       {
-        "topic": "land",
+        "topic": "premium developments",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "bearish"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 9,
-      "bearish": 3,
+      "bearish": 5,
+      "bullish": 7,
       "neutral": 3
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 12
+        "count": 14
       },
       {
         "topic": "infrastructure",
-        "count": 11
+        "count": 12
       },
       {
-        "topic": "affordable housing",
+        "topic": "trust",
         "count": 1
       },
       {
-        "topic": "regulations",
+        "topic": "lifestyle living",
         "count": 1
       },
       {
-        "topic": "land",
+        "topic": "premium developments",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "bearish"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 9,
-      "bearish": 3,
+      "bearish": 5,
+      "bullish": 7,
       "neutral": 3
     },
     "topTopics": [
       {
         "topic": "prices",
-        "count": 12
+        "count": 14
       },
       {
         "topic": "infrastructure",
-        "count": 11
+        "count": 12
       },
       {
-        "topic": "affordable housing",
+        "topic": "trust",
         "count": 1
       },
       {
-        "topic": "regulations",
+        "topic": "lifestyle living",
         "count": 1
       },
       {
-        "topic": "land",
+        "topic": "premium developments",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "bearish"
   }
 }

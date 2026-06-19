@@ -59,6 +59,21 @@ class Agents {
 
   // ─── CORE FALLBACK ENGINE ────────────────────────────────────────────────────
 
+  /**
+   * Extracts and validates a JSON object from a model response.
+   * Returns the parsed object on success, or null if no valid JSON is present.
+   */
+  _tryExtractJSON(text) {
+    if (!text) return null;
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) return null;
+    try {
+      return JSON.parse(match[0]);
+    } catch (e) {
+      return null;
+    }
+  }
+
   async _complete(prompt, label) {
     if (!prompt || !prompt.trim()) {
       console.error(`[Agents] Refusing to send empty prompt for: ${label}`);
@@ -73,12 +88,32 @@ class Agents {
       return null;
     }
 
+    // FIX (2026-06-19, round 2): the loop used to return on ANY non-empty
+    // text, even prose with no JSON in it. That meant one provider returning
+    // a chatty non-JSON reply would silently consume the entire outer
+    // synthesis attempt without ever trying the remaining providers in the
+    // chain (Gemini, Mistral, OpenRouter never got a turn). For synthesis,
+    // we now require the response to contain parseable JSON before treating
+    // it as a success — a non-JSON response is treated the same as a
+    // provider failure, and the loop continues to the next provider.
     for (const provider of providers) {
       try {
         console.log(`[${provider.name}] ${label}...`);
         const result = await provider.fn();
-        if (result && result.trim()) return result;
-        throw new Error('Empty response');
+
+        if (!result || !result.trim()) {
+          throw new Error('Empty response');
+        }
+
+        if (!isArticle) {
+          // Synthesis path: response must contain valid JSON to count as success.
+          const parsed = this._tryExtractJSON(result);
+          if (!parsed) {
+            throw new Error('Response did not contain valid JSON');
+          }
+        }
+
+        return result;
       } catch (err) {
         const status = err.response?.status;
         const msg = err.response?.data?.error?.message || err.message || 'Unknown error';

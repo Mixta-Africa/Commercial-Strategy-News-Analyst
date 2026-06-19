@@ -1,1 +1,9 @@
-
+{
+  "actorSpecification": 1,
+  "name": "mixta-property-scraper",
+  "title": "Mixta Africa - Lagos Property Price Scraper",
+  "version": "1.0",
+  "buildTag": "latest",
+  "environmentVariables": [],
+  "dockerfile": "./Dockerfile"
+}

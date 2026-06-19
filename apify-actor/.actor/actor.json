@@ -4,6 +4,6 @@
   "title": "Mixta Africa - Lagos Property Price Scraper",
   "version": "1.0",
   "buildTag": "latest",
-  "environmentVariables": [],
+  "environmentVariables": {},
   "dockerfile": "./Dockerfile"
 }

@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 4,
-      "neutral": 3,
-      "bullish": 8
+      "bullish": 9,
+      "bearish": 3,
+      "neutral": 3
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
+        "topic": "prices",
         "count": 12
       },
       {
-        "topic": "prices",
-        "count": 9
+        "topic": "infrastructure",
+        "count": 11
       },
       {
-        "topic": "investment",
-        "count": 2
-      },
-      {
-        "topic": "housing",
+        "topic": "affordable housing",
         "count": 1
       },
       {
-        "topic": "investments",
+        "topic": "regulations",
+        "count": 1
+      },
+      {
+        "topic": "land",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 4,
-      "neutral": 3,
-      "bullish": 8
+      "bullish": 9,
+      "bearish": 3,
+      "neutral": 3
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
+        "topic": "prices",
         "count": 12
       },
       {
-        "topic": "prices",
-        "count": 9
+        "topic": "infrastructure",
+        "count": 11
       },
       {
-        "topic": "investment",
-        "count": 2
-      },
-      {
-        "topic": "housing",
+        "topic": "affordable housing",
         "count": 1
       },
       {
-        "topic": "investments",
+        "topic": "regulations",
+        "count": 1
+      },
+      {
+        "topic": "land",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 4,
-      "neutral": 3,
-      "bullish": 8
+      "bullish": 9,
+      "bearish": 3,
+      "neutral": 3
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
+        "topic": "prices",
         "count": 12
       },
       {
-        "topic": "prices",
-        "count": 9
+        "topic": "infrastructure",
+        "count": 11
       },
       {
-        "topic": "investment",
-        "count": 2
-      },
-      {
-        "topic": "housing",
+        "topic": "affordable housing",
         "count": 1
       },
       {
-        "topic": "investments",
+        "topic": "regulations",
+        "count": 1
+      },
+      {
+        "topic": "land",
         "count": 1
       }
     ],

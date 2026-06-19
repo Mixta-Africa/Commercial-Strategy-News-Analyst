@@ -1,336 +1,112 @@
 /**
- * Mixta Africa - Property Price Scraper (Apify Actor)
- * =====================================================
- * Runs on Apify's infrastructure with residential proxy routing,
- * bypassing Cloudflare WAF blocks that reject GitHub Actions IPs.
+ * DIAGNOSTIC MODE — Mixta Africa Property Scraper
+ * ==================================================
+ * This is a temporary diagnostic build. It does NOT try to extract prices
+ * or listings. Instead, for each site it saves:
+ *   - The raw HTML length received
+ *   - The page title
+ *   - A sample of HTML around any element containing a Naira symbol or
+ *     "bed"/"bedroom" text (the most likely location of real listing data)
+ *   - The first 3000 characters of the <body> as a fallback sample
  *
- * Scrapes real listing pages (not news articles) for:
- *   - Actual sale price (NGN)
- *   - Bedroom count
- *   - Location / neighbourhood
- *   - Property type
- *   - Amenities / features
- *   - Direct listing URL
- *
- * Output is stored in Apify's dataset, then fetched by the GitHub
- * Actions workflow and written to Google Sheets + competitive-briefing.json.
+ * Purpose: see what these sites' ACTUAL current HTML structure looks like,
+ * since the original selectors were written without being able to view
+ * the live pages. Once we see real output here, real selectors get written
+ * and this diagnostic file gets replaced by the working version.
  */
 
-const { Actor }        = require('apify');
-const { CheerioCrawler, ProxyConfiguration } = require('crawlee');
+const { Actor } = require('apify');
+const { CheerioCrawler } = require('crawlee');
 
-//  SITES TO SCRAPE 
-// Ranked by data authenticity. URLs target Lagos sale listings directly.
-const LISTING_SITES = [
-  {
-    name: 'NigerianPropertyCentre',
-    rank: 1,
-    urls: [
-      'https://nigerianpropertycenter.com/for-sale/in-lagos/flats-apartments/',
-      'https://nigerianpropertycenter.com/for-sale/in-lagos/houses/',
-      'https://nigerianpropertycenter.com/for-sale/in-lagos/duplexes/',
-      'https://nigerianpropertycenter.com/for-sale/in-lagos/bungalows/',
-      'https://nigerianpropertycenter.com/for-sale/in-lagos/terraced-duplexes/',
-      'https://nigerianpropertycenter.com/for-sale/in-lagos/land/',
-    ],
-    selectors: {
-      listingContainer: '.listings-property, .property-item, article.listing',
-      title:    '.listings-property-title, h3.property-name, .listing-name',
-      price:    '.listings-property-price, .price, [class*="price"]',
-      location: '.listings-property-location, .location, .address',
-      bedrooms: '[class*="bed"], .bedrooms, [data-beds]',
-      features: '.listings-features li, .property-features li, [class*="feature"] li',
-      link:     'a.listings-property-title, a.property-name, .listing-title a',
-    },
-  },
-  {
-    name: 'PropertyPro',
-    rank: 2,
-    urls: [
-      'https://www.propertypro.ng/property-for-sale/flat-in-lagos',
-      'https://www.propertypro.ng/property-for-sale/house-in-lagos',
-      'https://www.propertypro.ng/property-for-sale/duplex-in-lagos',
-      'https://www.propertypro.ng/property-for-sale/bungalow-in-lagos',
-      'https://www.propertypro.ng/property-for-sale/terraced-in-lagos',
-      'https://www.propertypro.ng/property-for-sale/land-in-lagos',
-    ],
-    selectors: {
-      listingContainer: '.single-room-dash, .listings-property',
-      title:    'h3.listings-property-title, .property-name',
-      price:    'h3.listings-property-price, .listings-property-amount',
-      location: '.listings-property-location',
-      bedrooms: '.fa-bed + span, [class*="bedroom"]',
-      features: '.listings-features span, .fur-areea span',
-      link:     'a[href*="/property/"]',
-    },
-  },
-  {
-    name: 'PrivatePropertyNigeria',
-    rank: 3,
-    urls: [
-      'https://www.privateproperty.com.ng/for-sale?state=Lagos&propertyType=10',  // flats
-      'https://www.privateproperty.com.ng/for-sale?state=Lagos&propertyType=2',   // houses
-      'https://www.privateproperty.com.ng/for-sale?state=Lagos&propertyType=3',   // duplex
-      'https://www.privateproperty.com.ng/for-sale?state=Lagos&propertyType=24',  // land
-    ],
-    selectors: {
-      listingContainer: '.listing-item, .property-card, [class*="listing"]',
-      title:    '.listing-title, h2.property-title',
-      price:    '.listing-price, .price-display, [class*="price"]',
-      location: '.listing-location, .location-name',
-      bedrooms: '.bedrooms, [class*="bed"]',
-      features: '.listing-features li, .property-extras li',
-      link:     'a.listing-title, a[href*="/property/"]',
-    },
-  },
-  {
-    name: 'Tolet',
-    rank: 4,
-    urls: [
-      'https://tolet.com.ng/property/Lagos/flats/buy',
-      'https://tolet.com.ng/property/Lagos/houses/buy',
-      'https://tolet.com.ng/property/Lagos/duplexes/buy',
-      'https://tolet.com.ng/property/Lagos/land/buy',
-    ],
-    selectors: {
-      listingContainer: '.property-item, .listing-card',
-      title:    '.property-name, .listing-name',
-      price:    '.property-price, .price',
-      location: '.property-location',
-      bedrooms: '[class*="bed"]',
-      features: '.property-features li, [class*="feature"] li',
-      link:     'a.property-item, a[href*="/property/"]',
-    },
-  },
+const TEST_URLS = [
+  { site: 'NigerianPropertyCentre', url: 'https://nigerianpropertycenter.com/for-sale/in-lagos/flats-apartments/' },
+  { site: 'PropertyPro',            url: 'https://www.propertypro.ng/property-for-sale/flat-in-lagos' },
+  { site: 'Tolet',                  url: 'https://tolet.com.ng/property/Lagos/flats/buy' },
+  { site: 'PrivatePropertyNigeria', url: 'https://www.privateproperty.com.ng/for-sale?state=Lagos' },
 ];
-
-//  AMENITY TAXONOMY 
-const AMENITY_PATTERNS = [
-  { label: '24/7 Electricity',    patterns: ['24/7 electricity', '24hr electricity', 'constant electricity', 'uninterrupted power', 'prepaid meter'] },
-  { label: 'Standby Generator',   patterns: ['generator', 'gen', 'power backup', 'diesel generator'] },
-  { label: 'Solar Power',         patterns: ['solar'] },
-  { label: 'Street Lights',       patterns: ['street light', 'street lighting', 'streetlight'] },
-  { label: 'Good Roads',          patterns: ['tarred road', 'good road', 'paved road', 'road network', 'motorable'] },
-  { label: 'Drainage System',     patterns: ['drainage', 'drainage system', 'gutter'] },
-  { label: 'Borehole / Water',    patterns: ['borehole', 'water supply', 'treated water', 'running water'] },
-  { label: 'Swimming Pool',       patterns: ['swimming pool', 'pool'] },
-  { label: 'Gym / Fitness',       patterns: ['gym', 'fitness', 'exercise room'] },
-  { label: '24hr Security',       patterns: ['security', 'gated', 'guarded', 'cctv', 'security post'] },
-  { label: 'Parking',             patterns: ['parking', 'garage', 'car park', 'carport'] },
-  { label: 'Serviced',            patterns: ['serviced', 'fully serviced'] },
-  { label: 'Estate',              patterns: ['estate', 'gated community', 'gated estate'] },
-  { label: "Boys' Quarters",      patterns: ["boys' quarters", "boy's quarter", "bq"] },
-  { label: 'Smart Home',          patterns: ['smart home', 'automated'] },
-  { label: 'Air Conditioning',    patterns: ['air condition', 'a/c', 'ac unit'] },
-  { label: 'Fitted Kitchen',      patterns: ['fitted kitchen', 'modern kitchen'] },
-  { label: 'Balcony',             patterns: ['balcony'] },
-  { label: 'Garden / Green Area', patterns: ['garden', 'green area', 'lawn'] },
-  { label: 'Elevator / Lift',     patterns: ['elevator', 'lift'] },
-  { label: 'Intercom',            patterns: ['intercom'] },
-  { label: 'Perimeter Fence',     patterns: ['perimeter fence', 'fenced', 'fence'] },
-];
-
-//  HELPERS 
-
-function extractPrice(text) {
-  if (!text) return null;
-  const t = text.replace(/,/g, '').trim();
-
-  const shorthand = t.match(/[#]?\s*([\d.]+)\s*(billion|million|[BM])\b/i);
-  if (shorthand) {
-    const val  = parseFloat(shorthand[1]);
-    const unit = shorthand[2].toLowerCase();
-    if (unit === 'b' || unit === 'billion') return val * 1e9;
-    if (unit === 'm' || unit === 'million') return val * 1e6;
-  }
-
-  const raw = t.match(/[#]([\d.]+)/);
-  if (raw) {
-    const val = parseFloat(raw[1]);
-    if (val >= 500_000) return val;
-  }
-
-  const worded = t.match(/([\d.]+)\s+million\s+naira/i);
-  if (worded) return parseFloat(worded[1]) * 1e6;
-
-  // Plain large number with naira context nearby
-  const plain = t.match(/\b(\d{7,})\b/);
-  if (plain) {
-    const val = parseFloat(plain[1]);
-    if (val >= 1_000_000) return val;
-  }
-
-  return null;
-}
-
-function formatPrice(num) {
-  if (!num) return 'N/A';
-  if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
-  if (num >= 1e6) return `${(num / 1e6).toFixed(1)}M`;
-  return `${num.toLocaleString()}`;
-}
-
-function extractBedrooms(text) {
-  if (!text) return null;
-  const patterns = [/(\d+)\s*bed(?:room)?s?/i, /(\d+)\s*br\b/i, /(\d+)-bed/i];
-  for (const p of patterns) {
-    const m = text.match(p);
-    if (m) {
-      const n = parseInt(m[1], 10);
-      if (n >= 1 && n <= 10) return n;
-    }
-  }
-  return null;
-}
-
-function bedroomLabel(n) {
-  if (!n) return 'Unspecified';
-  if (n >= 5) return '5+ Bedrooms';
-  return `${n} Bedroom${n > 1 ? 's' : ''}`;
-}
-
-function extractAmenities(text) {
-  const lower = (text || '').toLowerCase();
-  return AMENITY_PATTERNS
-    .filter(a => a.patterns.some(p => lower.includes(p)))
-    .map(a => a.label);
-}
-
-const PRIORITY_LOCATIONS = [
-  'lekki', 'ibeju-lekki', 'ibeju lekki', 'epe', 'ajah', 'sangotedo',
-  'lakowe', 'eleko', 'bogije', 'ibeju', 'victoria island', 'ikoyi',
-  'banana island', 'oniru', 'chevron', 'jakande', 'ikota', 'vgc', 'lafiaji',
-];
-
-function isPriorityLocation(text) {
-  const lower = (text || '').toLowerCase();
-  return PRIORITY_LOCATIONS.some(loc => lower.includes(loc));
-}
-
-function resolvePropertyType(url, title) {
-  const text = `${url} ${title}`.toLowerCase();
-  if (text.includes('flat') || text.includes('apartment')) return 'Apartment / Flat';
-  if (text.includes('duplex') || text.includes('maisonette')) return 'Duplex';
-  if (text.includes('bungalow')) return 'Bungalow';
-  if (text.includes('terraced')) return 'Terraced House';
-  if (text.includes('land')) return 'Land / Plot';
-  if (text.includes('house') || text.includes('detached')) return 'Detached House';
-  return 'Residential';
-}
-
-//  ACTOR MAIN 
 
 Actor.main(async () => {
-  console.log('[Actor] Mixta Africa Property Scraper starting...');
+  console.log('[Diagnostic] Starting HTML structure inspection...');
 
   const proxyConfiguration = await Actor.createProxyConfiguration({
-    groups: ['RESIDENTIAL'],   // Apify residential proxy pool - bypasses Cloudflare
-    countryCode: 'NG',         // Nigerian IPs where possible
+    groups: ['RESIDENTIAL'],
+    countryCode: 'NG',
   });
 
-  const allListings = [];
-
-  // Build the full request list across all sites and URL types.
-  const requestList = LISTING_SITES.flatMap(site =>
-    site.urls.map(url => ({ url, userData: { site } }))
-  );
+  const results = [];
 
   const crawler = new CheerioCrawler({
     proxyConfiguration,
-    maxRequestRetries: 3,
-    requestHandlerTimeoutSecs: 60,
-    maxConcurrency: 2,   // polite - avoid hammering sites
+    maxRequestRetries: 2,
+    requestHandlerTimeoutSecs: 45,
+    maxConcurrency: 2,
+    additionalMimeTypes: ['application/octet-stream'], // don't skip binary-flagged responses, inspect them anyway
 
-    async requestHandler({ $, request, log }) {
-      const { site } = request.userData;
-      const sel      = site.selectors;
-      const pageUrl  = request.url;
+    async requestHandler({ $, request, body, contentType, log }) {
+      const site = request.userData.site;
+      log.info(`Inspecting ${site}: ${request.url}`);
 
-      log.info(`Scraping ${site.name}: ${pageUrl}`);
+      const htmlLength = body ? body.length : 0;
+      const pageTitle = $('title').text().trim();
+      const detectedContentType = contentType?.type || 'unknown';
 
-      const containers = $(sel.listingContainer);
-      log.info(`  Found ${containers.length} listing containers`);
-
-      containers.each((_, el) => {
-        const container = $(el);
-
-        //  Extract fields 
-        const titleEl   = container.find(sel.title).first();
-        const priceEl   = container.find(sel.price).first();
-        const locationEl= container.find(sel.location).first();
-        const bedroomEl = container.find(sel.bedrooms).first();
-        const linkEl    = container.find(sel.link).first();
-
-        const titleText    = titleEl.text().trim();
-        const priceText    = priceEl.text().trim();
-        const locationText = locationEl.text().trim();
-        const bedroomText  = bedroomEl.text().trim();
-
-        // Resolve listing URL - handle relative paths.
-        let listingUrl = linkEl.attr('href') || '';
-        if (listingUrl && !listingUrl.startsWith('http')) {
-          const base = new URL(pageUrl);
-          listingUrl = `${base.protocol}//${base.host}${listingUrl.startsWith('/') ? '' : '/'}${listingUrl}`;
+      // Find elements that mention Naira or bedrooms — likely listing data.
+      const priceHits = [];
+      $('*').each((_, el) => {
+        const text = $(el).text();
+        if (text.length < 200 && (text.includes('\u20a6') || /\d{1,3}(,\d{3})+/.test(text)) ) {
+          const tag = el.tagName;
+          const cls = $(el).attr('class') || '(no class)';
+          const id = $(el).attr('id') || '(no id)';
+          const sample = text.trim().substring(0, 80);
+          if (sample) priceHits.push(`<${tag} class="${cls}" id="${id}"> ${sample}`);
         }
-
-        //  Extract amenities from feature list 
-        const featureTexts = [];
-        container.find(sel.features).each((_, f) => featureTexts.push($(f).text().trim()));
-        const featureBlock  = featureTexts.join(' ');
-        const fullText      = `${titleText} ${locationText} ${featureBlock}`;
-        const amenities     = extractAmenities(fullText);
-
-        //  Parse values 
-        const priceValue    = extractPrice(priceText) || extractPrice(titleText);
-        const bedrooms      = extractBedrooms(bedroomText) || extractBedrooms(titleText);
-        const propertyType  = resolvePropertyType(pageUrl, titleText);
-        const priority      = isPriorityLocation(locationText) || isPriorityLocation(titleText);
-
-        // Skip entries with no price and no title - they're navigation elements.
-        if (!titleText && !priceValue) return;
-
-        allListings.push({
-          source:          site.name,
-          sourceRank:      site.rank,
-          propertyType,
-          bedrooms,
-          bedroomLabel:    bedroomLabel(bedrooms),
-          locationBucket:  priority ? 'Priority Corridor' : 'Other Lagos',
-          title:           titleText || 'Untitled listing',
-          location:        locationText,
-          priceText:       priceText,
-          priceValue:      priceValue || null,
-          priceFormatted:  formatPrice(priceValue),
-          amenities,
-          amenitiesText:   amenities.join(', '),
-          listingUrl:      listingUrl || pageUrl,
-          scrapedAt:       new Date().toISOString(),
-        });
       });
 
-      log.info(`  Extracted ${containers.length} entries from ${site.name}`);
+      const bedroomHits = [];
+      $('*').each((_, el) => {
+        const text = $(el).text();
+        if (text.length < 100 && /bed(room)?s?\b/i.test(text)) {
+          const tag = el.tagName;
+          const cls = $(el).attr('class') || '(no class)';
+          const sample = text.trim().substring(0, 60);
+          if (sample) bedroomHits.push(`<${tag} class="${cls}"> ${sample}`);
+        }
+      });
+
+      // Sample raw body HTML for visual structure inspection.
+      const bodyHtml = $('body').html() || '';
+      const bodySample = bodyHtml.substring(0, 3000);
+
+      results.push({
+        site,
+        url: request.url,
+        detectedContentType,
+        htmlLength,
+        pageTitle,
+        priceLikeElementsFound: priceHits.length,
+        priceLikeSamples: priceHits.slice(0, 10),
+        bedroomLikeElementsFound: bedroomHits.length,
+        bedroomLikeSamples: bedroomHits.slice(0, 10),
+        bodyHtmlSample: bodySample,
+      });
+
+      log.info(`  ${site}: htmlLength=${htmlLength}, priceHits=${priceHits.length}, bedroomHits=${bedroomHits.length}`);
     },
 
     failedRequestHandler({ request, log }) {
-      log.warning(`Failed: ${request.url} - ${request.errorMessages?.join(', ')}`);
+      results.push({
+        site: request.userData.site,
+        url: request.url,
+        error: request.errorMessages?.join(', ') || 'unknown failure',
+      });
+      log.warning(`FAILED: ${request.url}`);
     },
   });
 
-  await crawler.run(requestList.map(r => ({ url: r.url, userData: r.userData })));
+  await crawler.run(TEST_URLS.map(t => ({ url: t.url, userData: { site: t.site } })));
 
-  // Deduplicate by listing URL.
-  const seen = new Set();
-  const deduped = allListings.filter(l => {
-    const key = l.listingUrl || l.title;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-
-  console.log(`[Actor] Scraped ${deduped.length} unique listings from ${allListings.length} raw`);
-
-  // Push to Apify dataset - GitHub Actions fetches this via API.
-  await Actor.pushData(deduped);
-
-  console.log('[Actor] Complete. Data available in Apify dataset.');
+  console.log(`[Diagnostic] Inspected ${results.length} pages. Pushing to dataset...`);
+  await Actor.pushData(results);
+  console.log('[Diagnostic] Done. Check the Dataset tab for output.');
 });

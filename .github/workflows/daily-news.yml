@@ -205,29 +205,60 @@ jobs:
 
       # ---------------------------------------------------------------
       # COMMIT DASHBOARD DATA BACK TO REPO (for GitHub Pages)
-      # Retries with rebase if main moved during the run (e.g. a manual
-      # commit landed while this workflow was executing) instead of
-      # failing outright on a rejected push.
+      #
+      # This step's job is to land THIS run's freshly generated data/ files
+      # on main — not to merge concurrent edits to the same JSON files.
+      # If another workflow (geoslicer, competitive intel, a manual commit)
+      # pushed to main in between checkout and push here, we re-fetch,
+      # fast-forward main to the new tip, and re-apply our data/ changes on
+      # top — "ours" wins for data/, since two pipelines racing to write
+      # data/briefing.json are not collaborating edits to reconcile, they're
+      # two snapshots where the one finishing this step should be authoritative.
       # ---------------------------------------------------------------
       - name: Commit dashboard data
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+
+          # Snapshot the generated data/ directory before any git operations
+          # touch the working tree, so we can always re-apply it verbatim.
+          SNAPSHOT_DIR=$(mktemp -d)
+          cp -r data/ "$SNAPSHOT_DIR/data/"
+
           git add data/
           if git diff --staged --quiet; then
             echo "No data changes to commit."
-          else
-            git commit -m "Update dashboard data [skip ci]"
-            for attempt in 1 2 3 4 5; do
-              if git push; then
-                echo "Push succeeded on attempt $attempt."
-                break
-              fi
-              echo "Push rejected (attempt $attempt) — pulling and rebasing..."
-              git pull --rebase origin main
-              if [ "$attempt" -eq 5 ]; then
-                echo "Push failed after 5 attempts."
-                exit 1
-              fi
-            done
+            exit 0
+          fi
+
+          for attempt in 1 2 3 4 5; do
+            git commit -m "Update dashboard data [skip ci]" --allow-empty
+            if git push origin main; then
+              echo "Push succeeded on attempt $attempt."
+              exit 0
+            fi
+
+            echo "Push rejected (attempt $attempt) — re-fetching main and re-applying our data/ snapshot..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            # Re-apply our snapshot on top of the now-current main. This
+            # deterministically makes our run's data/ the new state,
+            # regardless of what the other run wrote to the same files.
+            cp -r "$SNAPSHOT_DIR/data/." data/
+            git add data/
+
+            if git diff --staged --quiet; then
+              echo "Our data/ is identical to what's already on main — nothing left to push."
+              exit 0
+            fi
+
+            if [ "$attempt" -eq 5 ]; then
+              echo "Push failed after 5 attempts."
+              rm -rf "$SNAPSHOT_DIR"
+              exit 1
+            fi
+          done
+
+          rm -rf "$SNAPSHOT_DIR"
           fi

@@ -205,6 +205,9 @@ jobs:
 
       # ---------------------------------------------------------------
       # COMMIT DASHBOARD DATA BACK TO REPO (for GitHub Pages)
+      # Retries with rebase if main moved during the run (e.g. a manual
+      # commit landed while this workflow was executing) instead of
+      # failing outright on a rejected push.
       # ---------------------------------------------------------------
       - name: Commit dashboard data
         run: |
@@ -215,5 +218,16 @@ jobs:
             echo "No data changes to commit."
           else
             git commit -m "Update dashboard data [skip ci]"
-            git push
+            for attempt in 1 2 3 4 5; do
+              if git push; then
+                echo "Push succeeded on attempt $attempt."
+                break
+              fi
+              echo "Push rejected (attempt $attempt) — pulling and rebasing..."
+              git pull --rebase origin main
+              if [ "$attempt" -eq 5 ]; then
+                echo "Push failed after 5 attempts."
+                exit 1
+              fi
+            done
           fi

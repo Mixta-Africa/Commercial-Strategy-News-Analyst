@@ -1,0 +1,11 @@
+{
+  "name": "mixta-property-scraper",
+  "version": "1.0.0",
+  "description": "Lagos property listing scraper for Mixta Africa competitive intelligence",
+  "main": "src/main.js",
+  "scripts": { "start": "node src/main.js" },
+  "dependencies": {
+    "apify": "^3.0.0",
+    "crawlee": "^3.0.0"
+  }
+}

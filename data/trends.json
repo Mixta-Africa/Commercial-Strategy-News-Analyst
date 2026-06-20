@@ -1,22 +1,13 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 2,
     "sentimentBreakdown": {
-      "bullish": 5,
-      "bearish": 4,
-      "neutral": 6
+      "bearish": 1,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "real estate development",
-        "count": 3
-      },
-      {
-        "topic": "Lagos market",
-        "count": 2
-      },
-      {
-        "topic": "affordable housing",
+        "topic": "property disputes",
         "count": 1
       },
       {
@@ -24,30 +15,29 @@
         "count": 1
       },
       {
-        "topic": "rental prices",
+        "topic": "Tosin Ajayi estate",
+        "count": 1
+      },
+      {
+        "topic": "Internally Displaced Persons",
+        "count": 1
+      },
+      {
+        "topic": "World Refugee Day",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 2,
     "sentimentBreakdown": {
-      "bullish": 5,
-      "bearish": 4,
-      "neutral": 6
+      "bearish": 1,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "real estate development",
-        "count": 3
-      },
-      {
-        "topic": "Lagos market",
-        "count": 2
-      },
-      {
-        "topic": "affordable housing",
+        "topic": "property disputes",
         "count": 1
       },
       {
@@ -55,30 +45,29 @@
         "count": 1
       },
       {
-        "topic": "rental prices",
+        "topic": "Tosin Ajayi estate",
+        "count": 1
+      },
+      {
+        "topic": "Internally Displaced Persons",
+        "count": 1
+      },
+      {
+        "topic": "World Refugee Day",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 2,
     "sentimentBreakdown": {
-      "bullish": 5,
-      "bearish": 4,
-      "neutral": 6
+      "bearish": 1,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "real estate development",
-        "count": 3
-      },
-      {
-        "topic": "Lagos market",
-        "count": 2
-      },
-      {
-        "topic": "affordable housing",
+        "topic": "property disputes",
         "count": 1
       },
       {
@@ -86,10 +75,18 @@
         "count": 1
       },
       {
-        "topic": "rental prices",
+        "topic": "Tosin Ajayi estate",
+        "count": 1
+      },
+      {
+        "topic": "Internally Displaced Persons",
+        "count": 1
+      },
+      {
+        "topic": "World Refugee Day",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   }
 }

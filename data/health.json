@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-06-20T12:16:20.414Z",
-  "status": "failed",
+  "timestamp": "2026-06-20T17:32:33.287Z",
+  "status": "degraded",
   "sources": {
     "gnews": {
       "ok": false,
       "count": 0,
-      "error": "HTTP 429"
+      "error": null
     },
     "newsapi": {
       "ok": true,
@@ -13,21 +13,21 @@
       "error": null
     },
     "googlenews": {
-      "ok": true,
-      "count": 120,
+      "ok": false,
+      "count": 0,
       "error": null
     },
     "rss": {
-      "total": 19,
+      "total": 25,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 5,
+          "count": 8,
           "error": null
         },
         "Premium Times": {
           "ok": true,
-          "count": 0,
+          "count": 1,
           "error": null
         },
         "BusinessDay": {
@@ -37,12 +37,12 @@
         },
         "Nairametrics": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "The Punch": {
@@ -69,21 +69,20 @@
     }
   },
   "counts": {
-    "raw": 173,
-    "filtered": 0,
-    "analyzed": 0,
+    "raw": 73,
+    "filtered": 2,
+    "analyzed": 2,
     "aiFallbacks": 0
   },
   "synthesis": {
-    "ok": false,
-    "themes": 0
+    "ok": true,
+    "themes": 2
   },
   "email": {
-    "sent": false
+    "sent": true
   },
   "warnings": [
-    "Sources down: GNews (HTTP 429); RSS Estate Intel (HTTP 403)",
-    "No articles passed real-estate filtering.",
-    "Digest email was NOT sent."
+    "Sources down: GNews (0 articles); RSS Estate Intel (HTTP 403)",
+    "Only 2 articles after filtering (below 4)."
   ]
 }

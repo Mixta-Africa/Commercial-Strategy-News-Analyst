@@ -83,7 +83,6 @@ class DataSource {
           params: {
             q,
             lang: 'en',
-            country: 'ng',
             sortby: 'publishedAt',
             limit: 10,
             apikey: this.gNewsApiKey,

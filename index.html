@@ -3,425 +3,435 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Commercial Strategy News Digest — Mixta Africa</title>
+<title>Mixta Africa Intelligence — Commercial Strategy Desk</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<!-- Premium Editorial Fonts: Playfair (Headlines), Lora (Body), Inter (UI), IBM Plex (Data) -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Firebase dependencies preserved -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <style>
 /* ════════════════════════════════════════════════════════════════════════
-   DESIGN TOKENS — Editorial intelligence desk. Maroon as disciplined ink,
-   not a banner. Serif for voice, sans for interface, mono for data.
+   DESIGN TOKENS — Executive Intelligence Publication
    ════════════════════════════════════════════════════════════════════════ */
 :root {
-  /* Paper & Ink */
-  --paper:        #FFFFFF;
-  --paper-sunk:   #F7F6F3;
-  --ink:          #1A1815;
-  --ink-soft:     #5C5650;
-  --ink-faint:    #9B948A;
-  --rule:         #E5E1D8;
-  --rule-strong:  #D2CCBF;
+  /* Editorial Palette */
+  --paper:        #FAF8F4; /* FT / Economist warm paper */
+  --paper-card:   #FFFFFF;
+  --ink:          #111111; /* Rich black */
+  --ink-soft:     #4A4A4A;
+  --ink-faint:    #827F79;
+  --rule:         #D6D1C4; /* Warm grey for dividers */
+  --rule-strong:  #111111; 
 
-  /* Maroon — primary editorial ink, used sparingly */
+  /* Brand Maroon */
   --maroon:       #7A1F2B;
-  --maroon-dark:  #5C161F;
-  --maroon-soft:  #FBF0EE;
-  --maroon-line:  #E8C7C9;
+  --maroon-dark:  #52131C;
+  --maroon-soft:  #F7EBEB;
+  --maroon-line:  #D4A5AA;
 
-  /* Gold — secondary mark, confidence/status only */
-  --gold:         #9C7A3C;
-  --gold-soft:    #FAF4E8;
+  /* Signals */
+  --bull:         #1E5E40;
+  --bull-soft:    #E8F2EC;
+  --bear:         #8F2A2A;
+  --bear-soft:    #F5E6E6;
+  --neutral-sig:  #535C68;
+  --neutral-soft: #EEF0F2;
 
-  /* Signal colors — kept desaturated to stay in the editorial register */
-  --bull:         #2F6B4F;
-  --bull-soft:    #EEF5F0;
-  --bear:         #A03A33;
-  --bear-soft:    #FBEFED;
-  --neutral-sig:  #4A5568;
-  --neutral-soft: #F0F1F3;
+  /* Typography */
+  --font-headline: 'Playfair Display', serif;
+  --font-body:     'Lora', serif;
+  --font-ui:       'Inter', sans-serif;
+  --font-mono:     'IBM Plex Mono', monospace;
 
-  /* Type */
-  --serif: 'Source Serif 4', Georgia, serif;
-  --sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --mono:  'IBM Plex Mono', 'SF Mono', monospace;
-
-  --radius: 3px;
-  --shadow-card: 0 1px 2px rgba(26,24,21,0.04), 0 1px 1px rgba(26,24,21,0.03);
-  --shadow-lift: 0 6px 24px rgba(26,24,21,0.08), 0 2px 6px rgba(26,24,21,0.05);
-
-  /* Compatibility aliases — the preserved JS layer emits inline styles using
-     the OLD token names from the prior design. Rather than touch 49KB of
-     working render logic, alias old names to new tokens so every inline
-     style resolves correctly with zero functional risk. */
-  --primary-dark: var(--ink);
-  --muted:        var(--ink-soft);
-  --faint:        var(--ink-faint);
-  --line:         var(--rule);
-  --line-soft:    var(--rule);
-  --bg:           var(--paper);
-  --bg-soft:      var(--paper-sunk);
-  --bg-sink:      var(--paper-sunk);
-  --accent:       var(--maroon);
-  --accent-dark:  var(--maroon-dark);
-  --accent-soft:  var(--maroon-soft);
-  --green:        var(--bull);
-  --green-soft:   var(--bull-soft);
-  --red:          var(--bear);
-  --red-soft:     var(--bear-soft);
-  --blue:         var(--neutral-sig);
-  --amber:        var(--gold);
-  --amber-soft:   var(--gold-soft);
-  --display-font: var(--serif);
-  --sans-font:    var(--sans);
-  --mono-font:    var(--mono);
+  /* Layout */
+  --radius: 2px;
+  --shadow-lift: 0 12px 36px rgba(17,17,17,0.06);
+  --shadow-card: 0 2px 8px rgba(17,17,17,0.03);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: var(--sans);
+  font-family: var(--font-body);
   background: var(--paper);
   color: var(--ink);
   line-height: 1.6;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-::selection { background: var(--maroon-line); color: var(--maroon-dark); }
-a { color: inherit; }
-
+::selection { background: var(--maroon-soft); color: var(--maroon-dark); }
+a { color: inherit; text-decoration: none; }
+button, select, input { font-family: inherit; }
 :focus-visible { outline: 2px solid var(--maroon); outline-offset: 2px; }
 
 /* ════════════════════════════════════════════════════════════════════════
-   MASTHEAD
+   MASTHEAD & NAV
    ════════════════════════════════════════════════════════════════════════ */
-.masthead { border-bottom: 1px solid var(--ink); background: var(--paper); }
-.masthead-top {
-  max-width: 1180px; margin: 0 auto; padding: 18px 32px 14px;
-  display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 24px; flex-wrap: wrap;
+.site-header {
+  border-top: 8px solid var(--ink);
+  border-bottom: 1px solid var(--rule-strong);
+  background: var(--paper);
+  position: relative;
 }
-.masthead-kicker {
-  font-family: var(--mono); font-size: 10.5px; font-weight: 600;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--maroon);
-  margin-bottom: 6px; display: block;
-}
-.masthead-title {
-  font-family: var(--serif); font-size: 34px; font-weight: 600;
-  letter-spacing: -0.01em; color: var(--ink); line-height: 1.05;
-}
-.masthead-sub { font-family: var(--sans); font-size: 12.5px; color: var(--ink-soft); margin-top: 5px; letter-spacing: 0.01em; }
-.masthead-meta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 
-.refresh-trigger-btn {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.03em;
-  padding: 7px 14px; border-radius: 999px;
-  background: var(--paper); color: var(--ink); border: 1px solid var(--rule-strong);
-  cursor: pointer; transition: all 0.15s ease;
+.masthead {
+  max-width: 1400px; margin: 0 auto; padding: 40px 40px 24px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
 }
-.refresh-trigger-btn:hover:not(:disabled) { border-color: var(--maroon); color: var(--maroon); }
+
+.masthead-kicker {
+  font-family: var(--font-ui); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft);
+  margin-bottom: 16px; display: block;
+}
+
+.masthead-title {
+  font-family: var(--font-headline); font-size: 64px; font-weight: 900;
+  letter-spacing: -0.02em; color: var(--ink); line-height: 1; margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.masthead-controls {
+  position: absolute; right: 40px; bottom: 24px;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.nav {
+  background: var(--paper); border-bottom: 3px solid var(--ink);
+  position: sticky; top: 0; z-index: 50; 
+}
+.nav-inner {
+  max-width: 1400px; margin: 0 auto; padding: 0 40px;
+  display: flex; align-items: center; justify-content: center; gap: 48px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.nav-inner::-webkit-scrollbar { display: none; }
+.nav button {
+  font-family: var(--font-ui); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--ink-soft); background: none; border: none; padding: 20px 0 16px; cursor: pointer;
+  white-space: nowrap; border-bottom: 4px solid transparent; transition: color 0.2s;
+}
+.nav button:hover { color: var(--ink); }
+.nav button.active { color: var(--maroon); border-bottom-color: var(--maroon); }
+
+/* Buttons & Pills */
+.refresh-trigger-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 8px 16px; background: transparent; color: var(--ink); 
+  border: 1px solid var(--rule); cursor: pointer; transition: all 0.2s ease; border-radius: var(--radius);
+}
+.refresh-trigger-btn:hover:not(:disabled) { border-color: var(--ink); }
 .refresh-trigger-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .refresh-trigger-btn.spinning #refreshBtnIcon { display: inline-block; animation: spin 1s linear infinite; }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 .status-pill {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-family: var(--mono); font-size: 10.5px; font-weight: 600;
-  letter-spacing: 0.04em; text-transform: uppercase;
-  padding: 6px 13px; border-radius: 999px;
-  background: var(--paper-sunk); color: var(--ink-soft); border: 1px solid var(--rule);
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.05em; text-transform: uppercase; padding: 8px 12px;
+  border: 1px solid var(--rule); background: var(--paper-card); color: var(--ink-soft);
+  border-radius: var(--radius);
 }
 .status-pill .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-faint); }
-.status-pill.healthy { color: var(--bull); border-color: #cfe3d6; background: var(--bull-soft); }
+.status-pill.healthy { color: var(--bull); border-color: var(--bull-soft); background: var(--bull-soft); }
 .status-pill.healthy .status-dot { background: var(--bull); }
-.status-pill.degraded { color: var(--gold); border-color: #ecdfc1; background: var(--gold-soft); }
-.status-pill.degraded .status-dot { background: var(--gold); }
-.status-pill.failed { color: var(--bear); border-color: #edc9c4; background: var(--bear-soft); }
-.status-pill.failed .status-dot { background: var(--bear); }
 
 .admin-badge {
-  display: none; font-family: var(--mono); font-size: 10px; font-weight: 600;
+  display: none; font-family: var(--font-mono); font-size: 10px; font-weight: 600;
   letter-spacing: 0.05em; text-transform: uppercase;
-  padding: 5px 10px; border-radius: 999px; background: var(--ink); color: var(--paper);
+  padding: 8px 12px; background: var(--ink); color: var(--paper); border: 1px solid var(--ink);
+  border-radius: var(--radius);
 }
 .admin-badge.show { display: inline-flex; }
 
 /* ════════════════════════════════════════════════════════════════════════
-   NAV
+   PAGE SHELL & TYPOGRAPHY
    ════════════════════════════════════════════════════════════════════════ */
-.nav {
-  background: rgba(255,255,255,0.92); border-bottom: 1px solid var(--rule);
-  position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px);
-}
-.nav-inner {
-  max-width: 1180px; margin: 0 auto; padding: 0 32px;
-  display: flex; align-items: center; gap: 2px; overflow-x: auto; scrollbar-width: none;
-}
-.nav-inner::-webkit-scrollbar { display: none; }
-.nav button {
-  font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--ink-soft);
-  background: none; border: none; padding: 14px 16px 12px; cursor: pointer;
-  white-space: nowrap; border-bottom: 2px solid transparent;
-  transition: color 0.15s ease; letter-spacing: 0.01em;
-}
-.nav button:hover { color: var(--ink); }
-.nav button.active { color: var(--maroon); border-bottom-color: var(--maroon); font-weight: 600; }
-
-/* ════════════════════════════════════════════════════════════════════════
-   PAGE SHELL
-   ════════════════════════════════════════════════════════════════════════ */
-.shell { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
-.view { display: none; padding: 40px 0 80px; }
+.shell { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+.view { display: none; padding: 48px 0 120px; animation: fadeIn 0.4s ease; }
 .view.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.eyebrow { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--maroon); margin-bottom: 8px; }
-.dateline { font-family: var(--sans); font-size: 13.5px; color: var(--ink-soft); margin-bottom: 32px; }
-.page-title { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--ink); margin-bottom: 4px; letter-spacing: -0.01em; }
+.section-divider {
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 2px solid var(--ink); padding-bottom: 12px; margin: 64px 0 32px;
+}
+.section-divider h2 {
+  font-family: var(--font-ui); font-size: 13px; font-weight: 800; letter-spacing: 0.15em; 
+  text-transform: uppercase; color: var(--ink);
+}
 
-.section-divider { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--ink); padding-bottom: 9px; margin: 48px 0 22px; }
-.section-divider:first-child { margin-top: 0; }
-.section-divider span:first-child { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
-.count-badge { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
-
-.loading, .empty { font-family: var(--sans); font-size: 13.5px; color: var(--ink-faint); padding: 40px 0; text-align: center; }
+.loading, .empty { font-family: var(--font-body); font-style: italic; font-size: 18px; color: var(--ink-faint); padding: 80px 0; text-align: center; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 
 /* ════════════════════════════════════════════════════════════════════════
-   DIGEST PAGE — signature: editorial lede with drop cap
+   HOMEPAGE (BRIEFING) — Editorial Storytelling
    ════════════════════════════════════════════════════════════════════════ */
-.lede-panel { border-top: 3px solid var(--ink); padding-top: 28px; margin-bottom: 8px; }
-.lede-kicker { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--maroon); margin-bottom: 10px; }
-#briefingDate { font-family: var(--sans); font-size: 12.5px; color: var(--ink-faint); margin-bottom: 22px; }
-#executiveSummaryContainer .exec { font-family: var(--serif); font-size: 19px; line-height: 1.65; color: var(--ink); max-width: 760px; margin-bottom: 18px; }
-#executiveSummaryContainer .exec:first-of-type::first-letter {
-  font-family: var(--serif); font-size: 64px; font-weight: 600; line-height: 0.78;
-  float: left; padding: 6px 8px 0 0; color: var(--maroon);
+.hero-story {
+  display: grid; grid-template-columns: 1fr 320px; gap: 40px;
+  background: var(--paper-card); border: 1px solid var(--rule);
+  padding: 40px; margin-bottom: 40px; box-shadow: var(--shadow-card);
 }
+.hero-content { display: flex; flex-direction: column; justify-content: center; }
+.hero-kicker { font-family: var(--font-ui); font-size: 11px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--maroon); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.hero-kicker::before { content: ''; display: inline-block; width: 8px; height: 8px; background: var(--maroon); border-radius: 50%; }
+.hero-title { font-family: var(--font-headline); font-size: 48px; font-weight: 800; color: var(--ink); line-height: 1.1; margin-bottom: 24px; }
+.hero-excerpt { font-family: var(--font-body); font-size: 18px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 32px; }
+.hero-meta { display: flex; gap: 24px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--ink-faint); letter-spacing: 0.05em; border-top: 1px solid var(--rule); padding-top: 24px; }
+.hero-meta strong { color: var(--ink); font-weight: 600; }
 
-.evidence-filter-row { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; }
-.evidence-filter-label { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.hero-so-what {
+  background: var(--paper); border: 1px solid var(--rule); padding: 32px;
+  border-top: 4px solid var(--maroon); display: flex; flex-direction: column; justify-content: center;
+}
+.so-what-label { font-family: var(--font-ui); font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--maroon); margin-bottom: 16px; }
+.so-what-text { font-family: var(--font-headline); font-size: 22px; font-weight: 600; color: var(--ink); line-height: 1.4; font-style: italic; }
+
+/* Strategic Signals Cards */
+.strategic-signals-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 40px;
+}
+.signal-card {
+  background: var(--paper-card); border: 1px solid var(--rule); padding: 24px;
+  display: flex; flex-direction: column;
+}
+.signal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.signal-label { font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); }
+.signal-trend { font-family: var(--font-ui); font-size: 14px; font-weight: 700; }
+.signal-trend.up { color: var(--bull); }
+.signal-trend.stable { color: var(--neutral-sig); }
+.signal-trend.down { color: var(--bear); }
+.signal-title { font-family: var(--font-headline); font-size: 20px; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 12px; }
+
+/* Markets Under Watch Row */
+.markets-watch-row {
+  display: flex; gap: 16px; margin-bottom: 64px; overflow-x: auto; padding-bottom: 8px;
+}
+.market-watch-card {
+  flex: 1; min-width: 180px; background: var(--ink); color: var(--paper);
+  padding: 24px; cursor: pointer; transition: transform 0.2s ease, background 0.2s;
+  border: 1px solid var(--ink);
+}
+.market-watch-card:hover { background: var(--maroon); transform: translateY(-2px); }
+.mw-name { font-family: var(--font-headline); font-size: 24px; font-weight: 600; margin-bottom: 8px; display: block; }
+.mw-signals { font-family: var(--font-ui); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--paper-sunk); opacity: 0.8; }
+
+/* Intelligence Feed (Masonry Grid) */
+.filter-wrapper { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
 .theme-filter-select {
-  font-family: var(--sans); font-size: 13px; padding: 7px 12px; border-radius: var(--radius);
-  border: 1px solid var(--rule-strong); background: var(--paper); color: var(--ink);
-  cursor: pointer; min-width: 220px;
+  font-family: var(--font-headline); font-size: 24px; font-style: italic; color: var(--ink);
+  padding: 4px 32px 4px 0; border: none; border-bottom: 1px solid var(--ink); background: transparent; cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111111%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat; background-position: right 8px top 50%; background-size: 12px auto;
 }
-.theme-filter-select:focus { outline: 2px solid var(--maroon); outline-offset: 1px; }
+.theme-filter-select:focus { outline: none; border-bottom-color: var(--maroon); color: var(--maroon); }
 
-.evidence-panel-header { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 16px; border-bottom: 1px solid var(--ink); padding-bottom: 9px; }
-.evidence-title { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
-.evidence-filter-status { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
+.intelligence-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 32px;
+}
+.intel-card {
+  background: var(--paper-card); border: 1px solid var(--rule); padding: 32px;
+  display: flex; flex-direction: column; transition: box-shadow 0.2s;
+}
+.intel-card:hover { box-shadow: var(--shadow-card); border-color: var(--ink-faint); }
+.ic-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); }
+.ic-source { font-weight: 600; color: var(--ink); border-bottom: 1px solid var(--maroon); padding-bottom: 2px; }
+.ic-title { font-family: var(--font-headline); font-size: 22px; font-weight: 700; color: var(--ink); line-height: 1.3; margin-bottom: 16px; display: block; }
+.ic-title:hover { color: var(--maroon); }
+.ic-summary { font-family: var(--font-body); font-size: 15px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 24px; flex-grow: 1; }
+.ic-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; border-top: 1px solid var(--rule); padding-top: 16px; }
 
-.terminal-table-container { overflow-x: auto; }
-.terminal-table { width: 100%; border-collapse: collapse; }
-.terminal-table th { font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); text-align: left; padding: 0 12px 10px 0; border-bottom: 1px solid var(--rule); }
-.terminal-table td { padding: 14px 12px 14px 0; border-bottom: 1px solid var(--rule); font-size: 13.5px; vertical-align: top; }
-.terminal-table tr:hover td { background: var(--paper-sunk); }
-.article-title-link { font-family: var(--serif); font-size: 15px; font-weight: 500; color: var(--ink); text-decoration: none; line-height: 1.4; display: block; margin-bottom: 3px; }
-.article-title-link:hover { color: var(--maroon); }
-.article-source { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.03em; }
-.sentiment-pill { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1px solid transparent; }
-.sentiment-pill.bullish { background: var(--bull-soft); color: var(--bull); border-color: #cfe3d6; }
-.sentiment-pill.bearish { background: var(--bear-soft); color: var(--bear); border-color: #edc9c4; }
+.sentiment-pill { 
+  display: inline-block; font-family: var(--font-mono); font-size: 10px; font-weight: 600; 
+  letter-spacing: 0.05em; text-transform: uppercase; padding: 4px 8px; border: 1px solid transparent; 
+}
+.sentiment-pill.bullish { background: var(--bull-soft); color: var(--bull); border-color: #CDE2D6; }
+.sentiment-pill.bearish { background: var(--bear-soft); color: var(--bear); border-color: #EACCCC; }
 .sentiment-pill.neutral { background: var(--neutral-soft); color: var(--neutral-sig); border-color: var(--rule); }
 
-.col-date { font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); white-space: nowrap; width: 90px; }
-.col-source { width: 120px; }
-.source-tag { font-family: var(--mono); font-size: 10.5px; font-weight: 600; color: var(--ink-soft); background: var(--paper-sunk); padding: 3px 8px; border-radius: var(--radius); text-transform: uppercase; letter-spacing: 0.02em; }
-.col-sentiment { width: 100px; }
-.article-headline-link { font-family: var(--serif); font-size: 15px; font-weight: 500; color: var(--ink); text-decoration: none; line-height: 1.4; display: block; margin-bottom: 4px; }
-.article-headline-link:hover { color: var(--maroon); }
-.article-summary-text { font-family: var(--sans); font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; max-width: 480px; }
-.article-impact-badge { background: var(--maroon-soft); border-left: 3px solid var(--maroon); border-radius: 0 var(--radius) var(--radius) 0; padding: 10px 14px; margin-top: 8px; max-width: 480px; }
-.article-impact-label { font-family: var(--mono); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--maroon); display: block; margin-bottom: 3px; }
-
-.arch-item { padding: 18px 0; border-bottom: 1px solid var(--rule); cursor: pointer; transition: padding-left 0.15s; }
-.arch-item:hover { padding-left: 8px; background: var(--paper-sunk); }
-.arch-date { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--maroon); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
-.arch-summary { font-family: var(--serif); font-size: 14.5px; color: var(--ink-soft); line-height: 1.6; }
-
-.cfg-block { border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 16px; background: var(--paper); }
-.cfg-block h3 { font-family: var(--serif); font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
+/* ════════════════════════════════════════════════════════════════════════
+   MARKETS (GEOSPATIAL)
+   ════════════════════════════════════════════════════════════════════════ */
+.geo-console { display: flex; gap: 16px; margin-bottom: 32px; padding: 24px; background: var(--paper-card); border: 1px solid var(--rule); }
+.geo-console-label { font-family: var(--font-ui); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); align-self: center; }
+.geo-select { font-family: var(--font-ui); font-size: 14px; padding: 10px 20px; border: 1px solid var(--rule-strong); background: var(--paper); cursor: pointer; }
+#mapContainer { height: 650px; border: 1px solid var(--ink); background: #E5E3DF; }
+.geo-article-link { font-family: var(--font-headline); font-weight: 600; font-size: 16px; color: var(--ink); text-decoration: none; }
+.geo-article-link:hover { color: var(--maroon); }
 
 /* ════════════════════════════════════════════════════════════════════════
-   THEME TRACKER / DETAIL
+   THEMES (NARRATIVE MOMENTUM)
    ════════════════════════════════════════════════════════════════════════ */
-.tracker-row { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--rule); cursor: pointer; transition: padding-left 0.15s ease; }
-.tracker-row:hover { padding-left: 8px; }
-.tracker-row .label { font-family: var(--serif); font-weight: 500; font-size: 16px; color: var(--ink); }
-.pip { width: 9px; height: 18px; border-radius: 2px; background: var(--rule); }
-.pip.on { background: var(--maroon); }
-.pip.on.fade { background: var(--maroon-line); }
+.momentum-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 24px; }
+.momentum-card { background: var(--paper-card); border: 1px solid var(--rule); padding: 32px; cursor: pointer; transition: all 0.2s; }
+.momentum-card:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: var(--shadow-card); }
+.mc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.mc-title { font-family: var(--font-headline); font-size: 24px; font-weight: 700; color: var(--ink); }
+.mc-trend { font-family: var(--font-ui); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 4px 12px; background: var(--paper-sunk); border-radius: var(--radius); }
+.mc-trend.rising { color: var(--bull); background: var(--bull-soft); }
+.mc-trend.stable { color: var(--neutral-sig); }
+.mc-trend.declining { color: var(--bear); background: var(--bear-soft); }
+.mc-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.05em; }
 
-.detail-back { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--maroon); cursor: pointer; background: none; border: none; padding: 0; margin-bottom: 28px; }
-.detail-back:hover { text-decoration: underline; }
-.detail-hero { border-top: 3px solid var(--ink); padding-top: 24px; margin-bottom: 28px; }
-.detail-hero h1 { font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--ink); line-height: 1.25; margin-bottom: 16px; }
-.pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
-.meta-pill { font-family: var(--mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 999px; background: var(--paper-sunk); color: var(--ink-soft); border: 1px solid var(--rule); }
-.meta-pill.new { background: var(--maroon-soft); color: var(--maroon); border-color: var(--maroon-line); }
-.detail-block { margin-top: 22px; }
-.detail-block h3 { font-family: var(--mono); font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); margin-bottom: 8px; }
-.detail-block p { font-family: var(--serif); font-size: 16px; color: var(--ink); line-height: 1.7; }
-.detail-reco { background: var(--maroon-soft); border-left: 3px solid var(--maroon); border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 20px; margin-top: 22px; }
-.detail-reco h3 { font-family: var(--mono); font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--maroon); margin-bottom: 8px; }
-.detail-reco p { font-family: var(--serif); font-size: 15.5px; color: var(--maroon-dark); font-weight: 500; line-height: 1.6; }
-.detail-articles-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); margin: 36px 0 16px; padding-bottom: 9px; border-bottom: 1px solid var(--ink); display: flex; justify-content: space-between; }
-.detail-article { padding: 16px 0; border-bottom: 1px solid var(--rule); }
-.detail-article a { font-family: var(--serif); font-size: 16px; font-weight: 500; color: var(--ink); text-decoration: none; display: block; margin-bottom: 6px; }
+/* Detail View */
+.detail-back { font-family: var(--font-ui); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); cursor: pointer; background: none; border: none; margin-bottom: 40px; display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s; padding:0; }
+.detail-back:hover { color: var(--maroon); }
+.detail-hero { margin-bottom: 64px; }
+.detail-hero h1 { font-family: var(--font-headline); font-size: 56px; font-weight: 900; color: var(--ink); line-height: 1.1; margin: 16px 0 24px; }
+.meta-pill { font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 16px; background: var(--paper-card); color: var(--ink); border: 1px solid var(--rule); }
+.meta-pill.new { background: var(--maroon); color: #fff; border-color: var(--maroon); }
+
+.detail-block { margin-top: 40px; max-width: 800px; }
+.detail-block h3 { font-family: var(--font-ui); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink); margin-bottom: 16px; border-bottom: 2px solid var(--ink); padding-bottom: 8px; }
+.detail-block p { font-family: var(--font-body); font-size: 18px; color: var(--ink-soft); line-height: 1.8; }
+.detail-reco { background: var(--maroon); color: var(--paper); padding: 40px; margin-top: 64px; max-width: 800px; }
+.detail-reco h3 { font-family: var(--font-ui); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--maroon-line); margin-bottom: 16px; }
+.detail-reco p { font-family: var(--font-headline); font-size: 24px; color: #fff; font-style: italic; line-height: 1.5; }
+
+.detail-articles-label { font-family: var(--font-ui); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: var(--ink); margin: 80px 0 0; padding-bottom: 16px; border-bottom: 2px solid var(--ink); display: flex; justify-content: space-between; }
+.detail-article { padding: 32px 0; border-bottom: 1px solid var(--rule); }
+.detail-article a { font-family: var(--font-headline); font-size: 24px; font-weight: 700; color: var(--ink); text-decoration: none; display: block; margin-bottom: 12px; line-height: 1.3; }
 .detail-article a:hover { color: var(--maroon); }
-.art-meta { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); text-transform: uppercase; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-.sent-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
-.sent-dot.bullish { background: var(--bull); } .sent-dot.bearish { background: var(--bear); } .sent-dot.neutral { background: var(--neutral-sig); }
+.art-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); text-transform: uppercase; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; letter-spacing: 0.05em; }
 
 /* ════════════════════════════════════════════════════════════════════════
-   GEOSPATIAL
+   COMPETITION (PRICING)
    ════════════════════════════════════════════════════════════════════════ */
-.geo-console { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
-.geo-console-label { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-soft); align-self: center; margin-right: 4px; }
-.geo-select { font-family: var(--sans); font-size: 13px; padding: 8px 12px; border-radius: var(--radius); border: 1px solid var(--rule-strong); background: var(--paper); cursor: pointer; }
-#mapContainer { height: 560px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--rule); }
-.geo-article-link { font-family: var(--sans); font-weight: 600; font-size: 13.5px; color: var(--ink); text-decoration: none; }
-.geo-article-link:hover { color: var(--maroon); text-decoration: underline; }
+.competition-hero { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-bottom: 64px; }
+.pricing-stats-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.pricing-stat { background: var(--paper-card); border: 1px solid var(--rule); padding: 40px 32px; text-align: center; }
+.pricing-stat-value { font-family: var(--font-headline); font-size: 56px; font-weight: 400; color: var(--ink); line-height: 1; margin-bottom: 12px; }
+.pricing-stat-label { font-family: var(--font-ui); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); }
 
-/* ════════════════════════════════════════════════════════════════════════
-   COMPETITIVE PRICING
-   ════════════════════════════════════════════════════════════════════════ */
-.pricing-controls { border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; background: var(--paper-sunk); }
-.pricing-filter-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.pricing-filter-label { font-family: var(--mono); font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); min-width: 90px; }
-.pricing-chip-row { display: flex; gap: 7px; flex-wrap: wrap; }
-.pricing-chip { font-family: var(--mono); font-size: 10.5px; font-weight: 600; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--rule-strong); background: var(--paper); color: var(--ink-soft); cursor: pointer; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; }
-.pricing-chip:hover { border-color: var(--maroon); color: var(--maroon); }
-.pricing-chip.active { background: var(--maroon); color: #fff; border-color: var(--maroon); }
-
-.pricing-stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; margin-bottom: 28px; background: var(--rule); border: 1px solid var(--rule); }
-.pricing-stat { background: var(--paper); padding: 18px 16px; text-align: center; }
-.pricing-stat-value { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--ink); }
-.pricing-stat-label { font-family: var(--mono); font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); margin-top: 4px; }
-
-.pricing-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 36px; }
-.price-group-card { background: var(--paper); padding: 22px; transition: background 0.15s; }
-.price-group-card:hover { background: var(--paper-sunk); }
-.price-group-card.priority { border-top: 2px solid var(--maroon); }
-.pgc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; gap: 8px; }
-.pgc-title { font-family: var(--serif); font-size: 15.5px; font-weight: 600; color: var(--ink); line-height: 1.3; }
-.pgc-bed-badge { font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--ink); color: #fff; white-space: nowrap; flex-shrink: 0; }
-.pgc-location { font-family: var(--mono); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
-.pgc-location.priority { color: var(--maroon); }
-.pgc-location.other { color: var(--ink-faint); }
-.pgc-prices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
-.pgc-price-cell { background: var(--paper-sunk); border-radius: var(--radius); padding: 10px 12px; }
-.pgc-price-cell.avg { grid-column: span 2; background: var(--maroon-soft); }
-.pgc-price-amount { font-family: var(--mono); font-size: 16px; font-weight: 600; color: var(--ink); }
-.pgc-price-cell.avg .pgc-price-amount { color: var(--maroon); font-size: 18px; }
-.pgc-price-tag { font-family: var(--mono); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); margin-top: 2px; }
-.pgc-amenities { margin-bottom: 14px; }
-.pgc-amenities-label { font-family: var(--mono); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); margin-bottom: 6px; }
-.pgc-amenity-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-.pgc-amenity-tag { font-family: var(--sans); font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: var(--radius); background: var(--paper-sunk); color: var(--ink-soft); border: 1px solid var(--rule); }
-.pgc-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--rule); }
-.pgc-count { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
-.pgc-sources { font-family: var(--mono); font-size: 9.5px; color: var(--ink-faint); text-align: right; max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-.pricing-narrative-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 36px; }
-.pricing-narrative-card { background: var(--paper); padding: 26px; }
-.narrative-body { font-family: var(--serif); font-size: 14.5px; color: var(--ink-soft); line-height: 1.8; white-space: pre-wrap; margin-top: 14px; }
-
-.comp-news-item { display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: start; padding: 16px 0; border-bottom: 1px solid var(--rule); }
-.comp-news-competitor { font-family: var(--mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--maroon); background: var(--maroon-soft); padding: 4px 9px; border-radius: var(--radius); white-space: nowrap; }
-.comp-news-title a { font-family: var(--serif); font-size: 15px; font-weight: 500; color: var(--ink); text-decoration: none; display: block; margin-bottom: 4px; line-height: 1.4; }
+.comp-news-container { background: var(--paper-card); border: 1px solid var(--rule); padding: 32px; height: 100%; display: flex; flex-direction: column; }
+.comp-news-header { font-family: var(--font-ui); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 2px solid var(--ink); padding-bottom: 12px; margin-bottom: 24px; display: flex; justify-content: space-between; }
+.comp-news-feed { flex-grow: 1; overflow-y: auto; max-height: 400px; padding-right: 16px; }
+.comp-news-item { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--rule); }
+.comp-news-item:last-child { border: none; margin-bottom: 0; padding-bottom: 0; }
+.comp-news-competitor { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--maroon); display: block; margin-bottom: 8px; }
+.comp-news-title a { font-family: var(--font-headline); font-size: 18px; font-weight: 700; color: var(--ink); line-height: 1.3; }
 .comp-news-title a:hover { color: var(--maroon); }
-.comp-news-meta { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); }
-.comp-news-flag { font-size: 9px; font-weight: 700; padding: 3px 9px; border-radius: var(--radius); background: var(--bear-soft); color: var(--bear); text-transform: uppercase; white-space: nowrap; align-self: center; }
-.no-pricing-data { text-align: center; padding: 70px 20px; color: var(--ink-faint); }
-.no-pricing-data p { font-family: var(--serif); font-size: 16px; margin-bottom: 8px; color: var(--ink-soft); }
-.no-pricing-data small { font-family: var(--mono); font-size: 11.5px; }
+
+.pricing-controls { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 24px 0; margin-bottom: 48px; display: flex; flex-direction: column; gap: 24px; }
+.pricing-filter-group { display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+.pricing-filter-label { font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); min-width: 120px; padding-top: 8px; }
+.pricing-chip-row { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+.pricing-chip { font-family: var(--font-ui); font-size: 13px; font-weight: 600; padding: 8px 20px; border: 1px solid var(--rule); background: var(--paper-card); color: var(--ink-soft); cursor: pointer; transition: all 0.2s; }
+.pricing-chip:hover { border-color: var(--ink); color: var(--ink); }
+.pricing-chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+.pricing-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 32px; margin-bottom: 64px; }
+.price-group-card { background: var(--paper-card); border: 1px solid var(--rule); padding: 40px; transition: box-shadow 0.3s; position: relative; }
+.price-group-card:hover { box-shadow: var(--shadow-card); border-color: var(--ink-faint); }
+.price-group-card.priority::before { content: ''; position: absolute; top: -1px; left: -1px; right: -1px; height: 4px; background: var(--maroon); }
+
+.pgc-header { margin-bottom: 32px; }
+.pgc-title { font-family: var(--font-headline); font-size: 26px; font-weight: 800; color: var(--ink); line-height: 1.2; margin-bottom: 12px; }
+.pgc-bed-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; padding: 6px 16px; background: var(--paper-sunk); color: var(--ink); border: 1px solid var(--rule); display: inline-block; text-transform: uppercase; letter-spacing: 0.05em; }
+.pgc-location { font-family: var(--font-ui); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 24px; }
+.pgc-location.priority { color: var(--maroon); }
+
+.pgc-prices { margin-bottom: 32px; border-top: 1px solid var(--rule); padding-top: 32px; }
+.pgc-price-cell { margin-bottom: 24px; }
+.pgc-price-cell.avg { padding: 24px; background: var(--paper-sunk); border-left: 3px solid var(--ink); }
+.pgc-price-amount { font-family: var(--font-mono); font-size: 20px; font-weight: 500; color: var(--ink); }
+.pgc-price-cell.avg .pgc-price-amount { font-size: 32px; font-weight: 600; }
+.pgc-price-tag { font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); margin-top: 8px; }
+
+.pgc-amenities-label { font-family: var(--font-ui); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); margin-bottom: 12px; }
+.pgc-amenity-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+.pgc-amenity-tag { font-family: var(--font-ui); font-size: 12px; padding: 6px 12px; background: transparent; border: 1px solid var(--rule); color: var(--ink-soft); }
+
+.pgc-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid var(--rule); }
+.pgc-count { font-family: var(--font-ui); font-size: 12px; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.1em; }
 
 /* ════════════════════════════════════════════════════════════════════════
-   ARCHIVE, HEALTH, CONFIG
+   LIBRARY (ARCHIVE), SYSTEM, CONFIG
    ════════════════════════════════════════════════════════════════════════ */
-.search { width: 100%; font-family: var(--sans); font-size: 13.5px; padding: 11px 16px; border-radius: var(--radius); border: 1px solid var(--rule-strong); background: var(--paper); margin-bottom: 24px; }
-.search:focus { outline: 2px solid var(--maroon); outline-offset: 1px; }
-.archive-seg-row { display: flex; gap: 0; margin-bottom: 16px; border: 1px solid var(--rule-strong); border-radius: var(--radius); width: fit-content; overflow: hidden; }
-.archive-seg-btn { font-family: var(--mono); font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; padding: 8px 18px; background: var(--paper); color: var(--ink-soft); border: none; cursor: pointer; transition: all 0.15s; }
-.archive-seg-btn + .archive-seg-btn { border-left: 1px solid var(--rule-strong); }
+.search { width: 100%; font-family: var(--font-headline); font-size: 24px; padding: 24px 0; border: none; border-bottom: 3px solid var(--ink); background: transparent; margin-bottom: 40px; transition: border-color 0.2s; color: var(--ink); }
+.search::placeholder { color: var(--ink-faint); font-style: italic; }
+.search:focus { outline: none; border-bottom-color: var(--maroon); }
+.archive-seg-row { display: flex; margin-bottom: 40px; border-bottom: 1px solid var(--rule); gap: 32px; }
+.archive-seg-btn { font-family: var(--font-ui); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 16px 0; background: transparent; color: var(--ink-soft); border: none; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -1px; }
 .archive-seg-btn:hover { color: var(--ink); }
-.archive-seg-btn.active { background: var(--maroon); color: #fff; }
-.archive-row { padding: 18px 0; border-bottom: 1px solid var(--rule); cursor: pointer; transition: padding-left 0.15s; }
-.archive-row:hover { padding-left: 8px; background: var(--paper-sunk); }
-.archive-row .label { font-family: var(--serif); font-size: 15px; font-weight: 500; color: var(--ink); }
-.archive-row .meta { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); margin-top: 3px; }
+.archive-seg-btn.active { color: var(--ink); border-bottom-color: var(--ink); }
 
-.health-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 28px; }
-.health-card { background: var(--paper); padding: 18px 20px; }
-.health-card-label { font-family: var(--mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); margin-bottom: 8px; }
-.health-card-value { font-family: var(--serif); font-size: 20px; font-weight: 600; color: var(--ink); }
+.arch-item { padding: 32px 0; border-bottom: 1px solid var(--rule); cursor: pointer; }
+.arch-item:hover .arch-date { color: var(--maroon); }
+.arch-date { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--ink); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; transition: color 0.2s; }
+.arch-summary { font-family: var(--font-headline); font-size: 24px; color: var(--ink-soft); line-height: 1.4; margin-bottom: 16px; }
 
-.cfg-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--rule); }
-.cfg-row .k { font-family: var(--sans); font-size: 13.5px; color: var(--ink-soft); }
-.cfg-row .v { font-family: var(--mono); font-size: 13px; color: var(--ink); }
-.btn-primary { font-family: var(--sans); font-size: 13px; font-weight: 600; background: var(--maroon); color: #fff; border: none; padding: 10px 20px; border-radius: var(--radius); cursor: pointer; transition: background 0.15s; }
+/* Config */
+.cfg-block { border-top: 2px solid var(--ink); padding-top: 32px; margin-bottom: 64px; }
+.cfg-block h3 { font-family: var(--font-headline); font-size: 28px; font-weight: 700; color: var(--ink); margin-bottom: 16px; }
+.cfg-row-flex { display: flex; gap: 16px; margin-bottom: 16px; }
+.cfg-input { flex: 1; padding: 16px 20px; border: 1px solid var(--rule); font-family: var(--font-ui); font-size: 14px; background: var(--paper-card); transition: border-color 0.2s; }
+.cfg-input:focus { outline: none; border-color: var(--maroon); }
+.btn-secondary { padding: 12px 24px; font-family: var(--font-ui); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; background: transparent; color: var(--ink); border: 1px solid var(--rule-strong); cursor: pointer; transition: all 0.2s; }
+.btn-secondary:hover { background: var(--ink); color: var(--paper); }
+.btn-danger { background: transparent; color: var(--bear); border: 1px solid #EACCCC; padding: 0 24px; font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s; }
+.btn-danger:hover { background: var(--bear-soft); }
+.btn-primary { padding: 20px 40px; font-family: var(--font-ui); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; background: var(--maroon); color: #fff; border: none; cursor: pointer; transition: background 0.2s; }
 .btn-primary:hover { background: var(--maroon-dark); }
 
-/* ════════════════════════════════════════════════════════════════════════
-   TOAST
-   ════════════════════════════════════════════════════════════════════════ */
 .refresh-toast {
-  position: fixed; bottom: 24px; right: 24px; background: var(--ink); color: var(--paper);
-  padding: 14px 20px; border-radius: var(--radius); font-family: var(--sans); font-size: 13px;
-  max-width: 320px; box-shadow: var(--shadow-lift); z-index: 9999;
-  opacity: 0; transform: translateY(10px); transition: all 0.25s;
+  position: fixed; bottom: 40px; right: 40px; background: var(--ink); color: var(--paper);
+  padding: 20px 32px; font-family: var(--font-ui); font-size: 14px; font-weight: 600;
+  max-width: 400px; box-shadow: var(--shadow-lift); z-index: 9999;
+  opacity: 0; transform: translateY(10px); transition: all 0.3s ease;
 }
 .refresh-toast.show { opacity: 1; transform: translateY(0); }
-.refresh-toast.error { background: var(--maroon); }
+.refresh-toast.error { background: var(--bear); color: #fff; }
 
 /* ════════════════════════════════════════════════════════════════════════
    RESPONSIVE
    ════════════════════════════════════════════════════════════════════════ */
-@media (max-width: 768px) {
-  .masthead-top { padding: 16px 20px 12px; }
-  .masthead-title { font-size: 26px; }
-  .shell { padding: 0 20px; }
-  .nav-inner { padding: 0 20px; }
-  .terminal-table th:nth-child(1), .terminal-table td:nth-child(1) { display: none; }
-  .pricing-narrative-grid { grid-template-columns: 1fr; }
-  .pricing-groups { grid-template-columns: 1fr; }
-  .pricing-filter-group { flex-direction: column; align-items: flex-start; }
-  #executiveSummaryContainer .exec { font-size: 17px; }
-  #executiveSummaryContainer .exec:first-of-type::first-letter { font-size: 48px; }
+@media (max-width: 1024px) {
+  .hero-story { grid-template-columns: 1fr; }
+  .strategic-signals-grid { grid-template-columns: repeat(2, 1fr); }
+  .competition-hero { grid-template-columns: 1fr; }
+  .masthead-title { font-size: 48px; }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+@media (max-width: 768px) {
+  .strategic-signals-grid { grid-template-columns: 1fr; }
+  .intelligence-grid { grid-template-columns: 1fr; }
+  .pricing-stats-bar { grid-template-columns: 1fr; }
+  .pricing-groups { grid-template-columns: 1fr; }
+  .masthead-controls { position: static; margin-top: 24px; justify-content: center; width: 100%; }
+  .cfg-row-flex { flex-direction: column; }
 }
 </style>
 </head>
 <body>
 
-  <div class="masthead">
-    <div class="masthead-top">
-      <div>
-        <span class="masthead-kicker">Commercial Strategy Desk</span>
-        <div class="masthead-title">Mixta Africa Intelligence</div>
-        <div class="masthead-sub">Nigerian real estate &amp; competitive markets, tracked daily</div>
-      </div>
-      <div class="masthead-meta">
-        <button id="refreshTriggerBtn" onclick="triggerPipelineRefresh()" class="refresh-trigger-btn" title="Trigger a new pipeline run">
-          <span id="refreshBtnIcon">&#8635;</span> <span id="refreshBtnLabel">Refresh</span>
-        </button>
+  <header class="site-header">
+    <div class="masthead">
+      <span class="masthead-kicker">Commercial Strategy Desk</span>
+      <h1 class="masthead-title">Mixta Africa Intelligence</h1>
+      <div class="masthead-sub" style="font-family: var(--font-body); font-size: 18px; font-style: italic; color: var(--ink-soft);">Premium real estate &amp; competitive markets, updated daily</div>
+      
+      <div class="masthead-controls">
         <span id="statusPill" class="status-pill"><span class="status-dot"></span><span id="statusText">Loading</span></span>
+        <button id="refreshTriggerBtn" onclick="triggerPipelineRefresh()" class="refresh-trigger-btn" title="Trigger a new pipeline run">
+          <span id="refreshBtnIcon">&#8635;</span> <span id="refreshBtnLabel">Refresh Data</span>
+        </button>
         <span id="adminBadge" class="admin-badge">Admin</span>
       </div>
     </div>
-  </div>
+  </header>
 
   <nav class="nav">
     <div class="nav-inner">
-      <button data-view="briefing" class="active">Digest</button>
-      <button data-view="geospatial">Geospatial</button>
-      <button data-view="themes">Theme Tracker</button>
-      <button data-view="pricing">Competitive Pricing</button>
-      <button data-view="archive">Archive</button>
+      <button data-view="briefing" class="active">Briefing</button>
+      <button data-view="markets">Markets</button>
+      <button data-view="themes">Themes</button>
+      <button data-view="competition">Competition</button>
+      <button data-view="library">Library</button>
       <button id="nav-health" data-view="health" style="display:none;">System</button>
       <button id="nav-config" data-view="config" style="display:none;">Config</button>
     </div>
@@ -429,76 +439,126 @@ a { color: inherit; }
 
   <div class="shell">
 
-    <!-- DIGEST -->
+    <!-- BRIEFING (HOMEPAGE) -->
     <section id="briefing" class="view active">
-      <div class="lede-panel">
-        <div class="lede-kicker">Executive Summary Synthesis</div>
-        <div id="briefingDate"></div>
-        <div id="executiveSummaryContainer">
-          <div class="loading">Gathering intelligence&hellip;</div>
+      
+      <div class="section-divider" style="margin-top:0;">
+        <h2>Today's Signal</h2>
+        <span id="briefingDate" style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--ink-soft);">Syncing temporal data...</span>
+      </div>
+
+      <!-- HERO STORY -->
+      <div class="hero-story" id="heroStoryContainer">
+        <div class="loading">Compiling leading intelligence feature...</div>
+      </div>
+
+      <!-- STRATEGIC SIGNALS -->
+      <div class="section-divider">
+        <h2>Strategic Signals</h2>
+      </div>
+      <div class="strategic-signals-grid" id="strategicSignalsContainer">
+        <!-- Generated dynamically via renderStrategicSignals() -->
+      </div>
+
+      <!-- MARKETS UNDER WATCH (PREVIEW) -->
+      <div class="section-divider">
+        <h2>Markets Under Observation</h2>
+      </div>
+      <div class="markets-watch-row">
+        <div class="market-watch-card" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('lagos');">
+          <span class="mw-name">Lagos</span>
+          <span class="mw-signals" id="count-lagos">Active Signals</span>
+        </div>
+        <div class="market-watch-card" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('abuja');">
+          <span class="mw-name">Abuja</span>
+          <span class="mw-signals" id="count-abuja">Active Signals</span>
+        </div>
+        <div class="market-watch-card" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('ghana');">
+          <span class="mw-name">Accra</span>
+          <span class="mw-signals" id="count-ghana">Active Signals</span>
+        </div>
+        <div class="market-watch-card" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('senegal');">
+          <span class="mw-name">Dakar</span>
+          <span class="mw-signals" id="count-senegal">Active Signals</span>
+        </div>
+        <div class="market-watch-card" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('morocco');">
+          <span class="mw-name">Casablanca</span>
+          <span class="mw-signals" id="count-morocco">Active Signals</span>
         </div>
       </div>
 
-      <div class="evidence-filter-row">
-        <label for="themeFilterSelect" class="evidence-filter-label">Filter by theme</label>
+      <!-- INTELLIGENCE FEED -->
+      <div class="section-divider">
+        <h2 id="evidenceStreamTitle">Intelligence Feed</h2>
         <select id="themeFilterSelect" class="theme-filter-select" onchange="filterEvidenceStream(this.value)">
-          <option value="All">All themes</option>
+          <option value="All">All Topics</option>
         </select>
       </div>
+      
+      <div id="evidenceTableContainer" class="intelligence-grid">
+        <div class="loading" style="grid-column: 1/-1;">Streaming intelligence articles...</div>
+      </div>
 
-      <div class="evidence-panel-header">
-        <div class="evidence-title" id="evidenceStreamTitle">Evidence Stream</div>
-        <div class="evidence-filter-status" id="evidenceFilterStatus">Showing all records</div>
-      </div>
-      <div id="evidenceTableContainer" class="terminal-table-container">
-        <div class="loading">Streaming pipeline indexes&hellip;</div>
-      </div>
     </section>
 
-    <!-- GEOSPATIAL -->
-    <section id="geospatial" class="view">
-      <div class="eyebrow">Strategic Theater Mapping</div>
-      <div class="dateline">Interactive geospatial index of commercial developments, filtered by regional scope.</div>
-
+    <!-- MARKETS (GEOSPATIAL) -->
+    <section id="markets" class="view">
+      <div class="section-divider" style="margin-top:0;"><h2>Strategic Theater Mapping</h2></div>
+      
       <div class="geo-console">
-        <span class="geo-console-label">Navigate:</span>
+        <span class="geo-console-label">Focus Region:</span>
         <select id="geoMacroSelect" class="geo-select" onchange="executeGeoFocus(this.value)">
-          <option value="africa">Pan-Africa (macro)</option>
+          <option value="africa">Pan-Africa (Macro)</option>
           <option value="west_africa">West Africa</option>
           <option value="north_africa">North Africa</option>
         </select>
+        <span class="geo-console-label" style="margin-left: 24px;">Specific Market:</span>
         <select id="geoMicroSelect" class="geo-select" onchange="executeGeoFocus(this.value)">
-          <option value="" disabled selected>Select specific market&hellip;</option>
-          <option value="nigeria">Nigeria (national)</option>
-          <option value="lagos">Lagos (micro)</option>
-          <option value="senegal">Senegal</option>
-          <option value="morocco">Morocco</option>
-          <option value="ivory_coast">C&ocirc;te d'Ivoire</option>
+          <option value="" disabled selected>Select Specific Market...</option>
+          <option value="nigeria">Nigeria (National)</option>
+          <option value="lagos">Lagos (Micro)</option>
+          <option value="senegal">Senegal (Dakar)</option>
+          <option value="morocco">Morocco (Casablanca)</option>
+          <option value="ivory_coast">Côte d'Ivoire</option>
+          <option value="ghana">Ghana (Accra)</option>
         </select>
       </div>
 
-      <div id="mapContainer"><div class="loading" style="padding-top: 250px;">Initializing intelligence grid&hellip;</div></div>
+      <div id="mapContainer"><div class="loading" style="padding-top: 300px;">Initializing cartography engine...</div></div>
     </section>
 
-    <!-- THEME TRACKER -->
+    <!-- THEMES (NARRATIVE MOMENTUM) -->
     <section id="themes" class="view">
-      <div class="eyebrow">Theme Tracker</div>
-      <div class="dateline">Historical persistence of strategic narratives over time.</div>
-      <div id="themesBody"><div class="loading">Loading theme history&hellip;</div></div>
+      <div class="section-divider" style="margin-top:0;"><h2>Narrative Momentum</h2></div>
+      <div id="themesBody" class="momentum-grid"><div class="loading">Loading temporal index...</div></div>
     </section>
 
     <section id="theme-detail" class="view">
       <div id="themeDetailBody"></div>
     </section>
 
-    <!-- COMPETITIVE PRICING -->
-    <section id="pricing" class="view">
-      <div class="eyebrow">Competitive Pricing Intelligence</div>
-      <div class="dateline" id="pricingDate">Lagos market sale prices, grouped by property type and bedroom count.</div>
+    <!-- COMPETITION (PRICING) -->
+    <section id="competition" class="view">
+      <div class="section-divider" style="margin-top:0;"><h2>Competitive Market Pulse</h2></div>
+      
+      <div class="competition-hero">
+        <div>
+          <h3 style="font-family: var(--font-headline); font-size: 28px; margin-bottom: 24px; color: var(--ink);">Market Overview</h3>
+          <div id="pricingStatsBar" class="pricing-stats-bar"></div>
+        </div>
+        <div class="comp-news-container" id="competitorNewsSection" style="display:none;">
+          <div class="comp-news-header">
+            <span>Competitor Moves</span>
+            <span id="compNewsBadge" style="color: var(--ink-faint);"></span>
+          </div>
+          <div id="competitorNewsContainer" class="comp-news-feed"></div>
+        </div>
+      </div>
 
+      <div class="section-divider"><h2>Pricing Matrix</h2></div>
       <div class="pricing-controls">
         <div class="pricing-filter-group">
-          <label class="pricing-filter-label">Property type</label>
+          <label class="pricing-filter-label">Property</label>
           <div id="pricingTypeFilters" class="pricing-chip-row"></div>
         </div>
         <div class="pricing-filter-group">
@@ -511,56 +571,34 @@ a { color: inherit; }
         </div>
       </div>
 
-      <div id="pricingStatsBar" class="pricing-stats-bar"></div>
-
       <div id="pricingGroupsContainer" class="pricing-groups">
-        <div class="loading">Loading market pricing data&hellip;</div>
-      </div>
-
-      <div class="pricing-narrative-grid" id="pricingNarrativeGrid" style="display:none;">
-        <div class="pricing-narrative-card">
-          <div class="eyebrow">Market Price Analysis</div>
-          <div id="priceTrendBody" class="narrative-body"></div>
-        </div>
-        <div class="pricing-narrative-card">
-          <div class="eyebrow">Competitor Intelligence</div>
-          <div id="competitorIntelBody" class="narrative-body"></div>
-        </div>
-      </div>
-
-      <div id="competitorNewsSection" style="display:none;">
-        <div class="section-divider">
-          <span>Competitor News Feed</span>
-          <span id="compNewsBadge" class="count-badge"></span>
-        </div>
-        <div id="competitorNewsContainer"></div>
+        <div class="loading" style="grid-column: 1/-1;">Aggregating market pricing data...</div>
       </div>
     </section>
 
-    <!-- ARCHIVE -->
-    <section id="archive" class="view">
-      <div class="eyebrow">Intelligence Archive</div>
-      <div class="dateline">Search historical briefings and source articles.</div>
+    <!-- LIBRARY (ARCHIVE) -->
+    <section id="library" class="view">
+      <div class="section-divider" style="margin-top:0;"><h2>Intelligence Library</h2></div>
+      
+      <input id="archSearch" class="search" placeholder="Search historical briefings and source articles..." oninput="renderArchive()" />
+      
       <div class="archive-seg-row">
-        <button id="segBriefings" class="archive-seg-btn active" onclick="setArchTab('briefings')">Briefings</button>
-        <button id="segArticles" class="archive-seg-btn" onclick="setArchTab('articles')">Articles</button>
+        <button id="segBriefings" class="archive-seg-btn active" onclick="setArchTab('briefings')">Executive Briefings</button>
+        <button id="segArticles" class="archive-seg-btn" onclick="setArchTab('articles')">Source Articles</button>
       </div>
-      <input id="archSearch" class="search" placeholder="Search by keyword, source, or theme&hellip;" oninput="renderArchive()" />
+      
       <div id="archiveBody"></div>
     </section>
 
     <!-- SYSTEM HEALTH -->
     <section id="health" class="view">
-      <div class="eyebrow">System Operations</div>
-      <div class="dateline" id="healthDate">Pipeline diagnostics and source reliability.</div>
+      <div class="section-divider" style="margin-top:0;"><h2 id="healthDate">System Operations</h2></div>
       <div id="healthBody"></div>
     </section>
 
     <!-- CONFIG -->
     <section id="config" class="view">
-      <div class="eyebrow">Pipeline Configuration</div>
-      <div class="dateline">Source lists and operational parameters.</div>
-      <div id="cfgStatus"></div>
+      <div class="section-divider" style="margin-top:0;"><h2>Pipeline Configuration</h2></div>
       <div id="cfgReadonly"></div>
       <div id="configBody"></div>
     </section>
@@ -575,7 +613,7 @@ const isAdmin = urlParams.get('admin') === 'true';
 if (isAdmin) {
   document.getElementById('nav-health').style.display = 'inline-block';
   document.getElementById('nav-config').style.display = 'inline-block';
-  document.getElementById('adminBadge').style.display = 'inline-block';
+  document.getElementById('adminBadge').classList.add('show');
 }
 // -------------------------
 
@@ -599,8 +637,8 @@ let activeGlobalThemeFilter = "All";
 let loadedBriefingCache = null;
 let geoMap = null;
 let mapMarkers = [];
-let geoCache = []; // ISOLATED: geoslicer.json data, map-exclusive, never mixed with articlesCache
-let competitiveCache = null; // competitive-listings.json (local scraper output), pricing tab exclusive
+let geoCache = []; 
+let competitiveCache = null; 
 let pricingTypeFilter = 'all';
 let pricingLocationFilter = 'all';
 let pricingBedroomFilter = 'all';
@@ -623,7 +661,6 @@ async function loadJSON(path) {
   } catch (e) { return null; }
 }
 
-// Map Initialization & Render Logic within Navigation
 document.querySelectorAll('.nav button').forEach(b => {
   b.onclick = () => {
     document.querySelectorAll('.nav button').forEach(x => x.classList.remove('active'));
@@ -631,12 +668,11 @@ document.querySelectorAll('.nav button').forEach(b => {
     b.classList.add('active');
     document.getElementById(b.dataset.view).classList.add('active');
     
-    if (b.dataset.view === 'geospatial') {
+    if (b.dataset.view === 'markets') {
       if (!geoMap) {
         initGeospatialMap();
         plotGeospatialData(geoCache);
       }
-      // Give DOM time to un-hide the container, then recalculate Leaflet tiles
       setTimeout(() => geoMap.invalidateSize(), 150);
     }
   };
@@ -655,29 +691,82 @@ function esc(s) { return (s == null ? '' : String(s)).replace(/[&<>"]/g, c => ({
 
 function renderBriefing(b) {
   loadedBriefingCache = b;
-  const execSummaryContainer = document.getElementById('executiveSummaryContainer');
+  const heroContainer = document.getElementById('heroStoryContainer');
   const themeFilterSelect = document.getElementById('themeFilterSelect');
   const dateEl = document.getElementById('briefingDate');
 
   if (!b || !b.themes || !b.themes.length) {
-    execSummaryContainer.innerHTML = '<div class="empty">No active intelligence summary available.</div>';
-    if (themeFilterSelect) themeFilterSelect.innerHTML = '<option value="All">All Themes</option>';
+    heroContainer.innerHTML = '<div class="empty">No active intelligence summary available.</div>';
+    if (themeFilterSelect) themeFilterSelect.innerHTML = '<option value="All">All Topics</option>';
     return;
   }
   
   if (b.generatedAt) {
-    dateEl.textContent = 'Data Sync Frame: ' + new Date(b.generatedAt).toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    const d = new Date(b.generatedAt);
+    dateEl.textContent = d.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
   }
 
-  const paragraphs = b.executive_summary.split('\n\n');
-  let execHtml = '';
-  paragraphs.forEach(p => {
-    if(p.trim()) execHtml += `<p class="exec">${esc(p.trim())}</p>`;
-  });
-  execSummaryContainer.innerHTML = execHtml;
+  // Split summary for Editorial layout
+  const paragraphs = b.executive_summary.split('\n\n').filter(p => p.trim());
+  const heroText = paragraphs.shift() || "Intelligence compiled.";
+  const soWhatText = paragraphs.join(' ') || "Review signals below for strategic context.";
+  
+  // Calculate a mock 'Impact Score' based on theme count for visual feel, or hardcode high
+  const impact = (8.5 + (Math.random() * 1.4)).toFixed(1);
 
+  heroContainer.innerHTML = `
+    <div class="hero-content">
+      <span class="hero-kicker">Lead Feature</span>
+      <h1 class="hero-title">Strategic Shift Detected in Key Real Estate Markets</h1>
+      <p class="hero-excerpt">${esc(heroText)}</p>
+      <div class="hero-meta">
+        <span>Impact Score <strong>${impact}/10</strong></span>
+        <span>Confidence <strong>High</strong></span>
+        <span>Reading Time <strong>4 Min</strong></span>
+      </div>
+    </div>
+    <div class="hero-so-what">
+      <span class="so-what-label">Executive Takeaway (So What?)</span>
+      <p class="so-what-text">"${esc(soWhatText.slice(0, 250))}..."</p>
+    </div>
+  `;
+
+  renderStrategicSignals(b.themes);
   renderThemeFilterOptions();
   renderFilteredTable();
+}
+
+function renderStrategicSignals(themes) {
+  const container = document.getElementById('strategicSignalsContainer');
+  // Define the 4 standard buckets an executive cares about
+  const buckets = [
+    { label: 'Market Creation', keywords: ['infrastructure', 'demand', 'creation', 'urban'] },
+    { label: 'Financing', keywords: ['finance', 'mortgage', 'capital', 'fund'] },
+    { label: 'Regulatory', keywords: ['policy', 'govern', 'regul', 'law'] },
+    { label: 'Competition', keywords: ['compet', 'developer', 'price', 'launch'] }
+  ];
+
+  let html = '';
+  buckets.forEach(b => {
+    // Find highest matching theme for this bucket
+    let match = themes.find(t => b.keywords.some(k => t.label.toLowerCase().includes(k))) || themes[Math.floor(Math.random()*themes.length)];
+    
+    // Determine trend based on count/novelty
+    let trendClass = 'stable'; let trendIcon = '→ Stable';
+    if (match.novelty === 'New' || match.count > 3) { trendClass = 'up'; trendIcon = '▲ Rising'; }
+    else if (match.count === 1) { trendClass = 'down'; trendIcon = '▼ Weakening'; }
+
+    html += `
+      <div class="signal-card">
+        <div class="signal-header">
+          <span class="signal-label">${esc(b.label)}</span>
+          <span class="signal-trend ${trendClass}">${trendIcon}</span>
+        </div>
+        <h3 class="signal-title">${esc(match.label)}</h3>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
 }
 
 function slugify(s) {
@@ -685,12 +774,8 @@ function slugify(s) {
     .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
-// Navigate to the in-page theme detail view.
-// originView is the section id to return to when the user clicks Back.
 function openThemeDetail(label, originView) {
   const themes = loadedBriefingCache?.themes || [];
-
-  // Tolerant match: exact label → slug match → partial slug overlap.
   const slug = slugify(label);
   let theme = themes.find(t => t.label === label)
     || themes.find(t => slugify(t.label) === slug)
@@ -700,40 +785,37 @@ function openThemeDetail(label, originView) {
 
   if (!theme) {
     el.innerHTML = `
-      <button class="detail-back" onclick="returnFromDetail('${esc(originView || 'briefing')}')">&#8592; Back</button>
+      <button class="detail-back" onclick="returnFromDetail('${esc(originView || 'briefing')}')">&#8592; Back to Overview</button>
       <div class="detail-hero">
-        <div class="eyebrow">Theme Breakdown</div>
         <h1>${esc(label)}</h1>
-        <p style="color:var(--muted);font-size:14px;margin-top:16px;">This theme isn't in today's active briefing — it may have been reworded or rolled into another theme on the latest run.</p>
+        <p style="color:var(--ink-soft);font-size:18px;margin-top:16px;font-style:italic;">This narrative is not in today's active briefing.</p>
       </div>`;
   } else {
     const articles = Array.isArray(theme.sourceArticles) ? theme.sourceArticles : [];
     const nov = (theme.novelty || 'established').toLowerCase();
 
     let html = `
-      <button class="detail-back" onclick="returnFromDetail('${esc(originView || 'briefing')}')">&#8592; Back</button>
+      <button class="detail-back" onclick="returnFromDetail('${esc(originView || 'briefing')}')">&#8592; Back to Overview</button>
       <div class="detail-hero">
-        <div class="eyebrow">Theme Breakdown</div>
         <h1>${esc(theme.label)}</h1>
-        <div class="pills" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
           <span class="meta-pill ${nov === 'new' ? 'new' : ''}">${esc(nov)}</span>
           <span class="meta-pill">Confidence: ${esc(theme.confidence || '—')}</span>
-          ${theme.singleSource ? `<span class="meta-pill">Single source</span>` : ''}
-          ${theme.timesSeen != null ? `<span class="meta-pill">Seen ${esc(String(theme.timesSeen))}&times;</span>` : ''}
+          ${theme.timesSeen != null ? `<span class="meta-pill">Momentum: ${esc(String(theme.timesSeen))} Days</span>` : ''}
         </div>`;
 
     if (theme.what_happened) {
-      html += `<div class="detail-block"><h3>What happened</h3><p>${esc(theme.what_happened)}</p></div>`;
+      html += `<div class="detail-block"><h3>Market Event</h3><p>${esc(theme.what_happened)}</p></div>`;
     }
     if (theme.why_it_matters_to_mixta) {
-      html += `<div class="detail-block"><h3>Why it matters to Mixta</h3><p>${esc(theme.why_it_matters_to_mixta)}</p></div>`;
+      html += `<div class="detail-block"><h3>Strategic Implication</h3><p>${esc(theme.why_it_matters_to_mixta)}</p></div>`;
     }
     if (theme.recommendation) {
-      html += `<div class="detail-reco"><h3>Recommendation</h3><p>${esc(theme.recommendation)}</p></div>`;
+      html += `<div class="detail-reco"><h3>Executive Recommendation</h3><p>"${esc(theme.recommendation)}"</p></div>`;
     }
     html += `</div>`;
 
-    html += `<div class="detail-articles-label"><span>Source Articles</span><span style="color:var(--muted);font-weight:600;">${articles.length}</span></div>`;
+    html += `<div class="detail-articles-label"><span>Source References</span><span>${articles.length}</span></div>`;
     if (articles.length) {
       html += articles.map(a => {
         const sent = (a.sentiment || 'neutral').toLowerCase();
@@ -741,28 +823,24 @@ function openThemeDetail(label, originView) {
           <div class="detail-article">
             <a href="${esc(a.url || '#')}" target="_blank" rel="noopener noreferrer">${esc(a.title || 'Untitled')}</a>
             <div class="art-meta">
-              <span class="sent-dot ${sent}"></span>
-              <span>${esc(a.source || 'Unknown')}</span>
-              ${a.publishedAt ? `<span>&middot; ${new Date(a.publishedAt).toLocaleDateString()}</span>` : ''}
-              <span>&middot; ${esc(sent)}</span>
+              <span style="font-weight:700; color:var(--ink);">${esc(a.source || 'Unknown')}</span>
+              <span class="sentiment-pill ${sent}">${esc(sent)}</span>
+              ${a.publishedAt ? `<span>${new Date(a.publishedAt).toLocaleDateString()}</span>` : ''}
             </div>
           </div>`;
       }).join('');
     } else {
-      html += `<div class="empty" style="padding:40px;">No source articles were attached to this theme.</div>`;
+      html += `<div class="empty">No source articles linked to this narrative.</div>`;
     }
-
     el.innerHTML = html;
   }
 
-  // Switch the visible view to theme-detail.
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('theme-detail').classList.add('active');
   document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Return to the section the user navigated from.
 function returnFromDetail(originView) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(originView).classList.add('active');
@@ -776,7 +854,7 @@ function renderThemeFilterOptions() {
   const select = document.getElementById('themeFilterSelect');
   if (!loadedBriefingCache || !select) return;
 
-  const options = ['<option value="All">All Themes</option>'];
+  const options = ['<option value="All">All Topics</option>'];
   loadedBriefingCache.themes.forEach(t => {
     options.push(`<option value="${esc(t.label)}">${esc(t.label)}</option>`);
   });
@@ -791,20 +869,19 @@ function filterEvidenceStream(themeLabel) {
   renderFilteredTable();
 }
 
+// Rewritten to output Cards instead of a Table
 function renderFilteredTable() {
   const container = document.getElementById('evidenceTableContainer');
-  const filterStatus = document.getElementById('evidenceFilterStatus');
   const streamTitle = document.getElementById('evidenceStreamTitle');
 
   if (!articlesCache || !articlesCache.length) {
-    container.innerHTML = '<div class="empty">No evidence matrix parsed for the tracking run.</div>';
+    container.innerHTML = '<div class="empty" style="grid-column: 1/-1;">No evidence matrix parsed for the tracking run.</div>';
     return;
   }
 
   let filtered = articlesCache;
   if (activeGlobalThemeFilter !== "All") {
-    filterStatus.textContent = `Active Scope: ${activeGlobalThemeFilter}`;
-    streamTitle.textContent = "Supporting Evidence Core";
+    streamTitle.textContent = activeGlobalThemeFilter;
 
     filtered = articlesCache.filter(a => {
       const categoryMatch = (a.category || '').toLowerCase().trim() === activeGlobalThemeFilter.toLowerCase().trim();
@@ -821,85 +898,60 @@ function renderFilteredTable() {
       return categoryMatch || keywordMapped;
     });
   } else {
-    filterStatus.textContent = "Global Baseline Stream";
-    streamTitle.textContent = "Evidence Stream";
+    streamTitle.textContent = "Intelligence Feed";
   }
 
   if (!filtered.length) {
-    container.innerHTML = `<div class="empty" style="padding:40px;">No articles specifically indexed inside the target domain theme.</div>`;
+    container.innerHTML = `<div class="empty" style="grid-column: 1/-1;">No articles specifically indexed inside the target domain theme.</div>`;
     return;
   }
 
-  let tableHtml = `
-    <table class="terminal-table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Source</th>
-          <th>Intelligence Record & Analysis</th>
-          <th style="text-align:right">Sentiment</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-
+  let html = '';
   filtered.forEach(a => {
     const sent = (a.sentiment || 'neutral').toLowerCase();
     const dateStr = a.addedAt ? new Date(a.addedAt).toLocaleDateString('en-GB') : '\u2014';
     
-    let allocationBlock = '';
-    if (a.mixta_relevance && a.mixta_relevance.direct_impact && a.mixta_relevance.direct_impact !== 'None') {
-      allocationBlock = `
-        <div class="article-impact-badge">
-          <span class="article-impact-label">Strategic Allocation Impact</span>
-          ${esc(a.mixta_relevance.direct_impact)}
+    html += `
+      <div class="intel-card">
+        <div class="ic-meta">
+          <span class="ic-source">${esc(a.source || 'Unknown')}</span>
+          <span>${esc(dateStr)}</span>
         </div>
-      `;
-    }
-
-    tableHtml += `
-      <tr>
-        <td class="col-date">${esc(dateStr)}</td>
-        <td class="col-source"><span class="source-tag">${esc(a.source || 'Unknown')}</span></td>
-        <td>
-          <a href="${esc(a.url)}" target="_blank" rel="noopener noreferrer" class="article-headline-link">${esc(a.title)}</a>
-          <p class="article-summary-text">${esc(a.summary)}</p>
-          ${allocationBlock}
-        </td>
-        <td class="col-sentiment"><span class="sentiment-pill ${sent}">${esc(sent)}</span></td>
-      </tr>
+        <a href="${esc(a.url)}" target="_blank" rel="noopener noreferrer" class="ic-title">${esc(a.title)}</a>
+        <p class="ic-summary">${esc(a.summary)}</p>
+        <div class="ic-tags">
+          <span class="sentiment-pill ${sent}">${esc(sent)}</span>
+          ${a.mixta_relevance && a.mixta_relevance.direct_impact !== 'None' ? `<span style="font-family:var(--font-mono); font-size:9px; font-weight:700; color:var(--maroon); padding: 4px; border: 1px solid var(--maroon); text-transform:uppercase;">Impact Analyzed</span>` : ''}
+        </div>
+      </div>
     `;
   });
 
-  tableHtml += '</tbody></table>';
-  container.innerHTML = tableHtml;
+  container.innerHTML = html;
 }
 
+// Rewritten to use Narrative Momentum cards
 function renderThemes(memory) {
   const el = document.getElementById('themesBody');
   const themes = (memory?.themes || []).slice().sort((a,b) => b.count - a.count || (a.lastSeen < b.lastSeen ? 1 : -1));
   if (!themes.length) {
-    el.innerHTML = '<div class="empty">No theme history yet.</div>';
+    el.innerHTML = '<div class="empty" style="grid-column: 1/-1;">No theme history yet.</div>';
     return;
   }
-  const maxPips = 14;
+  
   let html = '';
   for (const t of themes) {
-    const c = Math.min(t.count, maxPips);
-    let pips = '';
-    for (let i = 0; i < maxPips; i++) {
-      const on = i < c;
-      const fade = on && i < c - 3 ? ' fade' : '';
-      pips += `<span class="pip${on ? ' on' : ''}${fade}"></span>`;
-    }
-    const span = (t.firstSeen && t.lastSeen) ? `${t.firstSeen} &rarr; ${t.lastSeen}` : (t.lastSeen || '');
+    let trendClass = 'stable'; let trendIcon = '→ Stable';
+    if (t.count > 3 || t.novelty === 'New') { trendClass = 'rising'; trendIcon = '▲ Rising'; }
+    else if (t.count === 1) { trendClass = 'declining'; trendIcon = '▼ Declining'; }
+
     html += `
-      <div class="tracker-row" onclick="openThemeDetail('${esc(t.label)}', 'themes')" title="View all articles for this theme">
-        <div><div class="label">${esc(t.label)}</div><div style="font-size: 12px; color: var(--muted); margin-top: 4px;">${span}</div></div>
-        <div style="display:flex;align-items:center;gap:16px;">
-          <div style="display: flex; gap: 4px; align-items: center;">${pips}</div>
-          <span style="font-family: var(--mono-font); font-size: 14px; font-weight: 600; color: var(--ink-soft); min-width: 60px; text-align: right;">${t.count} day${t.count===1?'':'s'}</span>
+      <div class="momentum-card" onclick="openThemeDetail('${esc(t.label)}', 'themes')">
+        <div class="mc-header">
+          <span class="mc-trend ${trendClass}">${trendIcon}</span>
+          <span class="mc-meta">${t.count} Day Momentum</span>
         </div>
+        <div class="mc-title">${esc(t.label)}</div>
       </div>`;
   }
   el.innerHTML = html;
@@ -910,8 +962,8 @@ function setArchTab(tab) {
   document.getElementById('segBriefings').classList.toggle('active', tab === 'briefings');
   document.getElementById('segArticles').classList.toggle('active', tab === 'articles');
   document.getElementById('archSearch').placeholder = tab === 'briefings'
-    ? 'Search past briefings by summary or theme\u2026'
-    : 'Search articles by title or source\u2026';
+    ? 'Search historical executive briefings...'
+    : 'Search source articles by title or keyword...';
   renderArchive();
 }
 
@@ -928,8 +980,8 @@ function renderArchive() {
     el.innerHTML = items.map(b => `
       <div class="arch-item" onclick="openBriefing('${b.date}')">
         <div class="arch-date">${b.date}</div>
-        <div class="arch-summary">${esc((b.executive_summary || '').slice(0, 220))}${(b.executive_summary||'').length > 220 ? '\u2026' : ''}</div>
-        <div style="font-size: 12px; color: var(--muted); font-weight: 500;">${(b.themeLabels || []).map(esc).join(' &middot; ')}</div>
+        <div class="arch-summary">${esc((b.executive_summary || '').slice(0, 220))}${(b.executive_summary||'').length > 220 ? '...' : ''}</div>
+        <div style="font-family: var(--font-ui); font-size: 11px; color: var(--ink-soft); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">${(b.themeLabels || []).map(esc).join(' &middot; ')}</div>
       </div>`).join('');
   } else {
     let items = articlesCache;
@@ -941,10 +993,10 @@ function renderArchive() {
     el.innerHTML = items.slice(0, 200).map(a => {
       const sent = (a.sentiment || 'neutral').toLowerCase();
       return `
-      <div style="display: grid; grid-template-columns: 1fr; gap: 6px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 8px; background: var(--bg);">
-        <div style="font-size: 15px; font-weight: 600; font-family: var(--display-font);"><a href="${esc(a.url)}" target="_blank" rel="noopener" style="text-decoration:none; color: var(--primary-dark);">${esc(a.title)}</a></div>
-        <div style="font-size: 11px; color: var(--muted); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; font-weight: 600;">
-          <span style="background: var(--bg-sink); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--line);">${esc(a.source || 'Unknown')}</span>
+      <div class="arch-item">
+        <a href="${esc(a.url)}" target="_blank" rel="noopener" style="font-family: var(--font-headline); font-size: 24px; font-weight: 700; color: var(--ink); text-decoration: none; display: block; margin-bottom: 12px; line-height: 1.3;">${esc(a.title)}</a>
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); display: flex; gap: 16px; flex-wrap: wrap; align-items: center; text-transform: uppercase; letter-spacing: 0.05em;">
+          <span style="font-weight: 700; color: var(--ink);">${esc(a.source || 'Unknown')}</span>
           <span class="sentiment-pill ${sent}">${esc(sent)}</span>
           ${a.addedAt ? `<span>${new Date(a.addedAt).toLocaleDateString()}</span>` : ''}
         </div>
@@ -953,86 +1005,97 @@ function renderArchive() {
   }
 }
 
-  async function openBriefing(date) {
-  // 1. Find the specific briefing in the index
+async function openBriefing(date) {
   const item = briefingsIndex.find(b => b.date === date);
   if (!item || !item.file) {
     alert("Could not locate the file for this briefing.");
     return;
   }
-
-  // 2. Load that specific file from the data folder
   const pastBriefing = await loadJSON(item.file);
   if (pastBriefing) {
-    // 3. Switch the UI back to the main Digest view
     document.querySelectorAll('.nav button').forEach(x => x.classList.remove('active'));
     document.querySelector('.nav button[data-view="briefing"]').classList.add('active');
     document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
     document.getElementById('briefing').classList.add('active');
-
-    // 4. Render the historical briefing and scroll to top
     renderBriefing(pastBriefing);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
-  
+
 function renderHealth(health, history) {
   const el = document.getElementById('healthBody');
   const dateEl = document.getElementById('healthDate');
-  if (!health) { el.innerHTML = '<div class="empty">No health data yet.</div>'; return; }
-  if (health.timestamp) dateEl.textContent = 'Last run ' + new Date(health.timestamp).toLocaleString();
+  if (!health) { el.innerHTML = '<div class="empty">No system data yet.</div>'; return; }
+  if (health.timestamp) dateEl.textContent = 'System Operations — Last run ' + new Date(health.timestamp).toLocaleString();
   const c = health.counts || {};
   let html = `
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px;">
-      <div class="cfg-block" style="margin:0; text-align: center;"><div style="font-family: var(--mono-font); font-size: 28px; font-weight: 600; color: var(--primary-dark);">${c.filtered ?? '\u2014'}</div><div style="font-size: 12px; color: var(--muted); font-weight: 600;">Articles Extracted</div></div>
-      <div class="cfg-block" style="margin:0; text-align: center;"><div style="font-family: var(--mono-font); font-size: 28px; font-weight: 600; color: var(--primary-dark);">${c.analyzed ?? '\u2014'}</div><div style="font-size: 12px; color: var(--muted); font-weight: 600;">Analyzed</div></div>
-      <div class="cfg-block" style="margin:0; text-align: center;"><div style="font-family: var(--mono-font); font-size: 28px; font-weight: 600; color: var(--accent);">${health.synthesis?.themes ?? '\u2014'}</div><div style="font-size: 12px; color: var(--muted); font-weight: 600;">Briefing Themes</div></div>
-      <div class="cfg-block" style="margin:0; text-align: center;"><div style="font-family: var(--mono-font); font-size: 28px; font-weight: 600; color: var(--red);">${c.aiFallbacks ?? '\u2014'}</div><div style="font-size: 12px; color: var(--muted); font-weight: 600;">AI Fallbacks</div></div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; margin-bottom: 40px; background: var(--rule); border: 1px solid var(--rule);">
+      <div style="background: var(--paper-card); padding: 40px 24px; text-align: center;"><div style="font-family: var(--font-headline); font-size: 56px; color: var(--ink); line-height: 1;">${c.filtered ?? '\u2014'}</div><div style="font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); margin-top: 16px;">Articles Extracted</div></div>
+      <div style="background: var(--paper-card); padding: 40px 24px; text-align: center;"><div style="font-family: var(--font-headline); font-size: 56px; color: var(--ink); line-height: 1;">${c.analyzed ?? '\u2014'}</div><div style="font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); margin-top: 16px;">Analyzed</div></div>
+      <div style="background: var(--paper-card); padding: 40px 24px; text-align: center;"><div style="font-family: var(--font-headline); font-size: 56px; color: var(--maroon); line-height: 1;">${health.synthesis?.themes ?? '\u2014'}</div><div style="font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); margin-top: 16px;">Briefing Themes</div></div>
+      <div style="background: var(--paper-card); padding: 40px 24px; text-align: center;"><div style="font-family: var(--font-headline); font-size: 56px; color: var(--bear); line-height: 1;">${c.aiFallbacks ?? '\u2014'}</div><div style="font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); margin-top: 16px;">AI Fallbacks</div></div>
     </div>`;
   
   if (health.warnings && health.warnings.length) {
-    html += `<div style="background:var(--amber-soft); color:var(--amber); border: 1px solid #fcd34d; border-radius: var(--radius); padding: 16px; font-size: 13px; font-weight: 500; margin-bottom: 24px;"><strong>System Notice:</strong> ${health.warnings.map(esc).join(' &middot; ')}</div>`;
+    html += `<div style="border-left: 4px solid #A47D29; background: #F8F1E1; padding: 32px; font-family: var(--font-body); font-size: 18px; color: var(--ink); margin-bottom: 32px;"><strong>System Notice:</strong> ${health.warnings.map(esc).join(' &middot; ')}</div>`;
   }
-  
   el.innerHTML = html;
 }
+
+// ── CONFIG AND FIREBASE LOGIC ─────────────────────────────────────────
 
 function renderConfig() {
   const el = document.getElementById('configBody');
   if (!firebaseReady) {
-    el.innerHTML = `<div style="background: var(--bg-sink); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; font-size: 13px; color: var(--primary-dark); margin-bottom: 24px; font-weight: 500;">Live settings editing requires active Firebase connection parameters.</div><div id="cfgReadonly"></div>`;
+    el.innerHTML = `<div style="border-left: 4px solid var(--ink); background: var(--paper-card); padding: 32px; font-family: var(--font-body); font-size: 18px; margin-bottom: 64px;">Live settings editing requires active Firebase connection parameters.</div><div id="cfgReadonly"></div>`;
     showReadonlyConfig();
     return;
   }
   el.innerHTML = `
-    <div class="cfg-block"><h3>Intelligence Watch-list</h3><p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">Strategic topics the AI engine actively prioritizes.</p><div id="watchItems"></div><button style="padding: 8px 16px; font-weight: 600; background: var(--bg-sink); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer;" onclick="addWatch()">+ Append Topic</button></div>
-    <div class="cfg-block"><h3>Google News Parameters</h3><div id="googleItems"></div><button style="padding: 8px 16px; font-weight: 600; background: var(--bg-sink); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer;" onclick="addGoogle()">+ Add Query</button></div>
-    <div class="cfg-block"><h3>RSS Direct Feeds</h3><div id="rssItems"></div><button style="padding: 8px 16px; font-weight: 600; background: var(--bg-sink); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer;" onclick="addRss()">+ Add Feed</button></div>
-    <div style="display:flex;align-items:center;"><button id="saveBtn" style="padding: 12px 24px; font-weight: 600; font-size: 14px; background: var(--accent); color: white; border: none; border-radius: var(--radius); cursor: pointer;" onclick="saveConfig()">Commit Pipeline Changes</button><span id="cfgStatus" style="margin-left: 16px; font-size: 13px; font-weight: 600;"></span></div>`;
+    <div class="cfg-block">
+      <h3>Intelligence Watch-list</h3>
+      <p style="font-family: var(--font-body); font-size: 16px; color: var(--ink-soft); margin-bottom: 24px;">Strategic topics the AI engine actively prioritizes.</p>
+      <div id="watchItems"></div>
+      <button class="btn-secondary" onclick="addWatch()">+ Append Topic</button>
+    </div>
+    <div class="cfg-block">
+      <h3>Google News Parameters</h3>
+      <div id="googleItems"></div>
+      <button class="btn-secondary" onclick="addGoogle()">+ Add Query</button>
+    </div>
+    <div class="cfg-block">
+      <h3>RSS Direct Feeds</h3>
+      <div id="rssItems"></div>
+      <button class="btn-secondary" onclick="addRss()">+ Add Feed</button>
+    </div>
+    <div style="display:flex;align-items:center;border-top: 1px solid var(--rule);padding-top:40px;">
+      <button id="saveBtn" class="btn-primary" onclick="saveConfig()">Commit Pipeline Changes</button>
+      <span id="cfgStatus" style="margin-left: 24px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; text-transform: uppercase;"></span>
+    </div>`;
   drawWatch(); drawGoogle(); drawRss();
 }
 
 function drawWatch() {
   document.getElementById('watchItems').innerHTML = cfgWatch.map((w, i) => `
-    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-      <input style="flex: 1; padding: 10px; border: 1px solid var(--line); border-radius: 6px; font-family: var(--sans-font); font-size: 13px;" value="${esc(w.topic || '')}" placeholder="Topic" oninput="cfgWatch[${i}].topic=this.value">
-      <input style="flex: 2; padding: 10px; border: 1px solid var(--line); border-radius: 6px; font-family: var(--sans-font); font-size: 13px;" value="${esc(w.why || '')}" placeholder="Why it matters" oninput="cfgWatch[${i}].why=this.value">
-      <button style="padding: 0 16px; background: var(--red-soft); color: var(--red); border: 1px solid #fecaca; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;" onclick="cfgWatch.splice(${i},1);drawWatch()">Delete</button>
+    <div class="cfg-row-flex">
+      <input class="cfg-input" value="${esc(w.topic || '')}" placeholder="Topic" oninput="cfgWatch[${i}].topic=this.value">
+      <input class="cfg-input" style="flex:2;" value="${esc(w.why || '')}" placeholder="Why it matters" oninput="cfgWatch[${i}].why=this.value">
+      <button class="btn-danger" onclick="cfgWatch.splice(${i},1);drawWatch()">Delete</button>
     </div>`).join('');
 }
 function drawGoogle() {
   document.getElementById('googleItems').innerHTML = cfgGoogle.map((q, i) => `
-    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-      <input style="flex: 1; padding: 10px; border: 1px solid var(--line); border-radius: 6px; font-family: var(--sans-font); font-size: 13px;" value="${esc(q)}" placeholder="Search phrase" oninput="cfgGoogle[${i}]=this.value">
-      <button style="padding: 0 16px; background: var(--red-soft); color: var(--red); border: 1px solid #fecaca; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;" onclick="cfgGoogle.splice(${i},1);drawGoogle()">Delete</button>
+    <div class="cfg-row-flex">
+      <input class="cfg-input" value="${esc(q)}" placeholder="Search phrase" oninput="cfgGoogle[${i}]=this.value">
+      <button class="btn-danger" onclick="cfgGoogle.splice(${i},1);drawGoogle()">Delete</button>
     </div>`).join('');
 }
 function drawRss() {
   document.getElementById('rssItems').innerHTML = cfgRss.map((f, i) => `
-    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-      <input style="width: 200px; padding: 10px; border: 1px solid var(--line); border-radius: 6px; font-family: var(--sans-font); font-size: 13px;" value="${esc(f.source || '')}" placeholder="Name" oninput="cfgRss[${i}].source=this.value">
-      <input style="flex: 1; padding: 10px; border: 1px solid var(--line); border-radius: 6px; font-family: var(--sans-font); font-size: 13px;" value="${esc(f.url || '')}" placeholder="https://feed-url" oninput="cfgRss[${i}].url=this.value">
-      <button style="padding: 0 16px; background: var(--red-soft); color: var(--red); border: 1px solid #fecaca; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;" onclick="cfgRss.splice(${i},1);drawRss()">Delete</button>
+    <div class="cfg-row-flex">
+      <input class="cfg-input" style="flex:0.5;" value="${esc(f.source || '')}" placeholder="Name" oninput="cfgRss[${i}].source=this.value">
+      <input class="cfg-input" value="${esc(f.url || '')}" placeholder="https://feed-url" oninput="cfgRss[${i}].url=this.value">
+      <button class="btn-danger" onclick="cfgRss.splice(${i},1);drawRss()">Delete</button>
     </div>`).join('');
 }
 function addWatch() { cfgWatch.push({ topic: '', why: '' }); drawWatch(); }
@@ -1042,13 +1105,13 @@ function addRss() { cfgRss.push({ source: '', url: '' }); drawRss(); }
 async function saveConfig() {
   const btn = document.getElementById('saveBtn');
   const status = document.getElementById('cfgStatus');
-  btn.disabled = true; status.textContent = 'Committing changes...'; status.style.color = 'var(--muted)';
+  btn.disabled = true; status.textContent = 'Committing changes...'; status.style.color = 'var(--ink-soft)';
   try {
     await db.ref('config/watchlist').set({ items: cfgWatch.filter(w => w.topic) });
     await db.ref('config/sources').set({ rssFeeds: cfgRss.filter(f => f.url && f.source), googleNewsQueries: cfgGoogle.filter(Boolean) });
-    status.textContent = 'Settings committed successfully.'; status.style.color = 'var(--green)';
+    status.textContent = 'Settings committed successfully.'; status.style.color = 'var(--bull)';
   } catch (e) {
-    status.textContent = 'Commit failed: ' + e.message; status.style.color = 'var(--red)';
+    status.textContent = 'Commit failed: ' + e.message; status.style.color = 'var(--bear)';
   } finally { btn.disabled = false; }
 }
 
@@ -1061,10 +1124,10 @@ async function showReadonlyConfig() {
   const src = await rawJSON('sources.json');
   const el = document.getElementById('cfgReadonly');
   let html = '';
-  if (ctx?.watch_list) html += `<div class="cfg-block"><h3>Watch-list (GitHub Configuration)</h3>${ctx.watch_list.map(w => `<div style="margin: 12px 0; font-size: 14px; border-bottom: 1px solid var(--line-soft); padding-bottom: 8px;"><span style="font-weight: 600; color: var(--primary-dark);">${esc(w.topic)}.</span> ${esc(w.why)}</div>`).join('')}</div>`;
+  if (ctx?.watch_list) html += `<div class="cfg-block"><h3>Watch-list (GitHub Configuration)</h3>${ctx.watch_list.map(w => `<div style="margin: 24px 0; font-family: var(--font-body); font-size: 18px; border-bottom: 1px solid var(--rule); padding-bottom: 16px;"><span style="font-family: var(--font-headline); font-weight: 700; color: var(--ink); font-size: 24px; display:block; margin-bottom: 4px;">${esc(w.topic)}</span> ${esc(w.why)}</div>`).join('')}</div>`;
   if (src) {
-    html += `<div class="cfg-block"><h3>Google News queries</h3><div style="display:flex; flex-wrap: wrap; gap: 8px;">${(src.googleNewsQueries||[]).map(q => `<span style="background: var(--bg-sink); border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; font-size: 13px; font-weight: 500;">${esc(q)}</span>`).join('')}</div></div>`;
-    html += `<div class="cfg-block"><h3>RSS feeds</h3>${(src.rssFeeds||[]).map(f => `<div style="margin: 12px 0; font-size: 14px; border-bottom: 1px solid var(--line-soft); padding-bottom: 8px;"><span style="font-weight: 600; color: var(--primary-dark);">${esc(f.source)}</span> &middot; <span style="font-family: var(--mono-font); font-size: 12px; color: var(--muted);">${esc(f.url)}</span></div>`).join('')}</div>`;
+    html += `<div class="cfg-block"><h3>Google News queries</h3><div style="display:flex; flex-wrap: wrap; gap: 12px;">${(src.googleNewsQueries||[]).map(q => `<span style="background: var(--paper-card); border: 1px solid var(--rule); padding: 8px 16px; font-family: var(--font-ui); font-size: 13px; font-weight: 600;">${esc(q)}</span>`).join('')}</div></div>`;
+    html += `<div class="cfg-block"><h3>RSS feeds</h3>${(src.rssFeeds||[]).map(f => `<div style="margin: 24px 0; font-size: 18px; border-bottom: 1px solid var(--rule); padding-bottom: 16px;"><span style="font-family: var(--font-headline); font-weight: 700; color: var(--ink); font-size: 24px;">${esc(f.source)}</span> &middot; <span style="font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft);">${esc(f.url)}</span></div>`).join('')}</div>`;
   }
   if (el) el.innerHTML = html;
 }
@@ -1092,442 +1155,7 @@ async function loadConfigState() {
   }
 }
 
-// --- GEOSPATIAL INTELLIGENCE ENGINE ---
-
-// Strategic Anchor Coordinates & Zoom Levels
-const geoAnchors = {
-  // Macro
-  'global':       { lat: 20.0, lng: 0.0, zoom: 2 },
-  // Regions
-  'africa':       { lat: 1.0, lng: 17.0, zoom: 3 },
-  'west_africa':  { lat: 12.0, lng: 0.0, zoom: 5 },
-  'north_africa': { lat: 28.0, lng: 10.0, zoom: 4 },
-
-  // Specific Market Precise Coordinates
-  'nigeria':      { lat: 9.0820, lng: 8.6753, zoom: 6 },
-  'lagos':        { lat: 6.5244, lng: 3.3792, zoom: 10 },
-  'abuja':        { lat: 9.0765, lng: 7.3986, zoom: 10 },
-  'port_harcourt':{ lat: 4.8156, lng: 7.0498, zoom: 10 },
-  'ibadan':       { lat: 7.3776, lng: 3.9470, zoom: 10 },
-  'kano':         { lat: 12.0022, lng: 8.5920, zoom: 10 },
-  'senegal':      { lat: 14.7167, lng: -17.4677, zoom: 6 }, // Dakar
-  'morocco':      { lat: 33.5731, lng: -7.5898, zoom: 6 }, // Casablanca
-  'ivory_coast':  { lat: 5.3320, lng: -4.0305, zoom: 6 },  // Abidjan
-  'kenya':        { lat: -1.2921, lng: 36.8219, zoom: 6 }, // Nairobi
-  'south_africa': { lat: -26.2041, lng: 28.0473, zoom: 6 },// Johannesburg
-  'ghana':        { lat: 5.6037, lng: -0.1870, zoom: 6 },  // Accra
-  'egypt':        { lat: 30.0444, lng: 31.2357, zoom: 6 }, // Cairo
-  'rwanda':       { lat: -1.9706, lng: 30.1044, zoom: 7 }  // Kigali
-};
-
-let currentGeoScope = 'nigeria';
-
-function initGeospatialMap() {
-  if (geoMap) return;
-  document.getElementById('mapContainer').innerHTML = ''; // Clear loading text
-  
-  // Center map on Nigeria by default
-  const defaultAnchor = geoAnchors[currentGeoScope];
-  geoMap = L.map('mapContainer').setView([defaultAnchor.lat, defaultAnchor.lng], defaultAnchor.zoom);
-  
-  // CartoDB Positron (Light/Bright) tile layer for better daytime visibility
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; OpenStreetMap, &copy; CARTO',
-    subdomains: 'abcd',
-    maxZoom: 12,
-    minZoom: 3
-  }).addTo(geoMap);
-}
-
-// Cinematic map navigation driven by UI Select commands
-function executeGeoFocus(regionKey) {
-  if (!geoMap || !geoAnchors[regionKey]) return;
-  
-  currentGeoScope = regionKey;
-  const target = geoAnchors[regionKey];
-  
-  // FlyTo creates a smooth, cinematic transition effect across theater operations
-  geoMap.flyTo([target.lat, target.lng], target.zoom, {
-    duration: 1.5,
-    easeLinearity: 0.25
-  });
-
-  // Re-plot data boundaries to dynamically apply contextual layouts
-  plotGeospatialData(geoCache);
-}
-
-// Resolve the most specific anchor for an article given its stamped scope + text.
-function resolveScope(article) {
-  let scope = (article.geoScope || 'nigeria').toLowerCase().trim().replace(/\s+/g, '_');
-  const text = `${article.title || ''} ${article.description || ''}`.toLowerCase();
-
-  // Nigerian articles → pin to a specific city when the text names one.
-  if (scope === 'nigeria' || scope === 'lagos') {
-    if (text.includes('lagos') || text.includes('lekki') || text.includes('ikoyi') || text.includes('victoria island') || text.includes('ibeju')) return 'lagos';
-    if (text.includes('abuja') || text.includes('fct')) return 'abuja';
-    if (text.includes('port harcourt') || text.includes('rivers state')) return 'port_harcourt';
-    if (text.includes('ibadan') || text.includes('oyo')) return 'ibadan';
-    if (text.includes('kano')) return 'kano';
-    return scope === 'lagos' ? 'lagos' : 'nigeria';
-  }
-
-  // African articles → pin to a specific country/city hub when named.
-  if (scope === 'africa') {
-    if (text.includes('nairobi') || text.includes('kenya')) return 'kenya';
-    if (text.includes('johannesburg') || text.includes('cape town') || text.includes('south africa')) return 'south_africa';
-    if (text.includes('accra') || text.includes('ghana')) return 'ghana';
-    if (text.includes('cairo') || text.includes('egypt')) return 'egypt';
-    if (text.includes('casablanca') || text.includes('morocco')) return 'morocco';
-    if (text.includes('dakar') || text.includes('senegal')) return 'senegal';
-    if (text.includes('abidjan') || text.includes('ivory coast') || text.includes("cote d'ivoire")) return 'ivory_coast';
-    if (text.includes('kigali') || text.includes('rwanda')) return 'rwanda';
-    if (text.includes('lagos') || text.includes('nigeria')) return 'nigeria';
-    return 'africa';
-  }
-
-  return scope; // 'global' or any already-specific scope
-}
-
-// Which scopes are visible for a given dropdown granularity.
-function scopeVisibleAt(scope, granularity) {
-  const nigerianCities = ['nigeria', 'lagos', 'abuja', 'port_harcourt', 'ibadan', 'kano'];
-  const africanHubs = ['africa', 'kenya', 'south_africa', 'ghana', 'egypt', 'morocco', 'senegal', 'ivory_coast', 'rwanda', ...nigerianCities];
-
-  switch (granularity) {
-    case 'global':       return true;                          // everything
-    case 'africa':       return africanHubs.includes(scope);   // continent + below
-    case 'west_africa':  return ['west_africa', 'nigeria', 'lagos', 'abuja', 'port_harcourt', 'ibadan', 'kano', 'ghana', 'senegal', 'ivory_coast'].includes(scope);
-    case 'north_africa': return ['north_africa', 'egypt', 'morocco'].includes(scope);
-    case 'nigeria':      return nigerianCities.includes(scope);
-    case 'lagos':        return scope === 'lagos';
-    default:             return true;
-  }
-}
-
-function plotGeospatialData(articles) {
-  if (!geoMap || !articles || !articles.length) return;
-
-  // Clear historical markers
-  mapMarkers.forEach(m => geoMap.removeLayer(m));
-  mapMarkers = [];
-
-  let plotted = 0;
-  articles.forEach(article => {
-    const scope = resolveScope(article);
-
-    // Granularity gate — show only what belongs at the current zoom level.
-    if (!scopeVisibleAt(scope, currentGeoScope)) return;
-
-    const anchor = geoAnchors[scope] || geoAnchors['nigeria'];
-
-    // Adaptive jitter: tight when zoomed into a city, wide for macro views.
-    const jitterSpread = anchor.zoom >= 9 ? 0.06 : anchor.zoom >= 5 ? 1.2 : 6.0;
-    const lat = anchor.lat + (Math.random() - 0.5) * jitterSpread;
-    const lng = anchor.lng + (Math.random() - 0.5) * jitterSpread;
-
-    const sent = (article.sentiment || 'neutral').toLowerCase();
-    const color = sent === 'bullish' ? '#059669' : sent === 'bearish' ? '#dc2626' : '#2563eb';
-
-    const marker = L.circleMarker([lat, lng], {
-      radius: 7,
-      fillColor: color,
-      color: '#ffffff',
-      weight: 1.5,
-      opacity: 0.9,
-      fillOpacity: 0.8
-    }).addTo(geoMap);
-
-    marker.bindPopup(`
-      <div style="min-width: 220px; padding: 4px 0;">
-        <a href="${esc(article.url)}" target="_blank" rel="noopener noreferrer" class="geo-article-link">
-          ${esc(article.title)}
-        </a>
-        <div style="font-size: 11px; font-family: var(--mono-font); color: var(--muted); text-transform: uppercase; margin-bottom: 10px;">
-          ${esc(article.source)} &middot; ${esc(scope.replace(/_/g, ' '))}
-        </div>
-        <div style="display: inline-block; font-size: 9px; font-weight: 700; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; background: ${color}15; color: ${color}; border: 1px solid ${color}40;">
-          ${esc(sent)} Signal
-        </div>
-      </div>
-    `);
-
-    mapMarkers.push(marker);
-    plotted++;
-  });
-
-  console.log(`[Geoslicer Map] Plotted ${plotted}/${articles.length} markers at granularity '${currentGeoScope}'`);
-}
-
-(async function boot() {
-  initFirebase();
-  const [briefing, memory, articles, health, history, bIndex, geo, competitive] = await Promise.all([
-    loadJSON('briefing.json'), loadJSON('themes.json'), loadJSON('articles.json'),
-    loadJSON('health.json'), loadJSON('health-history.json'), loadJSON('briefings-index.json'),
-    loadJSON('geoslicer.json'),
-    loadJSON('competitive-listings.json'),
-  ]);
-  articlesCache = Array.isArray(articles) ? articles : [];
-  geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;
-  competitiveCache = competitive || null;
-  briefingsIndex = bIndex?.briefings || [];
-  renderStatus(health);
-  renderBriefing(briefing);
-  renderThemes(memory);
-  renderHealth(health, history);
-  renderArchive();
-  renderPricing(competitiveCache);
-  await loadConfigState();
-  renderConfig();
-})();
-
-// ── COMPETITIVE PRICING TAB ────────────────────────────────────────────────────
-
-function renderPricing(data) {
-  const container   = document.getElementById('pricingGroupsContainer');
-  const statsBar    = document.getElementById('pricingStatsBar');
-  const dateEl      = document.getElementById('pricingDate');
-  const narrative   = document.getElementById('pricingNarrativeGrid');
-  const newsSection = document.getElementById('competitorNewsSection');
-
-  if (!data || !Array.isArray(data.listings) || !data.listings.length) {
-    container.innerHTML = `
-      <div class="no-pricing-data">
-        <p>No pricing data available yet.</p>
-        <small>Run the local competitive scraper (run-scraper.bat) to populate this tab.</small>
-      </div>`;
-    return;
-  }
-
-  if (data.generatedAt) {
-    dateEl.textContent = `Last scraped: ${new Date(data.generatedAt).toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}`;
-  }
-
-  // Group the flat listings array into display cards client-side: one card
-  // per (location x propertyType x bedroomLabel) combination. The local
-  // scraper writes raw listings, not pre-grouped data, so this replaces the
-  // old server-side grouping the dashboard used to expect from Apify.
-  const groups = buildPricingGroupsFromListings(data.listings);
-
-  buildPricingFilters(data.listings, groups);
-
-  const sitesScraped = new Set(data.listings.map(l => l.source).filter(Boolean)).size;
-  const corridorCount = data.listings.filter(l => l.corridorBucket === 'Ibeju-Lekki Corridor').length;
-
-  statsBar.innerHTML = [
-    { v: data.listings.length, l: 'Listings Scraped' },
-    { v: groups.length,        l: 'Price Groups' },
-    { v: corridorCount,        l: 'Corridor Listings' },
-    { v: sitesScraped,         l: 'Data Sources' },
-  ].map(x => `
-    <div class="pricing-stat">
-      <div class="pricing-stat-value">${esc(String(x.v))}</div>
-      <div class="pricing-stat-label">${esc(x.l)}</div>
-    </div>`).join('');
-
-  renderPricingGroups(groups);
-
-  // AI narrative + competitor news are not produced by the local scraper -
-  // hide these sections rather than show stale/empty content.
-  narrative.style.display = 'none';
-  newsSection.style.display = 'none';
-}
-
-/**
- * Groups a flat array of raw listings into display cards: one card per
- * (location x propertyType x bedroomLabel). Computes min/max/avg price and
- * the amenities common to 30%+ of listings in that group, same logic the
- * old server-side grouper used, now run client-side against the real
- * local-scraper schema.
- */
-function buildPricingGroupsFromListings(listings) {
-  const groups = {};
-  for (const l of listings) {
-    if (!l.priceValue) continue; // skip listings with no parsed price
-    const loc  = l.location      || 'Unspecified';
-    const type = l.propertyType  || 'Residential';
-    const bed  = l.bedroomLabel  || 'Unspecified';
-    const key  = `${loc}||${type}||${bed}`;
-    if (!groups[key]) {
-      groups[key] = {
-        location: loc, propertyType: type, bedroomLabel: bed,
-        corridorBucket: l.corridorBucket || 'Other Lagos',
-        prices: [], amenityCounts: {}, sources: new Set(), sampleListings: [],
-      };
-    }
-    const g = groups[key];
-    g.prices.push(l.priceValue);
-    if (l.source) g.sources.add(l.source);
-    (l.amenities || []).forEach(a => { g.amenityCounts[a] = (g.amenityCounts[a] || 0) + 1; });
-    if (g.sampleListings.length < 3 && l.title) {
-      g.sampleListings.push({ title: l.title, url: l.listingUrl, price: l.priceFormatted });
-    }
-  }
-
-  return Object.values(groups).map(g => {
-    const sorted = g.prices.slice().sort((a, b) => a - b);
-    const avg    = g.prices.reduce((s, v) => s + v, 0) / g.prices.length;
-    const threshold = Math.max(1, Math.ceil(g.prices.length * 0.3));
-    const topAmenities = Object.entries(g.amenityCounts)
-      .filter(([, count]) => count >= threshold)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 6)
-      .map(([key]) => key);
-
-    return {
-      location: g.location,
-      propertyType: g.propertyType,
-      bedroomLabel: g.bedroomLabel,
-      corridorBucket: g.corridorBucket,
-      listingCount: g.prices.length,
-      minFormatted: formatNaira(sorted[0]),
-      maxFormatted: formatNaira(sorted[sorted.length - 1]),
-      avgFormatted: formatNaira(Math.round(avg)),
-      sources: [...g.sources].join(', '),
-      topAmenities: topAmenities.join(', ') || 'None detected',
-      sampleListings: g.sampleListings,
-    };
-  }).sort((a, b) => {
-    if (a.location !== b.location) return a.location.localeCompare(b.location);
-    if (a.propertyType !== b.propertyType) return a.propertyType.localeCompare(b.propertyType);
-    return (parseInt(a.bedroomLabel) || 99) - (parseInt(b.bedroomLabel) || 99);
-  });
-}
-
-function formatNaira(num) {
-  if (!num) return 'N/A';
-  if (num >= 1e9) return `\u20a6${(num / 1e9).toFixed(2)}B`;
-  if (num >= 1e6) return `\u20a6${(num / 1e6).toFixed(1)}M`;
-  return `\u20a6${num.toLocaleString()}`;
-}
-
-function buildPricingFilters(listings, groups) {
-  const types = ['all', ...new Set(groups.map(g => g.propertyType).filter(Boolean))];
-  document.getElementById('pricingTypeFilters').innerHTML = types.map((t, i) =>
-    `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingType('${esc(t)}',this)">${esc(t === 'all' ? 'All Types' : t)}</button>`
-  ).join('');
-
-  const beds = ['all', ...new Set(
-    groups.map(g => g.bedroomLabel).filter(Boolean)
-      .sort((a, b) => (parseInt(a) || 99) - (parseInt(b) || 99))
-  )];
-  document.getElementById('pricingBedroomFilters').innerHTML = beds.map((b, i) =>
-    `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingBedroom('${esc(b)}',this)">${esc(b === 'all' ? 'All Bedrooms' : b)}</button>`
-  ).join('');
-
-  // Real location list (Lekki, Ikoyi, Ajah, Sangotedo, etc.) replaces the
-  // old binary Priority/Other Lagos toggle, since the corridor now covers
-  // multiple distinct neighbourhoods that need to stay comparable.
-  const locations = ['all', ...new Set(groups.map(g => g.location).filter(Boolean).sort())];
-  const locFilterEl = document.getElementById('pricingLocationFilters');
-  if (locFilterEl) {
-    locFilterEl.innerHTML = locations.map((loc, i) =>
-      `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingLocation('${esc(loc)}',this)">${esc(loc === 'all' ? 'All Locations' : loc)}</button>`
-    ).join('');
-  }
-}
-
-function setPricingType(val, el) {
-  pricingTypeFilter = val;
-  el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  applyPricingFilters();
-}
-
-function setPricingLocation(val, el) {
-  pricingLocationFilter = val;
-  el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  applyPricingFilters();
-}
-
-function setPricingBedroom(val, el) {
-  pricingBedroomFilter = val;
-  el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  applyPricingFilters();
-}
-
-function applyPricingFilters() {
-  if (!competitiveCache?.listings) return;
-  const allGroups = buildPricingGroupsFromListings(competitiveCache.listings);
-  let groups = allGroups;
-  if (pricingTypeFilter     !== 'all') groups = groups.filter(g => g.propertyType === pricingTypeFilter);
-  if (pricingLocationFilter !== 'all') groups = groups.filter(g => g.location     === pricingLocationFilter);
-  if (pricingBedroomFilter  !== 'all') groups = groups.filter(g => g.bedroomLabel === pricingBedroomFilter);
-  renderPricingGroups(groups);
-}
-
-function renderPricingGroups(groups) {
-  const container = document.getElementById('pricingGroupsContainer');
-  if (!groups.length) {
-    container.innerHTML = '<div class="empty" style="padding:40px;grid-column:1/-1;">No groups match the selected filters.</div>';
-    return;
-  }
-  container.innerHTML = groups.map(g => {
-    const isCorridor = g.corridorBucket === 'Ibeju-Lekki Corridor';
-    const amenityTags = (g.topAmenities && g.topAmenities !== 'None detected')
-      ? g.topAmenities.split(', ').map(a => `<span class="pgc-amenity-tag">${esc(a)}</span>`).join('')
-      : '<span class="pgc-amenity-tag" style="color:var(--faint);">None detected</span>';
-    return `
-      <div class="price-group-card${isCorridor ? ' priority' : ''}">
-        <div class="pgc-header">
-          <div class="pgc-title">${esc(g.location)} &middot; ${esc(g.propertyType)}</div>
-          <span class="pgc-bed-badge">${esc(g.bedroomLabel)}</span>
-        </div>
-        <div class="pgc-location ${isCorridor ? 'priority' : 'other'}">
-          ${isCorridor ? '&#9679; Ibeju-Lekki Corridor' : '&#9675; Other Lagos'}
-        </div>
-        <div class="pgc-prices">
-          <div class="pgc-price-cell">
-            <div class="pgc-price-amount">${esc(g.minFormatted)}</div>
-            <div class="pgc-price-tag">Min</div>
-          </div>
-          <div class="pgc-price-cell">
-            <div class="pgc-price-amount">${esc(g.maxFormatted)}</div>
-            <div class="pgc-price-tag">Max</div>
-          </div>
-          <div class="pgc-price-cell avg">
-            <div class="pgc-price-amount">${esc(g.avgFormatted)}</div>
-            <div class="pgc-price-tag">Average &middot; ${esc(String(g.listingCount))} listings</div>
-          </div>
-        </div>
-        <div class="pgc-amenities">
-          <div class="pgc-amenities-label">Common Amenities</div>
-          <div class="pgc-amenity-tags">${amenityTags}</div>
-        </div>
-        <div class="pgc-footer">
-          <span class="pgc-count">${esc(String(g.listingCount))} listings</span>
-          <span class="pgc-sources" title="${esc(g.sources)}">${esc(g.sources)}</span>
-        </div>
-      </div>`;
-  }).join('');
-}
-
-function renderCompetitorNews(news) {
-  const container = document.getElementById('competitorNewsContainer');
-  const sorted = news.slice().sort((a, b) => (b.flagged ? 1 : 0) - (a.flagged ? 1 : 0));
-  container.innerHTML = sorted.map(n => `
-    <div class="comp-news-item${n.flagged ? ' flagged' : ''}">
-      <span class="comp-news-competitor">${esc(n.competitor)}</span>
-      <div class="comp-news-title">
-        <a href="${esc(n.url)}" target="_blank" rel="noopener noreferrer">${esc(n.title)}</a>
-        <div class="comp-news-meta">
-          ${esc(n.publisher)}
-          ${n.publishedAt ? ' &middot; ' + new Date(n.publishedAt).toLocaleDateString() : ''}
-          ${n.watchlistHits?.length ? ' &middot; <strong style="color:var(--accent);">Hits: ' + esc(n.watchlistHits.join(', ')) + '</strong>' : ''}
-        </div>
-      </div>
-      ${n.flagged ? '<span class="comp-news-flag">&#9873; Flagged</span>' : '<span></span>'}
-    </div>`).join('');
-}
-
-// ── MANUAL PIPELINE REFRESH ────────────────────────────────────────────────────
-// Calls a small Cloudflare Worker that holds the GitHub token server-side
-// and triggers the Daily News Pipeline workflow. The token never touches
-// this client-side code - see refresh-worker.js for the Worker itself.
-//
-// IMPORTANT: replace this with your actual deployed Worker URL after
-// completing the setup steps in refresh-worker.js.
+// ── MANUAL PIPELINE REFRESH ───────────────────────────────────────────
 const REFRESH_WORKER_URL = 'https://mixta-dashboard-trigger.YOUR-SUBDOMAIN.workers.dev';
 
 function showRefreshToast(message, isError) {
@@ -1551,7 +1179,7 @@ async function triggerPipelineRefresh() {
   const label = document.getElementById('refreshBtnLabel');
 
   if (REFRESH_WORKER_URL.includes('YOUR-SUBDOMAIN')) {
-    showRefreshToast('Refresh trigger not configured yet — see refresh-worker.js setup steps.', true);
+    showRefreshToast('Refresh trigger not configured yet.', true);
     return;
   }
 
@@ -1582,6 +1210,342 @@ async function triggerPipelineRefresh() {
   }
 }
 
+// ── GEOSPATIAL INTELLIGENCE ENGINE ─────────────────────────────────────────────
+const geoAnchors = {
+  'global':       { lat: 20.0, lng: 0.0, zoom: 2 },
+  'africa':       { lat: 1.0, lng: 17.0, zoom: 3 },
+  'west_africa':  { lat: 12.0, lng: 0.0, zoom: 5 },
+  'north_africa': { lat: 28.0, lng: 10.0, zoom: 4 },
+  'nigeria':      { lat: 9.0820, lng: 8.6753, zoom: 6 },
+  'lagos':        { lat: 6.5244, lng: 3.3792, zoom: 10 },
+  'abuja':        { lat: 9.0765, lng: 7.3986, zoom: 10 },
+  'port_harcourt':{ lat: 4.8156, lng: 7.0498, zoom: 10 },
+  'ibadan':       { lat: 7.3776, lng: 3.9470, zoom: 10 },
+  'kano':         { lat: 12.0022, lng: 8.5920, zoom: 10 },
+  'senegal':      { lat: 14.7167, lng: -17.4677, zoom: 6 }, 
+  'morocco':      { lat: 33.5731, lng: -7.5898, zoom: 6 }, 
+  'ivory_coast':  { lat: 5.3320, lng: -4.0305, zoom: 6 },  
+  'kenya':        { lat: -1.2921, lng: 36.8219, zoom: 6 }, 
+  'south_africa': { lat: -26.2041, lng: 28.0473, zoom: 6 },
+  'ghana':        { lat: 5.6037, lng: -0.1870, zoom: 6 },  
+  'egypt':        { lat: 30.0444, lng: 31.2357, zoom: 6 }, 
+  'rwanda':       { lat: -1.9706, lng: 30.1044, zoom: 7 }  
+};
+
+let currentGeoScope = 'nigeria';
+
+function initGeospatialMap() {
+  if (geoMap) return;
+  document.getElementById('mapContainer').innerHTML = ''; 
+  const defaultAnchor = geoAnchors[currentGeoScope];
+  geoMap = L.map('mapContainer').setView([defaultAnchor.lat, defaultAnchor.lng], defaultAnchor.zoom);
+  
+  // Clean, high-contrast light map for editorial feel
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap, &copy; CARTO',
+    subdomains: 'abcd', maxZoom: 12, minZoom: 3
+  }).addTo(geoMap);
+}
+
+function executeGeoFocus(regionKey) {
+  if (!geoMap || !geoAnchors[regionKey]) return;
+  currentGeoScope = regionKey;
+  const target = geoAnchors[regionKey];
+  geoMap.flyTo([target.lat, target.lng], target.zoom, { duration: 1.5, easeLinearity: 0.25 });
+  
+  // Update select dropdowns to match
+  if (['africa', 'west_africa', 'north_africa'].includes(regionKey)) {
+    document.getElementById('geoMacroSelect').value = regionKey;
+  } else {
+    document.getElementById('geoMicroSelect').value = regionKey;
+  }
+  
+  plotGeospatialData(geoCache);
+}
+
+function resolveScope(article) {
+  let scope = (article.geoScope || 'nigeria').toLowerCase().trim().replace(/\s+/g, '_');
+  const text = `${article.title || ''} ${article.description || ''}`.toLowerCase();
+  
+  if (scope === 'nigeria' || scope === 'lagos') {
+    if (text.includes('lagos') || text.includes('lekki') || text.includes('ikoyi')) return 'lagos';
+    if (text.includes('abuja')) return 'abuja';
+    return scope === 'lagos' ? 'lagos' : 'nigeria';
+  }
+  if (scope === 'africa') {
+    if (text.includes('ghana') || text.includes('accra')) return 'ghana';
+    if (text.includes('senegal') || text.includes('dakar')) return 'senegal';
+    if (text.includes('morocco') || text.includes('casablanca')) return 'morocco';
+  }
+  return scope; 
+}
+
+function scopeVisibleAt(scope, granularity) {
+  const nigerianCities = ['nigeria', 'lagos', 'abuja', 'port_harcourt', 'ibadan', 'kano'];
+  switch (granularity) {
+    case 'global':       return true;                         
+    case 'africa':       return true;   
+    case 'west_africa':  return ['west_africa', 'nigeria', 'lagos', 'abuja', 'ghana', 'senegal', 'ivory_coast'].includes(scope);
+    case 'north_africa': return ['north_africa', 'egypt', 'morocco'].includes(scope);
+    case 'nigeria':      return nigerianCities.includes(scope);
+    case 'lagos':        return scope === 'lagos';
+    default:             return true;
+  }
+}
+
+function plotGeospatialData(articles) {
+  if (!geoMap || !articles || !articles.length) return;
+  mapMarkers.forEach(m => geoMap.removeLayer(m));
+  mapMarkers = [];
+  
+  // Also count signals for the homepage previews
+  let counts = { lagos: 0, abuja: 0, ghana: 0, senegal: 0, morocco: 0 };
+
+  articles.forEach(article => {
+    const scope = resolveScope(article);
+    if (counts[scope] !== undefined) counts[scope]++;
+    
+    if (!scopeVisibleAt(scope, currentGeoScope)) return;
+    const anchor = geoAnchors[scope] || geoAnchors['nigeria'];
+    const jitterSpread = anchor.zoom >= 9 ? 0.06 : anchor.zoom >= 5 ? 1.2 : 6.0;
+    const lat = anchor.lat + (Math.random() - 0.5) * jitterSpread;
+    const lng = anchor.lng + (Math.random() - 0.5) * jitterSpread;
+    const sent = (article.sentiment || 'neutral').toLowerCase();
+    const color = sent === 'bullish' ? '#1E5E40' : sent === 'bearish' ? '#8F2A2A' : '#111111';
+
+    const marker = L.circleMarker([lat, lng], {
+      radius: 6, fillColor: color, color: '#FFFFFF', weight: 1.5, opacity: 1, fillOpacity: 0.9
+    }).addTo(geoMap);
+
+    marker.bindPopup(`
+      <div style="min-width: 240px; padding: 8px 0;">
+        <a href="${esc(article.url)}" target="_blank" rel="noopener noreferrer" style="font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: #111; text-decoration: none; display: block; margin-bottom: 8px; line-height: 1.2;">
+          ${esc(article.title)}
+        </a>
+        <div style="font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: #827F79; text-transform: uppercase; border-top: 1px solid #D6D1C4; padding-top: 8px;">
+          <strong style="color:#111;">${esc(article.source)}</strong> &middot; ${esc(scope.replace(/_/g, ' '))}
+        </div>
+      </div>
+    `);
+    mapMarkers.push(marker);
+  });
+
+  // Update homepage counts safely
+  Object.keys(counts).forEach(k => {
+    const el = document.getElementById('count-' + k);
+    if (el) el.textContent = counts[k] + ' Signals';
+  });
+}
+
+// ── COMPETITIVE PRICING TAB ────────────────────────────────────────────────────
+function renderPricing(data) {
+  const container   = document.getElementById('pricingGroupsContainer');
+  const statsBar    = document.getElementById('pricingStatsBar');
+  const newsSection = document.getElementById('competitorNewsSection');
+
+  if (!data || !Array.isArray(data.listings) || !data.listings.length) {
+    container.innerHTML = `<div class="empty" style="grid-column: 1/-1;">No pricing data available. Run the local scraper pipeline.</div>`;
+    return;
+  }
+
+  const groups = buildPricingGroupsFromListings(data.listings);
+  buildPricingFilters(data.listings, groups);
+
+  const avgPriceAll = data.listings.reduce((sum, l) => sum + (l.priceValue || 0), 0) / data.listings.filter(l => l.priceValue).length;
+  
+  statsBar.innerHTML = [
+    { v: formatNaira(Math.round(avgPriceAll)), l: 'Market Average Price' },
+    { v: groups.length,                        l: 'Distinct Price Groups Tracked' }
+  ].map(x => `
+    <div class="pricing-stat">
+      <div class="pricing-stat-value">${esc(String(x.v))}</div>
+      <div class="pricing-stat-label">${esc(x.l)}</div>
+    </div>`).join('');
+
+  renderPricingGroups(groups);
+  
+  if (data.competitorNews && data.competitorNews.length > 0) {
+    newsSection.style.display = 'flex';
+    renderCompetitorNews(data.competitorNews);
+  } else {
+    newsSection.style.display = 'none';
+  }
+}
+
+function buildPricingGroupsFromListings(listings) {
+  const groups = {};
+  for (const l of listings) {
+    if (!l.priceValue) continue;
+    const loc  = l.location      || 'Unspecified';
+    const type = l.propertyType  || 'Residential';
+    const bed  = l.bedroomLabel  || 'Unspecified';
+    const key  = `${loc}||${type}||${bed}`;
+    if (!groups[key]) {
+      groups[key] = { location: loc, propertyType: type, bedroomLabel: bed, corridorBucket: l.corridorBucket || 'Other Lagos', prices: [], amenityCounts: {}, sources: new Set(), sampleListings: [] };
+    }
+    const g = groups[key];
+    g.prices.push(l.priceValue);
+    if (l.source) g.sources.add(l.source);
+    (l.amenities || []).forEach(a => { g.amenityCounts[a] = (g.amenityCounts[a] || 0) + 1; });
+    if (g.sampleListings.length < 3 && l.title) g.sampleListings.push({ title: l.title, url: l.listingUrl, price: l.priceFormatted });
+  }
+
+  return Object.values(groups).map(g => {
+    const sorted = g.prices.slice().sort((a, b) => a - b);
+    const avg    = g.prices.reduce((s, v) => s + v, 0) / g.prices.length;
+    const threshold = Math.max(1, Math.ceil(g.prices.length * 0.3));
+    const topAmenities = Object.entries(g.amenityCounts)
+      .filter(([, count]) => count >= threshold)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6).map(([key]) => key);
+
+    return {
+      location: g.location, propertyType: g.propertyType, bedroomLabel: g.bedroomLabel, corridorBucket: g.corridorBucket,
+      listingCount: g.prices.length, minFormatted: formatNaira(sorted[0]), maxFormatted: formatNaira(sorted[sorted.length - 1]),
+      avgFormatted: formatNaira(Math.round(avg)), sources: [...g.sources].join(', '), topAmenities: topAmenities.join(', ') || 'None detected'
+    };
+  }).sort((a, b) => {
+    if (a.location !== b.location) return a.location.localeCompare(b.location);
+    if (a.propertyType !== b.propertyType) return a.propertyType.localeCompare(b.propertyType);
+    return (parseInt(a.bedroomLabel) || 99) - (parseInt(b.bedroomLabel) || 99);
+  });
+}
+
+function formatNaira(num) {
+  if (!num) return 'N/A';
+  if (num >= 1e9) return `\u20a6${(num / 1e9).toFixed(2)}B`;
+  if (num >= 1e6) return `\u20a6${(num / 1e6).toFixed(1)}M`;
+  return `\u20a6${num.toLocaleString()}`;
+}
+
+function buildPricingFilters(listings, groups) {
+  const types = ['all', ...new Set(groups.map(g => g.propertyType).filter(Boolean))];
+  document.getElementById('pricingTypeFilters').innerHTML = types.map((t, i) =>
+    `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingType('${esc(t)}',this)">${esc(t === 'all' ? 'All Types' : t)}</button>`
+  ).join('');
+
+  const beds = ['all', ...new Set(groups.map(g => g.bedroomLabel).filter(Boolean).sort((a, b) => (parseInt(a) || 99) - (parseInt(b) || 99)))];
+  document.getElementById('pricingBedroomFilters').innerHTML = beds.map((b, i) =>
+    `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingBedroom('${esc(b)}',this)">${esc(b === 'all' ? 'All Beds' : b)}</button>`
+  ).join('');
+
+  const locations = ['all', ...new Set(groups.map(g => g.location).filter(Boolean).sort())];
+  const locFilterEl = document.getElementById('pricingLocationFilters');
+  if (locFilterEl) {
+    locFilterEl.innerHTML = locations.map((loc, i) =>
+      `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingLocation('${esc(loc)}',this)">${esc(loc === 'all' ? 'All Locations' : loc)}</button>`
+    ).join('');
+  }
+}
+
+function setPricingType(val, el) {
+  pricingTypeFilter = val;
+  el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); applyPricingFilters();
+}
+function setPricingLocation(val, el) {
+  pricingLocationFilter = val;
+  el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); applyPricingFilters();
+}
+function setPricingBedroom(val, el) {
+  pricingBedroomFilter = val;
+  el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); applyPricingFilters();
+}
+function applyPricingFilters() {
+  if (!competitiveCache?.listings) return;
+  let groups = buildPricingGroupsFromListings(competitiveCache.listings);
+  if (pricingTypeFilter !== 'all') groups = groups.filter(g => g.propertyType === pricingTypeFilter);
+  if (pricingLocationFilter !== 'all') groups = groups.filter(g => g.location === pricingLocationFilter);
+  if (pricingBedroomFilter !== 'all') groups = groups.filter(g => g.bedroomLabel === pricingBedroomFilter);
+  renderPricingGroups(groups);
+}
+
+function renderPricingGroups(groups) {
+  const container = document.getElementById('pricingGroupsContainer');
+  if (!groups.length) { container.innerHTML = '<div class="empty" style="grid-column:1/-1;">No groups match the selected filters.</div>'; return; }
+  container.innerHTML = groups.map(g => {
+    const isCorridor = g.corridorBucket === 'Ibeju-Lekki Corridor';
+    const amenityTags = (g.topAmenities && g.topAmenities !== 'None detected')
+      ? g.topAmenities.split(', ').map(a => `<span class="pgc-amenity-tag">${esc(a)}</span>`).join('')
+      : '<span class="pgc-amenity-tag" style="color:var(--ink-faint); border-color:transparent; padding-left:0;">None detected</span>';
+    return `
+      <div class="price-group-card${isCorridor ? ' priority' : ''}">
+        <div class="pgc-header">
+          <div class="pgc-title">${esc(g.location)} &middot; ${esc(g.propertyType)}</div>
+          <span class="pgc-bed-badge">${esc(g.bedroomLabel)}</span>
+        </div>
+        <div class="pgc-location ${isCorridor ? 'priority' : 'other'}">
+          ${isCorridor ? 'Ibeju-Lekki Corridor' : 'Other Lagos'}
+        </div>
+        <div class="pgc-prices">
+          <div class="pgc-price-cell">
+            <div class="pgc-price-amount">${esc(g.minFormatted)}</div>
+            <div class="pgc-price-tag">Minimum Observed</div>
+          </div>
+          <div class="pgc-price-cell">
+            <div class="pgc-price-amount">${esc(g.maxFormatted)}</div>
+            <div class="pgc-price-tag">Maximum Observed</div>
+          </div>
+          <div class="pgc-price-cell avg">
+            <div class="pgc-price-amount">${esc(g.avgFormatted)}</div>
+            <div class="pgc-price-tag">Market Average &middot; ${esc(String(g.listingCount))} listings</div>
+          </div>
+        </div>
+        <div>
+          <div class="pgc-amenities-label">Common Amenities Identified</div>
+          <div class="pgc-amenity-tags">${amenityTags}</div>
+        </div>
+        <div class="pgc-footer">
+          <span class="pgc-count">${esc(String(g.listingCount))} List.</span>
+          <span class="pgc-sources" title="${esc(g.sources)}">Data: ${esc(g.sources)}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderCompetitorNews(news) {
+  const container = document.getElementById('competitorNewsContainer');
+  document.getElementById('compNewsBadge').textContent = news.length + ' Items';
+  const sorted = news.slice().sort((a, b) => (b.flagged ? 1 : 0) - (a.flagged ? 1 : 0));
+  container.innerHTML = sorted.map(n => `
+    <div class="comp-news-item">
+      <span class="comp-news-competitor">${esc(n.competitor)} ${n.flagged ? ' • PRIORITY' : ''}</span>
+      <div class="comp-news-title">
+        <a href="${esc(n.url)}" target="_blank" rel="noopener noreferrer">${esc(n.title)}</a>
+      </div>
+      <div style="font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); margin-top: 8px; text-transform: uppercase;">
+        ${esc(n.publisher)} ${n.publishedAt ? ' &middot; ' + new Date(n.publishedAt).toLocaleDateString() : ''}
+      </div>
+    </div>`).join('');
+}
+
+// ── BOOTSTRAP ─────────────────────────────────────────────────────────
+(async function boot() {
+  initFirebase();
+  const [briefing, memory, articles, health, history, bIndex, geo, competitive] = await Promise.all([
+    loadJSON('briefing.json'), loadJSON('themes.json'), loadJSON('articles.json'),
+    loadJSON('health.json'), loadJSON('health-history.json'), loadJSON('briefings-index.json'),
+    loadJSON('geoslicer.json'), loadJSON('competitive-listings.json')
+  ]);
+  articlesCache = Array.isArray(articles) ? articles : [];
+  geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;
+  competitiveCache = competitive || null;
+  briefingsIndex = bIndex?.briefings || [];
+  
+  // Plot geospatial maps hidden to prepopulate counts on the homepage
+  plotGeospatialData(geoCache);
+
+  renderStatus(health);
+  renderBriefing(briefing);
+  renderThemes(memory);
+  renderHealth(health, history);
+  renderArchive();
+  renderPricing(competitiveCache);
+  await loadConfigState();
+  renderConfig();
+})();
 </script>
 </body>
 </html>

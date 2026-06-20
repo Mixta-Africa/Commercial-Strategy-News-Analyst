@@ -1687,7 +1687,7 @@ function renderPricingScatter(allListings) {
 
     svg += `<circle class="scatter-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="${color}" fill-opacity="0.78" stroke="${color}" stroke-width="1"
       onmouseenter="showScatterTooltip(event, ${idx})" onmouseleave="hideScatterTooltip()"
-      onmousemove="moveScatterTooltip(event)" data-listing-idx="${idx}" />`;
+      onmousemove="moveScatterTooltip(event)" onclick="openListingDetail(${idx})" data-listing-idx="${idx}" style="cursor:pointer;" />`;
   });
 
   // Plot Mixta's own entered prices as a distinct star marker on the same
@@ -1717,7 +1717,6 @@ function renderPricingScatter(allListings) {
   window._scatterMixtaEntries = mixtaEntries;
 
   svg += `</svg>`;
-  container.innerHTML = svg;
   window._scatterListings = listings;
 
   const sourcesPresent = [...new Set(listings.map(l => l.source).filter(Boolean))];
@@ -1728,7 +1727,12 @@ function renderPricingScatter(allListings) {
   const mixtaLegend = mixtaEntries.length
     ? `<span class="scatter-legend-item"><span class="scatter-legend-dot" style="background:var(--maroon); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></span>Mixta</span>`
     : '';
-  container.innerHTML += `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>`;
+  // FIX: previously this was `innerHTML = svg` followed by `innerHTML +=`
+  // for the legend - the += form re-reads and re-parses the ENTIRE
+  // existing DOM (including the just-rendered SVG), which is wasteful and
+  // a known source of subtle event-handler bugs. Build the complete
+  // string once and assign innerHTML exactly one time instead.
+  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>`;
 
   if (!document.getElementById('scatterTooltip')) {
     const tt = document.createElement('div');
@@ -1736,6 +1740,26 @@ function renderPricingScatter(allListings) {
     tt.className = 'scatter-tooltip';
     document.body.appendChild(tt);
   }
+}
+
+/**
+ * FIX: this function was accidentally deleted in an earlier edit pass.
+ * Both the scatter plot AND the bar chart call this by name in their
+ * onmouseenter handlers - with it missing, every hover silently threw a
+ * ReferenceError (visible only in the browser console, not on screen),
+ * which is exactly why hovering bars appeared to "do nothing."
+ */
+function showScatterTooltip(evt, idx) {
+  const l = window._scatterListings?.[idx];
+  if (!l) return;
+  const tt = document.getElementById('scatterTooltip');
+  tt.innerHTML = `
+    <span class="tt-title">${esc(l.title || 'Untitled listing')}</span>
+    <span class="tt-price">${esc(l.priceFormatted || formatNaira(l.priceValue))}</span>
+    <div class="tt-meta">${esc(l.source || 'Unknown source')} &middot; ${esc(l.realtorName || 'Realtor not listed')}</div>
+    <div class="tt-meta">${esc(l.location || '')} &middot; ${esc(l.bedroomLabel || '')}</div>`;
+  tt.classList.add('show');
+  moveScatterTooltip(evt);
 }
 
 function showMixtaScatterTooltip(evt, idx) {
@@ -1749,6 +1773,49 @@ function showMixtaScatterTooltip(evt, idx) {
     <div class="tt-meta">${esc(m.location || '')} &middot; ${esc(m.bedroomLabel || '')}</div>`;
   tt.classList.add('show');
   moveScatterTooltip(evt);
+}
+
+/**
+ * Single-listing detail view, opened by clicking any individual bar or
+ * scatter dot. Reuses the same theme-detail section / back-button pattern
+ * as openPriceGroupDetail and openThemeDetail elsewhere on the dashboard,
+ * so the interaction model stays consistent everywhere a "click for more
+ * detail" exists.
+ */
+function openListingDetail(idx) {
+  const l = window._scatterListings?.[idx];
+  const el = document.getElementById('themeDetailBody');
+
+  if (!l) {
+    el.innerHTML = `
+      <button class="detail-back" onclick="returnFromDetail('competition')">&#8592; Back to Pricing</button>
+      <div class="detail-hero"><h1>Listing not found</h1></div>`;
+  } else {
+    const dateStr = l.scrapedAt ? new Date(l.scrapedAt).toLocaleDateString() : '';
+    const amenitiesStr = (l.amenities || []).join(', ');
+    el.innerHTML = `
+      <button class="detail-back" onclick="returnFromDetail('competition')">&#8592; Back to Pricing</button>
+      <div class="detail-hero">
+        <h1>${esc(l.title || 'Untitled listing')}</h1>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <span class="meta-pill">${esc(l.priceFormatted || formatNaira(l.priceValue))}</span>
+          <span class="meta-pill">${esc(l.source || 'Unknown source')}</span>
+          <span class="meta-pill">${esc(l.location || '')}</span>
+          <span class="meta-pill">${esc(l.bedroomLabel || '')}</span>
+        </div>
+      </div>
+      ${l.realtorName && l.realtorName !== 'Not listed' ? `<div class="detail-block"><h3>Realtor / Agent</h3><p>${esc(l.realtorName)}</p></div>` : ''}
+      ${amenitiesStr ? `<div class="detail-block"><h3>Amenities</h3><p>${esc(amenitiesStr)}</p></div>` : ''}
+      ${l.rawLocationText ? `<div class="detail-block"><h3>Listed Location</h3><p>${esc(l.rawLocationText)}</p></div>` : ''}
+      ${dateStr ? `<div class="detail-block"><h3>Scraped</h3><p>${esc(dateStr)}</p></div>` : ''}
+      ${(l.listingUrl || l.url) ? `<div class="detail-block"><h3>Source Listing</h3><p><a href="${esc(l.listingUrl || l.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--maroon);">${esc(l.listingUrl || l.url)}</a></p></div>` : ''}
+    `;
+  }
+
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('theme-detail').classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function moveScatterTooltip(evt) {
@@ -1960,24 +2027,56 @@ function renderPricingBarChart(allListings) {
   const sourceColors = { PropertyPro: '#7A1F2B', PrivateProperty: '#1E5E40', NigerianPropertyCentre: '#A47D29', Jiji: '#535C68' };
   const colorFor = (source) => sourceColors[source] || '#827F79';
 
-  // Layout: each group gets a band wide enough to fit every one of its
-  // individual bars side by side, with small gaps between bars and a
-  // larger gap between groups.
-  const barW = 14, barGap = 3, groupGap = 28;
-  const groupWidths = groupKeys.map(k => groupMap[k].length * (barW + barGap) - barGap);
+  // Bars get WIDER when fewer groups are on screen (e.g. after filtering
+  // down to one location), instead of staying a fixed 14px and leaving the
+  // rest of a now-mostly-empty chart looking sparse and cramped on the
+  // left. Scales between a sensible min and max per-bar width based on how
+  // much horizontal room is actually available for this filtered view.
   const width = container.clientWidth || 900;
   const marginLeft = 70, marginRight = 24, marginTop = 20, marginBottom = 90;
-  const totalGroupsWidth = groupWidths.reduce((s, w) => s + w, 0) + groupGap * (groupKeys.length - 1);
-  const plotW = Math.max(width - marginLeft - marginRight, totalGroupsWidth);
+  const availablePlotW = Math.max(width - marginLeft - marginRight, 300);
+
+  const totalBars = listings.length;
+  const groupGapFraction = 0.35; // portion of width reserved for gaps between groups
+  const barGap = 3;
+
+  // First pass at a natural bar width assuming bars pack tightly; then
+  // check whether that's narrower than what the available width could
+  // support, and widen if so (capped so bars never become absurdly fat).
+  const naturalBarW = 14;
+  const naturalTotalWidth = totalBars * (naturalBarW + barGap) + groupKeys.length * 28;
+  let barW = naturalBarW;
+  if (naturalTotalWidth < availablePlotW) {
+    // Recompute a bar width that fills the available space, distributing
+    // extra room proportionally to bar count rather than just padding gaps,
+    // so bars themselves visibly grow when there's only 1-2 groups on screen.
+    const reservedForGaps = groupKeys.length * 28 + (totalBars - groupKeys.length) * barGap;
+    const widthForBars = availablePlotW - reservedForGaps;
+    barW = Math.min(60, Math.max(naturalBarW, widthForBars / totalBars));
+  }
+
+  const groupWidths = groupKeys.map(k => groupMap[k].length * (barW + barGap) - barGap);
+  const totalGroupsWidth = groupWidths.reduce((s, w) => s + w, 0) + 28 * (groupKeys.length - 1);
+  const plotW = Math.max(availablePlotW, totalGroupsWidth);
   const plotH = 420;
   const svgW = marginLeft + plotW + marginRight;
   const svgH = marginTop + plotH + marginBottom;
   const yScale = (v) => marginTop + plotH - (v / (maxVal * 1.08)) * plotH;
 
-  // If the natural width is narrower than the available plot area, spread
-  // groups out evenly to fill it rather than leaving bars bunched on the left.
+  // FIX: previously `groupKeys.length > 1 ? extraSpace / (groupKeys.length - 1) : 0`
+  // meant a SINGLE filtered group got zero extra spacing and just sat
+  // cramped on the left of an otherwise-empty wide chart. Now: with one
+  // group, center it in the available width instead of dividing by zero
+  // groups-worth of gaps; with multiple groups, distribute extra space
+  // between them as before.
   const extraSpace = Math.max(0, plotW - totalGroupsWidth);
-  const extraGapPerGroup = groupKeys.length > 1 ? extraSpace / (groupKeys.length - 1) : 0;
+  let startX = marginLeft;
+  let extraGapPerGroup = 0;
+  if (groupKeys.length === 1) {
+    startX = marginLeft + extraSpace / 2;
+  } else {
+    extraGapPerGroup = extraSpace / (groupKeys.length - 1);
+  }
 
   let svg = `<svg class="bar-chart-svg" viewBox="0 0 ${svgW} ${svgH}" xmlns="http://www.w3.org/2000/svg">`;
 
@@ -1989,7 +2088,7 @@ function renderPricingBarChart(allListings) {
     svg += `<text class="bar-axis-label" x="${marginLeft - 10}" y="${y + 3}" text-anchor="end">${esc(formatNaira(Math.round(val)))}</text>`;
   }
 
-  let cursorX = marginLeft;
+  let cursorX = startX;
   let barGlobalIdx = 0;
   window._barChartListings = [];
 
@@ -2004,11 +2103,16 @@ function renderPricingBarChart(allListings) {
       const barY = yScale(l.priceValue);
       const barH = (marginTop + plotH) - barY;
       const color = colorFor(l.source);
+      const thisBarIdx = barGlobalIdx;
 
       window._barChartListings.push(l);
-      svg += `<rect class="bar-rect" x="${barX.toFixed(1)}" y="${barY.toFixed(1)}" width="${barW}" height="${barH.toFixed(1)}"
+      // Click a bar -> open a single-listing detail view, same drill-down
+      // pattern used elsewhere on the dashboard (price group / theme
+      // detail), so every individual unit is reachable, not just hoverable.
+      svg += `<rect class="bar-rect" x="${barX.toFixed(1)}" y="${barY.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}"
         fill="${color}" fill-opacity="0.82" stroke="${color}" stroke-width="1"
-        onmouseenter="showScatterTooltip(event, ${barGlobalIdx})" onmouseleave="hideScatterTooltip()" onmousemove="moveScatterTooltip(event)" />`;
+        onmouseenter="showScatterTooltip(event, ${thisBarIdx})" onmouseleave="hideScatterTooltip()" onmousemove="moveScatterTooltip(event)"
+        onclick="openListingDetail(${thisBarIdx})" style="cursor:pointer;" />`;
       barGlobalIdx++;
     });
 
@@ -2025,11 +2129,10 @@ function renderPricingBarChart(allListings) {
         onmouseenter="showBarMixtaTooltip(event, '${esc(m.label)}', ${m.priceValue})" onmouseleave="hideScatterTooltip()" onmousemove="moveScatterTooltip(event)" />`;
     });
 
-    cursorX += groupW + groupGap + extraGapPerGroup;
+    cursorX += groupW + 28 + extraGapPerGroup;
   });
 
   svg += `</svg>`;
-  container.innerHTML = svg;
   window._scatterListings = window._barChartListings; // reuse showScatterTooltip, which reads window._scatterListings
 
   const sourcesPresent = [...new Set(listings.map(l => l.source).filter(Boolean))];
@@ -2040,7 +2143,9 @@ function renderPricingBarChart(allListings) {
   const mixtaLegend = mixtaEntries.length
     ? `<span class="scatter-legend-item"><span class="scatter-legend-dot" style="background:var(--maroon); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></span>Mixta</span>`
     : '';
-  container.innerHTML += `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>`;
+  // FIX: single innerHTML assignment instead of the = then += pattern,
+  // which was destroying and re-parsing the whole SVG a second time.
+  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>`;
 
   if (!document.getElementById('scatterTooltip')) {
     const tt = document.createElement('div');

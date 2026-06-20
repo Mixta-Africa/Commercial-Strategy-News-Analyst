@@ -336,6 +336,9 @@ button, select, input { font-family: inherit; }
 .bar-rect { transition: opacity 0.12s ease; cursor: pointer; }
 .bar-rect:hover { opacity: 0.8; }
 .bar-mixta-marker { cursor: pointer; }
+.bar-mixta-legend-swatch { background: var(--maroon-dark); border: 1px solid #fff; box-shadow: 0 0 0 1px var(--maroon-dark); }
+.bar-mixta-badge { pointer-events: none; }
+.bar-rect.bar-mixta { filter: drop-shadow(0 1px 2px rgba(82,19,28,0.3)); }
 .bar-axis-label { font-family: var(--font-mono); font-size: 9.5px; fill: var(--ink-faint); }
 .bar-group-label { font-family: var(--font-ui); font-size: 10.5px; font-weight: 600; fill: var(--ink-soft); }
 .bar-gridline { stroke: var(--rule); stroke-width: 1; }
@@ -454,23 +457,128 @@ button, select, input { font-family: inherit; }
 .refresh-toast.error { background: var(--bear); color: #fff; }
 
 /* ════════════════════════════════════════════════════════════════════════
-   RESPONSIVE
+   RESPONSIVE — Tablet (≤1024px), Large Phone (≤768px), Small Phone (≤480px)
    ════════════════════════════════════════════════════════════════════════ */
+
+/* ── TABLET ── */
 @media (max-width: 1024px) {
   .hero-story { grid-template-columns: 1fr; }
   .strategic-signals-grid { grid-template-columns: repeat(2, 1fr); }
   .competition-hero { grid-template-columns: 1fr; }
   .masthead-title { font-size: 40px; }
+  .masthead { padding: 32px 24px 20px; }
+  .shell { padding: 0 24px; }
+  .nav-inner { padding: 0 24px; gap: 32px; }
+  .mixta-price-form { grid-template-columns: 1fr 1fr; }
+  .mixta-price-form button { grid-column: 1 / -1; }
 }
+
+/* ── LARGE PHONE ── */
 @media (max-width: 768px) {
   .strategic-signals-grid { grid-template-columns: 1fr; }
   .intelligence-grid { grid-template-columns: 1fr; }
   .pricing-stats-bar { grid-template-columns: 1fr; }
   .pricing-groups { grid-template-columns: 1fr; }
-  .masthead-controls { position: static; margin-top: 24px; justify-content: center; width: 100%; }
+  .masthead-controls { position: static; margin-top: 24px; justify-content: center; width: 100%; flex-wrap: wrap; }
   .cfg-row-flex { flex-direction: column; }
+
+  .masthead-title { font-size: 30px; }
+  .masthead-sub { font-size: 15px; }
+  .shell { padding: 0 18px; }
+  .nav-inner { padding: 0 18px; gap: 22px; justify-content: flex-start; }
+  .nav button { font-size: 12px; padding: 16px 0 13px; }
+
+  .mixta-price-panel { padding: 16px 18px; }
+  .mixta-price-form { grid-template-columns: 1fr; gap: 10px; }
+  .mixta-price-form button { grid-column: 1; }
+  .mixta-price-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .mixta-price-row-actions { align-self: flex-end; }
+
+  .pricing-filter-group { flex-direction: column; gap: 10px; align-items: stretch; }
+  .pricing-filter-label { min-width: 0; }
+  .pricing-view-toggle { width: 100%; }
+  .view-toggle-btn { flex: 1; padding: 9px 8px; font-size: 10px; }
+
+  .detail-hero h1 { font-size: 30px; }
+  .detail-article a { font-size: 18px; }
+  .price-group-card { padding: 24px; }
+  .pgc-title { font-size: 20px; }
+
+  /* SVG charts: shrink fixed margins so more of a narrow screen is usable
+     plotting area instead of being eaten by axis-label space, and shrink
+     the text inside the SVG itself (CSS font-size on the <text> classes
+     applies even though they're SVG, since they're plain HTML-adjacent
+     classes, not vector-locked sizes). */
+  .scatter-axis-label { font-size: 8px; }
+  .scatter-group-label { font-size: 9px; }
+  .bar-axis-label { font-size: 8px; }
+  .bar-group-label { font-size: 9px; }
+  .pricing-scatter-container { padding: 16px; }
+  .scatter-legend { gap: 10px; }
+  .scatter-legend-item { font-size: 9.5px; }
+  #mapContainer { height: 460px; }
+}
+
+/* ── SMALL PHONE ── */
+@media (max-width: 480px) {
+  .masthead-kicker { font-size: 10px; letter-spacing: 0.1em; }
+  .masthead-title { font-size: 24px; }
+  .masthead { padding: 24px 14px 16px; }
+  .shell { padding: 0 14px; }
+  .nav-inner { padding: 0 14px; gap: 16px; }
+  .nav button { font-size: 11px; padding: 14px 0 11px; }
+
+  .hero-title { font-size: 26px; }
+  .hero-excerpt { font-size: 15px; }
+  .hero-meta { flex-wrap: wrap; gap: 12px; }
+  .so-what-text { font-size: 17px; }
+
+  .signal-title { font-size: 17px; }
+  .market-watch-card { min-width: 140px; padding: 16px; }
+  .mw-name { font-size: 18px; }
+
+  .ic-title { font-size: 18px; }
+  .pricing-stat-value { font-size: 36px; }
+  .price-group-card { padding: 18px; }
+  .pgc-prices { gap: 8px; }
+  .pgc-price-amount { font-size: 16px; }
+  .pgc-price-cell.avg .pgc-price-amount { font-size: 22px; }
+
+  .mixta-price-label { font-size: 11px; }
+  .mixta-input { font-size: 12.5px; padding: 9px 10px; }
+
+  .detail-hero h1 { font-size: 24px; }
+  .detail-reco { padding: 24px; }
+  .detail-reco p { font-size: 18px; }
+  .detail-articles-label { margin: 48px 0 0; }
+  .arch-summary { font-size: 18px; }
+  .search { font-size: 18px; }
+
+  /* Charts on a small phone: reduce margins further and let the
+     horizontal-scroll behaviour (already in place via overflow-x: auto
+     on the container) do its job rather than trying to cram everything
+     into ~340px of usable width. */
+  .pricing-scatter-container { padding: 12px; }
+  .scatter-legend-item { font-size: 9px; }
+  .geo-console { flex-direction: column; align-items: stretch; gap: 10px; }
+  .geo-select { width: 100%; }
+  #mapContainer { height: 380px; }
 }
 </style>
+
+<script>
+  // Mobile-aware chart margins: the SVG-building functions read this at
+  // render time so charts on a small screen don't waste ~140px of a
+  // ~340px-wide phone display on fixed axis margins sized for desktop.
+  // Declared here (before the main script block) so it's available to
+  // renderPricingScatter/renderPricingBarChart regardless of load order.
+  window._chartMarginScale = function() {
+    const w = window.innerWidth;
+    if (w <= 480) return { left: 44, right: 12, bottom: 78 };
+    if (w <= 768) return { left: 54, right: 16, bottom: 84 };
+    return { left: 70, right: 24, bottom: 90 };
+  };
+</script>
 </head>
 <body>
 
@@ -1645,8 +1753,9 @@ function renderPricingScatter(allListings) {
   const yMax = maxPrice + pricePad;
 
   const width = container.clientWidth || 900;
-  const marginLeft = 70, marginRight = 24, marginTop = 20, marginBottom = 90;
-  const plotW = Math.max(width - marginLeft - marginRight, groupSet.length * 70);
+  const _m = window._chartMarginScale ? window._chartMarginScale() : { left: 70, right: 24, bottom: 90 };
+  const marginLeft = _m.left, marginRight = _m.right, marginTop = 20, marginBottom = _m.bottom;
+  const plotW = Math.max(width - marginLeft - marginRight, groupSet.length * (window.innerWidth <= 480 ? 50 : 70));
   const plotH = 420;
   const svgW = marginLeft + plotW + marginRight;
   const svgH = marginTop + plotH + marginBottom;
@@ -1759,10 +1868,13 @@ function showScatterTooltip(evt, idx) {
   const l = window._scatterListings?.[idx];
   if (!l) return;
   const tt = document.getElementById('scatterTooltip');
+  const sourceLine = l.isMixta
+    ? `<div class="tt-meta" style="color:var(--maroon-line);">MIXTA AFRICA</div>`
+    : `<div class="tt-meta">${esc(l.source || 'Unknown source')} &middot; ${esc(l.realtorName || 'Realtor not listed')}</div>`;
   tt.innerHTML = `
     <span class="tt-title">${esc(l.title || 'Untitled listing')}</span>
     <span class="tt-price">${esc(l.priceFormatted || formatNaira(l.priceValue))}</span>
-    <div class="tt-meta">${esc(l.source || 'Unknown source')} &middot; ${esc(l.realtorName || 'Realtor not listed')}</div>
+    ${sourceLine}
     <div class="tt-meta">${esc(l.location || '')} &middot; ${esc(l.bedroomLabel || '')}</div>`;
   tt.classList.add('show');
   moveScatterTooltip(evt);
@@ -1810,6 +1922,11 @@ function openListingDetail(idx) {
           <span class="meta-pill">${esc(l.bedroomLabel || '')}</span>
         </div>
       </div>
+      ${l.isMixta ? `<div class="detail-block"><h3>This Is Your Entry</h3><p>Added for direct comparison against the scraped competitive landscape.</p>
+        <div style="margin-top:12px;display:flex;gap:8px;">
+          <button class="mixta-row-btn" onclick="editMixtaPrice('${esc(l.mixtaId)}')">Edit</button>
+          <button class="mixta-row-btn danger" onclick="deleteMixtaPrice('${esc(l.mixtaId)}')">Delete</button>
+        </div></div>` : ''}
       ${l.realtorName && l.realtorName !== 'Not listed' ? `<div class="detail-block"><h3>Realtor / Agent</h3><p>${esc(l.realtorName)}</p></div>` : ''}
       ${amenitiesStr ? `<div class="detail-block"><h3>Amenities</h3><p>${esc(amenitiesStr)}</p></div>` : ''}
       ${l.rawLocationText ? `<div class="detail-block"><h3>Listed Location</h3><p>${esc(l.rawLocationText)}</p></div>` : ''}
@@ -2011,36 +2128,50 @@ function renderPricingBarChart(allListings) {
     if (!groupMap[k]) groupMap[k] = [];
     groupMap[k].push(l);
   });
-  const groupKeys = Object.keys(groupMap).sort((a, b) => {
-    const [locA, bedA] = a.split(' / ');
-    const [locB, bedB] = b.split(' / ');
-    if (locA !== locB) return locA.localeCompare(locB);
-    return (parseInt(bedA) || 99) - (parseInt(bedB) || 99);
-  });
-  // Sort listings WITHIN each group by price, so bars read left-to-right
-  // ascending - much easier to scan than an unordered cluster.
-  groupKeys.forEach(k => groupMap[k].sort((a, b) => a.priceValue - b.priceValue));
-  const groupKeysSetForMixtaCheck = new Set(groupKeys);
 
+  // Mixta entries are now merged directly into each group's listings array
+  // as REAL bars (same width/style as competitor bars, just a distinct
+  // color), rather than a small star overlay. Per explicit correction:
+  // the star-overlay approach made a manually-added price look like it
+  // "didn't plot anything" - a same-sized bar in the cluster is the
+  // correct, visible comparison.
   const mixtaEntries = (window._mixtaPrices || []).filter(m => {
     if (pricingTypeFilter !== 'all' && (m.propertyType || 'Residential') !== pricingTypeFilter) return false;
     if (pricingLocationFilter !== 'all' && m.location !== pricingLocationFilter) return false;
     if (pricingBedroomFilter !== 'all' && m.bedroomLabel !== pricingBedroomFilter) return false;
     return true;
   });
-  // Track which Mixta entries pass the chip filters but STILL can't be
-  // plotted, because no competitor listing in the currently-visible group
-  // set shares that exact location+bedroom combination - a star has
-  // nowhere on the X-axis to attach to. This was happening completely
-  // silently before (e.g. a Mixta entry for "Lakowe / 1 Bedroom" added
-  // while no scraped Lakowe/1-Bedroom listings were in the current
-  // filtered view), which looked like the feature "doing nothing" with
-  // zero feedback.
-  const allPrices = [...listings.map(l => l.priceValue), ...mixtaEntries.map(m => m.priceValue)];
+  mixtaEntries.forEach(m => {
+    const k = `${m.location} / ${m.bedroomLabel}`;
+    if (!groupMap[k]) groupMap[k] = [];
+    // Tagged with isMixta + the original label/source so the bar render,
+    // tooltip, and click-detail all correctly identify it as Mixta's own
+    // entry rather than a scraped competitor listing.
+    groupMap[k].push({
+      title: m.label, priceValue: m.priceValue, priceFormatted: formatNaira(m.priceValue),
+      source: 'Mixta Africa', location: m.location, bedroomLabel: m.bedroomLabel,
+      propertyType: m.propertyType, isMixta: true, mixtaId: m.id,
+    });
+  });
+
+  const groupKeys = Object.keys(groupMap).sort((a, b) => {
+    const [locA, bedA] = a.split(' / ');
+    const [locB, bedB] = b.split(' / ');
+    if (locA !== locB) return locA.localeCompare(locB);
+    return (parseInt(bedA) || 99) - (parseInt(bedB) || 99);
+  });
+  // Sort listings WITHIN each group by price (Mixta entries included, sorted
+  // alongside competitors by their actual price) - so bars read left-to-right
+  // ascending and Mixta's bar lands exactly where its price ranks, not
+  // bolted on at the end.
+  groupKeys.forEach(k => groupMap[k].sort((a, b) => a.priceValue - b.priceValue));
+
+  const allPrices = listings.map(l => l.priceValue).concat(mixtaEntries.map(m => m.priceValue));
   const maxVal = Math.max(...allPrices);
 
   const sourceColors = { PropertyPro: '#7A1F2B', PrivateProperty: '#1E5E40', NigerianPropertyCentre: '#A47D29', Jiji: '#535C68' };
   const colorFor = (source) => sourceColors[source] || '#827F79';
+  const MIXTA_COLOR = 'var(--maroon-dark)'; // CSS var resolved at paint time, intentionally darker/more saturated than any competitor color so it reads as distinct at a glance
 
   // Bars get WIDER when fewer groups are on screen (e.g. after filtering
   // down to one location), instead of staying a fixed 14px and leaving the
@@ -2048,10 +2179,11 @@ function renderPricingBarChart(allListings) {
   // left. Scales between a sensible min and max per-bar width based on how
   // much horizontal room is actually available for this filtered view.
   const width = container.clientWidth || 900;
-  const marginLeft = 70, marginRight = 24, marginTop = 20, marginBottom = 90;
-  const availablePlotW = Math.max(width - marginLeft - marginRight, 300);
+  const _mBar = window._chartMarginScale ? window._chartMarginScale() : { left: 70, right: 24, bottom: 90 };
+  const marginLeft = _mBar.left, marginRight = _mBar.right, marginTop = 20, marginBottom = _mBar.bottom;
+  const availablePlotW = Math.max(width - marginLeft - marginRight, 240);
 
-  const totalBars = listings.length;
+  const totalBars = listings.length + mixtaEntries.length;
   const groupGapFraction = 0.35; // portion of width reserved for gaps between groups
 
   // FIX: barGap used to stay a fixed 3px regardless of how wide bars got.
@@ -2129,32 +2261,38 @@ function renderPricingBarChart(allListings) {
       const barX = cursorX + li * (barW + barGap);
       const barY = yScale(l.priceValue);
       const barH = (marginTop + plotH) - barY;
-      const color = colorFor(l.source);
+      const color = l.isMixta ? MIXTA_COLOR : colorFor(l.source);
       const thisBarIdx = barGlobalIdx;
 
       window._barChartListings.push(l);
       // Click a bar -> open a single-listing detail view, same drill-down
       // pattern used elsewhere on the dashboard (price group / theme
       // detail), so every individual unit is reachable, not just hoverable.
-      svg += `<rect class="bar-rect" x="${barX.toFixed(1)}" y="${barY.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}"
-        fill="${color}" fill-opacity="0.82" stroke="${color}" stroke-width="1"
+      // Mixta bars get a slightly heavier stroke and full opacity so they
+      // read as visually distinct from competitor bars even before
+      // checking the color, plus a small star badge centered near the top
+      // of the bar for unambiguous identification at a glance.
+      const fillOpacity = l.isMixta ? '1' : '0.82';
+      const strokeWidth = l.isMixta ? '2' : '1';
+      svg += `<rect class="bar-rect${l.isMixta ? ' bar-mixta' : ''}" x="${barX.toFixed(1)}" y="${barY.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}"
+        fill="${color}" fill-opacity="${fillOpacity}" stroke="${color}" stroke-width="${strokeWidth}"
         onmouseenter="showScatterTooltip(event, ${thisBarIdx})" onmouseleave="hideScatterTooltip()" onmousemove="moveScatterTooltip(event)"
         onclick="openListingDetail(${thisBarIdx})" style="cursor:pointer;" />`;
+
+      if (l.isMixta) {
+        // Small star badge near the top of Mixta's bar - identification
+        // aid layered ON the real bar, not a substitute for it.
+        const starCx = barX + barW / 2;
+        const starCy = Math.max(barY + 10, marginTop + 10);
+        svg += `<polygon class="bar-mixta-badge" points="${starPath(starCx, starCy, 6, 2.6)}" fill="#fff" stroke="${MIXTA_COLOR}" stroke-width="1" style="pointer-events:none;" />`;
+      }
+
       barGlobalIdx++;
     });
 
     svg += `<text class="bar-group-label" x="${groupCenterX}" y="${marginTop + plotH + 22}" text-anchor="middle">${esc(loc)}</text>`;
     svg += `<text class="bar-axis-label" x="${groupCenterX}" y="${marginTop + plotH + 36}" text-anchor="middle">${esc(bed)}</text>`;
     svg += `<text class="bar-axis-label" x="${groupCenterX}" y="${marginTop + plotH + 50}" text-anchor="middle">${esc(String(groupListings.length))} units</text>`;
-
-    // Overlay Mixta star marker(s) for this exact group, centered above the group's bars.
-    const mixtaForGroup = mixtaEntries.filter(m => `${m.location} / ${m.bedroomLabel}` === k);
-    mixtaForGroup.forEach((m, mi) => {
-      const my = yScale(m.priceValue);
-      const mx = groupCenterX + (mi - (mixtaForGroup.length - 1) / 2) * 16;
-      svg += `<polygon class="bar-mixta-marker" points="${starPath(mx, my, 10, 4.5)}" fill="var(--maroon)" stroke="#fff" stroke-width="1.5"
-        onmouseenter="showBarMixtaTooltip(event, '${esc(m.label)}', ${m.priceValue})" onmouseleave="hideScatterTooltip()" onmousemove="moveScatterTooltip(event)" />`;
-    });
 
     cursorX += groupW + 28 + extraGapPerGroup;
   });
@@ -2168,17 +2306,17 @@ function renderPricingBarChart(allListings) {
       <span class="scatter-legend-dot" style="background:${colorFor(s)};"></span>${esc(s)}
     </span>`).join('');
   const mixtaLegend = mixtaEntries.length
-    ? `<span class="scatter-legend-item"><span class="scatter-legend-dot" style="background:var(--maroon); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></span>Mixta</span>`
-    : '';
-
-  const unmatchedMixta = mixtaEntries.filter(m => !groupKeysSetForMixtaCheck.has(`${m.location} / ${m.bedroomLabel}`));
-  const unmatchedWarning = unmatchedMixta.length
-    ? `<div class="mixta-unmatched-warning">${esc(String(unmatchedMixta.length))} Mixta ${unmatchedMixta.length === 1 ? 'entry' : 'entries'} not shown here - no scraped competitor listings exist for ${unmatchedMixta.map(m => `"${m.location} / ${m.bedroomLabel}"`).join(', ')} under the current filters.</div>`
+    ? `<span class="scatter-legend-item"><span class="scatter-legend-dot bar-mixta-legend-swatch"></span>Mixta (your entries)</span>`
     : '';
 
   // FIX: single innerHTML assignment instead of the = then += pattern,
   // which was destroying and re-parsing the whole SVG a second time.
-  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>${unmatchedWarning}`;
+  // NOTE: the old "unmatched Mixta entry" warning is gone because it's no
+  // longer possible - Mixta entries are now merged directly into groupMap
+  // before rendering, so a filtered-in entry ALWAYS gets its own bar
+  // (creating a new group if no competitor listings exist for that exact
+  // location+bedroom combo), rather than being a star with nowhere to attach.
+  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>`;
 
   if (!document.getElementById('scatterTooltip')) {
     const tt = document.createElement('div');
@@ -2186,16 +2324,6 @@ function renderPricingBarChart(allListings) {
     tt.className = 'scatter-tooltip';
     document.body.appendChild(tt);
   }
-}
-
-function showBarMixtaTooltip(evt, label, priceValue) {
-  const tt = document.getElementById('scatterTooltip');
-  tt.innerHTML = `
-    <span class="tt-title">${esc(label)}</span>
-    <span class="tt-price">${esc(formatNaira(priceValue))}</span>
-    <div class="tt-meta" style="color:var(--maroon-line);">MIXTA AFRICA</div>`;
-  tt.classList.add('show');
-  moveScatterTooltip(evt);
 }
 
 function renderPricingGroups(groups) {

@@ -3,7 +3,7 @@
  * Main Pipeline Orchestrator
  * * Workflow:
  * 1. Collect articles (50-100)
- * 2. Filter by whitelist & location (Cross-checked with historical Google Sheets data)
+ * 2. Filter by whitelist & location (Cross-checked with historical Google Sheets data + Strict 48hr Frame)
  * 3. Store in Google Sheets (Master Backup)
  * 4. AI analysis (professional summaries)
  * 5. Update Google Sheets (Smart Tab Routing)
@@ -99,6 +99,28 @@ class NewsPipeline {
     const filtered = [];
 
     for (const article of rawArticles) {
+      // ─── NEW: STRICT YESTERDAY AND TODAY DATE FILTER ─────────────────────
+      if (article.publishedAt) {
+        try {
+          const pubDate = new Date(article.publishedAt);
+          const today = new Date();
+          const yesterday = new Date();
+          yesterday.setDate(yesterday.getDate() - 1);
+          
+          const pubDateStr = pubDate.toISOString().split('T')[0];
+          const todayStr = today.toISOString().split('T')[0];
+          const yesterdayStr = yesterday.toISOString().split('T')[0];
+          
+          if (pubDateStr !== todayStr && pubDateStr !== yesterdayStr) {
+            console.log(`[PHASE 2] Skipped old article (${pubDateStr}): ${article.title?.substring(0, 50)}`);
+            continue;
+          }
+        } catch (e) {
+          // Allow unparsable variants to flow forward to avoid string matching loss
+        }
+      }
+      // ─────────────────────────────────────────────────────────────────────
+
       const normalizedSource = (article.source || '').toLowerCase().trim();
       const normalizedTitle = (article.title || '').toLowerCase().trim();
       const normalizedUrl = (article.url || '').toLowerCase().trim();

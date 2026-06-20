@@ -99,25 +99,43 @@ class NewsPipeline {
     const filtered = [];
 
     for (const article of rawArticles) {
-      // ─── NEW: STRICT YESTERDAY AND TODAY DATE FILTER ─────────────────────
+      // ─── STRICT YESTERDAY AND TODAY DATE FILTER ──────────────────────────
+      // Per explicit instruction: recency is the most important factor.
+      // Rolling 2-day window (today + yesterday) so a daily run never misses
+      // something published late in the previous cycle, while never reaching
+      // further back than that.
       if (article.publishedAt) {
         try {
           const pubDate = new Date(article.publishedAt);
+          if (isNaN(pubDate.getTime())) throw new Error('Unparseable date');
+
           const today = new Date();
           const yesterday = new Date();
           yesterday.setDate(yesterday.getDate() - 1);
-          
+
           const pubDateStr = pubDate.toISOString().split('T')[0];
           const todayStr = today.toISOString().split('T')[0];
           const yesterdayStr = yesterday.toISOString().split('T')[0];
-          
+
           if (pubDateStr !== todayStr && pubDateStr !== yesterdayStr) {
             console.log(`[PHASE 2] Skipped old article (${pubDateStr}): ${article.title?.substring(0, 50)}`);
             continue;
           }
         } catch (e) {
-          // Allow unparsable variants to flow forward to avoid string matching loss
+          // FIX: this used to swallow the parse error and let the article
+          // through with NO date check at all - the exact leak that was
+          // letting stale articles bypass recency filtering. An article
+          // with a malformed date can't be proven recent, so it's rejected
+          // rather than given the benefit of the doubt.
+          console.log(`[PHASE 2] Skipped (unparseable publishedAt): ${article.title?.substring(0, 50)}`);
+          continue;
         }
+      } else {
+        // No publishedAt at all - same reasoning: can't verify recency, so
+        // it doesn't pass. Stricter than before by design, per instruction
+        // that recency is the most important factor.
+        console.log(`[PHASE 2] Skipped (no publishedAt field): ${article.title?.substring(0, 50)}`);
+        continue;
       }
       // ─────────────────────────────────────────────────────────────────────
 

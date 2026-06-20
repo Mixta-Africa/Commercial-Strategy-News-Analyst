@@ -92,24 +92,13 @@
   .exec { font-family: var(--display-font); font-size: 18px; line-height: 1.7; font-weight: 400; color: var(--primary-dark); letter-spacing: 0; margin: 0 0 20px; }
   
   /* Theme Interactive Cards */
-  .theme-grid-label { font-size: 12px; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.05em; margin: 32px 0 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 8px;}
-  .theme-selector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 32px; }
-  
-  .theme-card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); text-align: left; position: relative; user-select: none; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-  .theme-card:hover { border-color: var(--muted); box-shadow: var(--shadow); transform: translateY(-2px); }
-  .theme-card.active { border-color: var(--accent); background: var(--accent); color: #ffffff; box-shadow: 0 8px 20px rgba(184, 36, 63, 0.2); transform: translateY(-2px); }
-  
-  .theme-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-  .theme-card-title { font-family: var(--display-font); font-size: 17px; font-weight: 700; color: var(--primary-dark); margin: 0; padding-right: 8px; line-height: 1.3;}
-  .theme-card.active .theme-card-title { color: #ffffff; }
-  
-  .theme-card-body { font-size: 13px; color: var(--ink-soft); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0; }
-  .theme-card.active .theme-card-body { color: #fdf2f4; }
-  
-  .theme-meta-pills { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .evidence-filter-row { display: flex; align-items: center; gap: 12px; margin: 32px 0 16px; }
+  .evidence-filter-label { font-size: 12px; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.05em; }
+  .theme-filter-select { font-family: var(--mono-font); font-size: 13px; padding: 7px 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; min-width: 220px; }
+  .theme-filter-select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
   .meta-pill { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.05em; background: var(--bg-sink); color: var(--ink-soft); border: 1px solid var(--line); }
-  .theme-card.active .meta-pill { background: rgba(255,255,255,0.15); color: #ffffff; border-color: rgba(255,255,255,0.2); }
-  
+
   /* Evidence Stream */
   .evidence-panel-header { display: flex; justify-content: space-between; align-items: center; margin: 40px 0 16px; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
   .evidence-title { font-size: 12px; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.05em; }
@@ -199,7 +188,6 @@
   
   @media (max-width: 768px) {
     .terminal-table th:nth-child(1), .terminal-table td:nth-child(1) { display: none; }
-    .theme-selector-grid { grid-template-columns: 1fr; }
     .pricing-narrative-grid { grid-template-columns: 1fr; }
     .pricing-groups { grid-template-columns: 1fr; }
     .pricing-filter-group { flex-direction: column; align-items: flex-start; }
@@ -301,14 +289,11 @@
           </div>
         </div>
 
-        <div>
-          <div class="theme-grid-label">
-            <span>Thematic Intelligence Index</span>
-            <span style="font-weight:600; font-family:var(--mono-font); color:var(--accent); cursor:pointer;" id="clearThemeFilter" onclick="filterEvidenceStream('All')"></span>
-          </div>
-          <div id="themeSelectorGrid" class="theme-selector-grid">
-            <div class="loading">Structuring index...</div>
-          </div>
+        <div class="evidence-filter-row">
+          <label for="themeFilterSelect" class="evidence-filter-label">Filter Evidence Stream by Theme</label>
+          <select id="themeFilterSelect" class="theme-filter-select" onchange="filterEvidenceStream(this.value)">
+            <option value="All">All Themes</option>
+          </select>
         </div>
 
         <div>
@@ -521,12 +506,12 @@ function esc(s) { return (s == null ? '' : String(s)).replace(/[&<>"]/g, c => ({
 function renderBriefing(b) {
   loadedBriefingCache = b;
   const execSummaryContainer = document.getElementById('executiveSummaryContainer');
-  const themeSelectorGrid = document.getElementById('themeSelectorGrid');
+  const themeFilterSelect = document.getElementById('themeFilterSelect');
   const dateEl = document.getElementById('briefingDate');
 
   if (!b || !b.themes || !b.themes.length) {
     execSummaryContainer.innerHTML = '<div class="empty">No active intelligence summary available.</div>';
-    themeSelectorGrid.innerHTML = '';
+    if (themeFilterSelect) themeFilterSelect.innerHTML = '<option value="All">All Themes</option>';
     return;
   }
   
@@ -541,7 +526,7 @@ function renderBriefing(b) {
   });
   execSummaryContainer.innerHTML = execHtml;
 
-  renderThemeCards();
+  renderThemeFilterOptions();
   renderFilteredTable();
 }
 
@@ -637,63 +622,22 @@ function returnFromDetail(originView) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function renderThemeCards() {
-  const themeSelectorGrid = document.getElementById('themeSelectorGrid');
-  const clearButton = document.getElementById('clearThemeFilter');
-  
-  if (!loadedBriefingCache) return;
+function renderThemeFilterOptions() {
+  const select = document.getElementById('themeFilterSelect');
+  if (!loadedBriefingCache || !select) return;
 
-  if (activeGlobalThemeFilter !== "All") {
-    clearButton.textContent = "[ Reset Focus Matrix ]";
-  } else {
-    clearButton.textContent = "";
-  }
-
-  let gridHtml = '';
-  loadedBriefingCache.themes.forEach((t, index) => {
-    const isSelected = activeGlobalThemeFilter === t.label;
-    const nov = (t.novelty || 'established').toLowerCase();
-    const metricsCount = articlesCache.filter(a => {
-      const categoryMatch = (a.category || '').toLowerCase().trim() === t.label.toLowerCase().trim();
-      const catStr = ((a.category || '') + ' ' + (a.trending_topics || '')).toLowerCase();
-      
-      let keywordMapped = false;
-      if (t.label.includes('Financing') && (catStr.includes('financ') || catStr.includes('capital') || catStr.includes('invest'))) keywordMapped = true;
-      if (t.label.includes('Regulatory') && (catStr.includes('policy') || catStr.includes('regulat') || catStr.includes('govern'))) keywordMapped = true;
-      if (t.label.includes('Demand') && (catStr.includes('demand') || catStr.includes('market') || catStr.includes('trend'))) keywordMapped = true;
-      if (t.label.includes('JV') && (catStr.includes('partner') || catStr.includes('jv') || catStr.includes('collaborat'))) keywordMapped = true;
-      if (t.label.includes('Risk') && (catStr.includes('geopolitic') || catStr.includes('risk') || catStr.includes('conflict'))) keywordMapped = true;
-      if (t.label.includes('Creation') && (catStr.includes('infrastructure') || catStr.includes('develop') || catStr.includes('creat'))) keywordMapped = true;
-
-      return categoryMatch || keywordMapped;
-    }).length;
-
-    gridHtml += `
-      <div class="theme-card" onclick="openThemeDetail('${esc(t.label)}', 'briefing')" title="View all articles for this theme">
-        <div class="theme-card-header">
-          <h3 class="theme-card-title">${esc(t.label)}</h3>
-          <span class="sentiment-pill" style="font-family:var(--mono-font); font-size:11px; background:rgba(0,0,0,0.05); color:inherit; border:none; padding:3px 8px;">${metricsCount} Sources</span>
-        </div>
-        <p class="theme-card-body">${esc(t.why_it_matters_to_mixta)}</p>
-        <div class="theme-meta-pills">
-          <span class="meta-pill ${nov}">${esc(nov)}</span>
-          <span class="meta-pill">Confidence: ${esc(t.confidence)}</span>
-          <span class="meta-pill" style="margin-left:auto; font-family:var(--mono-font);">View &rarr;</span>
-        </div>
-      </div>
-    `;
+  const options = ['<option value="All">All Themes</option>'];
+  loadedBriefingCache.themes.forEach(t => {
+    options.push(`<option value="${esc(t.label)}">${esc(t.label)}</option>`);
   });
-
-  themeSelectorGrid.innerHTML = gridHtml;
+  select.innerHTML = options.join('');
+  select.value = activeGlobalThemeFilter;
 }
 
 function filterEvidenceStream(themeLabel) {
-  if (activeGlobalThemeFilter === themeLabel) {
-    activeGlobalThemeFilter = "All";
-  } else {
-    activeGlobalThemeFilter = themeLabel;
-  }
-  renderThemeCards();
+  activeGlobalThemeFilter = themeLabel || 'All';
+  const select = document.getElementById('themeFilterSelect');
+  if (select) select.value = activeGlobalThemeFilter;
   renderFilteredTable();
 }
 

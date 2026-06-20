@@ -330,6 +330,7 @@ button, select, input { font-family: inherit; }
 .mixta-row-btn:hover { color: var(--ink); }
 .mixta-row-btn.danger:hover { color: #fff; background: var(--bear); border-color: var(--bear); }
 .mixta-empty-note { font-family: var(--font-ui); font-size: 12.5px; color: var(--ink-soft); font-style: italic; }
+.mixta-unmatched-warning { margin-top: 12px; padding: 10px 14px; background: var(--maroon-soft); border-left: 3px solid var(--maroon); border-radius: var(--radius); font-family: var(--font-ui); font-size: 12px; color: var(--maroon-dark); }
 
 .bar-chart-svg { display: block; overflow: visible; }
 .bar-rect { transition: opacity 0.12s ease; cursor: pointer; }
@@ -1259,8 +1260,7 @@ async function loadConfigState() {
 }
 
 // ── MANUAL PIPELINE REFRESH ───────────────────────────────────────────
-const REFRESH_WORKER_URL = 'https://mixta-dashboard-trigger.o-olasunkanmi.workers.dev
-';
+const REFRESH_WORKER_URL = 'https://mixta-dashboard-trigger.o-olasunkanmi.workers.dev';
 
 function showRefreshToast(message, isError) {
   const existing = document.querySelector('.refresh-toast');
@@ -1728,12 +1728,17 @@ function renderPricingScatter(allListings) {
   const mixtaLegend = mixtaEntries.length
     ? `<span class="scatter-legend-item"><span class="scatter-legend-dot" style="background:var(--maroon); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></span>Mixta</span>`
     : '';
+  const groupSetForMixtaCheck = new Set(groupSet);
+  const unmatchedMixta = mixtaEntries.filter(m => !groupSetForMixtaCheck.has(`${m.location} / ${m.bedroomLabel}`));
+  const unmatchedWarning = unmatchedMixta.length
+    ? `<div class="mixta-unmatched-warning">${esc(String(unmatchedMixta.length))} Mixta ${unmatchedMixta.length === 1 ? 'entry' : 'entries'} not shown here - no scraped competitor listings exist for ${unmatchedMixta.map(m => `"${m.location} / ${m.bedroomLabel}"`).join(', ')} under the current filters.</div>`
+    : '';
   // FIX: previously this was `innerHTML = svg` followed by `innerHTML +=`
   // for the legend - the += form re-reads and re-parses the ENTIRE
   // existing DOM (including the just-rendered SVG), which is wasteful and
   // a known source of subtle event-handler bugs. Build the complete
   // string once and assign innerHTML exactly one time instead.
-  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>`;
+  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>${unmatchedWarning}`;
 
   if (!document.getElementById('scatterTooltip')) {
     const tt = document.createElement('div');
@@ -2015,6 +2020,7 @@ function renderPricingBarChart(allListings) {
   // Sort listings WITHIN each group by price, so bars read left-to-right
   // ascending - much easier to scan than an unordered cluster.
   groupKeys.forEach(k => groupMap[k].sort((a, b) => a.priceValue - b.priceValue));
+  const groupKeysSetForMixtaCheck = new Set(groupKeys);
 
   const mixtaEntries = (window._mixtaPrices || []).filter(m => {
     if (pricingTypeFilter !== 'all' && (m.propertyType || 'Residential') !== pricingTypeFilter) return false;
@@ -2022,6 +2028,14 @@ function renderPricingBarChart(allListings) {
     if (pricingBedroomFilter !== 'all' && m.bedroomLabel !== pricingBedroomFilter) return false;
     return true;
   });
+  // Track which Mixta entries pass the chip filters but STILL can't be
+  // plotted, because no competitor listing in the currently-visible group
+  // set shares that exact location+bedroom combination - a star has
+  // nowhere on the X-axis to attach to. This was happening completely
+  // silently before (e.g. a Mixta entry for "Lakowe / 1 Bedroom" added
+  // while no scraped Lakowe/1-Bedroom listings were in the current
+  // filtered view), which looked like the feature "doing nothing" with
+  // zero feedback.
   const allPrices = [...listings.map(l => l.priceValue), ...mixtaEntries.map(m => m.priceValue)];
   const maxVal = Math.max(...allPrices);
 
@@ -2039,21 +2053,33 @@ function renderPricingBarChart(allListings) {
 
   const totalBars = listings.length;
   const groupGapFraction = 0.35; // portion of width reserved for gaps between groups
-  const barGap = 3;
 
-  // First pass at a natural bar width assuming bars pack tightly; then
-  // check whether that's narrower than what the available width could
-  // support, and widen if so (capped so bars never become absurdly fat).
+  // FIX: barGap used to stay a fixed 3px regardless of how wide bars got.
+  // When the dynamic-width logic below widens bars up to 60px (e.g. after
+  // filtering down to one location), a flat 3px gap becomes visually
+  // negligible relative to the bar width - bars looked like they were
+  // touching. Gap now scales with bar width (roughly a quarter of it),
+  // with a floor so dense unfiltered views still get a crisp minimum gap.
   const naturalBarW = 14;
-  const naturalTotalWidth = totalBars * (naturalBarW + barGap) + groupKeys.length * 28;
+  const naturalBarGap = 3;
+  const naturalTotalWidth = totalBars * (naturalBarW + naturalBarGap) + groupKeys.length * 28;
+
   let barW = naturalBarW;
+  let barGap = naturalBarGap;
   if (naturalTotalWidth < availablePlotW) {
-    // Recompute a bar width that fills the available space, distributing
-    // extra room proportionally to bar count rather than just padding gaps,
-    // so bars themselves visibly grow when there's only 1-2 groups on screen.
-    const reservedForGaps = groupKeys.length * 28 + (totalBars - groupKeys.length) * barGap;
+    // Recompute a bar width (and proportional gap) that fills the
+    // available space, so bars themselves visibly grow when there's only
+    // 1-2 groups on screen, with the gap growing alongside them.
+    const reservedForGaps = groupKeys.length * 28 + (totalBars - groupKeys.length) * naturalBarGap;
     const widthForBars = availablePlotW - reservedForGaps;
-    barW = Math.min(60, Math.max(naturalBarW, widthForBars / totalBars));
+    const rawBarW = Math.min(60, Math.max(naturalBarW, widthForBars / totalBars));
+    // Solve bar width and gap together: each bar "slot" is (barW + gap),
+    // with gap = barW * 0.25, so slot = barW * 1.25. This keeps the ratio
+    // consistent at any size instead of the gap staying fixed while only
+    // the bar grows.
+    const slotW = (availablePlotW - groupKeys.length * 28) / totalBars;
+    barW = Math.min(60, Math.max(naturalBarW, slotW / 1.25));
+    barGap = Math.max(naturalBarGap, barW * 0.25);
   }
 
   const groupWidths = groupKeys.map(k => groupMap[k].length * (barW + barGap) - barGap);
@@ -2144,9 +2170,15 @@ function renderPricingBarChart(allListings) {
   const mixtaLegend = mixtaEntries.length
     ? `<span class="scatter-legend-item"><span class="scatter-legend-dot" style="background:var(--maroon); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></span>Mixta</span>`
     : '';
+
+  const unmatchedMixta = mixtaEntries.filter(m => !groupKeysSetForMixtaCheck.has(`${m.location} / ${m.bedroomLabel}`));
+  const unmatchedWarning = unmatchedMixta.length
+    ? `<div class="mixta-unmatched-warning">${esc(String(unmatchedMixta.length))} Mixta ${unmatchedMixta.length === 1 ? 'entry' : 'entries'} not shown here - no scraped competitor listings exist for ${unmatchedMixta.map(m => `"${m.location} / ${m.bedroomLabel}"`).join(', ')} under the current filters.</div>`
+    : '';
+
   // FIX: single innerHTML assignment instead of the = then += pattern,
   // which was destroying and re-parsing the whole SVG a second time.
-  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>`;
+  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>${unmatchedWarning}`;
 
   if (!document.getElementById('scatterTooltip')) {
     const tt = document.createElement('div');

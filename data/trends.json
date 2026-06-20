@@ -2,91 +2,91 @@
   "7day": {
     "articleCount": 2,
     "sentimentBreakdown": {
-      "bearish": 1,
+      "neutral": 1,
       "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "property disputes",
+        "topic": "Abuja real estate",
         "count": 1
       },
       {
-        "topic": "Lagos real estate",
+        "topic": "quality and innovation",
         "count": 1
       },
       {
-        "topic": "Tosin Ajayi estate",
+        "topic": "Nigeria property market",
         "count": 1
       },
       {
-        "topic": "Internally Displaced Persons",
+        "topic": "agriculture",
         "count": 1
       },
       {
-        "topic": "World Refugee Day",
+        "topic": "land ownership",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   },
   "30day": {
     "articleCount": 2,
     "sentimentBreakdown": {
-      "bearish": 1,
+      "neutral": 1,
       "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "property disputes",
+        "topic": "Abuja real estate",
         "count": 1
       },
       {
-        "topic": "Lagos real estate",
+        "topic": "quality and innovation",
         "count": 1
       },
       {
-        "topic": "Tosin Ajayi estate",
+        "topic": "Nigeria property market",
         "count": 1
       },
       {
-        "topic": "Internally Displaced Persons",
+        "topic": "agriculture",
         "count": 1
       },
       {
-        "topic": "World Refugee Day",
+        "topic": "land ownership",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   },
   "90day": {
     "articleCount": 2,
     "sentimentBreakdown": {
-      "bearish": 1,
+      "neutral": 1,
       "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "property disputes",
+        "topic": "Abuja real estate",
         "count": 1
       },
       {
-        "topic": "Lagos real estate",
+        "topic": "quality and innovation",
         "count": 1
       },
       {
-        "topic": "Tosin Ajayi estate",
+        "topic": "Nigeria property market",
         "count": 1
       },
       {
-        "topic": "Internally Displaced Persons",
+        "topic": "agriculture",
         "count": 1
       },
       {
-        "topic": "World Refugee Day",
+        "topic": "land ownership",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   }
 }

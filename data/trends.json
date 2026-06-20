@@ -2,94 +2,94 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 10,
-      "neutral": 4,
-      "bearish": 1
+      "bullish": 5,
+      "bearish": 4,
+      "neutral": 6
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
+        "topic": "real estate development",
         "count": 3
       },
       {
-        "topic": "infrastructure development",
+        "topic": "Lagos market",
         "count": 2
       },
       {
-        "topic": "real estate trends",
-        "count": 2
-      },
-      {
-        "topic": "Lagos mainland real estate",
+        "topic": "affordable housing",
         "count": 1
       },
       {
-        "topic": "premium residential and commercial spaces",
+        "topic": "Lagos real estate",
+        "count": 1
+      },
+      {
+        "topic": "rental prices",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 10,
-      "neutral": 4,
-      "bearish": 1
+      "bullish": 5,
+      "bearish": 4,
+      "neutral": 6
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
+        "topic": "real estate development",
         "count": 3
       },
       {
-        "topic": "infrastructure development",
+        "topic": "Lagos market",
         "count": 2
       },
       {
-        "topic": "real estate trends",
-        "count": 2
-      },
-      {
-        "topic": "Lagos mainland real estate",
+        "topic": "affordable housing",
         "count": 1
       },
       {
-        "topic": "premium residential and commercial spaces",
+        "topic": "Lagos real estate",
+        "count": 1
+      },
+      {
+        "topic": "rental prices",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 10,
-      "neutral": 4,
-      "bearish": 1
+      "bullish": 5,
+      "bearish": 4,
+      "neutral": 6
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
+        "topic": "real estate development",
         "count": 3
       },
       {
-        "topic": "infrastructure development",
+        "topic": "Lagos market",
         "count": 2
       },
       {
-        "topic": "real estate trends",
-        "count": 2
-      },
-      {
-        "topic": "Lagos mainland real estate",
+        "topic": "affordable housing",
         "count": 1
       },
       {
-        "topic": "premium residential and commercial spaces",
+        "topic": "Lagos real estate",
+        "count": 1
+      },
+      {
+        "topic": "rental prices",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   }
 }

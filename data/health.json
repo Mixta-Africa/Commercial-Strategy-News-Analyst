@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-20T04:07:52.377Z",
+  "timestamp": "2026-06-20T04:24:15.866Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -18,11 +18,11 @@
       "error": null
     },
     "rss": {
-      "total": 23,
+      "total": 24,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 4,
+          "count": 5,
           "error": null
         },
         "Premium Times": {
@@ -69,7 +69,7 @@
     }
   },
   "counts": {
-    "raw": 177,
+    "raw": 178,
     "filtered": 15,
     "analyzed": 15,
     "aiFallbacks": 0

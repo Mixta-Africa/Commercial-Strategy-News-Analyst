@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 3,
-      "bullish": 11,
+      "bullish": 10,
+      "neutral": 4,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "real estate investment",
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "infrastructure development",
         "count": 2
       },
       {
-        "topic": "Lagos market",
+        "topic": "real estate trends",
         "count": 2
       },
       {
-        "topic": "Lagos real estate",
-        "count": 2
-      },
-      {
-        "topic": "security",
+        "topic": "Lagos mainland real estate",
         "count": 1
       },
       {
-        "topic": "terrorism",
+        "topic": "premium residential and commercial spaces",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 3,
-      "bullish": 11,
+      "bullish": 10,
+      "neutral": 4,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "real estate investment",
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "infrastructure development",
         "count": 2
       },
       {
-        "topic": "Lagos market",
+        "topic": "real estate trends",
         "count": 2
       },
       {
-        "topic": "Lagos real estate",
-        "count": 2
-      },
-      {
-        "topic": "security",
+        "topic": "Lagos mainland real estate",
         "count": 1
       },
       {
-        "topic": "terrorism",
+        "topic": "premium residential and commercial spaces",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 3,
-      "bullish": 11,
+      "bullish": 10,
+      "neutral": 4,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "real estate investment",
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "infrastructure development",
         "count": 2
       },
       {
-        "topic": "Lagos market",
+        "topic": "real estate trends",
         "count": 2
       },
       {
-        "topic": "Lagos real estate",
-        "count": 2
-      },
-      {
-        "topic": "security",
+        "topic": "Lagos mainland real estate",
         "count": 1
       },
       {
-        "topic": "terrorism",
+        "topic": "premium residential and commercial spaces",
         "count": 1
       }
     ],

@@ -331,7 +331,7 @@ button, select, input { font-family: inherit; }
 .mixta-row-btn.danger:hover { color: #fff; background: var(--bear); border-color: var(--bear); }
 .mixta-empty-note { font-family: var(--font-ui); font-size: 12.5px; color: var(--ink-soft); font-style: italic; }
 
-.bar-chart-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.bar-chart-svg { display: block; overflow: visible; }
 .bar-rect { transition: opacity 0.12s ease; cursor: pointer; }
 .bar-rect:hover { opacity: 0.8; }
 .bar-mixta-marker { cursor: pointer; }
@@ -343,8 +343,8 @@ button, select, input { font-family: inherit; }
 .view-toggle-btn:hover { color: var(--ink); }
 .view-toggle-btn.active { background: var(--maroon); color: #fff; }
 
-.pricing-scatter-container { border: 1px solid var(--rule); border-radius: var(--radius); padding: 28px; margin-bottom: 40px; background: var(--paper-card); position: relative; box-shadow: var(--shadow-card); }
-.scatter-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.pricing-scatter-container { border: 1px solid var(--rule); border-radius: var(--radius); padding: 28px; margin-bottom: 40px; background: var(--paper-card); position: relative; box-shadow: var(--shadow-card); overflow-x: auto; }
+.scatter-svg { display: block; overflow: visible; }
 .scatter-dot { cursor: pointer; transition: r 0.12s ease, opacity 0.12s ease; }
 .scatter-dot:hover { r: 7; }
 .scatter-axis-label { font-family: var(--font-mono); font-size: 9.5px; fill: var(--ink-faint); }
@@ -1597,7 +1597,13 @@ function setPricingViewMode(mode) {
   document.getElementById('pricingScatterContainer').style.display = mode === 'scatter' ? 'block' : 'none';
   document.getElementById('pricingBarContainer').style.display = mode === 'bar' ? 'block' : 'none';
   document.getElementById('pricingGroupsContainer').style.display = mode === 'tile' ? 'grid' : 'none';
+  // Re-render on switch rather than relying on a previous render: the bar
+  // chart and scatter plot share window._scatterListings for their hover
+  // tooltips, so switching Bar -> Scatter without re-rendering would leave
+  // the scatter plot's data-listing-idx attributes pointing at the bar
+  // chart's (different) listings array, showing wrong tooltip data on hover.
   if (mode === 'bar' && window._allPricingListings) renderPricingBarChart(window._allPricingListings);
+  if (mode === 'scatter' && window._allPricingListings) renderPricingScatter(window._allPricingListings);
 }
 
 /**
@@ -1903,6 +1909,14 @@ function refreshAllPricingViews() {
  * so it's visually obvious whether Mixta sits above, below, or in line
  * with the competitive average for that exact location/bedroom combo.
  */
+/**
+ * Bar chart: every INDIVIDUAL listing gets its own bar (no averaging),
+ * clustered into location+bedroom groups on the X-axis for comparability -
+ * same grouping the scatter plot uses, just rendered as bars instead of
+ * dots. Color-coded by source site, same palette as the scatter plot.
+ * Mixta star markers overlay at their actual entered price within the
+ * matching group.
+ */
 function renderPricingBarChart(allListings) {
   const container = document.getElementById('pricingBarContainer');
   if (!container) return;
@@ -1922,7 +1936,7 @@ function renderPricingBarChart(allListings) {
   listings.forEach(l => {
     const k = groupKey(l);
     if (!groupMap[k]) groupMap[k] = [];
-    groupMap[k].push(l.priceValue);
+    groupMap[k].push(l);
   });
   const groupKeys = Object.keys(groupMap).sort((a, b) => {
     const [locA, bedA] = a.split(' / ');
@@ -1930,7 +1944,9 @@ function renderPricingBarChart(allListings) {
     if (locA !== locB) return locA.localeCompare(locB);
     return (parseInt(bedA) || 99) - (parseInt(bedB) || 99);
   });
-  const groupAvg = groupKeys.map(k => groupMap[k].reduce((s, v) => s + v, 0) / groupMap[k].length);
+  // Sort listings WITHIN each group by price, so bars read left-to-right
+  // ascending - much easier to scan than an unordered cluster.
+  groupKeys.forEach(k => groupMap[k].sort((a, b) => a.priceValue - b.priceValue));
 
   const mixtaEntries = (window._mixtaPrices || []).filter(m => {
     if (pricingTypeFilter !== 'all' && (m.propertyType || 'Residential') !== pricingTypeFilter) return false;
@@ -1938,18 +1954,30 @@ function renderPricingBarChart(allListings) {
     if (pricingBedroomFilter !== 'all' && m.bedroomLabel !== pricingBedroomFilter) return false;
     return true;
   });
-  const allValuesForScale = [...groupAvg, ...mixtaEntries.map(m => m.priceValue)];
-  const maxVal = Math.max(...allValuesForScale);
+  const allPrices = [...listings.map(l => l.priceValue), ...mixtaEntries.map(m => m.priceValue)];
+  const maxVal = Math.max(...allPrices);
 
+  const sourceColors = { PropertyPro: '#7A1F2B', PrivateProperty: '#1E5E40', NigerianPropertyCentre: '#A47D29', Jiji: '#535C68' };
+  const colorFor = (source) => sourceColors[source] || '#827F79';
+
+  // Layout: each group gets a band wide enough to fit every one of its
+  // individual bars side by side, with small gaps between bars and a
+  // larger gap between groups.
+  const barW = 14, barGap = 3, groupGap = 28;
+  const groupWidths = groupKeys.map(k => groupMap[k].length * (barW + barGap) - barGap);
   const width = container.clientWidth || 900;
   const marginLeft = 70, marginRight = 24, marginTop = 20, marginBottom = 90;
-  const plotW = Math.max(width - marginLeft - marginRight, groupKeys.length * 90);
+  const totalGroupsWidth = groupWidths.reduce((s, w) => s + w, 0) + groupGap * (groupKeys.length - 1);
+  const plotW = Math.max(width - marginLeft - marginRight, totalGroupsWidth);
   const plotH = 420;
   const svgW = marginLeft + plotW + marginRight;
   const svgH = marginTop + plotH + marginBottom;
-  const xStep = plotW / groupKeys.length;
-  const barW = Math.min(xStep * 0.5, 70);
   const yScale = (v) => marginTop + plotH - (v / (maxVal * 1.08)) * plotH;
+
+  // If the natural width is narrower than the available plot area, spread
+  // groups out evenly to fill it rather than leaving bars bunched on the left.
+  const extraSpace = Math.max(0, plotW - totalGroupsWidth);
+  const extraGapPerGroup = groupKeys.length > 1 ? extraSpace / (groupKeys.length - 1) : 0;
 
   let svg = `<svg class="bar-chart-svg" viewBox="0 0 ${svgW} ${svgH}" xmlns="http://www.w3.org/2000/svg">`;
 
@@ -1961,42 +1989,58 @@ function renderPricingBarChart(allListings) {
     svg += `<text class="bar-axis-label" x="${marginLeft - 10}" y="${y + 3}" text-anchor="end">${esc(formatNaira(Math.round(val)))}</text>`;
   }
 
-  groupKeys.forEach((k, i) => {
-    const xCenter = marginLeft + xStep * i + xStep / 2;
+  let cursorX = marginLeft;
+  let barGlobalIdx = 0;
+  window._barChartListings = [];
+
+  groupKeys.forEach((k, gi) => {
+    const groupListings = groupMap[k];
     const [loc, bed] = k.split(' / ');
-    const avg = groupAvg[i];
-    const barY = yScale(avg);
-    const barH = (marginTop + plotH) - barY;
+    const groupW = groupWidths[gi];
+    const groupCenterX = cursorX + groupW / 2;
 
-    svg += `<rect class="bar-rect" x="${(xCenter - barW / 2).toFixed(1)}" y="${barY.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}"
-      fill="var(--maroon-line)" stroke="var(--maroon)" stroke-width="1"
-      onmouseenter="showBarTooltip(event, '${esc(k)}', ${avg}, ${groupMap[k].length})" onmouseleave="hideScatterTooltip()" onmousemove="moveScatterTooltip(event)" />`;
+    groupListings.forEach((l, li) => {
+      const barX = cursorX + li * (barW + barGap);
+      const barY = yScale(l.priceValue);
+      const barH = (marginTop + plotH) - barY;
+      const color = colorFor(l.source);
 
-    svg += `<text class="bar-axis-label" x="${xCenter}" y="${barY - 8}" text-anchor="middle">${esc(formatNaira(Math.round(avg)))}</text>`;
-    svg += `<text class="bar-group-label" x="${xCenter}" y="${marginTop + plotH + 22}" text-anchor="middle">${esc(loc)}</text>`;
-    svg += `<text class="bar-axis-label" x="${xCenter}" y="${marginTop + plotH + 36}" text-anchor="middle">${esc(bed)}</text>`;
+      window._barChartListings.push(l);
+      svg += `<rect class="bar-rect" x="${barX.toFixed(1)}" y="${barY.toFixed(1)}" width="${barW}" height="${barH.toFixed(1)}"
+        fill="${color}" fill-opacity="0.82" stroke="${color}" stroke-width="1"
+        onmouseenter="showScatterTooltip(event, ${barGlobalIdx})" onmouseleave="hideScatterTooltip()" onmousemove="moveScatterTooltip(event)" />`;
+      barGlobalIdx++;
+    });
 
-    // Overlay Mixta star marker(s) for this exact group, if any entries exist for it.
+    svg += `<text class="bar-group-label" x="${groupCenterX}" y="${marginTop + plotH + 22}" text-anchor="middle">${esc(loc)}</text>`;
+    svg += `<text class="bar-axis-label" x="${groupCenterX}" y="${marginTop + plotH + 36}" text-anchor="middle">${esc(bed)}</text>`;
+    svg += `<text class="bar-axis-label" x="${groupCenterX}" y="${marginTop + plotH + 50}" text-anchor="middle">${esc(String(groupListings.length))} units</text>`;
+
+    // Overlay Mixta star marker(s) for this exact group, centered above the group's bars.
     const mixtaForGroup = mixtaEntries.filter(m => `${m.location} / ${m.bedroomLabel}` === k);
     mixtaForGroup.forEach((m, mi) => {
       const my = yScale(m.priceValue);
-      const mx = xCenter + (mi - (mixtaForGroup.length - 1) / 2) * 16;
+      const mx = groupCenterX + (mi - (mixtaForGroup.length - 1) / 2) * 16;
       svg += `<polygon class="bar-mixta-marker" points="${starPath(mx, my, 10, 4.5)}" fill="var(--maroon)" stroke="#fff" stroke-width="1.5"
         onmouseenter="showBarMixtaTooltip(event, '${esc(m.label)}', ${m.priceValue})" onmouseleave="hideScatterTooltip()" onmousemove="moveScatterTooltip(event)" />`;
     });
+
+    cursorX += groupW + groupGap + extraGapPerGroup;
   });
 
   svg += `</svg>`;
   container.innerHTML = svg;
+  window._scatterListings = window._barChartListings; // reuse showScatterTooltip, which reads window._scatterListings
 
+  const sourcesPresent = [...new Set(listings.map(l => l.source).filter(Boolean))];
+  const legendHtml = sourcesPresent.map(s => `
+    <span class="scatter-legend-item">
+      <span class="scatter-legend-dot" style="background:${colorFor(s)};"></span>${esc(s)}
+    </span>`).join('');
   const mixtaLegend = mixtaEntries.length
     ? `<span class="scatter-legend-item"><span class="scatter-legend-dot" style="background:var(--maroon); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></span>Mixta</span>`
     : '';
-  container.innerHTML += `<div class="scatter-legend">
-    <span class="scatter-legend-item"><span class="scatter-legend-dot" style="background:var(--maroon-line);"></span>Market Average</span>
-    ${mixtaLegend}
-    <span class="scatter-legend-item">${esc(String(groupKeys.length))} groups</span>
-  </div>`;
+  container.innerHTML += `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>`;
 
   if (!document.getElementById('scatterTooltip')) {
     const tt = document.createElement('div');
@@ -2004,17 +2048,6 @@ function renderPricingBarChart(allListings) {
     tt.className = 'scatter-tooltip';
     document.body.appendChild(tt);
   }
-}
-
-function showBarTooltip(evt, groupKey, avg, count) {
-  const [loc, bed] = groupKey.split(' / ');
-  const tt = document.getElementById('scatterTooltip');
-  tt.innerHTML = `
-    <span class="tt-title">${esc(loc)} &middot; ${esc(bed)}</span>
-    <span class="tt-price">${esc(formatNaira(Math.round(avg)))} avg</span>
-    <div class="tt-meta">Based on ${esc(String(count))} listing${count === 1 ? '' : 's'}</div>`;
-  tt.classList.add('show');
-  moveScatterTooltip(evt);
 }
 
 function showBarMixtaTooltip(evt, label, priceValue) {

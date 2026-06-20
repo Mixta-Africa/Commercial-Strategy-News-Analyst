@@ -2,94 +2,94 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 5,
-      "bullish": 7,
-      "neutral": 3
+      "neutral": 3,
+      "bullish": 11,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "prices",
-        "count": 14
+        "topic": "real estate investment",
+        "count": 2
       },
       {
-        "topic": "infrastructure",
-        "count": 12
+        "topic": "Lagos market",
+        "count": 2
       },
       {
-        "topic": "trust",
+        "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "security",
         "count": 1
       },
       {
-        "topic": "lifestyle living",
-        "count": 1
-      },
-      {
-        "topic": "premium developments",
+        "topic": "terrorism",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "bullish"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 5,
-      "bullish": 7,
-      "neutral": 3
+      "neutral": 3,
+      "bullish": 11,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "prices",
-        "count": 14
+        "topic": "real estate investment",
+        "count": 2
       },
       {
-        "topic": "infrastructure",
-        "count": 12
+        "topic": "Lagos market",
+        "count": 2
       },
       {
-        "topic": "trust",
+        "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "security",
         "count": 1
       },
       {
-        "topic": "lifestyle living",
-        "count": 1
-      },
-      {
-        "topic": "premium developments",
+        "topic": "terrorism",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "bullish"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 5,
-      "bullish": 7,
-      "neutral": 3
+      "neutral": 3,
+      "bullish": 11,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "prices",
-        "count": 14
+        "topic": "real estate investment",
+        "count": 2
       },
       {
-        "topic": "infrastructure",
-        "count": 12
+        "topic": "Lagos market",
+        "count": 2
       },
       {
-        "topic": "trust",
+        "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "security",
         "count": 1
       },
       {
-        "topic": "lifestyle living",
-        "count": 1
-      },
-      {
-        "topic": "premium developments",
+        "topic": "terrorism",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "bullish"
   }
 }

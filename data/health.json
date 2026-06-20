@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-06-19T11:13:58.796Z",
-  "status": "degraded",
+  "timestamp": "2026-06-20T04:07:52.377Z",
+  "status": "healthy",
   "sources": {
     "gnews": {
       "ok": false,
@@ -9,7 +9,7 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 36,
+      "count": 34,
       "error": null
     },
     "googlenews": {
@@ -18,16 +18,16 @@
       "error": null
     },
     "rss": {
-      "total": 19,
+      "total": 23,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 6,
+          "count": 4,
           "error": null
         },
         "Premium Times": {
           "ok": true,
-          "count": 1,
+          "count": 2,
           "error": null
         },
         "BusinessDay": {
@@ -37,17 +37,17 @@
         },
         "Nairametrics": {
           "ok": true,
-          "count": 1,
+          "count": 2,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 1,
+          "count": 3,
           "error": null
         },
         "The Punch": {
           "ok": true,
-          "count": 0,
+          "count": 2,
           "error": null
         },
         "Estate Intel": {
@@ -69,20 +69,19 @@
     }
   },
   "counts": {
-    "raw": 175,
+    "raw": 177,
     "filtered": 15,
     "analyzed": 15,
     "aiFallbacks": 0
   },
   "synthesis": {
-    "ok": false,
-    "themes": 0
+    "ok": true,
+    "themes": 3
   },
   "email": {
     "sent": true
   },
   "warnings": [
-    "Sources down: GNews (HTTP 429); RSS Estate Intel (HTTP 403)",
-    "Executive briefing failed to generate (digest fell back to article list)."
+    "Sources down: GNews (HTTP 429); RSS Estate Intel (HTTP 403)"
   ]
 }

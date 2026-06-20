@@ -221,6 +221,10 @@ class DataSource {
             source: feed.source,
             publishedAt: item.pubDate?.[0] || new Date().toISOString(),
             trustedSource: true,
+            // FIX: sources.json tags every RSS feed with a "geo" field for
+            // the geoslicer map (same pattern as googleNewsQueries), but
+            // this was never being read here - propagating it now.
+            ...(feed.geo ? { geoScope: feed.geo } : {}),
           }))
           .slice(0, maxPer);
 
@@ -248,14 +252,30 @@ class DataSource {
   async fetchGoogleNews() {
     console.log('[GoogleNews] Fetching query-based feeds...');
 
-    const queries = this.config.googleNewsQueries || [];
+    const queryEntries = this.config.googleNewsQueries || [];
     const maxPer = this.config.settings?.maxPerGoogleQuery || 8;
     const parser = new xml2js.Parser();
     const seen = new Set();
     const allArticles = [];
     let lastError = null;
 
-    for (const query of queries) {
+    for (const entry of queryEntries) {
+      // FIX: sources.json was upgraded so each entry is now an object
+      // { query, geo } (added to tag articles for the geoslicer map),
+      // but this loop was still treating entries as plain strings.
+      // encodeURIComponent(object) silently stringifies to the literal
+      // text "[object Object]", which Google's RSS search interpreted as
+      // a real (nonsense) search term and returned 0 results for every
+      // single query - the exact symptom seen in the run log. Support
+      // both shapes so older plain-string configs still work too.
+      const query = typeof entry === 'string' ? entry : entry?.query;
+      const geo = typeof entry === 'object' ? entry?.geo : undefined;
+
+      if (!query) {
+        console.warn('[GoogleNews] Skipping malformed query entry:', JSON.stringify(entry));
+        continue;
+      }
+
       const url = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-NG&gl=NG&ceid=NG:en`;
       try {
         const response = await axios.get(url, {
@@ -290,6 +310,7 @@ class DataSource {
             source: publisher,
             publishedAt: item.pubDate?.[0] || new Date().toISOString(),
             trustedSource: true, // Forces bypass of standard whitelist gate in index.js
+            ...(geo ? { geoScope: geo } : {}), // Carries the geo tag through for the geoslicer map
           });
           added++;
         }

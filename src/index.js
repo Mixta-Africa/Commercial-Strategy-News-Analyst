@@ -39,8 +39,61 @@ class NewsPipeline {
   }
 
   /**
+   * Reads data/local-articles.json (written by the local news-intake script
+   * running on a residential IP) and returns any entries still marked
+   * processed:false. These get merged into the same rawArticles array as
+   * GNews/NewsAPI/RSS, so they flow through the EXACT same filter -> enrich
+   * -> analyze -> synthesize pipeline as everything else - no special-cased
+   * handling downstream.
+   *
+   * Marks consumed entries processed:true in the in-memory queue
+   * immediately (markLocalIntakeProcessed persists it after a successful
+   * analysis pass, not here) so a mid-run crash can't silently lose track
+   * of what's pending vs already retried.
+   */
+  loadLocalIntakeQueue() {
+    const queuePath = path.join(process.cwd(), 'data', 'local-articles.json');
+    try {
+      const raw = fs.readFileSync(queuePath, 'utf-8');
+      const parsed = JSON.parse(raw);
+      const queue = Array.isArray(parsed.queue) ? parsed.queue : [];
+      const pending = queue.filter(a => a.processed === false);
+      console.log(`[PHASE 1] Local intake queue: ${pending.length} pending of ${queue.length} total entries.`);
+      return { queuePath, fullQueue: queue, pending };
+    } catch (e) {
+      console.log('[PHASE 1] No local intake queue found (data/local-articles.json) - skipping.');
+      return { queuePath, fullQueue: [], pending: [] };
+    }
+  }
+
+  /**
+   * Persist the local intake queue with consumed entries marked processed.
+   * Called after the pipeline has successfully analyzed articles, so a
+   * fatal mid-run error leaves the queue untouched and those articles get
+   * retried on the next run rather than silently lost.
+   */
+  markLocalIntakeProcessed(queuePath, fullQueue, consumedTitles) {
+    try {
+      const consumedSet = new Set(consumedTitles.map(t => (t || '').toLowerCase().trim()));
+      const updated = fullQueue.map(a => {
+        const key = (a.title || '').toLowerCase().trim();
+        return consumedSet.has(key) ? { ...a, processed: true, processedAt: this.timestamp } : a;
+      });
+      const dataDir = path.dirname(queuePath);
+      if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+      fs.writeFileSync(queuePath, JSON.stringify({ generatedAt: new Date().toISOString(), queue: updated }, null, 2));
+      console.log(`[PHASE 8] Marked ${consumedTitles.length} local intake entries as processed.`);
+    } catch (e) {
+      console.warn('[PHASE 8] Could not update local intake queue:', e.message);
+    }
+  }
+
+  /**
    * PHASE 1: Data Collection
    * FIX: Added fetchDirectUrls() to the parallel collection array
+   * FIX: Merges in any pending local-intake articles (GNews/Estate Intel
+   * collected from a residential IP, since GitHub Actions' cloud IP gets
+   * 429/403'd on those sources specifically).
    */
   async collectArticles() {
     console.log('[PHASE 1] Collecting articles from all sources...');
@@ -55,15 +108,24 @@ class NewsPipeline {
           this.datasource.fetchDirectUrls(), // Wired into the main collection phase
         ]);
 
+      const { queuePath, fullQueue, pending } = this.loadLocalIntakeQueue();
+      // Stash these on the instance so PHASE 8 can mark them processed
+      // after a successful run, without threading extra params through
+      // every intermediate method.
+      this._localIntakeQueuePath = queuePath;
+      this._localIntakeFullQueue = fullQueue;
+      this._localIntakeConsumedTitles = pending.map(a => a.title);
+
       const allArticles = [
         ...gNewsArticles,
         ...newsApiArticles,
         ...googleNewsArticles,
         ...rssArticles,
         ...directArticles, // Spread manual injections into the main array
+        ...pending, // Local-intake articles (GNews/Estate Intel from residential IP)
       ];
 
-      console.log(`[PHASE 1] Collected ${allArticles.length} raw articles`);
+      console.log(`[PHASE 1] Collected ${allArticles.length} raw articles (${pending.length} from local intake)`);
       return allArticles;
     } catch (error) {
       console.error('[PHASE 1] Collection error:', error.message);
@@ -494,6 +556,19 @@ class NewsPipeline {
       }
 
       console.log('[PHASE 8] Dashboard data updated');
+
+      // Mark any consumed local-intake articles as processed now that the
+      // run completed successfully (analysis, synthesis, and dashboard
+      // write all happened). If the run had failed earlier, this never
+      // executes, so those articles stay processed:false and get retried
+      // on the next scheduled run instead of being silently lost.
+      if (this._localIntakeConsumedTitles?.length) {
+        this.markLocalIntakeProcessed(
+          this._localIntakeQueuePath,
+          this._localIntakeFullQueue,
+          this._localIntakeConsumedTitles
+        );
+      }
     } catch (error) {
       console.error('[PHASE 8] Dashboard update error:', error.message);
     }

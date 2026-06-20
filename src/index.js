@@ -511,13 +511,15 @@ class NewsPipeline {
       const filtered = await this.filterArticles(rawArticles);
       health.recordCounts({ filtered: filtered.length });
 
+      // ─── AMENDED RETRY & MINIMUM VOLUME THRESHOLD GATE ───────────────────
       if (filtered.length === 0) {
-        console.warn('No new articles passed filtering (all duplicates or irrelevant). Exiting.');
-        health.finalize({ fatal: true });
+        console.warn('[PIPELINE GATE] Zero unique, fresh articles within the target 48-hour frame passed filtering.');
+        console.warn('[PIPELINE GATE] Execution halted naturally to prevent redundant cycles or data fragmentation.');
+        health.finalize({ fatal: false }); // Change from fatal crash to a natural rest cycle
         health.persist();
-        await this.sendOperatorAlert(health);
-        return;
+        return; 
       }
+      // ─────────────────────────────────────────────────────────────────────
 
       await this.storeArticles(filtered);
 
@@ -552,8 +554,15 @@ class NewsPipeline {
       );
       console.log(`[PHASE 6.5] Routing Gate: Withholding ${safeBriefingData.length - localizedBriefingData.length} macro articles from Executive Summary generation.`);
 
-      const briefing = await this.synthesizer.synthesize(localizedBriefingData);
-      health.recordSynthesis(briefing);
+      // ─── DYNAMIC EXECUTIVES SUMMARY ALLOCATION GATE ──────────────────────
+      let briefing = null;
+      if (localizedBriefingData.length > 0) {
+        briefing = await this.synthesizer.synthesize(localizedBriefingData);
+        health.recordSynthesis(briefing);
+      } else {
+        console.log('[PIPELINE GATE] No localized Nigerian signals recorded inside this 48-hour frame. Skipping Executive Summary generation.');
+      }
+      // ─────────────────────────────────────────────────────────────────────
 
       const emailSent = await this.generateAndSendEmail(analyzed, trends, alerts, briefing);
       health.recordEmail(emailSent);

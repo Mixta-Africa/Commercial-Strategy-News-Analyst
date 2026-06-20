@@ -58,6 +58,14 @@
   .status-pill.healthy .status-dot { background: #34d399; }
   .status-pill.degraded .status-dot { background: #fbbf24; }
   .status-pill.failed .status-dot { background: #f87171; }
+  .refresh-trigger-btn { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono-font); font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.3); cursor: pointer; transition: all 0.15s; }
+  .refresh-trigger-btn:hover:not(:disabled) { background: rgba(255,255,255,0.25); }
+  .refresh-trigger-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .refresh-trigger-btn.spinning #refreshBtnIcon { display: inline-block; animation: spin 1s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .refresh-toast { position: fixed; bottom: 24px; right: 24px; background: var(--primary-dark); color: #fff; padding: 14px 20px; border-radius: 8px; font-size: 13px; max-width: 320px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); z-index: 9999; opacity: 0; transform: translateY(10px); transition: all 0.25s; }
+  .refresh-toast.show { opacity: 1; transform: translateY(0); }
+  .refresh-toast.error { background: var(--accent); }
   
   .admin-badge { display: none; background: rgba(0, 0, 0, 0.2); color: #ffffff; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.3); text-transform: uppercase; letter-spacing: 0.05em; margin-left: 12px; }
 
@@ -259,7 +267,10 @@
         <span class="name">Commercial Strategy News Digest Analyst</span>
         <span class="sub">Mixta Africa &bull; Executive Briefing</span>
       </div>
-      <div style="display: flex; align-items: center;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <button id="refreshTriggerBtn" onclick="triggerPipelineRefresh()" class="refresh-trigger-btn" title="Trigger a new pipeline run">
+          <span id="refreshBtnIcon">&#8635;</span> <span id="refreshBtnLabel">Refresh Data</span>
+        </button>
         <span id="statusPill" class="status-pill"><span class="status-dot"></span><span id="statusText">Loading</span></span>
         <span id="adminBadge" class="admin-badge">Admin Mode</span>
       </div>
@@ -359,11 +370,7 @@
         </div>
         <div class="pricing-filter-group">
           <label class="pricing-filter-label">Location</label>
-          <div class="pricing-chip-row">
-            <button class="pricing-chip active" onclick="setPricingLocation('all', this)">All Lagos</button>
-            <button class="pricing-chip" onclick="setPricingLocation('Priority Corridor', this)">Priority Corridor</button>
-            <button class="pricing-chip" onclick="setPricingLocation('Other Lagos', this)">Other Lagos</button>
-          </div>
+          <div id="pricingLocationFilters" class="pricing-chip-row"></div>
         </div>
         <div class="pricing-filter-group">
           <label class="pricing-filter-label">Bedrooms</label>
@@ -458,7 +465,7 @@ let loadedBriefingCache = null;
 let geoMap = null;
 let mapMarkers = [];
 let geoCache = []; // ISOLATED: geoslicer.json data, map-exclusive, never mixed with articlesCache
-let competitiveCache = null; // competitive-briefing.json, pricing tab exclusive
+let competitiveCache = null; // competitive-listings.json (local scraper output), pricing tab exclusive
 let pricingTypeFilter = 'all';
 let pricingLocationFilter = 'all';
 let pricingBedroomFilter = 'all';
@@ -1163,7 +1170,7 @@ function plotGeospatialData(articles) {
     loadJSON('briefing.json'), loadJSON('themes.json'), loadJSON('articles.json'),
     loadJSON('health.json'), loadJSON('health-history.json'), loadJSON('briefings-index.json'),
     loadJSON('geoslicer.json'),
-    loadJSON('competitive-briefing.json'),
+    loadJSON('competitive-listings.json'),
   ]);
   articlesCache = Array.isArray(articles) ? articles : [];
   geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;
@@ -1188,11 +1195,11 @@ function renderPricing(data) {
   const narrative   = document.getElementById('pricingNarrativeGrid');
   const newsSection = document.getElementById('competitorNewsSection');
 
-  if (!data || !data.groupedListings?.length) {
+  if (!data || !Array.isArray(data.listings) || !data.listings.length) {
     container.innerHTML = `
       <div class="no-pricing-data">
         <p>No pricing data available yet.</p>
-        <small>Run the Competitive Intelligence workflow to populate this tab.</small>
+        <small>Run the local competitive scraper (run-scraper.bat) to populate this tab.</small>
       </div>`;
     return;
   }
@@ -1201,38 +1208,105 @@ function renderPricing(data) {
     dateEl.textContent = `Last scraped: ${new Date(data.generatedAt).toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}`;
   }
 
-  buildPricingFilters(data.groupedListings);
+  // Group the flat listings array into display cards client-side: one card
+  // per (location x propertyType x bedroomLabel) combination. The local
+  // scraper writes raw listings, not pre-grouped data, so this replaces the
+  // old server-side grouping the dashboard used to expect from Apify.
+  const groups = buildPricingGroupsFromListings(data.listings);
 
-  const s = data.summary || {};
+  buildPricingFilters(data.listings, groups);
+
+  const sitesScraped = new Set(data.listings.map(l => l.source).filter(Boolean)).size;
+  const corridorCount = data.listings.filter(l => l.corridorBucket === 'Ibeju-Lekki Corridor').length;
+
   statsBar.innerHTML = [
-    { v: s.totalRawListings || 0, l: 'Listings Scraped' },
-    { v: s.totalGroups      || 0, l: 'Price Groups' },
-    { v: s.priorityGroups   || 0, l: 'Priority Corridor' },
-    { v: s.sitesScraped     || 0, l: 'Data Sources' },
-    { v: s.flaggedNews      || 0, l: 'Competitor Alerts' },
+    { v: data.listings.length, l: 'Listings Scraped' },
+    { v: groups.length,        l: 'Price Groups' },
+    { v: corridorCount,        l: 'Corridor Listings' },
+    { v: sitesScraped,         l: 'Data Sources' },
   ].map(x => `
     <div class="pricing-stat">
       <div class="pricing-stat-value">${esc(String(x.v))}</div>
       <div class="pricing-stat-label">${esc(x.l)}</div>
     </div>`).join('');
 
-  renderPricingGroups(data.groupedListings);
+  renderPricingGroups(groups);
 
-  if (data.priceTrendNarrative || data.competitorBriefing) {
-    narrative.style.display = 'grid';
-    document.getElementById('priceTrendBody').textContent     = data.priceTrendNarrative || 'Not available.';
-    document.getElementById('competitorIntelBody').textContent = data.competitorBriefing  || 'Not available.';
-  }
-
-  const news = data.competitorNews || [];
-  if (news.length) {
-    newsSection.style.display = 'block';
-    document.getElementById('compNewsBadge').textContent = `${news.length} articles`;
-    renderCompetitorNews(news);
-  }
+  // AI narrative + competitor news are not produced by the local scraper -
+  // hide these sections rather than show stale/empty content.
+  narrative.style.display = 'none';
+  newsSection.style.display = 'none';
 }
 
-function buildPricingFilters(groups) {
+/**
+ * Groups a flat array of raw listings into display cards: one card per
+ * (location x propertyType x bedroomLabel). Computes min/max/avg price and
+ * the amenities common to 30%+ of listings in that group, same logic the
+ * old server-side grouper used, now run client-side against the real
+ * local-scraper schema.
+ */
+function buildPricingGroupsFromListings(listings) {
+  const groups = {};
+  for (const l of listings) {
+    if (!l.priceValue) continue; // skip listings with no parsed price
+    const loc  = l.location      || 'Unspecified';
+    const type = l.propertyType  || 'Residential';
+    const bed  = l.bedroomLabel  || 'Unspecified';
+    const key  = `${loc}||${type}||${bed}`;
+    if (!groups[key]) {
+      groups[key] = {
+        location: loc, propertyType: type, bedroomLabel: bed,
+        corridorBucket: l.corridorBucket || 'Other Lagos',
+        prices: [], amenityCounts: {}, sources: new Set(), sampleListings: [],
+      };
+    }
+    const g = groups[key];
+    g.prices.push(l.priceValue);
+    if (l.source) g.sources.add(l.source);
+    (l.amenities || []).forEach(a => { g.amenityCounts[a] = (g.amenityCounts[a] || 0) + 1; });
+    if (g.sampleListings.length < 3 && l.title) {
+      g.sampleListings.push({ title: l.title, url: l.listingUrl, price: l.priceFormatted });
+    }
+  }
+
+  return Object.values(groups).map(g => {
+    const sorted = g.prices.slice().sort((a, b) => a - b);
+    const avg    = g.prices.reduce((s, v) => s + v, 0) / g.prices.length;
+    const threshold = Math.max(1, Math.ceil(g.prices.length * 0.3));
+    const topAmenities = Object.entries(g.amenityCounts)
+      .filter(([, count]) => count >= threshold)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6)
+      .map(([key]) => key);
+
+    return {
+      location: g.location,
+      propertyType: g.propertyType,
+      bedroomLabel: g.bedroomLabel,
+      corridorBucket: g.corridorBucket,
+      listingCount: g.prices.length,
+      minFormatted: formatNaira(sorted[0]),
+      maxFormatted: formatNaira(sorted[sorted.length - 1]),
+      avgFormatted: formatNaira(Math.round(avg)),
+      sources: [...g.sources].join(', '),
+      topAmenities: topAmenities.join(', ') || 'None detected',
+      sampleListings: g.sampleListings,
+    };
+  }).sort((a, b) => {
+    if (a.location !== b.location) return a.location.localeCompare(b.location);
+    if (a.propertyType !== b.propertyType) return a.propertyType.localeCompare(b.propertyType);
+    return (parseInt(a.bedroomLabel) || 99) - (parseInt(b.bedroomLabel) || 99);
+  });
+}
+
+function formatNaira(num) {
+  if (!num) return 'N/A';
+  if (num >= 1e9) return `\u20a6${(num / 1e9).toFixed(2)}B`;
+  if (num >= 1e6) return `\u20a6${(num / 1e6).toFixed(1)}M`;
+  return `\u20a6${num.toLocaleString()}`;
+}
+
+function buildPricingFilters(listings, groups) {
   const types = ['all', ...new Set(groups.map(g => g.propertyType).filter(Boolean))];
   document.getElementById('pricingTypeFilters').innerHTML = types.map((t, i) =>
     `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingType('${esc(t)}',this)">${esc(t === 'all' ? 'All Types' : t)}</button>`
@@ -1245,6 +1319,17 @@ function buildPricingFilters(groups) {
   document.getElementById('pricingBedroomFilters').innerHTML = beds.map((b, i) =>
     `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingBedroom('${esc(b)}',this)">${esc(b === 'all' ? 'All Bedrooms' : b)}</button>`
   ).join('');
+
+  // Real location list (Lekki, Ikoyi, Ajah, Sangotedo, etc.) replaces the
+  // old binary Priority/Other Lagos toggle, since the corridor now covers
+  // multiple distinct neighbourhoods that need to stay comparable.
+  const locations = ['all', ...new Set(groups.map(g => g.location).filter(Boolean).sort())];
+  const locFilterEl = document.getElementById('pricingLocationFilters');
+  if (locFilterEl) {
+    locFilterEl.innerHTML = locations.map((loc, i) =>
+      `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingLocation('${esc(loc)}',this)">${esc(loc === 'all' ? 'All Locations' : loc)}</button>`
+    ).join('');
+  }
 }
 
 function setPricingType(val, el) {
@@ -1269,11 +1354,12 @@ function setPricingBedroom(val, el) {
 }
 
 function applyPricingFilters() {
-  if (!competitiveCache?.groupedListings) return;
-  let groups = competitiveCache.groupedListings;
-  if (pricingTypeFilter     !== 'all') groups = groups.filter(g => g.propertyType  === pricingTypeFilter);
-  if (pricingLocationFilter !== 'all') groups = groups.filter(g => g.locationBucket === pricingLocationFilter);
-  if (pricingBedroomFilter  !== 'all') groups = groups.filter(g => g.bedroomLabel   === pricingBedroomFilter);
+  if (!competitiveCache?.listings) return;
+  const allGroups = buildPricingGroupsFromListings(competitiveCache.listings);
+  let groups = allGroups;
+  if (pricingTypeFilter     !== 'all') groups = groups.filter(g => g.propertyType === pricingTypeFilter);
+  if (pricingLocationFilter !== 'all') groups = groups.filter(g => g.location     === pricingLocationFilter);
+  if (pricingBedroomFilter  !== 'all') groups = groups.filter(g => g.bedroomLabel === pricingBedroomFilter);
   renderPricingGroups(groups);
 }
 
@@ -1284,19 +1370,18 @@ function renderPricingGroups(groups) {
     return;
   }
   container.innerHTML = groups.map(g => {
-    const isPriority = g.locationBucket === 'Priority Corridor';
+    const isCorridor = g.corridorBucket === 'Ibeju-Lekki Corridor';
     const amenityTags = (g.topAmenities && g.topAmenities !== 'None detected')
       ? g.topAmenities.split(', ').map(a => `<span class="pgc-amenity-tag">${esc(a)}</span>`).join('')
       : '<span class="pgc-amenity-tag" style="color:var(--faint);">None detected</span>';
     return `
-      <div class="price-group-card${g.flagged ? ' flagged' : ''}${isPriority ? ' priority' : ''}">
-        ${g.flagged ? '<span class="pgc-flag">&#9873; Alert</span>' : ''}
+      <div class="price-group-card${isCorridor ? ' priority' : ''}">
         <div class="pgc-header">
-          <div class="pgc-title">${esc(g.propertyType)}</div>
+          <div class="pgc-title">${esc(g.location)} &middot; ${esc(g.propertyType)}</div>
           <span class="pgc-bed-badge">${esc(g.bedroomLabel)}</span>
         </div>
-        <div class="pgc-location ${isPriority ? 'priority' : 'other'}">
-          ${isPriority ? '&#9679; Priority Corridor' : '&#9675; Other Lagos'}
+        <div class="pgc-location ${isCorridor ? 'priority' : 'other'}">
+          ${isCorridor ? '&#9679; Ibeju-Lekki Corridor' : '&#9675; Other Lagos'}
         </div>
         <div class="pgc-prices">
           <div class="pgc-price-cell">
@@ -1340,6 +1425,67 @@ function renderCompetitorNews(news) {
       </div>
       ${n.flagged ? '<span class="comp-news-flag">&#9873; Flagged</span>' : '<span></span>'}
     </div>`).join('');
+}
+
+// ── MANUAL PIPELINE REFRESH ────────────────────────────────────────────────────
+// Calls a small Cloudflare Worker that holds the GitHub token server-side
+// and triggers the Daily News Pipeline workflow. The token never touches
+// this client-side code - see refresh-worker.js for the Worker itself.
+//
+// IMPORTANT: replace this with your actual deployed Worker URL after
+// completing the setup steps in refresh-worker.js.
+const REFRESH_WORKER_URL = 'https://mixta-dashboard-trigger.YOUR-SUBDOMAIN.workers.dev';
+
+function showRefreshToast(message, isError) {
+  const existing = document.querySelector('.refresh-toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'refresh-toast' + (isError ? ' error' : '');
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 6000);
+}
+
+async function triggerPipelineRefresh() {
+  const btn = document.getElementById('refreshTriggerBtn');
+  const label = document.getElementById('refreshBtnLabel');
+
+  if (REFRESH_WORKER_URL.includes('YOUR-SUBDOMAIN')) {
+    showRefreshToast('Refresh trigger not configured yet — see refresh-worker.js setup steps.', true);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.classList.add('spinning');
+  label.textContent = 'Triggering...';
+
+  try {
+    const res = await fetch(REFRESH_WORKER_URL, { method: 'POST' });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      showRefreshToast(data.message || 'Pipeline triggered successfully.', false);
+      label.textContent = 'Triggered';
+    } else {
+      showRefreshToast(data.error || 'Failed to trigger pipeline.', true);
+      label.textContent = 'Refresh Data';
+    }
+  } catch (err) {
+    showRefreshToast('Could not reach the trigger service: ' + err.message, true);
+    label.textContent = 'Refresh Data';
+  } finally {
+    btn.classList.remove('spinning');
+    setTimeout(() => {
+      btn.disabled = false;
+      if (label.textContent === 'Triggered') label.textContent = 'Refresh Data';
+    }, 5000);
+  }
 }
 </script>
 </body>

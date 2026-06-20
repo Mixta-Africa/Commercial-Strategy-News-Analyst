@@ -310,6 +310,38 @@ button, select, input { font-family: inherit; }
    ════════════════════════════════════════════════════════════════════════ */
 .competition-hero { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-bottom: 64px; }
 .pricing-stats-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+
+.pricing-view-toggle { display: flex; gap: 0; border: 1px solid var(--rule-strong); border-radius: var(--radius); overflow: hidden; }
+.view-toggle-btn { font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; padding: 7px 16px; background: var(--paper-card); color: var(--ink-soft); border: none; cursor: pointer; transition: all 0.2s; }
+.view-toggle-btn + .view-toggle-btn { border-left: 1px solid var(--rule-strong); }
+.view-toggle-btn:hover { color: var(--ink); }
+.view-toggle-btn.active { background: var(--maroon); color: #fff; }
+
+.pricing-scatter-container { border: 1px solid var(--rule); border-radius: var(--radius); padding: 28px; margin-bottom: 40px; background: var(--paper-card); position: relative; box-shadow: var(--shadow-card); }
+.scatter-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.scatter-dot { cursor: pointer; transition: r 0.12s ease, opacity 0.12s ease; }
+.scatter-dot:hover { r: 7; }
+.scatter-axis-label { font-family: var(--font-mono); font-size: 9.5px; fill: var(--ink-faint); }
+.scatter-group-label { font-family: var(--font-ui); font-size: 10.5px; font-weight: 600; fill: var(--ink-soft); }
+.scatter-gridline { stroke: var(--rule); stroke-width: 1; }
+
+.scatter-tooltip {
+  position: absolute; pointer-events: none; z-index: 100;
+  background: var(--ink); color: var(--paper-card);
+  padding: 10px 14px; border-radius: var(--radius);
+  font-family: var(--font-ui); font-size: 12px; line-height: 1.5;
+  max-width: 260px; box-shadow: var(--shadow-lift);
+  opacity: 0; transition: opacity 0.1s ease;
+}
+.scatter-tooltip.show { opacity: 1; }
+.scatter-tooltip .tt-title { font-family: var(--font-headline); font-weight: 600; font-size: 13px; margin-bottom: 4px; display: block; }
+.scatter-tooltip .tt-price { font-family: var(--font-mono); color: var(--maroon-line); font-weight: 600; }
+.scatter-tooltip .tt-meta { font-family: var(--font-mono); font-size: 10.5px; color: #C9C4BC; margin-top: 4px; }
+
+.scatter-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule); }
+.scatter-legend-item { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-soft); }
+.scatter-legend-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.scatter-empty { text-align: center; padding: 60px 20px; color: var(--ink-faint); font-family: var(--font-ui); font-size: 13.5px; }
 .pricing-stat { background: var(--paper-card); border: 1px solid var(--rule); padding: 40px 32px; text-align: center; border-radius: var(--radius); }
 .pricing-stat-value { font-family: var(--font-headline); font-size: 48px; font-weight: 600; color: var(--maroon); line-height: 1; margin-bottom: 12px; }
 .pricing-stat-label { font-family: var(--font-ui); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); }
@@ -577,7 +609,19 @@ button, select, input { font-family: inherit; }
         </div>
       </div>
 
-      <div id="pricingGroupsContainer" class="pricing-groups">
+      <div class="section-divider">
+        <h2>Individual Unit Pricing</h2>
+        <div class="pricing-view-toggle">
+          <button id="scatterViewBtn" class="view-toggle-btn active" onclick="setPricingViewMode('scatter')">Scatter Plot</button>
+          <button id="tileViewBtn" class="view-toggle-btn" onclick="setPricingViewMode('tile')">Tiles</button>
+        </div>
+      </div>
+
+      <div id="pricingScatterContainer" class="pricing-scatter-container">
+        <div class="loading">Loading individual unit data&hellip;</div>
+      </div>
+
+      <div id="pricingGroupsContainer" class="pricing-groups" style="display:none;">
         <div class="loading" style="grid-column: 1/-1;">Aggregating market pricing data...</div>
       </div>
     </section>
@@ -1351,6 +1395,8 @@ function renderPricing(data) {
 
   if (!data || !Array.isArray(data.listings) || !data.listings.length) {
     container.innerHTML = `<div class="empty" style="grid-column: 1/-1;">No pricing data available. Run the local scraper pipeline.</div>`;
+    const scatterEl = document.getElementById('pricingScatterContainer');
+    if (scatterEl) scatterEl.innerHTML = '<div class="scatter-empty">No unit data available yet.</div>';
     return;
   }
 
@@ -1369,6 +1415,7 @@ function renderPricing(data) {
     </div>`).join('');
 
   renderPricingGroups(groups);
+  renderPricingScatter(data.listings);
   
   if (data.competitorNews && data.competitorNews.length > 0) {
     newsSection.style.display = 'flex';
@@ -1387,16 +1434,28 @@ function buildPricingGroupsFromListings(listings) {
     const bed  = l.bedroomLabel  || 'Unspecified';
     const key  = `${loc}||${type}||${bed}`;
     if (!groups[key]) {
-      groups[key] = { location: loc, propertyType: type, bedroomLabel: bed, corridorBucket: l.corridorBucket || 'Other Lagos', prices: [], amenityCounts: {}, sources: new Set(), sampleListings: [] };
+      groups[key] = { location: loc, propertyType: type, bedroomLabel: bed, corridorBucket: l.corridorBucket || 'Other Lagos', prices: [], amenityCounts: {}, sources: new Set(), allListings: [] };
     }
     const g = groups[key];
     g.prices.push(l.priceValue);
     if (l.source) g.sources.add(l.source);
     (l.amenities || []).forEach(a => { g.amenityCounts[a] = (g.amenityCounts[a] || 0) + 1; });
-    if (g.sampleListings.length < 3 && l.title) g.sampleListings.push({ title: l.title, url: l.listingUrl, price: l.priceFormatted });
+    // Keep the FULL listing (not just a 3-item sample) so the drill-down
+    // detail view has every individual property in this group to show.
+    g.allListings.push({
+      title: l.title || 'Untitled listing',
+      url: l.listingUrl || l.url || '',
+      priceFormatted: l.priceFormatted || formatNaira(l.priceValue),
+      priceValue: l.priceValue,
+      source: l.source || 'Unknown',
+      amenities: l.amenities || [],
+      realtorName: l.realtorName || 'Not listed',
+      scrapedAt: l.scrapedAt || null,
+      rawLocationText: l.rawLocationText || l.location || '',
+    });
   }
 
-  return Object.values(groups).map(g => {
+  return Object.values(groups).map((g, idx) => {
     const sorted = g.prices.slice().sort((a, b) => a - b);
     const avg    = g.prices.reduce((s, v) => s + v, 0) / g.prices.length;
     const threshold = Math.max(1, Math.ceil(g.prices.length * 0.3));
@@ -1406,9 +1465,11 @@ function buildPricingGroupsFromListings(listings) {
       .slice(0, 6).map(([key]) => key);
 
     return {
+      groupId: idx, // stable index within this filtered result set, used for drill-down routing
       location: g.location, propertyType: g.propertyType, bedroomLabel: g.bedroomLabel, corridorBucket: g.corridorBucket,
       listingCount: g.prices.length, minFormatted: formatNaira(sorted[0]), maxFormatted: formatNaira(sorted[sorted.length - 1]),
-      avgFormatted: formatNaira(Math.round(avg)), sources: [...g.sources].join(', '), topAmenities: topAmenities.join(', ') || 'None detected'
+      avgFormatted: formatNaira(Math.round(avg)), sources: [...g.sources].join(', '), topAmenities: topAmenities.join(', ') || 'None detected',
+      allListings: g.allListings.sort((a, b) => (a.priceValue || 0) - (b.priceValue || 0))
     };
   }).sort((a, b) => {
     if (a.location !== b.location) return a.location.localeCompare(b.location);
@@ -1466,18 +1527,163 @@ function applyPricingFilters() {
   if (pricingLocationFilter !== 'all') groups = groups.filter(g => g.location === pricingLocationFilter);
   if (pricingBedroomFilter !== 'all') groups = groups.filter(g => g.bedroomLabel === pricingBedroomFilter);
   renderPricingGroups(groups);
+  renderPricingScatter(competitiveCache.listings);
+}
+
+// ── PRICING VIEW MODE TOGGLE (Scatter vs Tiles) ────────────────────────────
+let pricingViewMode = 'scatter';
+
+function setPricingViewMode(mode) {
+  pricingViewMode = mode;
+  document.getElementById('scatterViewBtn').classList.toggle('active', mode === 'scatter');
+  document.getElementById('tileViewBtn').classList.toggle('active', mode === 'tile');
+  document.getElementById('pricingScatterContainer').style.display = mode === 'scatter' ? 'block' : 'none';
+  document.getElementById('pricingGroupsContainer').style.display = mode === 'tile' ? 'grid' : 'none';
+}
+
+/**
+ * Renders every individual listing as a dot on an SVG scatter plot.
+ * X-axis: grouped by location + bedroom count. Y-axis: price (Naira).
+ * Each dot is colored by source site. Hover shows title, price, realtor
+ * name (if captured), and source. Respects the same type/location/bedroom
+ * filters as the tile view.
+ */
+function renderPricingScatter(allListings) {
+  window._allPricingListings = allListings;
+  const container = document.getElementById('pricingScatterContainer');
+  if (!container) return;
+
+  let listings = allListings.filter(l => l.priceValue);
+  if (pricingTypeFilter !== 'all') listings = listings.filter(l => (l.propertyType || 'Residential') === pricingTypeFilter);
+  if (pricingLocationFilter !== 'all') listings = listings.filter(l => (l.location || 'Unspecified') === pricingLocationFilter);
+  if (pricingBedroomFilter !== 'all') listings = listings.filter(l => (l.bedroomLabel || 'Unspecified') === pricingBedroomFilter);
+
+  if (!listings.length) {
+    container.innerHTML = '<div class="scatter-empty">No individual units match the selected filters.</div>';
+    return;
+  }
+
+  const groupKey = (l) => `${l.location || 'Unspecified'} / ${l.bedroomLabel || 'Unspecified'}`;
+  const groupSet = [...new Set(listings.map(groupKey))].sort((a, b) => {
+    const [locA, bedA] = a.split(' / ');
+    const [locB, bedB] = b.split(' / ');
+    if (locA !== locB) return locA.localeCompare(locB);
+    return (parseInt(bedA) || 99) - (parseInt(bedB) || 99);
+  });
+
+  const prices = listings.map(l => l.priceValue);
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const pricePad = (maxPrice - minPrice) * 0.08 || maxPrice * 0.1;
+  const yMin = Math.max(0, minPrice - pricePad);
+  const yMax = maxPrice + pricePad;
+
+  const width = container.clientWidth || 900;
+  const marginLeft = 70, marginRight = 24, marginTop = 20, marginBottom = 90;
+  const plotW = Math.max(width - marginLeft - marginRight, groupSet.length * 70);
+  const plotH = 420;
+  const svgW = marginLeft + plotW + marginRight;
+  const svgH = marginTop + plotH + marginBottom;
+
+  const xStep = plotW / groupSet.length;
+  const yScale = (price) => marginTop + plotH - ((price - yMin) / (yMax - yMin)) * plotH;
+
+  const sourceColors = { PropertyPro: '#7A1F2B', PrivateProperty: '#1E5E40', NigerianPropertyCentre: '#A47D29', Jiji: '#535C68' };
+  const colorFor = (source) => sourceColors[source] || '#827F79';
+
+  const groupCounts = {};
+  let svg = `<svg class="scatter-svg" viewBox="0 0 ${svgW} ${svgH}" xmlns="http://www.w3.org/2000/svg">`;
+
+  const bands = 5;
+  for (let i = 0; i <= bands; i++) {
+    const price = yMin + ((yMax - yMin) / bands) * i;
+    const y = yScale(price);
+    svg += `<line class="scatter-gridline" x1="${marginLeft}" y1="${y}" x2="${marginLeft + plotW}" y2="${y}" />`;
+    svg += `<text class="scatter-axis-label" x="${marginLeft - 10}" y="${y + 3}" text-anchor="end">${esc(formatNaira(Math.round(price)))}</text>`;
+  }
+
+  groupSet.forEach((g, i) => {
+    const xCenter = marginLeft + xStep * i + xStep / 2;
+    const [loc, bed] = g.split(' / ');
+    svg += `<text class="scatter-group-label" x="${xCenter}" y="${marginTop + plotH + 22}" text-anchor="middle">${esc(loc)}</text>`;
+    svg += `<text class="scatter-axis-label" x="${xCenter}" y="${marginTop + plotH + 36}" text-anchor="middle">${esc(bed)}</text>`;
+  });
+
+  listings.forEach((l, idx) => {
+    const key = groupKey(l);
+    const groupIdx = groupSet.indexOf(key);
+    groupCounts[key] = (groupCounts[key] || 0) + 1;
+    const jitterSeed = (groupCounts[key] * 37) % 100 / 100;
+    const xCenter = marginLeft + xStep * groupIdx + xStep / 2;
+    const xJitter = (jitterSeed - 0.5) * (xStep * 0.6);
+    const x = xCenter + xJitter;
+    const y = yScale(l.priceValue);
+    const color = colorFor(l.source);
+
+    svg += `<circle class="scatter-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="${color}" fill-opacity="0.78" stroke="${color}" stroke-width="1"
+      onmouseenter="showScatterTooltip(event, ${idx})" onmouseleave="hideScatterTooltip()"
+      onmousemove="moveScatterTooltip(event)" data-listing-idx="${idx}" />`;
+  });
+
+  svg += `</svg>`;
+  container.innerHTML = svg;
+  window._scatterListings = listings;
+
+  const sourcesPresent = [...new Set(listings.map(l => l.source).filter(Boolean))];
+  const legendHtml = sourcesPresent.map(s => `
+    <span class="scatter-legend-item">
+      <span class="scatter-legend-dot" style="background:${colorFor(s)};"></span>${esc(s)}
+    </span>`).join('');
+  container.innerHTML += `<div class="scatter-legend">${legendHtml}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>`;
+
+  if (!document.getElementById('scatterTooltip')) {
+    const tt = document.createElement('div');
+    tt.id = 'scatterTooltip';
+    tt.className = 'scatter-tooltip';
+    document.body.appendChild(tt);
+  }
+}
+
+function showScatterTooltip(evt, idx) {
+  const l = window._scatterListings?.[idx];
+  if (!l) return;
+  const tt = document.getElementById('scatterTooltip');
+  tt.innerHTML = `
+    <span class="tt-title">${esc(l.title || 'Untitled listing')}</span>
+    <span class="tt-price">${esc(l.priceFormatted || formatNaira(l.priceValue))}</span>
+    <div class="tt-meta">${esc(l.source || 'Unknown source')} &middot; ${esc(l.realtorName || 'Realtor not listed')}</div>
+    <div class="tt-meta">${esc(l.location || '')} &middot; ${esc(l.bedroomLabel || '')}</div>`;
+  tt.classList.add('show');
+  moveScatterTooltip(evt);
+}
+
+function moveScatterTooltip(evt) {
+  const tt = document.getElementById('scatterTooltip');
+  if (!tt) return;
+  const offsetX = 16, offsetY = 16;
+  let left = evt.pageX + offsetX;
+  let top = evt.pageY + offsetY;
+  if (left + 260 > window.innerWidth) left = evt.pageX - 260 - offsetX;
+  tt.style.left = left + 'px';
+  tt.style.top = top + 'px';
+}
+
+function hideScatterTooltip() {
+  const tt = document.getElementById('scatterTooltip');
+  if (tt) tt.classList.remove('show');
 }
 
 function renderPricingGroups(groups) {
   const container = document.getElementById('pricingGroupsContainer');
   if (!groups.length) { container.innerHTML = '<div class="empty" style="grid-column:1/-1;">No groups match the selected filters.</div>'; return; }
+  window._currentPricingGroups = groups; // cache so openPriceGroupDetail can look up by groupId
   container.innerHTML = groups.map(g => {
     const isCorridor = g.corridorBucket === 'Ibeju-Lekki Corridor';
     const amenityTags = (g.topAmenities && g.topAmenities !== 'None detected')
       ? g.topAmenities.split(', ').map(a => `<span class="pgc-amenity-tag">${esc(a)}</span>`).join('')
       : '<span class="pgc-amenity-tag" style="color:var(--ink-faint); border-color:transparent; padding-left:0;">None detected</span>';
     return `
-      <div class="price-group-card${isCorridor ? ' priority' : ''}">
+      <div class="price-group-card${isCorridor ? ' priority' : ''}" onclick="openPriceGroupDetail(${g.groupId})" style="cursor:pointer;" title="View all ${esc(String(g.listingCount))} individual listings">
         <div class="pgc-header">
           <div class="pgc-title">${esc(g.location)} &middot; ${esc(g.propertyType)}</div>
           <span class="pgc-bed-badge">${esc(g.bedroomLabel)}</span>
@@ -1504,11 +1710,72 @@ function renderPricingGroups(groups) {
           <div class="pgc-amenity-tags">${amenityTags}</div>
         </div>
         <div class="pgc-footer">
-          <span class="pgc-count">${esc(String(g.listingCount))} List.</span>
+          <span class="pgc-count">${esc(String(g.listingCount))} List. &rarr; View all</span>
           <span class="pgc-sources" title="${esc(g.sources)}">Data: ${esc(g.sources)}</span>
         </div>
       </div>`;
   }).join('');
+}
+
+/**
+ * Drill-down detail view for a price group - reuses the same theme-detail
+ * section and back-button pattern as openThemeDetail/returnFromDetail, so
+ * every individual listing (source link, site, realtor name, amenities) is
+ * reachable instead of only the aggregate min/max/avg shown on the tile.
+ */
+function openPriceGroupDetail(groupId) {
+  const groups = window._currentPricingGroups || [];
+  const group = groups.find(g => g.groupId === groupId);
+  const el = document.getElementById('themeDetailBody');
+
+  if (!group) {
+    el.innerHTML = `
+      <button class="detail-back" onclick="returnFromDetail('competition')">&#8592; Back to Pricing Matrix</button>
+      <div class="detail-hero"><h1>Group not found</h1></div>`;
+  } else {
+    const isCorridor = group.corridorBucket === 'Ibeju-Lekki Corridor';
+    let html = `
+      <button class="detail-back" onclick="returnFromDetail('competition')">&#8592; Back to Pricing Matrix</button>
+      <div class="detail-hero">
+        <h1>${esc(group.location)} &middot; ${esc(group.propertyType)} &middot; ${esc(group.bedroomLabel)}</h1>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <span class="meta-pill${isCorridor ? ' new' : ''}">${isCorridor ? 'Ibeju-Lekki Corridor' : 'Other Lagos'}</span>
+          <span class="meta-pill">${esc(String(group.listingCount))} listings tracked</span>
+          <span class="meta-pill">Range: ${esc(group.minFormatted)} &ndash; ${esc(group.maxFormatted)}</span>
+          <span class="meta-pill">Average: ${esc(group.avgFormatted)}</span>
+        </div>
+      </div>`;
+
+    if (group.topAmenities && group.topAmenities !== 'None detected') {
+      html += `<div class="detail-block"><h3>Common Amenities Across This Group</h3><p>${esc(group.topAmenities)}</p></div>`;
+    }
+
+    html += `<div class="detail-articles-label"><span>Individual Listings</span><span>${esc(String(group.allListings.length))}</span></div>`;
+
+    html += group.allListings.map(listing => {
+      const dateStr = listing.scrapedAt ? new Date(listing.scrapedAt).toLocaleDateString() : '';
+      const amenitiesStr = (listing.amenities || []).join(', ');
+      return `
+        <div class="detail-article">
+          <a href="${esc(listing.url || '#')}" target="_blank" rel="noopener noreferrer">${esc(listing.title)}</a>
+          <div class="art-meta">
+            <span style="font-weight:700; color:var(--ink);">${esc(listing.priceFormatted)}</span>
+            <span style="font-weight:700; color:var(--maroon);">${esc(listing.source)}</span>
+            <span>${esc(listing.realtorName)}</span>
+            ${listing.rawLocationText ? `<span>${esc(listing.rawLocationText)}</span>` : ''}
+            ${dateStr ? `<span>Scraped ${esc(dateStr)}</span>` : ''}
+          </div>
+          ${amenitiesStr ? `<div style="font-family: var(--font-ui); font-size: 12px; color: var(--ink-soft); margin-top: 8px;">${esc(amenitiesStr)}</div>` : ''}
+        </div>`;
+    }).join('');
+
+    el.innerHTML = html;
+  }
+
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('theme-detail').classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderCompetitorNews(news) {

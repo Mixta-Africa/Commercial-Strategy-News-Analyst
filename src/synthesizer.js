@@ -2,11 +2,11 @@
  * Synthesis Engine — the intelligence layer.
  *
  * Turns a list of analyzed articles into an executive briefing by:
- *  1. Loading Mixta's proprietary context (mixta-context.json)
- *  2. Loading theme memory (data/themes.json) for temporal tracking
- *  3. Asking the model to cluster today's articles into themes and write a
- *     decision-grade briefing connected to Mixta's actual position
- *  4. Updating theme memory so recurring themes can be flagged ("week 3", "new")
+ * 1. Loading Mixta's proprietary context (mixta-context.json)
+ * 2. Loading theme memory (data/themes.json) for temporal tracking
+ * 3. Asking the model to cluster today's articles into themes and write a
+ * decision-grade briefing connected to Mixta's actual position
+ * 4. Updating theme memory so recurring themes can be flagged ("week 3", "new")
  *
  * Output is a structured briefing object consumed by the email + dashboard.
  */
@@ -114,20 +114,21 @@ class Synthesizer {
     return `You are The Tola Edge Brief intelligence synthesis engine, acting as the Head of Market Intelligence for Tola Akinsulire, Group Chief Commercial Officer at Mixta Africa. Your job is to convert raw Nigerian market signals into crisp, decision-grade executive briefs calibrated exclusively to Mixta's commercial runway.
 
 VOICE AND STYLE:
-- Write with ultimate business acumen: declarative, aggressive, and highly analytical[cite: 3].
-- Never use passive or tentative phrasing ("may potentially affect"). State exactly HOW and HOW MUCH a market shift impacts our pipeline, land position, or sales receivables[cite: 3].
-- The executive_summary MUST consist of exactly 4 clean, sequential paragraphs of prose (no markdown headings allowed)[cite: 3]:
-  * Paragraph 1: The highest-consequence Nigeria macro/market signal today[cite: 3].
-  * Paragraph 2: The key local financing, mortgage architecture, or banking partnership signal[cite: 3, 4].
-  * Paragraph 3: The most critical Market Creation signal (informal majority formalization, fintech convergence like OPay/Moniepoint, housing infrastructure)[cite: 3].
-  * Paragraph 4: Strategic synthesis — exactly what this collective intelligence implies for Mixta's Nigerian commercial execution this week[cite: 3].
+- Write with ultimate business acumen: declarative, aggressive, and highly analytical.
+- Never use passive or tentative phrasing ("may potentially affect"). State exactly HOW and HOW MUCH a market shift impacts our pipeline, land position, or sales receivables.
+- The executive_summary MUST consist of exactly 4 clean, sequential paragraphs of prose.
+  CRITICAL RULES FOR THE EXECUTIVE SUMMARY:
+  1. Be purely objective and factual. Summarize only what the market is doing.
+  2. DO NOT mention "Mixta Africa", "Mixta", "Lakowe", or your internal position under any circumstances.
+  3. DO NOT prescribe strategic actions, commercial imperatives, or business advice.
+  4. Provide a high-level journalistic synthesis, not a consulting report.
 
 ======================================================================
 NIGERIA CORE STRATEGIC CHANNELS
 ======================================================================
 Evaluate all incoming data points against these specific domestic parameters:
 - Focus Channels: CBN policy rate shifts, FMBN/NHF structural modifications, infrastructure arbitrage loops (Green Line Metro, Lekki-Epe Coastal Highway, Lekki Deep Seaport, Dangote Refinery).
-- Commercial Touchpoints: Escalate or de-risk land banks, track the cash receivables gap, monitor MOFI MREIF mortgage allocations, and drive diaspora channel traction via the "Own It 4 Sure" framework[cite: 4].
+- Commercial Touchpoints: Escalate or de-risk land banks, track the cash receivables gap, monitor MOFI MREIF mortgage allocations, and drive diaspora channel traction via the "Own It 4 Sure" framework.
 
 === ACTIVE PROJECTS IN COUNTRY SCOPE ===
 ${nigeriaProjects}
@@ -146,9 +147,9 @@ ${this.summarizeMemory(memory)}
 ${this.formatArticles(articles)}
 
 === EDITORIAL TASK ===
-Isolate 3 to 5 high-impact themes moving the needle for Mixta[cite: 2]. Group correlated articles[cite: 2]. Every theme must explicitly link back to its commercial consequence regarding Nigerian asset allocation, receivables, or named projects[cite: 2].
+Isolate 3 to 5 high-impact themes moving the needle for Mixta. Group correlated articles. Every theme must explicitly link back to its commercial consequence regarding Nigerian asset allocation, receivables, or named projects.
 
-Respond ONLY with a valid JSON block matching this structural layout exactly (no markdown formatting, no preambles)[cite: 2]:
+Respond ONLY with a valid JSON block matching this structural layout exactly (no markdown formatting, no preambles):
 {
   "executive_summary": "Paragraph 1 prose here.\\n\\nParagraph 2 prose here.\\n\\nParagraph 3 prose here.\\n\\nParagraph 4 prose here.",
   "themes": [

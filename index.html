@@ -312,6 +312,32 @@ button, select, input { font-family: inherit; }
 .pricing-stats-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
 
 .pricing-view-toggle { display: flex; gap: 0; border: 1px solid var(--rule-strong); border-radius: var(--radius); overflow: hidden; }
+
+.mixta-price-panel { border: 1px solid var(--maroon-line); border-radius: var(--radius); padding: 22px 26px; margin-bottom: 28px; background: var(--maroon-soft); }
+.mixta-price-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.mixta-price-label { font-family: var(--font-ui); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--maroon-dark); }
+.mixta-save-status { font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); }
+.mixta-price-form { display: grid; grid-template-columns: 2fr 1.3fr 1.3fr 1.3fr auto; gap: 10px; align-items: center; }
+.mixta-input { font-family: var(--font-ui); font-size: 13px; padding: 10px 12px; border-radius: var(--radius); border: 1px solid var(--rule-strong); background: var(--paper-card); color: var(--ink); }
+.mixta-input:focus { outline: 2px solid var(--maroon); outline-offset: 1px; }
+.mixta-price-list { margin-top: 16px; }
+.mixta-price-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--maroon-line); }
+.mixta-price-row-info { font-family: var(--font-ui); font-size: 13px; color: var(--ink); }
+.mixta-price-row-info strong { font-family: var(--font-headline); color: var(--maroon-dark); }
+.mixta-price-row-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-soft); margin-left: 8px; }
+.mixta-price-row-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.mixta-row-btn { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; text-transform: uppercase; padding: 4px 10px; border-radius: var(--radius); border: 1px solid var(--rule-strong); background: var(--paper-card); color: var(--ink-soft); cursor: pointer; }
+.mixta-row-btn:hover { color: var(--ink); }
+.mixta-row-btn.danger:hover { color: #fff; background: var(--bear); border-color: var(--bear); }
+.mixta-empty-note { font-family: var(--font-ui); font-size: 12.5px; color: var(--ink-soft); font-style: italic; }
+
+.bar-chart-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.bar-rect { transition: opacity 0.12s ease; cursor: pointer; }
+.bar-rect:hover { opacity: 0.8; }
+.bar-mixta-marker { cursor: pointer; }
+.bar-axis-label { font-family: var(--font-mono); font-size: 9.5px; fill: var(--ink-faint); }
+.bar-group-label { font-family: var(--font-ui); font-size: 10.5px; font-weight: 600; fill: var(--ink-soft); }
+.bar-gridline { stroke: var(--rule); stroke-width: 1; }
 .view-toggle-btn { font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; padding: 7px 16px; background: var(--paper-card); color: var(--ink-soft); border: none; cursor: pointer; transition: all 0.2s; }
 .view-toggle-btn + .view-toggle-btn { border-left: 1px solid var(--rule-strong); }
 .view-toggle-btn:hover { color: var(--ink); }
@@ -613,12 +639,39 @@ button, select, input { font-family: inherit; }
         <h2>Individual Unit Pricing</h2>
         <div class="pricing-view-toggle">
           <button id="scatterViewBtn" class="view-toggle-btn active" onclick="setPricingViewMode('scatter')">Scatter Plot</button>
+          <button id="barViewBtn" class="view-toggle-btn" onclick="setPricingViewMode('bar')">Bar Chart</button>
           <button id="tileViewBtn" class="view-toggle-btn" onclick="setPricingViewMode('tile')">Tiles</button>
         </div>
       </div>
 
+      <div class="mixta-price-panel">
+        <div class="mixta-price-panel-header">
+          <span class="mixta-price-label">Add Mixta Price for Comparison</span>
+          <span id="mixtaSaveStatus" class="mixta-save-status"></span>
+        </div>
+        <div class="mixta-price-form">
+          <input id="mixtaPriceLabel" class="mixta-input" placeholder="Project / unit name (e.g. Lakowe Crossings 2-Bed)" />
+          <select id="mixtaPriceLocation" class="mixta-input"></select>
+          <select id="mixtaPriceBedroom" class="mixta-input">
+            <option value="">Bedrooms</option>
+            <option value="1 Bedroom">1 Bedroom</option>
+            <option value="2 Bedrooms">2 Bedrooms</option>
+            <option value="3 Bedrooms">3 Bedrooms</option>
+            <option value="4 Bedrooms">4 Bedrooms</option>
+            <option value="5 Bedrooms">5 Bedrooms</option>
+          </select>
+          <input id="mixtaPriceValue" class="mixta-input" type="number" placeholder="Price (NGN)" min="0" step="1000000" />
+          <button class="btn-primary" onclick="addMixtaPrice()" style="padding: 11px 22px;">Add to Chart</button>
+        </div>
+        <div id="mixtaPriceList" class="mixta-price-list"></div>
+      </div>
+
       <div id="pricingScatterContainer" class="pricing-scatter-container">
         <div class="loading">Loading individual unit data&hellip;</div>
+      </div>
+
+      <div id="pricingBarContainer" class="pricing-scatter-container" style="display:none;">
+        <div class="loading">Loading bar chart&hellip;</div>
       </div>
 
       <div id="pricingGroupsContainer" class="pricing-groups" style="display:none;">
@@ -1402,6 +1455,8 @@ function renderPricing(data) {
 
   const groups = buildPricingGroupsFromListings(data.listings);
   buildPricingFilters(data.listings, groups);
+  populateMixtaLocationOptions();
+  renderMixtaPriceList();
 
   const avgPriceAll = data.listings.reduce((sum, l) => sum + (l.priceValue || 0), 0) / data.listings.filter(l => l.priceValue).length;
   
@@ -1528,6 +1583,7 @@ function applyPricingFilters() {
   if (pricingBedroomFilter !== 'all') groups = groups.filter(g => g.bedroomLabel === pricingBedroomFilter);
   renderPricingGroups(groups);
   renderPricingScatter(competitiveCache.listings);
+  if (pricingViewMode === 'bar') renderPricingBarChart(competitiveCache.listings);
 }
 
 // ── PRICING VIEW MODE TOGGLE (Scatter vs Tiles) ────────────────────────────
@@ -1536,9 +1592,12 @@ let pricingViewMode = 'scatter';
 function setPricingViewMode(mode) {
   pricingViewMode = mode;
   document.getElementById('scatterViewBtn').classList.toggle('active', mode === 'scatter');
+  document.getElementById('barViewBtn').classList.toggle('active', mode === 'bar');
   document.getElementById('tileViewBtn').classList.toggle('active', mode === 'tile');
   document.getElementById('pricingScatterContainer').style.display = mode === 'scatter' ? 'block' : 'none';
+  document.getElementById('pricingBarContainer').style.display = mode === 'bar' ? 'block' : 'none';
   document.getElementById('pricingGroupsContainer').style.display = mode === 'tile' ? 'grid' : 'none';
+  if (mode === 'bar' && window._allPricingListings) renderPricingBarChart(window._allPricingListings);
 }
 
 /**
@@ -1625,6 +1684,32 @@ function renderPricingScatter(allListings) {
       onmousemove="moveScatterTooltip(event)" data-listing-idx="${idx}" />`;
   });
 
+  // Plot Mixta's own entered prices as a distinct star marker on the same
+  // group/scale system, so it's immediately visible where Mixta sits
+  // relative to the scraped competitive landscape. Only plots entries
+  // whose price falls within the current Y range and whose group exists
+  // in the current filtered view - entries outside both are skipped
+  // silently here (the price list panel below the charts always shows all
+  // of them regardless of chart filters).
+  const mixtaEntries = (window._mixtaPrices || []).filter(m => {
+    if (pricingTypeFilter !== 'all' && (m.propertyType || 'Residential') !== pricingTypeFilter) return false;
+    if (pricingLocationFilter !== 'all' && m.location !== pricingLocationFilter) return false;
+    if (pricingBedroomFilter !== 'all' && m.bedroomLabel !== pricingBedroomFilter) return false;
+    return groupSet.includes(`${m.location} / ${m.bedroomLabel}`);
+  });
+  mixtaEntries.forEach((m, mIdx) => {
+    const key = `${m.location} / ${m.bedroomLabel}`;
+    const groupIdx = groupSet.indexOf(key);
+    if (groupIdx === -1) return;
+    const xCenter = marginLeft + xStep * groupIdx + xStep / 2;
+    const y = yScale(m.priceValue);
+    const starPoints = starPath(xCenter, y, 9, 4);
+    svg += `<polygon class="scatter-dot bar-mixta-marker" points="${starPoints}" fill="var(--maroon)" stroke="#fff" stroke-width="1.5"
+      onmouseenter="showMixtaScatterTooltip(event, ${mIdx})" onmouseleave="hideScatterTooltip()"
+      onmousemove="moveScatterTooltip(event)" data-mixta-idx="${mIdx}" />`;
+  });
+  window._scatterMixtaEntries = mixtaEntries;
+
   svg += `</svg>`;
   container.innerHTML = svg;
   window._scatterListings = listings;
@@ -1634,7 +1719,10 @@ function renderPricingScatter(allListings) {
     <span class="scatter-legend-item">
       <span class="scatter-legend-dot" style="background:${colorFor(s)};"></span>${esc(s)}
     </span>`).join('');
-  container.innerHTML += `<div class="scatter-legend">${legendHtml}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>`;
+  const mixtaLegend = mixtaEntries.length
+    ? `<span class="scatter-legend-item"><span class="scatter-legend-dot" style="background:var(--maroon); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></span>Mixta</span>`
+    : '';
+  container.innerHTML += `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>`;
 
   if (!document.getElementById('scatterTooltip')) {
     const tt = document.createElement('div');
@@ -1644,15 +1732,15 @@ function renderPricingScatter(allListings) {
   }
 }
 
-function showScatterTooltip(evt, idx) {
-  const l = window._scatterListings?.[idx];
-  if (!l) return;
+function showMixtaScatterTooltip(evt, idx) {
+  const m = window._scatterMixtaEntries?.[idx];
+  if (!m) return;
   const tt = document.getElementById('scatterTooltip');
   tt.innerHTML = `
-    <span class="tt-title">${esc(l.title || 'Untitled listing')}</span>
-    <span class="tt-price">${esc(l.priceFormatted || formatNaira(l.priceValue))}</span>
-    <div class="tt-meta">${esc(l.source || 'Unknown source')} &middot; ${esc(l.realtorName || 'Realtor not listed')}</div>
-    <div class="tt-meta">${esc(l.location || '')} &middot; ${esc(l.bedroomLabel || '')}</div>`;
+    <span class="tt-title">${esc(m.label || 'Mixta price')}</span>
+    <span class="tt-price">${esc(formatNaira(m.priceValue))}</span>
+    <div class="tt-meta" style="color:var(--maroon-line);">MIXTA AFRICA</div>
+    <div class="tt-meta">${esc(m.location || '')} &middot; ${esc(m.bedroomLabel || '')}</div>`;
   tt.classList.add('show');
   moveScatterTooltip(evt);
 }
@@ -1671,6 +1759,272 @@ function moveScatterTooltip(evt) {
 function hideScatterTooltip() {
   const tt = document.getElementById('scatterTooltip');
   if (tt) tt.classList.remove('show');
+}
+
+/** Generates SVG polygon points for a 5-point star, used as the Mixta marker. */
+function starPath(cx, cy, outerR, innerR) {
+  const points = [];
+  for (let i = 0; i < 10; i++) {
+    const r = i % 2 === 0 ? outerR : innerR;
+    const angle = (Math.PI / 5) * i - Math.PI / 2;
+    points.push(`${(cx + r * Math.cos(angle)).toFixed(1)},${(cy + r * Math.sin(angle)).toFixed(1)}`);
+  }
+  return points.join(' ');
+}
+
+// ── MIXTA MANUAL PRICE ENTRY (Firebase-backed CRUD) ─────────────────────────
+// Stored at db.ref('mixtaPricing'), same Firebase Realtime Database already
+// used for the Config tab's watchlist/sources - cross-device, no separate
+// backend needed. Falls back to an in-memory-only list (with a clear
+// warning) if Firebase isn't configured, so the feature still works for a
+// single session even without the database connection.
+
+async function loadMixtaPrices() {
+  window._mixtaPrices = [];
+  if (!firebaseReady) {
+    console.warn('[Mixta Pricing] Firebase not configured - entries will not persist between sessions.');
+    return;
+  }
+  try {
+    const snap = await db.ref('mixtaPricing').get();
+    const val = snap.val();
+    window._mixtaPrices = val ? Object.entries(val).map(([id, v]) => ({ id, ...v })) : [];
+  } catch (e) {
+    console.warn('[Mixta Pricing] Could not load entries:', e.message);
+  }
+}
+
+function populateMixtaLocationOptions() {
+  const select = document.getElementById('mixtaPriceLocation');
+  if (!select || !competitiveCache?.listings) return;
+  const locations = [...new Set(competitiveCache.listings.map(l => l.location).filter(Boolean))].sort();
+  select.innerHTML = '<option value="">Location</option>' + locations.map(l => `<option value="${esc(l)}">${esc(l)}</option>`).join('');
+}
+
+async function addMixtaPrice() {
+  const labelEl = document.getElementById('mixtaPriceLabel');
+  const locEl = document.getElementById('mixtaPriceLocation');
+  const bedEl = document.getElementById('mixtaPriceBedroom');
+  const priceEl = document.getElementById('mixtaPriceValue');
+  const status = document.getElementById('mixtaSaveStatus');
+
+  const label = labelEl.value.trim();
+  const location = locEl.value;
+  const bedroomLabel = bedEl.value;
+  const priceValue = parseFloat(priceEl.value);
+
+  if (!label || !location || !bedroomLabel || !priceValue || priceValue <= 0) {
+    status.textContent = 'Fill in all fields with a valid price.';
+    status.style.color = 'var(--bear)';
+    setTimeout(() => { status.textContent = ''; }, 3000);
+    return;
+  }
+
+  const entry = { label, location, bedroomLabel, priceValue, propertyType: 'Residential', addedAt: new Date().toISOString() };
+
+  try {
+    if (firebaseReady) {
+      const ref = await db.ref('mixtaPricing').push(entry);
+      entry.id = ref.key;
+    } else {
+      entry.id = 'local-' + Date.now();
+    }
+    window._mixtaPrices.push(entry);
+    status.textContent = 'Added.';
+    status.style.color = 'var(--bull)';
+  } catch (e) {
+    status.textContent = 'Could not save: ' + e.message;
+    status.style.color = 'var(--bear)';
+  }
+  setTimeout(() => { status.textContent = ''; }, 3000);
+
+  labelEl.value = ''; locEl.value = ''; bedEl.value = ''; priceEl.value = '';
+  renderMixtaPriceList();
+  refreshAllPricingViews();
+}
+
+async function deleteMixtaPrice(id) {
+  if (!confirm('Remove this price entry?')) return;
+  try {
+    if (firebaseReady && !String(id).startsWith('local-')) {
+      await db.ref('mixtaPricing/' + id).remove();
+    }
+  } catch (e) {
+    console.warn('[Mixta Pricing] Delete failed:', e.message);
+  }
+  window._mixtaPrices = (window._mixtaPrices || []).filter(m => m.id !== id);
+  renderMixtaPriceList();
+  refreshAllPricingViews();
+}
+
+function editMixtaPrice(id) {
+  const entry = (window._mixtaPrices || []).find(m => m.id === id);
+  if (!entry) return;
+  document.getElementById('mixtaPriceLabel').value = entry.label;
+  document.getElementById('mixtaPriceLocation').value = entry.location;
+  document.getElementById('mixtaPriceBedroom').value = entry.bedroomLabel;
+  document.getElementById('mixtaPriceValue').value = entry.priceValue;
+  // Editing re-adds as a new entry and removes the old one on save, simpler
+  // and safer than in-place mutation given Firebase's async round-trip.
+  deleteMixtaPrice(id);
+}
+
+function renderMixtaPriceList() {
+  const el = document.getElementById('mixtaPriceList');
+  const entries = window._mixtaPrices || [];
+  if (!entries.length) {
+    el.innerHTML = '<div class="mixta-empty-note">No Mixta prices added yet - use the form above to plot your own pricing against the competitive landscape.</div>';
+    return;
+  }
+  el.innerHTML = entries.map(m => `
+    <div class="mixta-price-row">
+      <div class="mixta-price-row-info">
+        <strong>${esc(m.label)}</strong> &mdash; ${esc(formatNaira(m.priceValue))}
+        <span class="mixta-price-row-meta">${esc(m.location)} &middot; ${esc(m.bedroomLabel)}</span>
+      </div>
+      <div class="mixta-price-row-actions">
+        <button class="mixta-row-btn" onclick="editMixtaPrice('${esc(m.id)}')">Edit</button>
+        <button class="mixta-row-btn danger" onclick="deleteMixtaPrice('${esc(m.id)}')">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+/** Re-renders whichever pricing views are currently relevant after a Mixta price change. */
+function refreshAllPricingViews() {
+  if (!competitiveCache?.listings) return;
+  renderPricingScatter(competitiveCache.listings);
+  if (pricingViewMode === 'bar') renderPricingBarChart(competitiveCache.listings);
+}
+
+/**
+ * Bar chart: one bar per (location + bedroom) group, showing the AVERAGE
+ * price for that group, plus a distinct Mixta star marker overlaid at
+ * Mixta's actual entered price for any group where Mixta has an entry -
+ * so it's visually obvious whether Mixta sits above, below, or in line
+ * with the competitive average for that exact location/bedroom combo.
+ */
+function renderPricingBarChart(allListings) {
+  const container = document.getElementById('pricingBarContainer');
+  if (!container) return;
+
+  let listings = allListings.filter(l => l.priceValue);
+  if (pricingTypeFilter !== 'all') listings = listings.filter(l => (l.propertyType || 'Residential') === pricingTypeFilter);
+  if (pricingLocationFilter !== 'all') listings = listings.filter(l => (l.location || 'Unspecified') === pricingLocationFilter);
+  if (pricingBedroomFilter !== 'all') listings = listings.filter(l => (l.bedroomLabel || 'Unspecified') === pricingBedroomFilter);
+
+  if (!listings.length) {
+    container.innerHTML = '<div class="scatter-empty">No data matches the selected filters.</div>';
+    return;
+  }
+
+  const groupKey = (l) => `${l.location || 'Unspecified'} / ${l.bedroomLabel || 'Unspecified'}`;
+  const groupMap = {};
+  listings.forEach(l => {
+    const k = groupKey(l);
+    if (!groupMap[k]) groupMap[k] = [];
+    groupMap[k].push(l.priceValue);
+  });
+  const groupKeys = Object.keys(groupMap).sort((a, b) => {
+    const [locA, bedA] = a.split(' / ');
+    const [locB, bedB] = b.split(' / ');
+    if (locA !== locB) return locA.localeCompare(locB);
+    return (parseInt(bedA) || 99) - (parseInt(bedB) || 99);
+  });
+  const groupAvg = groupKeys.map(k => groupMap[k].reduce((s, v) => s + v, 0) / groupMap[k].length);
+
+  const mixtaEntries = (window._mixtaPrices || []).filter(m => {
+    if (pricingTypeFilter !== 'all' && (m.propertyType || 'Residential') !== pricingTypeFilter) return false;
+    if (pricingLocationFilter !== 'all' && m.location !== pricingLocationFilter) return false;
+    if (pricingBedroomFilter !== 'all' && m.bedroomLabel !== pricingBedroomFilter) return false;
+    return true;
+  });
+  const allValuesForScale = [...groupAvg, ...mixtaEntries.map(m => m.priceValue)];
+  const maxVal = Math.max(...allValuesForScale);
+
+  const width = container.clientWidth || 900;
+  const marginLeft = 70, marginRight = 24, marginTop = 20, marginBottom = 90;
+  const plotW = Math.max(width - marginLeft - marginRight, groupKeys.length * 90);
+  const plotH = 420;
+  const svgW = marginLeft + plotW + marginRight;
+  const svgH = marginTop + plotH + marginBottom;
+  const xStep = plotW / groupKeys.length;
+  const barW = Math.min(xStep * 0.5, 70);
+  const yScale = (v) => marginTop + plotH - (v / (maxVal * 1.08)) * plotH;
+
+  let svg = `<svg class="bar-chart-svg" viewBox="0 0 ${svgW} ${svgH}" xmlns="http://www.w3.org/2000/svg">`;
+
+  const bands = 5;
+  for (let i = 0; i <= bands; i++) {
+    const val = (maxVal * 1.08 / bands) * i;
+    const y = yScale(val);
+    svg += `<line class="bar-gridline" x1="${marginLeft}" y1="${y}" x2="${marginLeft + plotW}" y2="${y}" />`;
+    svg += `<text class="bar-axis-label" x="${marginLeft - 10}" y="${y + 3}" text-anchor="end">${esc(formatNaira(Math.round(val)))}</text>`;
+  }
+
+  groupKeys.forEach((k, i) => {
+    const xCenter = marginLeft + xStep * i + xStep / 2;
+    const [loc, bed] = k.split(' / ');
+    const avg = groupAvg[i];
+    const barY = yScale(avg);
+    const barH = (marginTop + plotH) - barY;
+
+    svg += `<rect class="bar-rect" x="${(xCenter - barW / 2).toFixed(1)}" y="${barY.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}"
+      fill="var(--maroon-line)" stroke="var(--maroon)" stroke-width="1"
+      onmouseenter="showBarTooltip(event, '${esc(k)}', ${avg}, ${groupMap[k].length})" onmouseleave="hideScatterTooltip()" onmousemove="moveScatterTooltip(event)" />`;
+
+    svg += `<text class="bar-axis-label" x="${xCenter}" y="${barY - 8}" text-anchor="middle">${esc(formatNaira(Math.round(avg)))}</text>`;
+    svg += `<text class="bar-group-label" x="${xCenter}" y="${marginTop + plotH + 22}" text-anchor="middle">${esc(loc)}</text>`;
+    svg += `<text class="bar-axis-label" x="${xCenter}" y="${marginTop + plotH + 36}" text-anchor="middle">${esc(bed)}</text>`;
+
+    // Overlay Mixta star marker(s) for this exact group, if any entries exist for it.
+    const mixtaForGroup = mixtaEntries.filter(m => `${m.location} / ${m.bedroomLabel}` === k);
+    mixtaForGroup.forEach((m, mi) => {
+      const my = yScale(m.priceValue);
+      const mx = xCenter + (mi - (mixtaForGroup.length - 1) / 2) * 16;
+      svg += `<polygon class="bar-mixta-marker" points="${starPath(mx, my, 10, 4.5)}" fill="var(--maroon)" stroke="#fff" stroke-width="1.5"
+        onmouseenter="showBarMixtaTooltip(event, '${esc(m.label)}', ${m.priceValue})" onmouseleave="hideScatterTooltip()" onmousemove="moveScatterTooltip(event)" />`;
+    });
+  });
+
+  svg += `</svg>`;
+  container.innerHTML = svg;
+
+  const mixtaLegend = mixtaEntries.length
+    ? `<span class="scatter-legend-item"><span class="scatter-legend-dot" style="background:var(--maroon); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></span>Mixta</span>`
+    : '';
+  container.innerHTML += `<div class="scatter-legend">
+    <span class="scatter-legend-item"><span class="scatter-legend-dot" style="background:var(--maroon-line);"></span>Market Average</span>
+    ${mixtaLegend}
+    <span class="scatter-legend-item">${esc(String(groupKeys.length))} groups</span>
+  </div>`;
+
+  if (!document.getElementById('scatterTooltip')) {
+    const tt = document.createElement('div');
+    tt.id = 'scatterTooltip';
+    tt.className = 'scatter-tooltip';
+    document.body.appendChild(tt);
+  }
+}
+
+function showBarTooltip(evt, groupKey, avg, count) {
+  const [loc, bed] = groupKey.split(' / ');
+  const tt = document.getElementById('scatterTooltip');
+  tt.innerHTML = `
+    <span class="tt-title">${esc(loc)} &middot; ${esc(bed)}</span>
+    <span class="tt-price">${esc(formatNaira(Math.round(avg)))} avg</span>
+    <div class="tt-meta">Based on ${esc(String(count))} listing${count === 1 ? '' : 's'}</div>`;
+  tt.classList.add('show');
+  moveScatterTooltip(evt);
+}
+
+function showBarMixtaTooltip(evt, label, priceValue) {
+  const tt = document.getElementById('scatterTooltip');
+  tt.innerHTML = `
+    <span class="tt-title">${esc(label)}</span>
+    <span class="tt-price">${esc(formatNaira(priceValue))}</span>
+    <div class="tt-meta" style="color:var(--maroon-line);">MIXTA AFRICA</div>`;
+  tt.classList.add('show');
+  moveScatterTooltip(evt);
 }
 
 function renderPricingGroups(groups) {
@@ -1809,6 +2163,8 @@ function renderCompetitorNews(news) {
   
   // Plot geospatial maps hidden to prepopulate counts on the homepage
   plotGeospatialData(geoCache);
+
+  await loadMixtaPrices();
 
   renderStatus(health);
   renderBriefing(briefing);

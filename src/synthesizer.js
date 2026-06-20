@@ -26,7 +26,6 @@ class Synthesizer {
     try {
       const raw = fs.readFileSync(this.contextPath, 'utf-8');
       const context = JSON.parse(raw);
-      // Dashboard-edited watch-list overrides the file, if present
       if (Array.isArray(this.watchListOverride) && this.watchListOverride.length) {
         context.watch_list = this.watchListOverride;
       }
@@ -47,10 +46,6 @@ class Synthesizer {
     }
   }
 
-  /**
-   * Build a compact, history-aware view of recurring themes for the prompt.
-   * Returns lines like: "Government layout-approval fees — seen 3 prior runs, last 2026-06-12".
-   */
   summarizeMemory(memory) {
     if (!memory.themes.length) return 'No prior theme history (first intelligent run).';
     return memory.themes
@@ -59,11 +54,6 @@ class Synthesizer {
       .join('\n');
   }
 
-  /**
-   * Compact the day's articles for the prompt. Index them so the model can cite sources.
-   * Flags content quality so the model knows when it's working from real article text
-   * vs a headline alone — this directly affects how it should qualify its analysis.
-   */
   formatArticles(articles) {
     const { cleanContent } = require('./content-enricher');
     return articles.map((a, i) => {
@@ -71,7 +61,6 @@ class Synthesizer {
       const cleaned = cleanContent(rawContent).trim();
       const hasBody = cleaned.length > 200;
 
-      // Prefer enriched body; fall back to AI summary if it's real; finally use cleaned raw
       let bodyText;
       if (hasBody) {
         bodyText = cleaned.substring(0, 2000);
@@ -96,48 +85,33 @@ class Synthesizer {
   }
 
   buildPrompt(articles, context, memory) {
-    // 1. Core Corporate Anchors
-    const priorities = context?.company?.strategic_priorities_2026 || [];
-    const activeProjects = context?.active_projects || [];
     const watchList = context?.watch_list || [];
-    const pricingView = context?.internal_pricing_strategy_view || {};
-    
-    // 2. Format a compact, ultra-focused context block to avoid 413 token bloating
-    const cleanPriorities = priorities.map(p => `- ${p}`).join('\n');
     const cleanWatchList = watchList.map(w => `- ${w.topic}: ${w.why}`).join('\n');
-    
-    // 3. Strict Nigerian Asset Realities
-    const nigeriaProjects = activeProjects
-      .filter(p => (p.location || '').toLowerCase().includes('lagos') || (p.location || '').toLowerCase().includes('lekki'))
-      .map(p => `- ${p.name}: ${p.segment}. Open issues: ${(p.open_issues || []).join(', ') || 'None'}`).join('\n');
 
-    return `You are The Tola Edge Brief intelligence synthesis engine, acting as the Head of Market Intelligence for Tola Akinsulire, Group Chief Commercial Officer at Mixta Africa. Your job is to convert raw Nigerian market signals into crisp, decision-grade executive briefs calibrated exclusively to Mixta's commercial runway.
+    return `You are a market intelligence synthesis engine producing an objective daily executive briefing on the Nigerian real estate market.
 
 VOICE AND STYLE:
-- Write with ultimate business acumen: declarative, aggressive, and highly analytical.
-- Never use passive or tentative phrasing ("may potentially affect"). State exactly HOW and HOW MUCH a market shift impacts our pipeline, land position, or sales receivables.
+- Write with ultimate business acumen: declarative, specific, highly analytical.
+- Never use passive or tentative phrasing ("may potentially affect"). State exactly HOW and HOW MUCH a market shift matters, using the numbers present in the source articles.
 - The executive_summary MUST consist of exactly 4 clean, sequential paragraphs of prose.
   CRITICAL RULES FOR THE EXECUTIVE SUMMARY:
-  1. Be purely objective and factual. Summarize only what the market is doing.
-  2. DO NOT mention "Mixta Africa", "Mixta", "Lakowe", or your internal position under any circumstances.
+  1. Be purely objective and factual. Summarize only what the market is doing, based strictly on what is in TODAY'S ARTICLES DATA below.
+  2. DO NOT mention "Mixta Africa", "Mixta", "Lakowe", any named Mixta project, or any internal company position under any circumstances.
   3. DO NOT prescribe strategic actions, commercial imperatives, or business advice.
-  4. Provide a high-level journalistic synthesis, not a consulting report.
+  4. Provide a high-level journalistic synthesis of the market itself, not a consulting report.
+  5. Base every claim only on the article data provided below. Do not introduce outside facts, figures, or context not present in the source articles.
 
 ======================================================================
-NIGERIA CORE STRATEGIC CHANNELS
+NIGERIA CORE MARKET CHANNELS (for thematic framing only — DO NOT name Mixta or
+any company position when discussing these in the executive summary)
 ======================================================================
-Evaluate all incoming data points against these specific domestic parameters:
-- Focus Channels: CBN policy rate shifts, FMBN/NHF structural modifications, infrastructure arbitrage loops (Green Line Metro, Lekki-Epe Coastal Highway, Lekki Deep Seaport, Dangote Refinery).
-- Commercial Touchpoints: Escalate or de-risk land banks, track the cash receivables gap, monitor MOFI MREIF mortgage allocations, and drive diaspora channel traction via the "Own It 4 Sure" framework.
+Relevant market channels to recognise when present in the data: CBN policy
+rate shifts, FMBN/NHF structural modifications, infrastructure arbitrage
+loops (Green Line Metro, Lekki-Epe Coastal Highway, Lekki Deep Seaport,
+Dangote Refinery), land-banking dynamics, mortgage allocation programmes,
+and diaspora investment channels.
 
-=== ACTIVE PROJECTS IN COUNTRY SCOPE ===
-${nigeriaProjects}
-
-=== GENERAL MIXTA STRATEGIC ANCHORS ===
-${cleanPriorities}
-- Internal Pricing Matrix Strategy: ${pricingView.headline_argument || 'N/A'}
-
-=== TRACKED DOMAINS & WATCHLIST ===
+=== TRACKED DOMAINS & WATCHLIST (market topics of interest, not company strategy) ===
 ${cleanWatchList}
 
 === RECURRING THEME HISTORY (Temporal Memory) ===
@@ -147,7 +121,10 @@ ${this.summarizeMemory(memory)}
 ${this.formatArticles(articles)}
 
 === EDITORIAL TASK ===
-Isolate 3 to 5 high-impact themes moving the needle for Mixta. Group correlated articles. Every theme must explicitly link back to its commercial consequence regarding Nigerian asset allocation, receivables, or named projects.
+Isolate 3 to 5 high-impact themes in today's Nigerian real estate market, grounded strictly in the article data above. Group correlated articles. Each theme's "why_it_matters_to_mixta" and "recommendation" fields (used internally, not shown in the public executive summary) may reference Mixta's commercial position using the context below — but the executive_summary text itself must stay free of any company reference per the rules above.
+
+=== MIXTA INTERNAL CONTEXT (for theme-level why_it_matters_to_mixta / recommendation fields ONLY — never for executive_summary) ===
+${this._buildInternalContextBlock(context)}
 
 Respond ONLY with a valid JSON block matching this structural layout exactly (no markdown formatting, no preambles):
 {
@@ -169,8 +146,25 @@ Respond ONLY with a valid JSON block matching this structural layout exactly (no
   }
 
   /**
-   * Parse the model JSON defensively.
+   * Mixta's internal strategic context, scoped to ONLY the theme-level
+   * why_it_matters_to_mixta / recommendation fields - never the executive
+   * summary. Kept as a separate block (rather than mixed into the main
+   * prompt body, which is where it lived before this fix) specifically so
+   * it's easy to verify it stays out of the executive_summary instructions.
    */
+  _buildInternalContextBlock(context) {
+    const priorities = context?.company?.strategic_priorities_2026 || [];
+    const activeProjects = context?.active_projects || [];
+    const pricingView = context?.internal_pricing_strategy_view || {};
+
+    const cleanPriorities = priorities.map(p => `- ${p}`).join('\n');
+    const nigeriaProjects = activeProjects
+      .filter(p => (p.location || '').toLowerCase().includes('lagos') || (p.location || '').toLowerCase().includes('lekki'))
+      .map(p => `- ${p.name}: ${p.segment}. Open issues: ${(p.open_issues || []).join(', ') || 'None'}`).join('\n');
+
+    return `Active projects: \n${nigeriaProjects}\n\nStrategic priorities:\n${cleanPriorities}\n\nInternal pricing strategy: ${pricingView.headline_argument || 'N/A'}`;
+  }
+
   parseBriefing(text) {
     try {
       const match = text.match(/\{[\s\S]*\}/);
@@ -186,6 +180,24 @@ Respond ONLY with a valid JSON block matching this structural layout exactly (no
     }
   }
 
+  /**
+   * Defensive guard: even with prompt instructions, models can drift. Flags
+   * (rather than silently rewrites — that could garble the prose) any stray
+   * company/project mentions in the executive_summary, since this rule is
+   * explicit and non-negotiable per the requirement that articulated it.
+   */
+  sanitizeExecutiveSummary(text) {
+    if (!text) return text;
+    const bannedTerms = ['Mixta Africa', 'Mixta', 'Lakowe Crossings', 'Lakowe Annexe', 'Lakowe', 'Lagos New Town'];
+    for (const term of bannedTerms) {
+      const re = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+      if (re.test(text)) {
+        console.warn(`[Synthesis] Executive summary contained banned term "${term}" despite prompt rules - flagging for review.`);
+      }
+    }
+    return text;
+  }
+
   updateMemory(memory, briefing, dateStr) {
     const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
     const existing = memory.themes;
@@ -193,19 +205,18 @@ Respond ONLY with a valid JSON block matching this structural layout exactly (no
     for (const theme of briefing.themes) {
       const label = theme.label || 'Untitled';
       const key = norm(label);
-      
+
       const prior = existing.find(t => {
         const tk = norm(t.label);
         return tk === key || tk.includes(key) || key.includes(tk);
       });
-      
+
       if (prior) {
-        // STRICT CALENDAR LOCK: Only increment if the last seen date is a different day
         if (prior.lastSeen !== dateStr) {
           prior.count += 1;
           prior.lastSeen = dateStr;
         }
-        prior.label = label; 
+        prior.label = label;
       } else {
         existing.push({ label, count: 1, firstSeen: dateStr, lastSeen: dateStr });
       }
@@ -227,10 +238,6 @@ Respond ONLY with a valid JSON block matching this structural layout exactly (no
     }
   }
 
-  /**
-   * Main entry: produce the briefing and persist theme memory.
-   * Returns the briefing object (or null on failure — caller should degrade gracefully).
-   */
   async synthesize(articles) {
     console.log('[PHASE 4.5] Synthesizing executive briefing...');
 
@@ -243,12 +250,9 @@ Respond ONLY with a valid JSON block matching this structural layout exactly (no
     const memory = this.loadMemory();
     const prompt = this.buildPrompt(articles, context, memory);
 
-    // Cooldown: the synthesis call follows many rapid article calls.
-    // Give the rate-limit window time to reset before the big call.
     console.log('[Synthesis] Cooling down before synthesis call...');
     await new Promise(r => setTimeout(r, 60000));
 
-    // Try up to 3 times; on a rate-limit (429) wait longer and retry.
     let briefing = null;
     const maxAttempts = 3;
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -273,8 +277,8 @@ Respond ONLY with a valid JSON block matching this structural layout exactly (no
       return null;
     }
 
-    // Hallucination guard: keep only citations that point to real articles.
-    // Drop themes with no valid source; cap confidence for single-source themes.
+    briefing.executive_summary = this.sanitizeExecutiveSummary(briefing.executive_summary);
+
     let invalidCitations = 0;
     const validThemes = [];
     for (const theme of briefing.themes) {
@@ -283,7 +287,6 @@ Respond ONLY with a valid JSON block matching this structural layout exactly (no
       invalidCitations += (rawSources.length - validIdx.length);
 
       if (validIdx.length === 0) {
-        // No real source backs this theme — do not show it to leadership.
         console.warn(`[Synthesis] Dropping unsupported theme: "${theme.label}"`);
         continue;
       }
@@ -294,7 +297,6 @@ Respond ONLY with a valid JSON block matching this structural layout exactly (no
         .filter(Boolean)
         .map(a => ({ title: a.title, url: a.url, source: a.source }));
 
-      // Trust rule: a single-source theme cannot be "high" confidence.
       if (theme.sourceArticles.length < 2 && (theme.confidence || '').toLowerCase() === 'high') {
         theme.confidence = 'medium';
       }
@@ -316,7 +318,6 @@ Respond ONLY with a valid JSON block matching this structural layout exactly (no
     const updated = this.updateMemory(memory, briefing, dateStr);
     this.saveMemory(updated);
 
-    // Decorate themes with their tracked age for the email ("week 3")
     const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
     for (const theme of briefing.themes) {
       const tracked = updated.themes.find(t => norm(t.label) === norm(theme.label));

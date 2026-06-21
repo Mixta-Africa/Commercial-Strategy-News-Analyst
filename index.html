@@ -603,6 +603,7 @@ button, select, input { font-family: inherit; }
       <button data-view="briefing" class="active">Briefing</button>
       <button data-view="markets">Markets</button>
       <button data-view="themes">Themes</button>
+      <button data-view="trends">Trends</button>
       <button data-view="competition">Competition</button>
       <button data-view="library">Library</button>
       <button id="nav-health" data-view="health" style="display:none;">System</button>
@@ -708,6 +709,27 @@ button, select, input { font-family: inherit; }
 
     <section id="theme-detail" class="view">
       <div id="themeDetailBody"></div>
+    </section>
+
+    <!-- TRENDS (forever-retained daily aggregates) -->
+    <section id="trends" class="view">
+      <div class="section-divider" style="margin-top:0;"><h2>Topic Trends Over Time</h2></div>
+      <div class="dateline" style="font-family: var(--font-ui); font-size: 13.5px; color: var(--ink-soft); margin-bottom: 24px;">
+        Tracks how often each theme appeared in analyzed articles, bucketed by week. Built from a forever-retained daily archive, independent of the 1-year article history window.
+      </div>
+
+      <div class="pricing-controls" style="margin-bottom: 28px;">
+        <div class="pricing-filter-group">
+          <label class="pricing-filter-label">Period</label>
+          <div id="trendPeriodFilters" class="pricing-chip-row"></div>
+        </div>
+      </div>
+
+      <div id="trendStatsBar" class="pricing-stats-bar" style="margin-bottom: 28px;"></div>
+
+      <div id="trendTopicsContainer" class="pricing-scatter-container">
+        <div class="loading">Loading trend history&hellip;</div>
+      </div>
     </section>
 
     <!-- COMPETITION (PRICING) -->
@@ -1169,6 +1191,206 @@ function renderThemes(memory) {
   el.innerHTML = html;
 }
 
+// ── TRENDS (forever-retained daily history -> weekly topic volume) ─────────────
+let trendPeriodFilter = '90'; // days back from today; 'all' = entire history
+let _trendHistoryCache = null;
+
+function renderTrends(trendHistory) {
+  _trendHistoryCache = trendHistory;
+  const container = document.getElementById('trendTopicsContainer');
+  const statsBar = document.getElementById('trendStatsBar');
+  const filterRow = document.getElementById('trendPeriodFilters');
+
+  const days = Array.isArray(trendHistory?.days) ? trendHistory.days : [];
+  if (!days.length) {
+    container.innerHTML = '<div class="scatter-empty">No trend history yet - this builds up automatically, one entry per day, starting from the first pipeline run after this feature was deployed.</div>';
+    statsBar.innerHTML = '';
+    filterRow.innerHTML = '';
+    return;
+  }
+
+  const periods = [
+    { id: '30', label: 'Last 30 Days' },
+    { id: '90', label: 'Last 90 Days' },
+    { id: '365', label: 'Last Year' },
+    { id: 'all', label: 'All Time' },
+  ];
+  filterRow.innerHTML = periods.map(p => `
+    <button class="pricing-chip${p.id === trendPeriodFilter ? ' active' : ''}" onclick="setTrendPeriod('${p.id}', this)">${esc(p.label)}</button>
+  `).join('');
+
+  renderTrendChart(days);
+}
+
+function setTrendPeriod(periodId, el) {
+  trendPeriodFilter = periodId;
+  el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderTrendChart(_trendHistoryCache?.days || []);
+}
+
+/** ISO-ish week label: the Monday of the week a given date falls in, as YYYY-MM-DD. */
+function weekLabelFor(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00Z');
+  const day = d.getUTCDay(); // 0 = Sunday
+  const diffToMonday = day === 0 ? -6 : 1 - day;
+  d.setUTCDate(d.getUTCDate() + diffToMonday);
+  return d.toISOString().slice(0, 10);
+}
+
+function renderTrendChart(allDays) {
+  const container = document.getElementById('trendTopicsContainer');
+  const statsBar = document.getElementById('trendStatsBar');
+
+  let days = allDays;
+  if (trendPeriodFilter !== 'all') {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - parseInt(trendPeriodFilter, 10));
+    days = allDays.filter(d => new Date(d.date + 'T00:00:00Z') >= cutoff);
+  }
+
+  if (!days.length) {
+    container.innerHTML = '<div class="scatter-empty">No data in this period yet.</div>';
+    statsBar.innerHTML = '';
+    return;
+  }
+
+  // Bucket by week, summing topic counts within each week. Weekly (not
+  // daily) because daily article volume is often thin (a handful of
+  // articles), making raw daily topic counts too noisy to read as a trend -
+  // a week of accumulated signal is far more stable.
+  const weekMap = {}; // weekLabel -> { topic -> count }
+  let totalArticles = 0;
+  for (const d of days) {
+    totalArticles += d.articleCount || 0;
+    const wk = weekLabelFor(d.date);
+    if (!weekMap[wk]) weekMap[wk] = {};
+    for (const t of (d.topTopics || [])) {
+      const topic = t.topic;
+      weekMap[wk][topic] = (weekMap[wk][topic] || 0) + t.count;
+    }
+  }
+
+  const weekLabels = Object.keys(weekMap).sort();
+
+  // Determine the overall top N topics ACROSS the whole visible window (not
+  // per-week), so the same topic is tracked consistently across weeks
+  // instead of a different "top 5" appearing every week.
+  const overallTopicTotals = {};
+  for (const wk of weekLabels) {
+    for (const [topic, count] of Object.entries(weekMap[wk])) {
+      overallTopicTotals[topic] = (overallTopicTotals[topic] || 0) + count;
+    }
+  }
+  const topTopicsOverall = Object.entries(overallTopicTotals)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([topic]) => topic);
+
+  if (!topTopicsOverall.length) {
+    container.innerHTML = '<div class="scatter-empty">No topic data recorded in this period yet.</div>';
+    statsBar.innerHTML = '';
+    return;
+  }
+
+  statsBar.innerHTML = [
+    { v: days.length, l: 'Days Recorded' },
+    { v: weekLabels.length, l: 'Weeks in View' },
+    { v: totalArticles, l: 'Articles Analyzed' },
+    { v: topTopicsOverall.length, l: 'Topics Tracked' },
+  ].map(x => `
+    <div class="pricing-stat">
+      <div class="pricing-stat-value">${esc(String(x.v))}</div>
+      <div class="pricing-stat-label">${esc(x.l)}</div>
+    </div>`).join('');
+
+  const topicColors = ['#7A1F2B', '#1E5E40', '#A47D29', '#535C68', '#8B5A8F', '#2D6A8F'];
+  const colorFor = (topic) => topicColors[topTopicsOverall.indexOf(topic) % topicColors.length];
+
+  const maxVal = Math.max(1, ...weekLabels.map(wk => Math.max(...topTopicsOverall.map(t => weekMap[wk][t] || 0))));
+
+  const width = container.clientWidth || 900;
+  const _m = window._chartMarginScale ? window._chartMarginScale() : { left: 70, right: 24, bottom: 90 };
+  const marginLeft = _m.left, marginRight = _m.right, marginTop = 20, marginBottom = _m.bottom;
+  const barW = 12, barGap = 2, weekGap = 22;
+  const weekWidth = topTopicsOverall.length * (barW + barGap) - barGap;
+  const naturalPlotW = weekLabels.length * (weekWidth + weekGap);
+  const availablePlotW = Math.max(width - marginLeft - marginRight, 240);
+  const plotW = Math.max(availablePlotW, naturalPlotW);
+  const plotH = 380;
+  const svgW = marginLeft + plotW + marginRight;
+  const svgH = marginTop + plotH + marginBottom;
+  const yScale = (v) => marginTop + plotH - (v / (maxVal * 1.1)) * plotH;
+
+  // Distribute extra space across weeks if the natural width is narrower
+  // than the available area, same centering logic used in the bar chart.
+  const extraSpace = Math.max(0, plotW - naturalPlotW);
+  let startX = marginLeft;
+  let extraGapPerWeek = 0;
+  if (weekLabels.length === 1) {
+    startX = marginLeft + extraSpace / 2;
+  } else if (weekLabels.length > 1) {
+    extraGapPerWeek = extraSpace / (weekLabels.length - 1);
+  }
+
+  let svg = `<svg class="bar-chart-svg" viewBox="0 0 ${svgW} ${svgH}" xmlns="http://www.w3.org/2000/svg">`;
+
+  const bands = 5;
+  for (let i = 0; i <= bands; i++) {
+    const val = (maxVal * 1.1 / bands) * i;
+    const y = yScale(val);
+    svg += `<line class="bar-gridline" x1="${marginLeft}" y1="${y}" x2="${marginLeft + plotW}" y2="${y}" />`;
+    svg += `<text class="bar-axis-label" x="${marginLeft - 10}" y="${y + 3}" text-anchor="end">${esc(String(Math.round(val)))}</text>`;
+  }
+
+  let cursorX = startX;
+  weekLabels.forEach(wk => {
+    const wCenter = cursorX + weekWidth / 2;
+    topTopicsOverall.forEach((topic, ti) => {
+      const count = weekMap[wk][topic] || 0;
+      const barX = cursorX + ti * (barW + barGap);
+      const barY = yScale(count);
+      const barH = (marginTop + plotH) - barY;
+      const color = colorFor(topic);
+      svg += `<rect class="bar-rect" x="${barX.toFixed(1)}" y="${barY.toFixed(1)}" width="${barW}" height="${Math.max(0, barH).toFixed(1)}"
+        fill="${color}" fill-opacity="0.82" stroke="${color}" stroke-width="1"
+        onmouseenter="showTrendTooltip(event, '${esc(topic)}', ${count}, '${esc(wk)}')" onmouseleave="hideScatterTooltip()" onmousemove="moveScatterTooltip(event)" />`;
+    });
+    const weekDate = new Date(wk + 'T00:00:00Z');
+    const weekLabelShort = weekDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+    svg += `<text class="bar-axis-label" x="${wCenter}" y="${marginTop + plotH + 22}" text-anchor="middle">Wk of ${esc(weekLabelShort)}</text>`;
+    cursorX += weekWidth + weekGap + extraGapPerWeek;
+  });
+
+  svg += `</svg>`;
+
+  const legendHtml = topTopicsOverall.map(t => `
+    <span class="scatter-legend-item">
+      <span class="scatter-legend-dot" style="background:${colorFor(t)};"></span>${esc(t)}
+    </span>`).join('');
+
+  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}</div>`;
+
+  if (!document.getElementById('scatterTooltip')) {
+    const tt = document.createElement('div');
+    tt.id = 'scatterTooltip';
+    tt.className = 'scatter-tooltip';
+    document.body.appendChild(tt);
+  }
+}
+
+function showTrendTooltip(evt, topic, count, weekLabel) {
+  const tt = document.getElementById('scatterTooltip');
+  const weekDate = new Date(weekLabel + 'T00:00:00Z');
+  const weekStr = weekDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  tt.innerHTML = `
+    <span class="tt-title">${esc(topic)}</span>
+    <span class="tt-price">${esc(String(count))} mention${count === 1 ? '' : 's'}</span>
+    <div class="tt-meta">Week of ${esc(weekStr)}</div>`;
+  tt.classList.add('show');
+  moveScatterTooltip(evt);
+}
+
 function setArchTab(tab) {
   archTab = tab;
   document.getElementById('segBriefings').classList.toggle('active', tab === 'briefings');
@@ -1219,11 +1441,20 @@ function renderArchive() {
 
 async function openBriefing(date) {
   const item = briefingsIndex.find(b => b.date === date);
-  if (!item || !item.file) {
-    alert("Could not locate the file for this briefing.");
+  if (!item) {
+    alert("Could not locate this briefing.");
     return;
   }
-  const pastBriefing = await loadJSON(item.file);
+  // FIX: older briefings-index.json entries (written before a pipeline fix)
+  // never had a "file" field, even though this function requires one - that
+  // missing field is what caused "Could not locate the file for this
+  // briefing" on every archived entry. Fresh runs now always include it,
+  // but existing entries already in the index won't until they age out of
+  // the 180-day retention window. Reconstruct the expected archive path
+  // from the date itself as a fallback, so old entries self-heal instead
+  // of staying broken indefinitely.
+  const filePath = item.file || `archive/briefing-${item.date}.json`;
+  const pastBriefing = await loadJSON(filePath);
   if (pastBriefing) {
     document.querySelectorAll('.nav button').forEach(x => x.classList.remove('active'));
     document.querySelector('.nav button[data-view="briefing"]').classList.add('active');
@@ -1231,6 +1462,8 @@ async function openBriefing(date) {
     document.getElementById('briefing').classList.add('active');
     renderBriefing(pastBriefing);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    alert("Could not load this briefing's archived data - the file may genuinely be missing from the repository.");
   }
 }
 
@@ -1368,7 +1601,7 @@ async function loadConfigState() {
 }
 
 // ── MANUAL PIPELINE REFRESH ───────────────────────────────────────────
-const REFRESH_WORKER_URL = 'https://mixta-dashboard-trigger.o-olasunkanmi.workers.dev';
+const REFRESH_WORKER_URL = 'https://mixta-dashboard-trigger.YOUR-SUBDOMAIN.workers.dev';
 
 function showRefreshToast(message, isError) {
   const existing = document.querySelector('.refresh-toast');
@@ -2450,10 +2683,10 @@ function renderCompetitorNews(news) {
 // ── BOOTSTRAP ─────────────────────────────────────────────────────────
 (async function boot() {
   initFirebase();
-  const [briefing, memory, articles, health, history, bIndex, geo, competitive] = await Promise.all([
+  const [briefing, memory, articles, health, history, bIndex, geo, competitive, trendHistory] = await Promise.all([
     loadJSON('briefing.json'), loadJSON('themes.json'), loadJSON('articles.json'),
     loadJSON('health.json'), loadJSON('health-history.json'), loadJSON('briefings-index.json'),
-    loadJSON('geoslicer.json'), loadJSON('competitive-listings.json')
+    loadJSON('geoslicer.json'), loadJSON('competitive-listings.json'), loadJSON('trend-history.json')
   ]);
   articlesCache = Array.isArray(articles) ? articles : [];
   geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;
@@ -2471,6 +2704,7 @@ function renderCompetitorNews(news) {
   renderHealth(health, history);
   renderArchive();
   renderPricing(competitiveCache);
+  renderTrends(trendHistory);
   await loadConfigState();
   renderConfig();
 })();

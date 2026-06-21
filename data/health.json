@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-06-21T10:25:01.806Z",
-  "status": "degraded",
+  "timestamp": "2026-06-21T11:39:33.156Z",
+  "status": "failed",
   "sources": {
     "gnews": {
       "ok": false,
@@ -9,16 +9,16 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 34,
+      "count": 64,
       "error": null
     },
     "googlenews": {
       "ok": true,
-      "count": 108,
+      "count": 126,
       "error": null
     },
     "rss": {
-      "total": 21,
+      "total": 41,
       "feeds": {
         "ThisDay": {
           "ok": true,
@@ -37,15 +37,15 @@
         },
         "Nairametrics": {
           "ok": true,
-          "count": 3,
+          "count": 2,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
-        "The Punch": {
+        "The Punch (Business)": {
           "ok": true,
           "count": 0,
           "error": null
@@ -59,6 +59,16 @@
           "ok": true,
           "count": 10,
           "error": null
+        },
+        "Guardian Nigeria (Property)": {
+          "ok": true,
+          "count": 10,
+          "error": null
+        },
+        "Vanguard (Homes & Property)": {
+          "ok": true,
+          "count": 10,
+          "error": null
         }
       }
     },
@@ -69,20 +79,21 @@
     }
   },
   "counts": {
-    "raw": 171,
-    "filtered": 2,
-    "analyzed": 2,
+    "raw": 231,
+    "filtered": 0,
+    "analyzed": 0,
     "aiFallbacks": 0
   },
   "synthesis": {
-    "ok": true,
-    "themes": 2
+    "ok": false,
+    "themes": 0
   },
   "email": {
-    "sent": true
+    "sent": false
   },
   "warnings": [
     "Sources down: GNews (0 articles); RSS Estate Intel (HTTP 403)",
-    "Only 2 articles after filtering (below 4)."
+    "No articles passed real-estate filtering.",
+    "Digest email was NOT sent."
   ]
 }

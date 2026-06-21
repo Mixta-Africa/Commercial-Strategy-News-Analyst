@@ -2097,24 +2097,43 @@ function renderPricingScatter(allListings) {
   // in the current filtered view - entries outside both are skipped
   // silently here (the price list panel below the charts always shows all
   // of them regardless of chart filters).
+  // FIX (explicit decision, same rationale as the bar chart): Mixta's
+  // inventory is concentrated in Lakowe while competitor data spans many
+  // locations, so location is the wrong match gate for Mixta's own entries.
+  // Matching is now by property type and bedroom count ONLY. Since each
+  // x-axis group here is still "Location / Bedroom", a single Mixta entry
+  // can legitimately belong to SEVERAL groups at once (e.g. its 2-bedroom
+  // price is relevant to the Ikoyi/2-Bedroom column AND the Lekki/2-Bedroom
+  // column AND so on) - so this now renders one star per matching group,
+  // not one star total, giving full cross-location comparison.
   const mixtaEntries = (window._mixtaPrices || []).filter(m => {
     if (pricingTypeFilter !== 'all' && (m.propertyType || 'Residential') !== pricingTypeFilter) return false;
-    if (pricingLocationFilter !== 'all' && m.location !== pricingLocationFilter) return false;
     if (pricingBedroomFilter !== 'all' && m.bedroomLabel !== pricingBedroomFilter) return false;
-    return groupSet.includes(`${m.location} / ${m.bedroomLabel}`);
+    return true;
   });
-  mixtaEntries.forEach((m, mIdx) => {
-    const key = `${m.location} / ${m.bedroomLabel}`;
-    const groupIdx = groupSet.indexOf(key);
-    if (groupIdx === -1) return;
-    const xCenter = marginLeft + xStep * groupIdx + xStep / 2;
-    const y = yScale(m.priceValue);
+  // Build the flat list of (entry, groupIdx) placements - one entry can
+  // produce multiple placements now, so this is no longer a 1:1 map.
+  const mixtaPlacements = [];
+  mixtaEntries.forEach((m) => {
+    groupSet.forEach((g, groupIdx) => {
+      const bedSegment = g.substring(g.lastIndexOf(' / ') + 3);
+      if (bedSegment === m.bedroomLabel) {
+        mixtaPlacements.push({ entry: m, groupIdx });
+      }
+    });
+  });
+  mixtaPlacements.forEach((p, pIdx) => {
+    const xCenter = marginLeft + xStep * p.groupIdx + xStep / 2;
+    const y = yScale(p.entry.priceValue);
     const starPoints = starPath(xCenter, y, 9, 4);
     svg += `<polygon class="scatter-dot bar-mixta-marker" points="${starPoints}" fill="var(--maroon)" stroke="#fff" stroke-width="1.5"
-      onmouseenter="showMixtaScatterTooltip(event, ${mIdx})" onmouseleave="hideScatterTooltip()"
-      onmousemove="moveScatterTooltip(event)" data-mixta-idx="${mIdx}" />`;
+      onmouseenter="showMixtaScatterTooltip(event, ${pIdx})" onmouseleave="hideScatterTooltip()"
+      onmousemove="moveScatterTooltip(event)" data-mixta-idx="${pIdx}" />`;
   });
-  window._scatterMixtaEntries = mixtaEntries;
+  // showMixtaScatterTooltip reads this by index, so it must line up with
+  // the placements array (not the raw entries array) now that one entry
+  // can appear multiple times.
+  window._scatterMixtaEntries = mixtaPlacements.map(p => p.entry);
 
   svg += `</svg>`;
   window._scatterListings = listings;
@@ -2127,10 +2146,14 @@ function renderPricingScatter(allListings) {
   const mixtaLegend = mixtaEntries.length
     ? `<span class="scatter-legend-item"><span class="scatter-legend-dot" style="background:var(--maroon); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></span>Mixta</span>`
     : '';
-  const groupSetForMixtaCheck = new Set(groupSet);
-  const unmatchedMixta = mixtaEntries.filter(m => !groupSetForMixtaCheck.has(`${m.location} / ${m.bedroomLabel}`));
+  // An entry can now be legitimately hidden only if NO group anywhere in
+  // the current view shares its bedroom count (location is never the
+  // reason anymore).
+  const unmatchedMixta = mixtaEntries.filter(m =>
+    !groupSet.some(g => g.substring(g.lastIndexOf(' / ') + 3) === m.bedroomLabel)
+  );
   const unmatchedWarning = unmatchedMixta.length
-    ? `<div class="mixta-unmatched-warning">${esc(String(unmatchedMixta.length))} Mixta ${unmatchedMixta.length === 1 ? 'entry' : 'entries'} not shown here - no scraped competitor listings exist for ${unmatchedMixta.map(m => `"${m.location} / ${m.bedroomLabel}"`).join(', ')} under the current filters.</div>`
+    ? `<div class="mixta-unmatched-warning">${esc(String(unmatchedMixta.length))} Mixta ${unmatchedMixta.length === 1 ? 'entry' : 'entries'} not shown here - no bedroom count in the current view matches ${unmatchedMixta.map(m => `"${esc(m.bedroomLabel)}"`).join(', ')} under the current type/bedroom filters.</div>`
     : '';
   // FIX: previously this was `innerHTML = svg` followed by `innerHTML +=`
   // for the legend - the += form re-reads and re-parses the ENTIRE
@@ -2419,28 +2442,52 @@ function renderPricingBarChart(allListings) {
     groupMap[k].push(l);
   });
 
-  // Mixta entries are now merged directly into each group's listings array
-  // as REAL bars (same width/style as competitor bars, just a distinct
-  // color), rather than a small star overlay. Per explicit correction:
-  // the star-overlay approach made a manually-added price look like it
-  // "didn't plot anything" - a same-sized bar in the cluster is the
-  // correct, visible comparison.
+  // FIX (explicit decision): Mixta's own inventory is concentrated almost
+  // entirely in Lakowe, while competitor listings span many locations
+  // across the corridor and beyond. Matching Mixta entries by location+bedroom
+  // (the original design) meant a Mixta bar only ever appeared when the
+  // active location filter happened to BE Lakowe - viewing competitors in
+  // Ikoyi, Lekki, Ajah, etc. silently hid every Mixta entry every time, as
+  // routine behavior rather than an edge case. Location is the wrong gate
+  // for Mixta's own data given this geographic concentration; bedroom count
+  // (and property type) is the dimension that actually matters for a fair
+  // comparison. Mixta entries are now matched ONLY by property type and
+  // bedroom count - never by location - and a single entry is pushed into
+  // EVERY existing location group that shares its bedroom/type, so e.g. a
+  // Mixta 2-bedroom appears alongside Ikoyi 2-bedrooms AND Lekki 2-bedrooms
+  // AND Ajah 2-bedrooms simultaneously, giving full cross-location comparison
+  // by design rather than by accident of which filter happens to be active.
   const mixtaEntries = (window._mixtaPrices || []).filter(m => {
     if (pricingTypeFilter !== 'all' && (m.propertyType || 'Residential') !== pricingTypeFilter) return false;
-    if (pricingLocationFilter !== 'all' && m.location !== pricingLocationFilter) return false;
     if (pricingBedroomFilter !== 'all' && m.bedroomLabel !== pricingBedroomFilter) return false;
     return true;
   });
   mixtaEntries.forEach(m => {
-    const k = `${m.location} / ${m.bedroomLabel}`;
-    if (!groupMap[k]) groupMap[k] = [];
-    // Tagged with isMixta + the original label/source so the bar render,
-    // tooltip, and click-detail all correctly identify it as Mixta's own
-    // entry rather than a scraped competitor listing.
-    groupMap[k].push({
-      title: m.label, priceValue: m.priceValue, priceFormatted: formatNaira(m.priceValue),
-      source: 'Mixta Africa', location: m.location, bedroomLabel: m.bedroomLabel,
-      propertyType: m.propertyType, isMixta: true, mixtaId: m.id,
+    // Find every group whose OWN bedroom label matches this Mixta entry's
+    // bedroom label (group keys are "Location / BedroomLabel" strings, so
+    // split and compare the bedroom segment only - location is intentionally
+    // ignored here).
+    const matchingGroupKeys = Object.keys(groupMap).filter(k => {
+      const bedSegment = k.substring(k.lastIndexOf(' / ') + 3);
+      return bedSegment === m.bedroomLabel;
+    });
+    // If no existing competitor group has this bedroom count yet (e.g. a
+    // bedroom count with zero competitor listings under the current
+    // filters), still give Mixta its own group at its real Lakowe location
+    // so the entry is never silently dropped entirely.
+    const targetKeys = matchingGroupKeys.length ? matchingGroupKeys : [`${m.location} / ${m.bedroomLabel}`];
+    targetKeys.forEach(k => {
+      if (!groupMap[k]) groupMap[k] = [];
+      // Tagged with isMixta + the original label/source so the bar render,
+      // tooltip, and click-detail all correctly identify it as Mixta's own
+      // entry rather than a scraped competitor listing. mixtaId is reused
+      // across the multiple group copies of the same entry (intentional -
+      // it's the same underlying entry shown in several places).
+      groupMap[k].push({
+        title: m.label, priceValue: m.priceValue, priceFormatted: formatNaira(m.priceValue),
+        source: 'Mixta Africa', location: m.location, bedroomLabel: m.bedroomLabel,
+        propertyType: m.propertyType, isMixta: true, mixtaId: m.id,
+      });
     });
   });
 
@@ -2599,25 +2646,17 @@ function renderPricingBarChart(allListings) {
     ? `<span class="scatter-legend-item"><span class="scatter-legend-dot bar-mixta-legend-swatch"></span>Mixta (your entries)</span>`
     : '';
 
-  // FIX: the comment this replaces claimed an unmatched-entry warning was
-  // "no longer possible" because Mixta entries get merged into groupMap
-  // directly - true ONLY for entries that pass the type/location/bedroom
-  // filters above (lines ~2400-2403). An entry whose own location/bedroom
-  // doesn't match the CURRENTLY SELECTED filters (e.g. a "Lakowe / 1
-  // Bedroom" entry while "Ikoyi / 4 Bedrooms" is selected) is filtered out
-  // of mixtaEntries before ever reaching groupMap, and was silently
-  // invisible with no indication why - confirmed as the actual cause of a
-  // real "my manual price isn't plotting" report. Same warning pattern the
-  // scatter plot already has, applied here too.
+  // The location filter no longer gates Mixta entries at all (per explicit
+  // decision above), so the only remaining reasons an entry could be hidden
+  // are property type and bedroom count - this warning reflects that.
   const allMixtaForWarning = (window._mixtaPrices || []);
   const hiddenByFilters = allMixtaForWarning.filter(m => {
     if (pricingTypeFilter !== 'all' && (m.propertyType || 'Residential') !== pricingTypeFilter) return true;
-    if (pricingLocationFilter !== 'all' && m.location !== pricingLocationFilter) return true;
     if (pricingBedroomFilter !== 'all' && m.bedroomLabel !== pricingBedroomFilter) return true;
     return false;
   });
   const unmatchedWarning = hiddenByFilters.length
-    ? `<div class="mixta-unmatched-warning">${esc(String(hiddenByFilters.length))} Mixta ${hiddenByFilters.length === 1 ? 'entry is' : 'entries are'} hidden by the current filters above (${hiddenByFilters.map(m => `"${esc(m.location)} / ${esc(m.bedroomLabel)}"`).join(', ')}). Clear or change the filters to see them.</div>`
+    ? `<div class="mixta-unmatched-warning">${esc(String(hiddenByFilters.length))} Mixta ${hiddenByFilters.length === 1 ? 'entry is' : 'entries are'} hidden by the current type/bedroom filters above (${hiddenByFilters.map(m => `"${esc(m.propertyType || 'Residential')} / ${esc(m.bedroomLabel)}"`).join(', ')}). Clear or change the filters to see them.</div>`
     : '';
 
   // FIX: single innerHTML assignment instead of the = then += pattern,

@@ -7,9 +7,11 @@
     { "url": "https://businessday.ng/feed", "source": "BusinessDay", "geo": "nigeria" },
     { "url": "https://nairametrics.com/feed", "source": "Nairametrics", "geo": "nigeria" },
     { "url": "https://dailytrust.com/feed", "source": "Daily Trust", "geo": "nigeria" },
-    { "url": "https://punchng.com/feed", "source": "The Punch", "geo": "nigeria" },
+    { "url": "https://rss.punchng.com/v1/category/business/", "source": "The Punch (Business)", "geo": "nigeria" },
     { "url": "https://estateintel.com/feed/", "source": "Estate Intel", "geo": "africa" },
-    { "url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000115", "source": "Global Commercial Real Estate", "geo": "global" }
+    { "url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000115", "source": "Global Commercial Real Estate", "geo": "global" },
+    { "url": "https://guardian.ng/category/property/feed/", "source": "Guardian Nigeria (Property)", "geo": "nigeria" },
+    { "url": "https://www.vanguardngr.com/category/homes-property/feed/", "source": "Vanguard (Homes & Property)", "geo": "nigeria" }
   ],
 
   "googleNewsQueries": [
@@ -27,6 +29,7 @@
     { "query": "site:thecable.ng real estate OR property", "geo": "nigeria" },
     { "query": "site:leadership.ng real estate OR property", "geo": "nigeria" },
     { "query": "site:tribuneonlineng.com real estate OR property", "geo": "nigeria" },
+    { "query": "site:punchng.com real estate OR property", "geo": "nigeria" },
 
     { "query": "Africa commercial real estate OR housing market", "geo": "africa" },
     { "query": "global real estate macro trends OR commercial property", "geo": "global" }

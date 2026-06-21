@@ -602,8 +602,7 @@ button, select, input { font-family: inherit; }
     <div class="nav-inner">
       <button data-view="briefing" class="active">Briefing</button>
       <button data-view="markets">Markets</button>
-      <button data-view="themes">Themes</button>
-      <button data-view="trends">Trends</button>
+      <button data-view="themes">Themes &amp; Trends</button>
       <button data-view="competition">Competition</button>
       <button data-view="library">Library</button>
       <button id="nav-health" data-view="health" style="display:none;">System</button>
@@ -701,21 +700,17 @@ button, select, input { font-family: inherit; }
       <div id="mapContainer"><div class="loading" style="padding-top: 300px;">Initializing cartography engine...</div></div>
     </section>
 
-    <!-- THEMES (NARRATIVE MOMENTUM) -->
+    <!-- THEMES & TRENDS (NARRATIVE MOMENTUM + TOPIC VOLUME, UNIFIED) -->
     <section id="themes" class="view">
       <div class="section-divider" style="margin-top:0;"><h2>Narrative Momentum</h2></div>
-      <div id="themesBody" class="momentum-grid"><div class="loading">Loading temporal index...</div></div>
-    </section>
-
-    <section id="theme-detail" class="view">
-      <div id="themeDetailBody"></div>
-    </section>
-
-    <!-- TRENDS (forever-retained daily aggregates) -->
-    <section id="trends" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Topic Trends Over Time</h2></div>
       <div class="dateline" style="font-family: var(--font-ui); font-size: 13.5px; color: var(--ink-soft); margin-bottom: 24px;">
-        Tracks how often each theme appeared in analyzed articles, bucketed by week. Built from a forever-retained daily archive, independent of the 1-year article history window.
+        Recurring themes the synthesizer has tracked across briefings, ranked by how many consecutive days each has appeared.
+      </div>
+      <div id="themesBody" class="momentum-grid"><div class="loading">Loading temporal index...</div></div>
+
+      <div class="section-divider"><h2>Topic Volume Over Time</h2></div>
+      <div class="dateline" style="font-family: var(--font-ui); font-size: 13.5px; color: var(--ink-soft); margin-bottom: 24px;">
+        Tracks how often each theme appeared in analyzed articles, bucketed by week. Built from a forever-retained daily archive, independent of the 1-year article history window above.
       </div>
 
       <div class="pricing-controls" style="margin-bottom: 28px;">
@@ -730,6 +725,10 @@ button, select, input { font-family: inherit; }
       <div id="trendTopicsContainer" class="pricing-scatter-container">
         <div class="loading">Loading trend history&hellip;</div>
       </div>
+    </section>
+
+    <section id="theme-detail" class="view">
+      <div id="themeDetailBody"></div>
     </section>
 
     <!-- COMPETITION (PRICING) -->
@@ -980,11 +979,35 @@ function renderStrategicSignals(themes) {
     { label: 'Competition', keywords: ['compet', 'developer', 'price', 'launch'] }
   ];
 
+  // FIX: previously, a bucket with no keyword match fell back to a RANDOM
+  // theme from the full list with no tracking of what other buckets had
+  // already picked - on a thin-news day (e.g. only 2 themes total), the
+  // same theme got assigned to 3 of 4 cards independently, showing
+  // identical titles under different category headers. Now: track used
+  // theme labels across buckets, and a keyword-less bucket only takes an
+  // UNUSED theme as fallback. If every theme is already claimed, the
+  // bucket renders an honest empty state instead of duplicating.
+  const usedLabels = new Set();
   let html = '';
   buckets.forEach(b => {
-    // Find highest matching theme for this bucket
-    let match = themes.find(t => b.keywords.some(k => t.label.toLowerCase().includes(k))) || themes[Math.floor(Math.random()*themes.length)];
-    
+    let match = themes.find(t => !usedLabels.has(t.label) && b.keywords.some(k => t.label.toLowerCase().includes(k)));
+    if (!match) {
+      match = themes.find(t => !usedLabels.has(t.label));
+    }
+
+    if (!match) {
+      html += `
+        <div class="signal-card" style="border-top: 4px solid var(--rule);">
+          <div class="signal-header">
+            <span class="signal-label">${esc(b.label)}</span>
+          </div>
+          <h3 class="signal-title" style="color:var(--ink-faint);font-style:italic;">No distinct signal today</h3>
+        </div>
+      `;
+      return;
+    }
+    usedLabels.add(match.label);
+
     // Determine trend based on count/novelty
     let trendClass = 'stable'; let trendIcon = '→ Stable';
     if (match.novelty === 'New' || match.count > 3) { trendClass = 'up'; trendIcon = '▲ Rising'; }
@@ -1800,12 +1823,36 @@ function renderPricing(data) {
   populateMixtaLocationOptions();
   renderMixtaPriceList();
 
-  const avgPriceAll = data.listings.reduce((sum, l) => sum + (l.priceValue || 0), 0) / data.listings.filter(l => l.priceValue).length;
-  
-  statsBar.innerHTML = [
-    { v: formatNaira(Math.round(avgPriceAll)), l: 'Market Average Price' },
-    { v: groups.length,                        l: 'Distinct Price Groups Tracked' }
-  ].map(x => `
+  // FIX: previously this averaged EVERY listing's raw price together,
+  // including Land/Plot parcels alongside apartments/duplexes/houses. Land
+  // is priced and transacted as a fundamentally different asset class (per
+  // plot, not per dwelling unit), with values that can swing from a few
+  // million to hundreds of millions depending on parcel size alone - mixing
+  // it into one blended average skewed the headline number away from what
+  // any actual buyer of a specific property type would expect to pay.
+  // "Market Average Price" now reflects residential listings only (the
+  // figure an exec scanning the dashboard actually wants); land gets its
+  // own distinct stat alongside it instead of disappearing or distorting
+  // the main number.
+  const residentialListings = data.listings.filter(l => l.priceValue && l.propertyType !== 'Land / Plot');
+  const landListings = data.listings.filter(l => l.priceValue && l.propertyType === 'Land / Plot');
+
+  const avgPriceResidential = residentialListings.length
+    ? residentialListings.reduce((sum, l) => sum + l.priceValue, 0) / residentialListings.length
+    : 0;
+  const avgPriceLand = landListings.length
+    ? landListings.reduce((sum, l) => sum + l.priceValue, 0) / landListings.length
+    : 0;
+
+  const statsItems = [
+    { v: formatNaira(Math.round(avgPriceResidential)), l: 'Market Average Price (Residential)' },
+  ];
+  if (landListings.length) {
+    statsItems.push({ v: formatNaira(Math.round(avgPriceLand)), l: `Market Average Price (Land/Plot, ${landListings.length})` });
+  }
+  statsItems.push({ v: groups.length, l: 'Distinct Price Groups Tracked' });
+
+  statsBar.innerHTML = statsItems.map(x => `
     <div class="pricing-stat">
       <div class="pricing-stat-value">${esc(String(x.v))}</div>
       <div class="pricing-stat-label">${esc(x.l)}</div>
@@ -1828,7 +1875,17 @@ function buildPricingGroupsFromListings(listings) {
     if (!l.priceValue) continue;
     const loc  = l.location      || 'Unspecified';
     const type = l.propertyType  || 'Residential';
-    const bed  = l.bedroomLabel  || 'Unspecified';
+    // FIX: Land/Plot listings don't have a bedroom count by nature (not a
+    // data-quality failure), but previously fell through to the same
+    // 'Unspecified' label used when bedroom extraction genuinely failed on
+    // a residential listing - the two got merged into one indistinguishable
+    // bucket, so a land parcel and an apartment with a failed extraction
+    // were grouped, filtered, and averaged together as if comparable. Land
+    // now gets its own explicit label everywhere bedroomLabel is read
+    // (grouping key, filter chips, bar/scatter charts, drill-down detail) -
+    // since this is plain string comparison throughout, one change here
+    // propagates correctly without touching every downstream usage.
+    const bed = type === 'Land / Plot' ? 'N/A (Land/Plot)' : (l.bedroomLabel || 'Unspecified');
     const key  = `${loc}||${type}||${bed}`;
     if (!groups[key]) {
       groups[key] = { location: loc, propertyType: type, bedroomLabel: bed, corridorBucket: l.corridorBucket || 'Other Lagos', prices: [], amenityCounts: {}, sources: new Set(), allListings: [] };
@@ -2542,14 +2599,30 @@ function renderPricingBarChart(allListings) {
     ? `<span class="scatter-legend-item"><span class="scatter-legend-dot bar-mixta-legend-swatch"></span>Mixta (your entries)</span>`
     : '';
 
+  // FIX: the comment this replaces claimed an unmatched-entry warning was
+  // "no longer possible" because Mixta entries get merged into groupMap
+  // directly - true ONLY for entries that pass the type/location/bedroom
+  // filters above (lines ~2400-2403). An entry whose own location/bedroom
+  // doesn't match the CURRENTLY SELECTED filters (e.g. a "Lakowe / 1
+  // Bedroom" entry while "Ikoyi / 4 Bedrooms" is selected) is filtered out
+  // of mixtaEntries before ever reaching groupMap, and was silently
+  // invisible with no indication why - confirmed as the actual cause of a
+  // real "my manual price isn't plotting" report. Same warning pattern the
+  // scatter plot already has, applied here too.
+  const allMixtaForWarning = (window._mixtaPrices || []);
+  const hiddenByFilters = allMixtaForWarning.filter(m => {
+    if (pricingTypeFilter !== 'all' && (m.propertyType || 'Residential') !== pricingTypeFilter) return true;
+    if (pricingLocationFilter !== 'all' && m.location !== pricingLocationFilter) return true;
+    if (pricingBedroomFilter !== 'all' && m.bedroomLabel !== pricingBedroomFilter) return true;
+    return false;
+  });
+  const unmatchedWarning = hiddenByFilters.length
+    ? `<div class="mixta-unmatched-warning">${esc(String(hiddenByFilters.length))} Mixta ${hiddenByFilters.length === 1 ? 'entry is' : 'entries are'} hidden by the current filters above (${hiddenByFilters.map(m => `"${esc(m.location)} / ${esc(m.bedroomLabel)}"`).join(', ')}). Clear or change the filters to see them.</div>`
+    : '';
+
   // FIX: single innerHTML assignment instead of the = then += pattern,
   // which was destroying and re-parsing the whole SVG a second time.
-  // NOTE: the old "unmatched Mixta entry" warning is gone because it's no
-  // longer possible - Mixta entries are now merged directly into groupMap
-  // before rendering, so a filtered-in entry ALWAYS gets its own bar
-  // (creating a new group if no competitor listings exist for that exact
-  // location+bedroom combo), rather than being a star with nowhere to attach.
-  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>`;
+  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>${unmatchedWarning}`;
 
   if (!document.getElementById('scatterTooltip')) {
     const tt = document.createElement('div');

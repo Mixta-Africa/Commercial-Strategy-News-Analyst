@@ -134,6 +134,8 @@ class DataSource {
     const queries = [
       '"real estate" AND (Lagos OR Nigeria)',
       '(property market OR housing market OR property developer OR mortgage) AND (Lagos OR Nigeria)',
+      '(Lekki OR "Ibeju-Lekki" OR Ajah OR Lakowe) AND (property OR real estate OR development)',
+      '(housing policy OR land use OR FMBN OR "housing deficit") AND Nigeria',
     ];
 
     const seen = new Set();

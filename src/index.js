@@ -502,6 +502,125 @@ class NewsPipeline {
   /**
    * PHASE 8: Dashboard Updates
    */
+  /**
+   * Reads the existing data/articles.json (if present) and merges today's
+   * newly-analyzed articles into it, deduping by normalized title+URL so
+   * the same article seen across multiple runs doesn't pile up duplicate
+   * entries. Caps retention at 365 days (per explicit decision: raw
+   * articles kept a full year, with longer-term trend signal living in the
+   * separate, forever-retained trend-history aggregation instead) so the
+   * file doesn't grow unbounded forever, while still preserving a full
+   * year of history the dashboard's Library/Articles tab and Evidence
+   * Stream depend on.
+   *
+   * FIX (critical): this used to be a straight fs.writeFileSync(articles.json,
+   * JSON.stringify(articles)) with ONLY the current run's articles - every
+   * single scheduled run was silently destroying the entire prior history,
+   * which is exactly why the Library/Articles tab appeared to have lost
+   * everything and why a run that only analyzed 2 articles left the whole
+   * dashboard showing just those 2.
+   */
+  mergeArticlesForRetention(existingArticles, newArticles) {
+    const seen = new Set();
+    const merged = [];
+
+    // New articles win on dedup collisions (most up-to-date analysis), so
+    // add them first.
+    const dedupKey = (a) => `${(a.title || '').toLowerCase().trim()}||${(a.url || '').toLowerCase().trim()}`;
+
+    for (const a of newArticles) {
+      const key = dedupKey(a);
+      if (key === '||' || seen.has(key)) continue;
+      seen.add(key);
+      merged.push(a);
+    }
+    for (const a of existingArticles) {
+      const key = dedupKey(a);
+      if (key === '||' || seen.has(key)) continue;
+      seen.add(key);
+      merged.push(a);
+    }
+
+    // Per explicit decision: raw articles retained for a full year, not 90
+    // days. Trend-relevant signal beyond a year lives in the separate
+    // theme-trends aggregation file (kept forever, compact by design),
+    // not in this raw article history.
+    const RETENTION_DAYS = 365;
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - RETENTION_DAYS);
+
+    const retained = merged.filter(a => {
+      const ts = a.addedAt || a.publishedAt;
+      if (!ts) return true; // keep anything without a timestamp rather than silently drop it
+      const d = new Date(ts);
+      return isNaN(d.getTime()) || d >= cutoff;
+    });
+
+    return retained;
+  }
+
+  /**
+   * Builds ONE compact aggregated record for today's run - sentiment
+   * counts, top topics, theme labels, article volume - and appends it to
+   * data/trend-history.json, which is NEVER pruned (per explicit
+   * decision: raw articles get a 1-year window, but the trend signal
+   * itself is kept forever since that's the actual long-term intelligence
+   * asset, and it stays small by design - one short record per day, not
+   * one record per article, so even 10 years of history is a tiny file).
+   *
+   * If a record for today's date already exists (e.g. a second run on the
+   * same day, or a retry), it's REPLACED rather than duplicated, so the
+   * history stays one row per calendar day.
+   */
+  buildTodayTrendSnapshot(articles, dateStr) {
+    const sentiments = {};
+    const topics = {};
+    for (const a of articles) {
+      sentiments[a.sentiment] = (sentiments[a.sentiment] || 0) + 1;
+      const articleTopics = (a.trending_topics || '').split(',');
+      for (const topic of articleTopics) {
+        const t = topic.trim();
+        if (t) topics[t] = (topics[t] || 0) + 1;
+      }
+    }
+    return {
+      date: dateStr,
+      articleCount: articles.length,
+      sentimentBreakdown: sentiments,
+      averageSentiment: this.calculateAverageSentiment(sentiments),
+      topTopics: Object.entries(topics).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([topic, count]) => ({ topic, count })),
+    };
+  }
+
+  appendTrendHistory(articles, dateStr) {
+    try {
+      const dataDir = path.join(process.cwd(), 'data');
+      const historyPath = path.join(dataDir, 'trend-history.json');
+
+      let history = [];
+      try {
+        const raw = fs.readFileSync(historyPath, 'utf-8');
+        const parsed = JSON.parse(raw);
+        history = Array.isArray(parsed.days) ? parsed.days : [];
+      } catch (e) {
+        console.log('[PHASE 8] No existing trend-history.json found - starting fresh (this file is kept forever, never pruned).');
+      }
+
+      const todaySnapshot = this.buildTodayTrendSnapshot(articles, dateStr);
+
+      // Replace any existing entry for today (handles a same-day re-run)
+      // rather than appending a duplicate row for the same date.
+      history = history.filter(d => d.date !== dateStr);
+      history.push(todaySnapshot);
+      history.sort((a, b) => a.date < b.date ? -1 : 1);
+
+      fs.writeFileSync(historyPath, JSON.stringify({ days: history }, null, 2));
+      console.log(`[PHASE 8] Trend history: ${history.length} total days recorded (forever-retained, today's snapshot ${history.find(d => d.date === dateStr) ? 'updated' : 'added'}).`);
+    } catch (e) {
+      console.warn('[PHASE 8] Could not update trend-history.json:', e.message);
+    }
+  }
+
   async updateDashboard(articles, trends, alerts, briefing) {
     console.log('[PHASE 8] Updating dashboard data...');
 
@@ -509,10 +628,31 @@ class NewsPipeline {
       const dataDir = path.join(process.cwd(), 'data');
       if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
+      // FIX: read existing articles.json BEFORE writing, so today's run
+      // merges into history instead of replacing it. A read failure (first
+      // run ever, or a corrupted/missing file) falls back to an empty
+      // array rather than crashing the whole pipeline run.
+      let existingArticles = [];
+      try {
+        const raw = fs.readFileSync(path.join(dataDir, 'articles.json'), 'utf-8');
+        const parsed = JSON.parse(raw);
+        existingArticles = Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        console.log('[PHASE 8] No existing articles.json found (first run, or unreadable) - starting fresh history.');
+      }
+
+      const mergedArticles = this.mergeArticlesForRetention(existingArticles, articles);
+      console.log(`[PHASE 8] Articles: ${existingArticles.length} existing + ${articles.length} new -> ${mergedArticles.length} after merge/dedup/retention.`);
+
       fs.writeFileSync(
         path.join(dataDir, 'articles.json'),
-        JSON.stringify(articles, null, 2)
+        JSON.stringify(mergedArticles, null, 2)
       );
+
+      // Forever-retained trend snapshot - uses THIS run's freshly-analyzed
+      // articles (not the merged 365-day history), so each day's record
+      // reflects what was actually found and analyzed that specific day.
+      this.appendTrendHistory(articles, this.timestamp.split('T')[0]);
 
       fs.writeFileSync(
         path.join(dataDir, 'trends.json'),
@@ -550,6 +690,14 @@ class NewsPipeline {
           executive_summary: briefing.executive_summary || '',
           themeCount: briefing.themes?.length || 0,
           themeLabels: (briefing.themes || []).map(t => t.label),
+          // FIX: this field was never being written, even though the
+          // dashboard's openBriefing() requires item.file to know which
+          // archived JSON to fetch - every click on a past briefing in the
+          // Library tab failed with "Could not locate the file for this
+          // briefing" because of this exact omission. Path must be
+          // relative to the dashboard's DATA_BASE, matching where the
+          // archive copy is actually written two lines above.
+          file: `archive/briefing-${dateStr}.json`,
         });
         index = index.slice(0, 180); // ~6 months of daily briefings
         fs.writeFileSync(indexPath, JSON.stringify({ briefings: index }, null, 2));

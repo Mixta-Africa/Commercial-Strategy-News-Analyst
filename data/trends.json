@@ -3,90 +3,90 @@
     "articleCount": 2,
     "sentimentBreakdown": {
       "neutral": 1,
-      "bullish": 1
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Abuja real estate",
+        "topic": "community-safety",
         "count": 1
       },
       {
-        "topic": "quality and innovation",
+        "topic": "security",
         "count": 1
       },
       {
-        "topic": "Nigeria property market",
+        "topic": "Enugu-governor",
         "count": 1
       },
       {
-        "topic": "agriculture",
+        "topic": "Peter-Mbah",
         "count": 1
       },
       {
-        "topic": "land ownership",
+        "topic": "Nigerian politics",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "30day": {
     "articleCount": 2,
     "sentimentBreakdown": {
       "neutral": 1,
-      "bullish": 1
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Abuja real estate",
+        "topic": "community-safety",
         "count": 1
       },
       {
-        "topic": "quality and innovation",
+        "topic": "security",
         "count": 1
       },
       {
-        "topic": "Nigeria property market",
+        "topic": "Enugu-governor",
         "count": 1
       },
       {
-        "topic": "agriculture",
+        "topic": "Peter-Mbah",
         "count": 1
       },
       {
-        "topic": "land ownership",
+        "topic": "Nigerian politics",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "90day": {
     "articleCount": 2,
     "sentimentBreakdown": {
       "neutral": 1,
-      "bullish": 1
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Abuja real estate",
+        "topic": "community-safety",
         "count": 1
       },
       {
-        "topic": "quality and innovation",
+        "topic": "security",
         "count": 1
       },
       {
-        "topic": "Nigeria property market",
+        "topic": "Enugu-governor",
         "count": 1
       },
       {
-        "topic": "agriculture",
+        "topic": "Peter-Mbah",
         "count": 1
       },
       {
-        "topic": "land ownership",
+        "topic": "Nigerian politics",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   }
 }

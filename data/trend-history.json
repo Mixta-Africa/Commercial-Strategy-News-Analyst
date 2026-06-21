@@ -1,0 +1,35 @@
+{
+  "days": [
+    {
+      "date": "2026-06-21",
+      "articleCount": 2,
+      "sentimentBreakdown": {
+        "neutral": 1,
+        "bearish": 1
+      },
+      "averageSentiment": "bearish",
+      "topTopics": [
+        {
+          "topic": "community-safety",
+          "count": 1
+        },
+        {
+          "topic": "security",
+          "count": 1
+        },
+        {
+          "topic": "Enugu-governor",
+          "count": 1
+        },
+        {
+          "topic": "Peter-Mbah",
+          "count": 1
+        },
+        {
+          "topic": "Nigerian politics",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

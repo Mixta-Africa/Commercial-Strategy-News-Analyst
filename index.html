@@ -73,47 +73,48 @@ button, select, input { font-family: inherit; }
    MASTHEAD & NAV
    ════════════════════════════════════════════════════════════════════════ */
 .site-header {
-  border-top: 8px solid var(--maroon); /* Mixta Red Anchor */
-  border-bottom: 1px solid var(--rule-strong);
+  border-top: 4px solid var(--maroon);
   background: var(--paper);
-  position: relative;
+  position: sticky; top: 0; z-index: 50;
+  border-bottom: 1px solid var(--rule-strong);
+  box-shadow: 0 2px 8px rgba(122,31,43,0.07);
 }
 
 .masthead {
-  max-width: 1400px; margin: 0 auto; padding: 40px 40px 24px;
-  display: flex; flex-direction: column; align-items: center; text-align: center;
+  max-width: 1400px; margin: 0 auto; padding: 0 40px;
+  display: flex; flex-direction: row; align-items: center;
+  justify-content: space-between; gap: 24px; height: 52px;
 }
 
-.masthead-kicker {
-  font-family: var(--font-ui); font-size: 12px; font-weight: 700;
-  letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft);
-  margin-bottom: 12px; display: block;
-}
+.masthead-kicker { display: none; }
 
 .masthead-title {
-  font-family: var(--font-headline); font-size: 56px; font-weight: 800;
-  letter-spacing: -0.02em; color: var(--maroon); line-height: 1.1; margin-bottom: 16px;
+  font-family: var(--font-headline); font-size: 18px; font-weight: 800;
+  letter-spacing: -0.01em; color: var(--maroon); line-height: 1;
+  white-space: nowrap; margin: 0;
 }
 
+.masthead-sub { display: none; }
+
 .masthead-controls {
-  position: absolute; right: 40px; bottom: 24px;
-  display: flex; align-items: center; gap: 12px;
+  position: static;
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
 }
 
 .nav {
-  background: var(--paper); border-bottom: 3px solid var(--maroon);
-  position: sticky; top: 0; z-index: 50; 
+  background: var(--paper); border-bottom: 2px solid var(--maroon);
+  /* No longer sticky — lives inside the now-sticky site-header bar */
 }
 .nav-inner {
   max-width: 1400px; margin: 0 auto; padding: 0 40px;
-  display: flex; align-items: center; justify-content: center; gap: 48px;
+  display: flex; align-items: center; justify-content: center; gap: 36px;
   overflow-x: auto; scrollbar-width: none;
 }
 .nav-inner::-webkit-scrollbar { display: none; }
 .nav button {
-  font-family: var(--font-ui); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--ink-soft); background: none; border: none; padding: 20px 0 16px; cursor: pointer;
-  white-space: nowrap; border-bottom: 4px solid transparent; transition: color 0.2s;
+  font-family: var(--font-ui); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--ink-soft); background: none; border: none; padding: 12px 0 10px; cursor: pointer;
+  white-space: nowrap; border-bottom: 3px solid transparent; transition: color 0.2s;
 }
 .nav button:hover { color: var(--maroon); }
 .nav button.active { color: var(--maroon); border-bottom-color: var(--maroon); }
@@ -465,10 +466,9 @@ button, select, input { font-family: inherit; }
   .hero-story { grid-template-columns: 1fr; }
   .strategic-signals-grid { grid-template-columns: repeat(2, 1fr); }
   .competition-hero { grid-template-columns: 1fr; }
-  .masthead-title { font-size: 40px; }
-  .masthead { padding: 32px 24px 20px; }
+  .masthead { padding: 0 24px; }
   .shell { padding: 0 24px; }
-  .nav-inner { padding: 0 24px; gap: 32px; }
+  .nav-inner { padding: 0 24px; gap: 28px; }
   .mixta-price-form { grid-template-columns: 1fr 1fr; }
   .mixta-price-form button { grid-column: 1 / -1; }
 }
@@ -479,14 +479,13 @@ button, select, input { font-family: inherit; }
   .intelligence-grid { grid-template-columns: 1fr; }
   .pricing-stats-bar { grid-template-columns: 1fr; }
   .pricing-groups { grid-template-columns: 1fr; }
-  .masthead-controls { position: static; margin-top: 24px; justify-content: center; width: 100%; flex-wrap: wrap; }
+  .masthead { padding: 0 18px; gap: 12px; height: 48px; }
+  .masthead-title { font-size: 15px; }
+  .masthead-controls { gap: 8px; }
   .cfg-row-flex { flex-direction: column; }
-
-  .masthead-title { font-size: 30px; }
-  .masthead-sub { font-size: 15px; }
   .shell { padding: 0 18px; }
-  .nav-inner { padding: 0 18px; gap: 22px; justify-content: flex-start; }
-  .nav button { font-size: 12px; padding: 16px 0 13px; }
+  .nav-inner { padding: 0 18px; gap: 18px; justify-content: flex-start; }
+  .nav button { font-size: 11px; padding: 10px 0 9px; }
 
   .mixta-price-panel { padding: 16px 18px; }
   .mixta-price-form { grid-template-columns: 1fr; gap: 10px; }
@@ -504,11 +503,6 @@ button, select, input { font-family: inherit; }
   .price-group-card { padding: 24px; }
   .pgc-title { font-size: 20px; }
 
-  /* SVG charts: shrink fixed margins so more of a narrow screen is usable
-     plotting area instead of being eaten by axis-label space, and shrink
-     the text inside the SVG itself (CSS font-size on the <text> classes
-     applies even though they're SVG, since they're plain HTML-adjacent
-     classes, not vector-locked sizes). */
   .scatter-axis-label { font-size: 8px; }
   .scatter-group-label { font-size: 9px; }
   .bar-axis-label { font-size: 8px; }
@@ -521,12 +515,11 @@ button, select, input { font-family: inherit; }
 
 /* ── SMALL PHONE ── */
 @media (max-width: 480px) {
-  .masthead-kicker { font-size: 10px; letter-spacing: 0.1em; }
-  .masthead-title { font-size: 24px; }
-  .masthead { padding: 24px 14px 16px; }
+  .masthead { padding: 0 14px; height: 44px; }
+  .masthead-title { font-size: 13px; }
   .shell { padding: 0 14px; }
-  .nav-inner { padding: 0 14px; gap: 16px; }
-  .nav button { font-size: 11px; padding: 14px 0 11px; }
+  .nav-inner { padding: 0 14px; gap: 14px; }
+  .nav button { font-size: 10px; padding: 9px 0 8px; }
 
   .hero-title { font-size: 26px; }
   .hero-excerpt { font-size: 15px; }
@@ -584,10 +577,7 @@ button, select, input { font-family: inherit; }
 
   <header class="site-header">
     <div class="masthead">
-      <span class="masthead-kicker">Commercial Strategy Desk</span>
-      <h1 class="masthead-title">Mixta Africa Intelligence</h1>
-      <div class="masthead-sub" style="font-family: var(--font-body); font-size: 16px; font-style: italic; color: var(--ink-soft); font-weight: 400;">Premium real estate &amp; competitive markets, updated daily</div>
-      
+      <h1 class="masthead-title" title="Commercial Strategy Desk — Premium real estate &amp; competitive markets, updated daily">Mixta Africa Intelligence</h1>
       <div class="masthead-controls">
         <span id="statusPill" class="status-pill"><span class="status-dot"></span><span id="statusText">Loading</span></span>
         <button id="refreshTriggerBtn" onclick="triggerPipelineRefresh()" class="refresh-trigger-btn" title="Trigger a new pipeline run">
@@ -1624,7 +1614,7 @@ async function loadConfigState() {
 }
 
 // ── MANUAL PIPELINE REFRESH ───────────────────────────────────────────
-const REFRESH_WORKER_URL = 'https://mixta-dashboard-trigger.o-olasunkanmi.workers.dev';
+const REFRESH_WORKER_URL = 'https://mixta-dashboard-trigger.YOUR-SUBDOMAIN.workers.dev';
 
 function showRefreshToast(message, isError) {
   const existing = document.querySelector('.refresh-toast');

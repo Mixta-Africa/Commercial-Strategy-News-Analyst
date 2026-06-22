@@ -86,6 +86,11 @@ button, select, input { font-family: inherit; }
   justify-content: space-between; gap: 24px; height: 52px;
 }
 
+.masthead-logo {
+  height: 38px; width: auto; object-fit: contain; flex-shrink: 0;
+  /* Paper background matches the logo's white bg - if the export has a
+     white bg rather than transparent, it still blends cleanly */
+}
 .masthead-kicker { display: none; }
 
 .masthead-title {
@@ -307,8 +312,63 @@ button, select, input { font-family: inherit; }
 .art-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); text-transform: uppercase; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; letter-spacing: 0.05em; }
 
 /* ════════════════════════════════════════════════════════════════════════
-   COMPETITION (PRICING)
+   HELP WIDGET
    ════════════════════════════════════════════════════════════════════════ */
+#helpWidgetBtn {
+  position: fixed; bottom: 28px; right: 28px; z-index: 200;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--maroon); color: #fff;
+  font-family: var(--font-headline); font-size: 18px; font-weight: 700;
+  border: none; cursor: pointer; box-shadow: 0 4px 16px rgba(122,31,43,0.28);
+  transition: transform 0.15s, box-shadow 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+#helpWidgetBtn:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(122,31,43,0.38); }
+
+.help-panel {
+  position: fixed; bottom: 82px; right: 28px; z-index: 199;
+  width: 340px; max-height: 70vh;
+  background: var(--paper-card); border: 1px solid var(--rule-strong);
+  border-radius: var(--radius); box-shadow: 0 8px 32px rgba(60,40,20,0.15);
+  display: flex; flex-direction: column; overflow: hidden;
+  animation: helpSlideIn 0.18s ease;
+}
+@keyframes helpSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.help-panel-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px 12px; border-bottom: 1px solid var(--rule);
+  background: var(--maroon-soft);
+}
+.help-panel-title {
+  font-family: var(--font-ui); font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--maroon-dark);
+}
+.help-panel-close {
+  background: none; border: none; font-size: 14px; cursor: pointer;
+  color: var(--ink-soft); padding: 0 2px; line-height: 1;
+}
+.help-panel-close:hover { color: var(--maroon); }
+.help-panel-body {
+  padding: 18px; overflow-y: auto; flex: 1;
+  font-family: var(--font-body); font-size: 14px; color: var(--ink); line-height: 1.55;
+}
+.help-section { margin-bottom: 18px; }
+.help-section:last-child { margin-bottom: 0; }
+.help-section h4 {
+  font-family: var(--font-ui); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--maroon);
+  margin-bottom: 6px;
+}
+.help-section p { margin: 0 0 6px; font-size: 13px; color: var(--ink-soft); }
+.help-section p:last-child { margin: 0; }
+.help-tag {
+  display: inline-block; font-family: var(--font-mono); font-size: 10.5px;
+  background: var(--maroon-soft); color: var(--maroon-dark);
+  border-radius: 3px; padding: 1px 5px; margin: 1px 2px;
+}
 .competition-hero { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-bottom: 64px; }
 .pricing-stats-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
 
@@ -600,7 +660,12 @@ button, select, input { font-family: inherit; }
 
   <header class="site-header">
     <div class="masthead">
-      <h1 class="masthead-title" title="Commercial Strategy Desk — Premium real estate &amp; competitive markets, updated daily">Mixta Africa Intelligence</h1>
+      <img src="assets/logo-header.png" 
+           alt="Mixta Africa Market Intelligence Hub" 
+           class="masthead-logo"
+           title="Commercial Strategy Department — Premium real estate &amp; competitive markets, updated daily"
+           onerror="this.style.display='none';document.getElementById('masthead-fallback').style.display='block';" />
+      <span id="masthead-fallback" class="masthead-title" style="display:none;">Mixta Africa Intelligence</span>
       <div class="masthead-controls">
         <span id="statusPill" class="status-pill"><span class="status-dot"></span><span id="statusText">Loading</span></span>
         <button id="refreshTriggerBtn" onclick="triggerPipelineRefresh()" class="refresh-trigger-btn" title="Trigger a new pipeline run">
@@ -750,21 +815,7 @@ button, select, input { font-family: inherit; }
       
       <div id="pricingStatsBar" class="pricing-stats-inline"></div>
 
-      <!-- PRICE TREND CHART -->
-      <div class="section-divider"><h2>Price Trend</h2>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-          <div id="trendPeriodBtns" style="display:flex;gap:0;border:1px solid var(--rule-strong);border-radius:var(--radius);overflow:hidden;"></div>
-          <select id="trendTypeFilter" class="mixta-input" style="font-size:12px;padding:6px 10px;" onchange="renderPriceTrendChart()">
-            <option value="all">All Property Types</option>
-          </select>
-          <select id="trendLocationFilter" class="mixta-input" style="font-size:12px;padding:6px 10px;" onchange="renderPriceTrendChart()">
-            <option value="all">All Locations</option>
-          </select>
-        </div>
-      </div>
-      <div id="priceTrendContainer" class="pricing-scatter-container" style="min-height:260px;">
-        <div class="loading">Calculating price trend&hellip;</div>
-      </div>
+      <!-- PRICE TREND CHART — below the matrix, after individual unit data -->
 
       <div class="section-divider"><h2>Pricing Matrix</h2></div>
       <div class="pricing-controls">
@@ -832,6 +883,23 @@ button, select, input { font-family: inherit; }
 
       <div id="pricingGroupsContainer" class="pricing-groups" style="display:none;">
         <div class="loading" style="grid-column: 1/-1;">Aggregating market pricing data...</div>
+      </div>
+
+      <!-- PRICE TREND CHART — intentionally after the pricing matrix so users
+           understand the current snapshot first before looking at the time series -->
+      <div class="section-divider"><h2>Price Trend Over Time</h2>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <div id="trendPeriodBtns" style="display:flex;gap:0;border:1px solid var(--rule-strong);border-radius:var(--radius);overflow:hidden;"></div>
+          <select id="trendTypeFilter" class="mixta-input" style="font-size:12px;padding:6px 10px;" onchange="renderPriceTrendChart()">
+            <option value="all">All Property Types</option>
+          </select>
+          <select id="trendLocationFilter" class="mixta-input" style="font-size:12px;padding:6px 10px;" onchange="renderPriceTrendChart()">
+            <option value="all">All Locations</option>
+          </select>
+        </div>
+      </div>
+      <div id="priceTrendContainer" class="pricing-scatter-container" style="min-height:260px;">
+        <div class="loading">Calculating price trend&hellip;</div>
       </div>
     </section>
 
@@ -1879,7 +1947,96 @@ function renderPricing(data) {
   renderPricingScatter(data.listings);
 }
 
-// ── PRICE TREND CHART ──────────────────────────────────────────────────────────
+// ── HELP WIDGET ───────────────────────────────────────────────────────────────
+
+const HELP_CONTENT = {
+  briefing: {
+    title: 'Briefing — How to read this',
+    sections: [
+      { h: 'Today\'s Signal', p: 'The lead story: the article or theme with the highest market impact severity today, chosen by the AI synthesizer. The "So What" box is Mixta-specific commentary written by the AI — it connects the story to Lakowe Crossings, Lakowe Annexe, or Lagos New Town where relevant.' },
+      { h: 'Strategic Signals', p: 'Four market-facing buckets (Market Creation, Financing, Regulatory, Competition), each mapped to the most relevant theme from today\'s briefing. If fewer than 4 distinct themes exist, unfilled buckets show "No distinct signal today" rather than recycling a theme.' },
+      { h: 'Sentiment Pills', p: '<span class="help-tag">Bullish</span> = positive market implications. <span class="help-tag">Bearish</span> = headwinds or risk signals. <span class="help-tag">Neutral</span> = informational with no clear direction. Sentiment is assigned by AI based on market implications, not article tone.' },
+      { h: 'Market Impact Severity', p: '<span class="help-tag">Critical</span> → <span class="help-tag">High</span> → <span class="help-tag">Medium</span> → <span class="help-tag">Low</span> → <span class="help-tag">Negligible</span>. Assigned per article based on how directly and urgently the event affects the Lagos residential real estate market.' },
+    ]
+  },
+  markets: {
+    title: 'Markets — How to read this',
+    sections: [
+      { h: 'Geospatial Map', p: 'Each dot is a news article, placed at the geographic region it covers. Color indicates sentiment: green = bullish, red = bearish, grey = neutral. Dots are clustered when multiple articles cover the same region.' },
+      { h: 'Geo Scope Filters', p: 'Lagos focuses on hyperlocal corridor news. Nigeria broadens to national policy and macro signals. Africa and Global capture regional and international real estate macro trends that indirectly affect the Nigerian market.' },
+      { h: '7/30/90-day Pulse', p: 'Rolling sentiment ratios and top topics extracted from all analyzed articles in the window. The "average sentiment" tips bullish if >50% of articles are bullish, bearish if >30% are bearish, neutral otherwise.' },
+    ]
+  },
+  themes: {
+    title: 'Themes & Trends — How to read this',
+    sections: [
+      { h: 'Narrative Momentum', p: 'Themes the AI synthesizer has detected across multiple briefing days, ranked by consecutive appearances. A theme that has appeared 5+ days in a row is a confirmed market narrative, not noise. "New" means it appeared for the first time today.' },
+      { h: 'Topic Volume Over Time', p: 'Counts how many times each topic keyword appeared across all analyzed articles, bucketed by week. This is raw keyword frequency — distinct from the AI-synthesized themes above, which require context and narrative coherence.' },
+      { h: 'Period Filters', p: '30D is the default. All shows the complete forever-retained history. The archive never prunes, so you can track multi-year topic momentum once enough data accumulates.' },
+    ]
+  },
+  competition: {
+    title: 'Competition — How to read this',
+    sections: [
+      { h: 'Stats Strip', p: 'Residential Median = median price across all non-land listings in the current scrape. Land/Plot Median is separate because land and residential units are different asset classes with incompatible pricing bases. Median is used (not mean) to resist distortion by a single extreme outlier.' },
+      { h: 'Pricing Matrix — Scatter Plot', p: 'Each dot is one individual listing. Groups on the X-axis are Location × Bedroom combinations. Color = source site. Star markers (★) are your manually-added Mixta prices — they appear in every group matching their bedroom count, not just Lakowe, so you can see how Mixta prices compare anywhere.' },
+      { h: 'Pricing Matrix — Bar Chart', p: 'Same grouping as scatter, but bars sorted left-to-right by price within each group. Mixta bars appear alongside competitor bars sorted by their actual price, not bolted on at the end.' },
+      { h: 'Add Mixta Price', p: 'Prices you add here are saved to Firebase and persist across sessions. They appear on both the scatter and bar charts. Property type must be set correctly — if you saved entries before today, they were stored as "Residential" by default and should be re-added with the correct type.' },
+      { h: 'Price Trend Chart', p: 'Daily median price per property type × location, smoothed with a 3-day rolling median. Identical properties (same title + location + bedrooms) are normalized to a single canonical data point per day before charting — this prevents different homes being scraped on different runs from creating false trend signals. Trend history accumulates daily; the chart fills in as more scrape runs complete.' },
+      { h: 'Normalization', p: 'Within each day, listings are first grouped by title + location + bedrooms. The median price of each canonical property group is computed, then the day\'s series value is the median of those property medians. This means the trend tracks comparable homes, not random samples.' },
+    ]
+  },
+  library: {
+    title: 'Library — How to read this',
+    sections: [
+      { h: 'Executive Briefings', p: 'Full AI-generated briefings from every pipeline run, stored permanently. Each briefing contains the strategic synthesis, themes, why-it-matters commentary, and recommendations generated that day.' },
+      { h: 'Source Articles', p: 'Every article that passed the recency and relevance filters on any given run, with AI-generated summaries and sentiment tags. Articles are retained for 365 days.' },
+      { h: 'Search', p: 'Searches across titles, dates, and AI summaries simultaneously. Use keywords like "Ibeju-Lekki", "mortgage", or "affordable housing" to find relevant historic coverage quickly.' },
+    ]
+  },
+};
+
+let _helpOpen = false;
+
+function toggleHelpWidget() {
+  _helpOpen = !_helpOpen;
+  const panel = document.getElementById('helpWidgetPanel');
+  const btn   = document.getElementById('helpWidgetBtn');
+  if (!_helpOpen) {
+    panel.style.display = 'none';
+    btn.textContent = '?';
+    return;
+  }
+  panel.style.display = 'flex';
+  btn.textContent = '×';
+  updateHelpContent();
+}
+
+function updateHelpContent() {
+  // Find the currently active view
+  const activeSection = document.querySelector('.view.active');
+  const viewId = activeSection?.id || 'briefing';
+  // Map detail/overlay views back to their parent
+  const viewMap = { 'theme-detail': 'themes', 'price-detail': 'competition', 'pricegroup-detail': 'competition' };
+  const key = viewMap[viewId] || viewId;
+  const content = HELP_CONTENT[key] || HELP_CONTENT.briefing;
+
+  document.getElementById('helpPanelTitle').textContent = content.title;
+  document.getElementById('helpPanelBody').innerHTML = content.sections.map(s => `
+    <div class="help-section">
+      <h4>${s.h}</h4>
+      <p>${s.p}</p>
+    </div>`).join('');
+}
+
+// Update help content whenever the user navigates to a different view
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.nav button[data-view]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (_helpOpen) setTimeout(updateHelpContent, 50);
+    });
+  });
+});
 // Renders daily median price per property-type × location combination as a
 // multi-line SVG chart. Uses median (not mean) per day per group to avoid
 // a single outlier premium listing skewing a location's daily reading.
@@ -1967,25 +2124,55 @@ function renderPriceTrendChart(listings) {
   };
 
   // Build: { seriesKey → { date → [prices] } }
+  // NORMALIZATION: within each calendar day, group listings by
+  // title+location+bedrooms (the canonical property identity key used
+  // throughout the system for price-change detection). Each canonical
+  // property contributes its median price per day - so if 3 different
+  // 4-bed duplexes in Lekki are scraped today, each is one data point,
+  // not 3. This prevents spurious noise from the scraper happening to
+  // pick up different homes on different runs from inflating or deflating
+  // the series - only genuine market price movement on comparable homes
+  // drives the trend line.
   const rawBySeriesDate = {};
   for (const l of filteredListings) {
-    const dateStr = l.scrapedAt.slice(0, 10); // YYYY-MM-DD
+    const dateStr = l.scrapedAt.slice(0, 10);
     const type = l.propertyType || 'Residential';
     const loc  = l.location     || 'Unspecified';
     const seriesKey = selectedLoc !== 'all'
-      ? type                  // if location is fixed, series = type only
+      ? type
       : selectedType !== 'all'
-        ? loc                 // if type is fixed, series = location only
-        : `${type} · ${loc}`; // unfiltered: both
+        ? loc
+        : `${type} · ${loc}`;
+
+    // Canonical property key for normalization within a day
+    const propKey = `${(l.title || '').toLowerCase().trim()}||${loc.toLowerCase()}||${(l.bedroomLabel || '').toLowerCase()}`;
+
     if (!rawBySeriesDate[seriesKey]) rawBySeriesDate[seriesKey] = {};
-    if (!rawBySeriesDate[seriesKey][dateStr]) rawBySeriesDate[seriesKey][dateStr] = [];
-    rawBySeriesDate[seriesKey][dateStr].push(l.priceValue);
+    if (!rawBySeriesDate[seriesKey][dateStr]) rawBySeriesDate[seriesKey][dateStr] = {};
+    // Store by propKey to track unique canonical properties, not raw listing count
+    if (!rawBySeriesDate[seriesKey][dateStr][propKey]) {
+      rawBySeriesDate[seriesKey][dateStr][propKey] = [];
+    }
+    rawBySeriesDate[seriesKey][dateStr][propKey].push(l.priceValue);
+  }
+
+  // Collapse: for each series → date → take median of each canonical property,
+  // then take the median of those property medians as the day's series value.
+  // Two levels of median: within-property (handles duplicate scrapes of the
+  // same listing) and across-properties (the day's market reading for that group).
+  const rawBySeriesDateFlat = {};
+  for (const [sk, dateMap] of Object.entries(rawBySeriesDate)) {
+    rawBySeriesDateFlat[sk] = {};
+    for (const [d, propMap] of Object.entries(dateMap)) {
+      const propMedians = Object.values(propMap).map(prices => medianOf(prices)).filter(v => v !== null);
+      rawBySeriesDateFlat[sk][d] = propMedians;
+    }
   }
 
   // Collapse to daily medians, then apply 3-day rolling median smoothing
   const allDates = [...new Set(filteredListings.map(l => l.scrapedAt.slice(0, 10)))].sort();
 
-  const series = Object.entries(rawBySeriesDate).map(([key, dateMap], i) => {
+  const series = Object.entries(rawBySeriesDateFlat).map(([key, dateMap], i) => {
     // Raw daily medians
     const rawPoints = allDates.map(d => ({
       date: d,
@@ -3086,5 +3273,15 @@ function renderCompetitorNews(news) {
   renderConfig();
 })();
 </script>
+  <!-- HELP WIDGET — floating context-aware explainer -->
+  <button id="helpWidgetBtn" onclick="toggleHelpWidget()" title="How does this work?">?</button>
+  <div id="helpWidgetPanel" class="help-panel" style="display:none;">
+    <div class="help-panel-header">
+      <span id="helpPanelTitle" class="help-panel-title">How to use this view</span>
+      <button class="help-panel-close" onclick="toggleHelpWidget()">&#x2715;</button>
+    </div>
+    <div id="helpPanelBody" class="help-panel-body"></div>
+  </div>
+
 </body>
 </html>

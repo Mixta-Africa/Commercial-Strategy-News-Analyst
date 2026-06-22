@@ -318,7 +318,7 @@ button, select, input { font-family: inherit; }
 .mixta-price-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
 .mixta-price-label { font-family: var(--font-ui); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--maroon-dark); }
 .mixta-save-status { font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); }
-.mixta-price-form { display: grid; grid-template-columns: 2fr 1.3fr 1.3fr 1.3fr auto; gap: 10px; align-items: center; }
+.mixta-price-form { display: grid; grid-template-columns: 2fr 1.2fr 1.2fr 1.2fr 1.3fr auto; gap: 10px; align-items: center; }
 .mixta-input { font-family: var(--font-ui); font-size: 13px; padding: 10px 12px; border-radius: var(--radius); border: 1px solid var(--rule-strong); background: var(--paper-card); color: var(--ink); }
 .mixta-input:focus { outline: 2px solid var(--maroon); outline-offset: 1px; }
 .mixta-price-list { margin-top: 16px; }
@@ -771,6 +771,15 @@ button, select, input { font-family: inherit; }
         </div>
         <div class="mixta-price-form">
           <input id="mixtaPriceLabel" class="mixta-input" placeholder="Project / unit name (e.g. Lakowe Crossings 2-Bed)" />
+          <select id="mixtaPriceType" class="mixta-input" onchange="onMixtaTypeChange()">
+            <option value="">Property Type</option>
+            <option value="Apartment / Flat">Apartment / Flat</option>
+            <option value="Duplex">Duplex</option>
+            <option value="Terraced House">Terraced House</option>
+            <option value="Detached House">Detached House</option>
+            <option value="Residential">Residential</option>
+            <option value="Land / Plot">Land / Plot</option>
+          </select>
           <select id="mixtaPriceLocation" class="mixta-input"></select>
           <select id="mixtaPriceBedroom" class="mixta-input">
             <option value="">Bedrooms</option>
@@ -2300,26 +2309,57 @@ function populateMixtaLocationOptions() {
   select.innerHTML = '<option value="">Location</option>' + locations.map(l => `<option value="${esc(l)}">${esc(l)}</option>`).join('');
 }
 
-async function addMixtaPrice() {
-  const labelEl = document.getElementById('mixtaPriceLabel');
-  const locEl = document.getElementById('mixtaPriceLocation');
+// SQM bands for Land/Plot - used when property type is Land/Plot.
+// These are the options shown in the bedroom dropdown replacement.
+// Competitor listings don't yet carry sqm data (scraper doesn't extract it),
+// so bands only apply to manually entered Mixta land entries for now.
+// bedroomLabel is reused as the grouping field - Land/Plot entries get a
+// band label instead of a bedroom count, which sorts after residential counts
+// (parseInt of a band string returns NaN → 99 fallback in all sort comparisons).
+const SQM_BANDS = [
+  '< 300 sqm', '300 – 500 sqm', '500 – 750 sqm',
+  '750 – 1000 sqm', '1000 – 1500 sqm', '> 1500 sqm'
+];
+
+function onMixtaTypeChange() {
+  const type = document.getElementById('mixtaPriceType').value;
   const bedEl = document.getElementById('mixtaPriceBedroom');
-  const priceEl = document.getElementById('mixtaPriceValue');
-  const status = document.getElementById('mixtaSaveStatus');
+  if (type === 'Land / Plot') {
+    bedEl.innerHTML = `<option value="">Plot Size Band</option>` +
+      SQM_BANDS.map(b => `<option value="${b}">${b}</option>`).join('');
+  } else {
+    bedEl.innerHTML = `
+      <option value="">Bedrooms</option>
+      <option value="1 Bedroom">1 Bedroom</option>
+      <option value="2 Bedrooms">2 Bedrooms</option>
+      <option value="3 Bedrooms">3 Bedrooms</option>
+      <option value="4 Bedrooms">4 Bedrooms</option>
+      <option value="5 Bedrooms">5 Bedrooms</option>`;
+  }
+}
 
-  const label = labelEl.value.trim();
-  const location = locEl.value;
+async function addMixtaPrice() {
+  const labelEl  = document.getElementById('mixtaPriceLabel');
+  const typeEl   = document.getElementById('mixtaPriceType');
+  const locEl    = document.getElementById('mixtaPriceLocation');
+  const bedEl    = document.getElementById('mixtaPriceBedroom');
+  const priceEl  = document.getElementById('mixtaPriceValue');
+  const status   = document.getElementById('mixtaSaveStatus');
+
+  const label        = labelEl.value.trim();
+  const propertyType = typeEl.value;
+  const location     = locEl.value;
   const bedroomLabel = bedEl.value;
-  const priceValue = parseFloat(priceEl.value);
+  const priceValue   = parseFloat(priceEl.value);
 
-  if (!label || !location || !bedroomLabel || !priceValue || priceValue <= 0) {
+  if (!label || !propertyType || !location || !bedroomLabel || !priceValue || priceValue <= 0) {
     status.textContent = 'Fill in all fields with a valid price.';
     status.style.color = 'var(--bear)';
     setTimeout(() => { status.textContent = ''; }, 3000);
     return;
   }
 
-  const entry = { label, location, bedroomLabel, priceValue, propertyType: 'Residential', addedAt: new Date().toISOString() };
+  const entry = { label, location, bedroomLabel, priceValue, propertyType, addedAt: new Date().toISOString() };
 
   try {
     if (firebaseReady) {
@@ -2337,7 +2377,8 @@ async function addMixtaPrice() {
   }
   setTimeout(() => { status.textContent = ''; }, 3000);
 
-  labelEl.value = ''; locEl.value = ''; bedEl.value = ''; priceEl.value = '';
+  labelEl.value = ''; typeEl.value = ''; locEl.value = ''; bedEl.value = ''; priceEl.value = '';
+  onMixtaTypeChange(); // restore bedroom options to default
   renderMixtaPriceList();
   refreshAllPricingViews();
 }
@@ -2360,11 +2401,11 @@ function editMixtaPrice(id) {
   const entry = (window._mixtaPrices || []).find(m => m.id === id);
   if (!entry) return;
   document.getElementById('mixtaPriceLabel').value = entry.label;
+  document.getElementById('mixtaPriceType').value = entry.propertyType || 'Residential';
+  onMixtaTypeChange(); // swap bedroom/sqm dropdown to match this type before setting its value
   document.getElementById('mixtaPriceLocation').value = entry.location;
   document.getElementById('mixtaPriceBedroom').value = entry.bedroomLabel;
   document.getElementById('mixtaPriceValue').value = entry.priceValue;
-  // Editing re-adds as a new entry and removes the old one on save, simpler
-  // and safer than in-place mutation given Firebase's async round-trip.
   deleteMixtaPrice(id);
 }
 

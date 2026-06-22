@@ -33,32 +33,31 @@
     },
     {
       "date": "2026-06-22",
-      "articleCount": 7,
+      "articleCount": 5,
       "sentimentBreakdown": {
-        "bullish": 3,
-        "neutral": 1,
-        "bearish": 3
+        "bearish": 1,
+        "bullish": 4
       },
-      "averageSentiment": "bearish",
+      "averageSentiment": "bullish",
       "topTopics": [
         {
-          "topic": "2023",
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "housing delivery",
           "count": 1
         },
         {
-          "topic": "2025",
+          "topic": "affordability",
           "count": 1
         },
         {
-          "topic": "premium real estate",
+          "topic": "bureaucracy",
           "count": 1
         },
         {
-          "topic": "luxury housing",
-          "count": 1
-        },
-        {
-          "topic": "Lagos property market",
+          "topic": "corruption",
           "count": 1
         }
       ]

@@ -1,89 +1,92 @@
 {
   "7day": {
-    "articleCount": 2,
+    "articleCount": 7,
     "sentimentBreakdown": {
+      "bullish": 3,
       "neutral": 1,
-      "bearish": 1
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "community-safety",
+        "topic": "2023",
         "count": 1
       },
       {
-        "topic": "security",
+        "topic": "2025",
         "count": 1
       },
       {
-        "topic": "Enugu-governor",
+        "topic": "premium real estate",
         "count": 1
       },
       {
-        "topic": "Peter-Mbah",
+        "topic": "luxury housing",
         "count": 1
       },
       {
-        "topic": "Nigerian politics",
+        "topic": "Lagos property market",
         "count": 1
       }
     ],
     "averageSentiment": "bearish"
   },
   "30day": {
-    "articleCount": 2,
+    "articleCount": 7,
     "sentimentBreakdown": {
+      "bullish": 3,
       "neutral": 1,
-      "bearish": 1
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "community-safety",
+        "topic": "2023",
         "count": 1
       },
       {
-        "topic": "security",
+        "topic": "2025",
         "count": 1
       },
       {
-        "topic": "Enugu-governor",
+        "topic": "premium real estate",
         "count": 1
       },
       {
-        "topic": "Peter-Mbah",
+        "topic": "luxury housing",
         "count": 1
       },
       {
-        "topic": "Nigerian politics",
+        "topic": "Lagos property market",
         "count": 1
       }
     ],
     "averageSentiment": "bearish"
   },
   "90day": {
-    "articleCount": 2,
+    "articleCount": 7,
     "sentimentBreakdown": {
+      "bullish": 3,
       "neutral": 1,
-      "bearish": 1
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "community-safety",
+        "topic": "2023",
         "count": 1
       },
       {
-        "topic": "security",
+        "topic": "2025",
         "count": 1
       },
       {
-        "topic": "Enugu-governor",
+        "topic": "premium real estate",
         "count": 1
       },
       {
-        "topic": "Peter-Mbah",
+        "topic": "luxury housing",
         "count": 1
       },
       {
-        "topic": "Nigerian politics",
+        "topic": "Lagos property market",
         "count": 1
       }
     ],

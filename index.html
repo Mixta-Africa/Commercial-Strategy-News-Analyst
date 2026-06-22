@@ -312,6 +312,29 @@ button, select, input { font-family: inherit; }
 .competition-hero { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-bottom: 64px; }
 .pricing-stats-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
 
+/* Compact inline stat strip replacing the stacked Market Overview cards */
+.pricing-stats-inline {
+  display: flex; flex-wrap: wrap; gap: 0;
+  border: 1px solid var(--rule-strong); border-radius: var(--radius);
+  overflow: hidden; margin-bottom: 28px;
+}
+.pricing-stat-inline {
+  flex: 1; min-width: 160px;
+  padding: 14px 22px;
+  border-right: 1px solid var(--rule-strong);
+  background: var(--paper-card);
+}
+.pricing-stat-inline:last-child { border-right: none; }
+.pricing-stat-inline-value {
+  font-family: var(--font-headline); font-size: 22px; font-weight: 700;
+  color: var(--maroon); line-height: 1.1;
+}
+.pricing-stat-inline-label {
+  font-family: var(--font-ui); font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft);
+  margin-top: 4px;
+}
+
 .pricing-view-toggle { display: flex; gap: 0; border: 1px solid var(--rule-strong); border-radius: var(--radius); overflow: hidden; }
 
 .mixta-price-panel { border: 1px solid var(--maroon-line); border-radius: var(--radius); padding: 22px 26px; margin-bottom: 28px; background: var(--maroon-soft); }
@@ -725,18 +748,22 @@ button, select, input { font-family: inherit; }
     <section id="competition" class="view">
       <div class="section-divider" style="margin-top:0;"><h2>Competitive Market Pulse</h2></div>
       
-      <div class="competition-hero">
-        <div>
-          <h3 style="font-family: var(--font-headline); font-size: 24px; font-weight: 700; margin-bottom: 24px; color: var(--maroon);">Market Overview</h3>
-          <div id="pricingStatsBar" class="pricing-stats-bar"></div>
+      <div id="pricingStatsBar" class="pricing-stats-inline"></div>
+
+      <!-- PRICE TREND CHART -->
+      <div class="section-divider"><h2>Price Trend</h2>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <div id="trendPeriodBtns" style="display:flex;gap:0;border:1px solid var(--rule-strong);border-radius:var(--radius);overflow:hidden;"></div>
+          <select id="trendTypeFilter" class="mixta-input" style="font-size:12px;padding:6px 10px;" onchange="renderPriceTrendChart()">
+            <option value="all">All Property Types</option>
+          </select>
+          <select id="trendLocationFilter" class="mixta-input" style="font-size:12px;padding:6px 10px;" onchange="renderPriceTrendChart()">
+            <option value="all">All Locations</option>
+          </select>
         </div>
-        <div class="comp-news-container" id="competitorNewsSection" style="display:none;">
-          <div class="comp-news-header">
-            <span>Competitor Moves</span>
-            <span id="compNewsBadge" style="color: var(--maroon-line);"></span>
-          </div>
-          <div id="competitorNewsContainer" class="comp-news-feed"></div>
-        </div>
+      </div>
+      <div id="priceTrendContainer" class="pricing-scatter-container" style="min-height:260px;">
+        <div class="loading">Calculating price trend&hellip;</div>
       </div>
 
       <div class="section-divider"><h2>Pricing Matrix</h2></div>
@@ -1806,9 +1833,8 @@ function plotGeospatialData(articles) {
 
 // ── COMPETITIVE PRICING TAB ────────────────────────────────────────────────────
 function renderPricing(data) {
-  const container   = document.getElementById('pricingGroupsContainer');
-  const statsBar    = document.getElementById('pricingStatsBar');
-  const newsSection = document.getElementById('competitorNewsSection');
+  const container = document.getElementById('pricingGroupsContainer');
+  const statsBar  = document.getElementById('pricingStatsBar');
 
   if (!data || !Array.isArray(data.listings) || !data.listings.length) {
     container.innerHTML = `<div class="empty" style="grid-column: 1/-1;">No pricing data available. Run the local scraper pipeline.</div>`;
@@ -1822,50 +1848,258 @@ function renderPricing(data) {
   populateMixtaLocationOptions();
   renderMixtaPriceList();
 
-  // FIX: previously this averaged EVERY listing's raw price together,
-  // including Land/Plot parcels alongside apartments/duplexes/houses. Land
-  // is priced and transacted as a fundamentally different asset class (per
-  // plot, not per dwelling unit), with values that can swing from a few
-  // million to hundreds of millions depending on parcel size alone - mixing
-  // it into one blended average skewed the headline number away from what
-  // any actual buyer of a specific property type would expect to pay.
-  // "Market Average Price" now reflects residential listings only (the
-  // figure an exec scanning the dashboard actually wants); land gets its
-  // own distinct stat alongside it instead of disappearing or distorting
-  // the main number.
   const residentialListings = data.listings.filter(l => l.priceValue && l.propertyType !== 'Land / Plot');
   const landListings = data.listings.filter(l => l.priceValue && l.propertyType === 'Land / Plot');
 
-  const avgPriceResidential = residentialListings.length
-    ? residentialListings.reduce((sum, l) => sum + l.priceValue, 0) / residentialListings.length
-    : 0;
-  const avgPriceLand = landListings.length
-    ? landListings.reduce((sum, l) => sum + l.priceValue, 0) / landListings.length
-    : 0;
+  const medianOf = arr => {
+    if (!arr.length) return 0;
+    const s = [...arr].sort((a, b) => a - b);
+    const m = Math.floor(s.length / 2);
+    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+  };
+
+  const medResidential = medianOf(residentialListings.map(l => l.priceValue));
+  const medLand        = medianOf(landListings.map(l => l.priceValue));
 
   const statsItems = [
-    { v: formatNaira(Math.round(avgPriceResidential)), l: 'Market Average Price (Residential)' },
+    { v: formatNaira(Math.round(medResidential)), l: `Residential Median · ${residentialListings.length} units` },
+    ...(landListings.length ? [{ v: formatNaira(Math.round(medLand)), l: `Land/Plot Median · ${landListings.length} parcels` }] : []),
+    { v: groups.length, l: 'Price Groups Tracked' },
+    { v: [...new Set(data.listings.map(l => l.location).filter(Boolean))].length, l: 'Locations Covered' },
   ];
-  if (landListings.length) {
-    statsItems.push({ v: formatNaira(Math.round(avgPriceLand)), l: `Market Average Price (Land/Plot, ${landListings.length})` });
-  }
-  statsItems.push({ v: groups.length, l: 'Distinct Price Groups Tracked' });
 
   statsBar.innerHTML = statsItems.map(x => `
-    <div class="pricing-stat">
-      <div class="pricing-stat-value">${esc(String(x.v))}</div>
-      <div class="pricing-stat-label">${esc(x.l)}</div>
+    <div class="pricing-stat-inline">
+      <div class="pricing-stat-inline-value">${esc(String(x.v))}</div>
+      <div class="pricing-stat-inline-label">${esc(x.l)}</div>
     </div>`).join('');
 
+  renderPriceTrendChart(data.listings);
   renderPricingGroups(groups);
   renderPricingScatter(data.listings);
-  
-  if (data.competitorNews && data.competitorNews.length > 0) {
-    newsSection.style.display = 'flex';
-    renderCompetitorNews(data.competitorNews);
-  } else {
-    newsSection.style.display = 'none';
+}
+
+// ── PRICE TREND CHART ──────────────────────────────────────────────────────────
+// Renders daily median price per property-type × location combination as a
+// multi-line SVG chart. Uses median (not mean) per day per group to avoid
+// a single outlier premium listing skewing a location's daily reading.
+// A 3-day rolling median smooths run-to-run scraper noise without washing
+// out genuine market moves. Period and filter controls are built but the
+// chart correctly handles only having a few days of history (early runs),
+// showing whatever is available without errors.
+
+let _priceTrendAllListings = [];
+let _priceTrendPeriod = '30d';
+
+const TREND_LINE_COLORS = [
+  '#7A1F2B','#1E5E40','#A47D29','#1A4A7A','#6B2FA0',
+  '#B5522A','#2A6B6B','#8B4513','#2E4057','#7A4B2B',
+  '#3D6B3D','#8B2252',
+];
+
+function renderPriceTrendChart(listings) {
+  if (listings) _priceTrendAllListings = listings;
+  const container = document.getElementById('priceTrendContainer');
+  if (!container) return;
+
+  const allListings = _priceTrendAllListings;
+  if (!allListings.length) {
+    container.innerHTML = '<div class="scatter-empty">No listing data available yet.</div>';
+    return;
   }
+
+  // Populate filter dropdowns on first call
+  const typeEl = document.getElementById('trendTypeFilter');
+  const locEl  = document.getElementById('trendLocationFilter');
+  const selectedType = typeEl?.value || 'all';
+  const selectedLoc  = locEl?.value  || 'all';
+
+  const allTypes = [...new Set(allListings.map(l => l.propertyType).filter(Boolean))].sort();
+  const allLocs  = [...new Set(allListings.map(l => l.location).filter(Boolean))].sort();
+
+  if (typeEl && typeEl.options.length <= 1) {
+    typeEl.innerHTML = `<option value="all">All Property Types</option>` +
+      allTypes.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
+    typeEl.value = selectedType;
+  }
+  if (locEl && locEl.options.length <= 1) {
+    locEl.innerHTML = `<option value="all">All Locations</option>` +
+      allLocs.map(l => `<option value="${esc(l)}">${esc(l)}</option>`).join('');
+    locEl.value = selectedLoc;
+  }
+
+  // Build period filter buttons
+  const periods = [
+    { label: '7D', value: '7d' }, { label: '30D', value: '30d' },
+    { label: '90D', value: '90d' }, { label: '1Y', value: '365d' },
+    { label: 'All', value: 'all' },
+  ];
+  const periodContainer = document.getElementById('trendPeriodBtns');
+  if (periodContainer && !periodContainer.dataset.built) {
+    periodContainer.dataset.built = '1';
+    periodContainer.innerHTML = periods.map(p => `
+      <button class="view-toggle-btn${p.value === _priceTrendPeriod ? ' active' : ''}"
+        onclick="setTrendPeriod('${p.value}')" style="min-width:44px;">${esc(p.label)}</button>`).join('');
+  }
+
+  // Filter listings by period
+  const cutoffMap = { '7d': 7, '30d': 30, '90d': 90, '365d': 365 };
+  let filteredListings = allListings.filter(l => l.priceValue && l.scrapedAt);
+  if (_priceTrendPeriod !== 'all') {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - cutoffMap[_priceTrendPeriod]);
+    filteredListings = filteredListings.filter(l => new Date(l.scrapedAt) >= cutoff);
+  }
+  if (selectedType !== 'all') filteredListings = filteredListings.filter(l => l.propertyType === selectedType);
+  if (selectedLoc  !== 'all') filteredListings = filteredListings.filter(l => l.location === selectedLoc);
+
+  if (!filteredListings.length) {
+    container.innerHTML = '<div class="scatter-empty">No data for the selected period and filters. Try widening the period or clearing filters.</div>';
+    return;
+  }
+
+  // Compute daily median price per (propertyType × location) series
+  const medianOf = arr => {
+    if (!arr.length) return null;
+    const s = [...arr].sort((a, b) => a - b);
+    const m = Math.floor(s.length / 2);
+    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+  };
+
+  // Build: { seriesKey → { date → [prices] } }
+  const rawBySeriesDate = {};
+  for (const l of filteredListings) {
+    const dateStr = l.scrapedAt.slice(0, 10); // YYYY-MM-DD
+    const type = l.propertyType || 'Residential';
+    const loc  = l.location     || 'Unspecified';
+    const seriesKey = selectedLoc !== 'all'
+      ? type                  // if location is fixed, series = type only
+      : selectedType !== 'all'
+        ? loc                 // if type is fixed, series = location only
+        : `${type} · ${loc}`; // unfiltered: both
+    if (!rawBySeriesDate[seriesKey]) rawBySeriesDate[seriesKey] = {};
+    if (!rawBySeriesDate[seriesKey][dateStr]) rawBySeriesDate[seriesKey][dateStr] = [];
+    rawBySeriesDate[seriesKey][dateStr].push(l.priceValue);
+  }
+
+  // Collapse to daily medians, then apply 3-day rolling median smoothing
+  const allDates = [...new Set(filteredListings.map(l => l.scrapedAt.slice(0, 10)))].sort();
+
+  const series = Object.entries(rawBySeriesDate).map(([key, dateMap], i) => {
+    // Raw daily medians
+    const rawPoints = allDates.map(d => ({
+      date: d,
+      val: dateMap[d] ? medianOf(dateMap[d]) : null,
+    }));
+    // 3-day rolling median smoothing — only over dates where this series has data
+    const smoothed = rawPoints.map((p, idx) => {
+      if (p.val === null) return p;
+      const window = rawPoints.slice(Math.max(0, idx - 1), idx + 2)
+        .map(x => x.val).filter(v => v !== null);
+      return { date: p.date, val: medianOf(window) };
+    }).filter(p => p.val !== null);
+    return {
+      key,
+      color: TREND_LINE_COLORS[i % TREND_LINE_COLORS.length],
+      points: smoothed,
+    };
+  }).filter(s => s.points.length > 0);
+
+  if (!series.length) {
+    container.innerHTML = '<div class="scatter-empty">No trend data to display. Listings may be missing scrapedAt timestamps.</div>';
+    return;
+  }
+
+  // Compute chart extents
+  const allVals = series.flatMap(s => s.points.map(p => p.val));
+  const yMin = Math.min(...allVals);
+  const yMax = Math.max(...allVals);
+  const yPad = (yMax - yMin) * 0.1 || yMax * 0.1 || 1e6;
+
+  const w = container.clientWidth || 900;
+  const mL = 82, mR = 20, mT = 16, mB = 70;
+  const plotW = Math.max(w - mL - mR, 300);
+  const plotH = 280;
+  const svgW = mL + plotW + mR;
+  const svgH = mT + plotH + mB;
+
+  const xScale = (dateStr) => {
+    const idx = allDates.indexOf(dateStr);
+    if (allDates.length === 1) return mL + plotW / 2;
+    return mL + (idx / (allDates.length - 1)) * plotW;
+  };
+  const yScale = (v) => mT + plotH - ((v - yMin + yPad * 0.5) / (yMax - yMin + yPad)) * plotH;
+
+  let svg = `<svg class="bar-chart-svg" viewBox="0 0 ${svgW} ${svgH}" xmlns="http://www.w3.org/2000/svg">`;
+
+  // Gridlines + Y axis labels
+  const yBands = 5;
+  for (let i = 0; i <= yBands; i++) {
+    const v = yMin + ((yMax - yMin) / yBands) * i;
+    const y = yScale(v);
+    svg += `<line class="scatter-gridline" x1="${mL}" y1="${y.toFixed(1)}" x2="${mL + plotW}" y2="${y.toFixed(1)}" />`;
+    svg += `<text class="scatter-axis-label" x="${mL - 8}" y="${(y + 3).toFixed(1)}" text-anchor="end">${esc(formatNaira(Math.round(v)))}</text>`;
+  }
+
+  // X axis date labels — show up to 8 evenly spaced to avoid crowding
+  const xLabelCount = Math.min(allDates.length, 8);
+  const xLabelStep  = Math.max(1, Math.floor(allDates.length / xLabelCount));
+  allDates.forEach((d, i) => {
+    if (i % xLabelStep !== 0 && i !== allDates.length - 1) return;
+    const x = xScale(d);
+    // Format as "Jun 22"
+    const [, mo, dy] = d.split('-');
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const label = `${monthNames[parseInt(mo) - 1]} ${parseInt(dy)}`;
+    svg += `<text class="scatter-axis-label" x="${x.toFixed(1)}" y="${(mT + plotH + 18).toFixed(1)}" text-anchor="middle">${esc(label)}</text>`;
+  });
+
+  // Draw lines per series
+  series.forEach(s => {
+    if (s.points.length < 2) {
+      // Single point: draw a circle instead of a line
+      const p = s.points[0];
+      svg += `<circle cx="${xScale(p.date).toFixed(1)}" cy="${yScale(p.val).toFixed(1)}" r="5" fill="${s.color}" fill-opacity="0.85" />`;
+      return;
+    }
+    const pathD = s.points.map((p, i) => {
+      const x = xScale(p.date).toFixed(1);
+      const y = yScale(p.val).toFixed(1);
+      return `${i === 0 ? 'M' : 'L'}${x},${y}`;
+    }).join(' ');
+    svg += `<path d="${pathD}" fill="none" stroke="${s.color}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" opacity="0.88" />`;
+    // Terminal dot + price label
+    const last = s.points[s.points.length - 1];
+    const lx = xScale(last.date).toFixed(1);
+    const ly = yScale(last.val).toFixed(1);
+    svg += `<circle cx="${lx}" cy="${ly}" r="4" fill="${s.color}" />`;
+    svg += `<text class="scatter-axis-label" x="${(parseFloat(lx) + 6).toFixed(1)}" y="${(parseFloat(ly) + 3).toFixed(1)}" fill="${s.color}" style="font-weight:600;font-size:9px;" text-anchor="start">${esc(formatNaira(Math.round(last.val)))}</text>`;
+  });
+
+  svg += `</svg>`;
+
+  // Legend
+  const legendHtml = series.map(s => `
+    <span class="scatter-legend-item">
+      <span style="display:inline-block;width:20px;height:3px;background:${s.color};vertical-align:middle;margin-right:4px;border-radius:2px;"></span>${esc(s.key)}
+    </span>`).join('');
+
+  const dataNote = allDates.length === 1
+    ? `<div style="font-family:var(--font-ui);font-size:11px;color:var(--ink-faint);margin-top:8px;">Only 1 day of data available — run the scraper daily to build trend history.</div>`
+    : '';
+
+  container.innerHTML = svg +
+    `<div class="scatter-legend">${legendHtml}</div>` +
+    `<div style="font-family:var(--font-ui);font-size:10.5px;color:var(--ink-faint);margin-top:6px;">Smoothed 3-day rolling median · ${allDates.length} scrape days · ${filteredListings.length} listings</div>` +
+    dataNote;
+}
+
+function setTrendPeriod(p) {
+  _priceTrendPeriod = p;
+  // Update button active states
+  const btns = document.querySelectorAll('#trendPeriodBtns .view-toggle-btn');
+  btns.forEach(b => b.classList.toggle('active', b.textContent.toLowerCase().replace('d','') === p.replace('d','').toLowerCase() || (p === 'all' && b.textContent === 'All')));
+  renderPriceTrendChart();
 }
 
 function buildPricingGroupsFromListings(listings) {

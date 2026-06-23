@@ -64,33 +64,31 @@
     },
     {
       "date": "2026-06-23",
-      "articleCount": 14,
+      "articleCount": 2,
       "sentimentBreakdown": {
-        "neutral": 5,
-        "bullish": 7,
-        "bearish": 2
+        "bullish": 2
       },
-      "averageSentiment": "neutral",
+      "averageSentiment": "bullish",
       "topTopics": [
         {
-          "topic": "Lagos real estate",
-          "count": 5
+          "topic": "luxury housing",
+          "count": 1
+        },
+        {
+          "topic": "Osapa London",
+          "count": 1
+        },
+        {
+          "topic": "Lekki corridor",
+          "count": 1
+        },
+        {
+          "topic": "Nigeria real estate",
+          "count": 1
         },
         {
           "topic": "affordable housing",
-          "count": 4
-        },
-        {
-          "topic": "security",
-          "count": 2
-        },
-        {
-          "topic": "infrastructure",
-          "count": 2
-        },
-        {
-          "topic": "corruption",
-          "count": 2
+          "count": 1
         }
       ]
     }

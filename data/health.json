@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-06-23T07:45:49.695Z",
-  "status": "healthy",
+  "timestamp": "2026-06-23T10:28:05.717Z",
+  "status": "degraded",
   "sources": {
     "gnews": {
       "ok": false,
@@ -9,7 +9,7 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 62,
+      "count": 63,
       "error": null
     },
     "googlenews": {
@@ -18,21 +18,21 @@
       "error": null
     },
     "rss": {
-      "total": 47,
+      "total": 43,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 4,
+          "count": 2,
           "error": null
         },
         "Premium Times": {
-          "ok": true,
-          "count": 1,
-          "error": null
+          "ok": false,
+          "count": 0,
+          "error": "XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &"
         },
         "BusinessDay": {
           "ok": true,
-          "count": 1,
+          "count": 0,
           "error": null
         },
         "Nairametrics": {
@@ -79,19 +79,20 @@
     }
   },
   "counts": {
-    "raw": 252,
-    "filtered": 14,
-    "analyzed": 14,
-    "aiFallbacks": 1
+    "raw": 232,
+    "filtered": 2,
+    "analyzed": 2,
+    "aiFallbacks": 0
   },
   "synthesis": {
     "ok": true,
-    "themes": 3
+    "themes": 2
   },
   "email": {
     "sent": true
   },
   "warnings": [
-    "Sources down: GNews (0 articles); RSS Estate Intel (HTTP 403)"
+    "Sources down: GNews (0 articles); RSS Premium Times (XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &); RSS Estate Intel (HTTP 403)",
+    "Only 2 articles after filtering (below 4)."
   ]
 }

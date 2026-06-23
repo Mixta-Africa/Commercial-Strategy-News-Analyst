@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-06-23T10:28:05.717Z",
-  "status": "degraded",
+  "timestamp": "2026-06-23T11:04:58.119Z",
+  "status": "failed",
   "sources": {
     "gnews": {
       "ok": false,
@@ -18,7 +18,7 @@
       "error": null
     },
     "rss": {
-      "total": 43,
+      "total": 45,
       "feeds": {
         "ThisDay": {
           "ok": true,
@@ -26,9 +26,9 @@
           "error": null
         },
         "Premium Times": {
-          "ok": false,
+          "ok": true,
           "count": 0,
-          "error": "XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &"
+          "error": null
         },
         "BusinessDay": {
           "ok": true,
@@ -42,7 +42,7 @@
         },
         "Daily Trust": {
           "ok": true,
-          "count": 0,
+          "count": 2,
           "error": null
         },
         "The Punch (Business)": {
@@ -79,20 +79,21 @@
     }
   },
   "counts": {
-    "raw": 232,
-    "filtered": 2,
-    "analyzed": 2,
+    "raw": 234,
+    "filtered": 0,
+    "analyzed": 0,
     "aiFallbacks": 0
   },
   "synthesis": {
-    "ok": true,
-    "themes": 2
+    "ok": false,
+    "themes": 0
   },
   "email": {
-    "sent": true
+    "sent": false
   },
   "warnings": [
-    "Sources down: GNews (0 articles); RSS Premium Times (XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &); RSS Estate Intel (HTTP 403)",
-    "Only 2 articles after filtering (below 4)."
+    "Sources down: GNews (0 articles); RSS Estate Intel (HTTP 403)",
+    "No articles passed real-estate filtering.",
+    "Digest email was NOT sent."
   ]
 }

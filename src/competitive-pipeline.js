@@ -16,17 +16,26 @@
  *     Columns: Date | Competitor | Headline | Publisher | URL | Flagged | Watchlist Hits
  *
  * JSON OUTPUTS (dashboard-ready):
- *   data/competitive-briefing.json — AI narratives + grouped stats
- *   data/competitive-prices.json   — raw listings for future charting
+ *   data/competitive-briefing.json — AI narratives + grouped stats (latest run only)
+ *   data/competitive-prices.json   — daily snapshot archive for trend charting
+ *
+ * PERSISTENCE MODEL for competitive-prices.json:
+ *   Structure: { lastUpdated, dailySnapshots: [ { date, groupedListings, rawListings }, … ] }
+ *   Each run APPENDS a new date-keyed snapshot rather than overwriting.
+ *   If a snapshot already exists for today (re-run), it is REPLACED, not duplicated.
+ *   Snapshots older than RETENTION_DAYS are pruned to keep the file bounded.
+ *   This mirrors the trend-history.json pattern and is what powers the multi-day
+ *   trend line on the dashboard.
  */
 
 const fs   = require('fs');
 const path = require('path');
-const { google }            = require('googleapis');
+const { google }             = require('googleapis');
 const { CompetitiveScraper } = require('./competitive-scraper');
-const CompetitiveAnalyst    = require('./competitive-analyst');
+const CompetitiveAnalyst     = require('./competitive-analyst');
 
-const DATA_DIR = path.join(process.cwd(), 'data');
+const DATA_DIR      = path.join(process.cwd(), 'data');
+const RETENTION_DAYS = 365; // keep a full year of daily snapshots
 
 // ─── SHEETS WRITER ────────────────────────────────────────────────────────────
 
@@ -181,6 +190,113 @@ function writeJSON(filename, data) {
   console.log(`[CompPipeline] Wrote ${filename}`);
 }
 
+/**
+ * Merges today's scrape into the running competitive-prices.json archive.
+ *
+ * Schema:
+ *   {
+ *     lastUpdated: ISO string,
+ *     totalSnapshots: number,
+ *     dailySnapshots: [
+ *       {
+ *         date: "YYYY-MM-DD",
+ *         scrapedAt: ISO string,
+ *         listingCount: number,
+ *         groupCount: number,
+ *         groupedListings: [...],
+ *         rawListings: [...]
+ *       },
+ *       ...
+ *     ]
+ *   }
+ *
+ * Rules:
+ *   - Same-day re-run: existing snapshot for today is REPLACED, not appended.
+ *   - Snapshots are sorted ascending by date.
+ *   - Snapshots older than RETENTION_DAYS are pruned.
+ *   - A read failure (first ever run, corrupted file) starts fresh rather than crashing.
+ */
+function mergeCompetitivePricesSnapshot(groupedListings, rawListings) {
+  const pricesPath = path.join(DATA_DIR, 'competitive-prices.json');
+  const today      = new Date().toISOString().slice(0, 10);
+
+  // ── 1. Read existing archive (graceful fallback to empty) ──────────────────
+  let existing = { dailySnapshots: [] };
+  try {
+    const raw    = fs.readFileSync(pricesPath, 'utf-8');
+    const parsed = JSON.parse(raw);
+    // Support both old flat schema (no dailySnapshots) and new archive schema.
+    // If the file is old-format (has groupedListings at root, no dailySnapshots),
+    // treat it as a single snapshot for an unknown prior date and migrate it in.
+    if (Array.isArray(parsed.dailySnapshots)) {
+      existing = parsed;
+    } else if (parsed.groupedListings || parsed.rawListings) {
+      // Old flat format — migrate: use generatedAt date if available, else yesterday
+      const migratedDate = parsed.generatedAt
+        ? parsed.generatedAt.slice(0, 10)
+        : (() => {
+            const d = new Date();
+            d.setDate(d.getDate() - 1);
+            return d.toISOString().slice(0, 10);
+          })();
+      if (migratedDate !== today) {
+        // Only migrate if it's not today — today's run will write the fresh snapshot
+        existing.dailySnapshots = [{
+          date:            migratedDate,
+          scrapedAt:       parsed.generatedAt || migratedDate,
+          listingCount:    (parsed.rawListings || []).length,
+          groupCount:      (parsed.groupedListings || []).length,
+          groupedListings: parsed.groupedListings || [],
+          rawListings:     parsed.rawListings     || [],
+        }];
+        console.log(`[CompPipeline] Migrated old flat competitive-prices.json → snapshot for ${migratedDate}`);
+      }
+    }
+  } catch (e) {
+    console.log('[CompPipeline] No existing competitive-prices.json — starting fresh archive.');
+  }
+
+  // ── 2. Build today's snapshot ──────────────────────────────────────────────
+  const todaySnapshot = {
+    date:            today,
+    scrapedAt:       new Date().toISOString(),
+    listingCount:    rawListings.length,
+    groupCount:      groupedListings.length,
+    groupedListings,
+    rawListings,
+  };
+
+  // ── 3. Replace today if exists, otherwise append ──────────────────────────
+  let snapshots = (existing.dailySnapshots || []).filter(s => s.date !== today);
+  snapshots.push(todaySnapshot);
+
+  // ── 4. Prune snapshots older than RETENTION_DAYS ──────────────────────────
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - RETENTION_DAYS);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  const beforePrune = snapshots.length;
+  snapshots = snapshots.filter(s => s.date >= cutoffStr);
+  if (snapshots.length < beforePrune) {
+    console.log(`[CompPipeline] Pruned ${beforePrune - snapshots.length} snapshots older than ${RETENTION_DAYS} days`);
+  }
+
+  // ── 5. Sort ascending by date ──────────────────────────────────────────────
+  snapshots.sort((a, b) => (a.date < b.date ? -1 : 1));
+
+  // ── 6. Write merged archive ────────────────────────────────────────────────
+  const archive = {
+    lastUpdated:    new Date().toISOString(),
+    totalSnapshots: snapshots.length,
+    dailySnapshots: snapshots,
+  };
+
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  fs.writeFileSync(pricesPath, JSON.stringify(archive, null, 2));
+  console.log(`[CompPipeline] competitive-prices.json: ${snapshots.length} daily snapshots retained (today's ${snapshots.find(s => s.date === today) ? 'written' : 'missing'}).`);
+
+  return archive;
+}
+
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -207,29 +323,29 @@ async function main() {
     await sheets.writeCompetitorNews(competitorNews);
   }
 
-  // JSON output — dashboard-ready schema.
+  // ── competitive-briefing.json: latest run only (AI narratives) ─────────────
   const briefingPayload = {
-    generatedAt:          new Date().toISOString(),
+    generatedAt: new Date().toISOString(),
     summary: {
-      totalCompetitorNews:  competitorNews.length,
-      flaggedNews:          competitorNews.filter(n => n.flagged).length,
-      totalRawListings:     priceListings.length,
-      totalGroups:          groupedListings.length,
-      priorityGroups:       groupedListings.filter(g => g.locationBucket === 'Priority Corridor').length,
-      sitesScraped:         [...new Set(priceListings.map(l => l.source))].length,
+      totalCompetitorNews: competitorNews.length,
+      flaggedNews:         competitorNews.filter(n => n.flagged).length,
+      totalRawListings:    priceListings.length,
+      totalGroups:         groupedListings.length,
+      priorityGroups:      groupedListings.filter(g => g.locationBucket === 'Priority Corridor').length,
+      sitesScraped:        [...new Set(priceListings.map(l => l.source))].length,
     },
     groupedListings,
-    priceTrendNarrative:  analysis.priceTrendNarrative,
-    competitorBriefing:   analysis.competitorBriefing,
+    priceTrendNarrative: analysis.priceTrendNarrative,
+    competitorBriefing:  analysis.competitorBriefing,
     competitorNews,
   };
-
   writeJSON('competitive-briefing.json', briefingPayload);
-  writeJSON('competitive-prices.json', {
-    generatedAt:    new Date().toISOString(),
-    groupedListings,
-    rawListings:    priceListings,
-  });
+
+  // ── competitive-prices.json: MERGE into daily snapshot archive ─────────────
+  // This is the fix: instead of overwriting the file each run (which caused the
+  // trend chart to show only one data point), we append today's snapshot to
+  // the running archive and keep up to RETENTION_DAYS of history.
+  mergeCompetitivePricesSnapshot(groupedListings, priceListings);
 
   console.log('\n[CompPipeline] ===== COMPLETE =====');
   console.log(`[CompPipeline] Finished: ${new Date().toISOString()}`);

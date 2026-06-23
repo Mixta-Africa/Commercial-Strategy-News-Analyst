@@ -1,92 +1,95 @@
 {
   "7day": {
-    "articleCount": 5,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "bearish": 1,
-      "bullish": 4
+      "neutral": 5,
+      "bullish": 7,
+      "bearish": 2
     },
     "topTopics": [
       {
+        "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
         "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "security",
         "count": 2
       },
       {
-        "topic": "housing delivery",
-        "count": 1
-      },
-      {
-        "topic": "affordability",
-        "count": 1
-      },
-      {
-        "topic": "bureaucracy",
-        "count": 1
+        "topic": "infrastructure",
+        "count": 2
       },
       {
         "topic": "corruption",
-        "count": 1
+        "count": 2
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 5,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "bearish": 1,
-      "bullish": 4
+      "neutral": 5,
+      "bullish": 7,
+      "bearish": 2
     },
     "topTopics": [
       {
+        "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
         "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "security",
         "count": 2
       },
       {
-        "topic": "housing delivery",
-        "count": 1
-      },
-      {
-        "topic": "affordability",
-        "count": 1
-      },
-      {
-        "topic": "bureaucracy",
-        "count": 1
+        "topic": "infrastructure",
+        "count": 2
       },
       {
         "topic": "corruption",
-        "count": 1
+        "count": 2
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 5,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "bearish": 1,
-      "bullish": 4
+      "neutral": 5,
+      "bullish": 7,
+      "bearish": 2
     },
     "topTopics": [
       {
+        "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
         "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "security",
         "count": 2
       },
       {
-        "topic": "housing delivery",
-        "count": 1
-      },
-      {
-        "topic": "affordability",
-        "count": 1
-      },
-      {
-        "topic": "bureaucracy",
-        "count": 1
+        "topic": "infrastructure",
+        "count": 2
       },
       {
         "topic": "corruption",
-        "count": 1
+        "count": 2
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   }
 }

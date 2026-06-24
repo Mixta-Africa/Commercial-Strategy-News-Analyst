@@ -1,89 +1,86 @@
 {
   "7day": {
-    "articleCount": 8,
+    "articleCount": 2,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "bearish": 1
+      "bullish": 2
     },
     "topTopics": [
       {
+        "topic": "National Housing Fund",
+        "count": 1
+      },
+      {
+        "topic": "Federal Mortgage Bank of Nigeria",
+        "count": 1
+      },
+      {
         "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "Lagos real estate market",
         "count": 1
       },
       {
-        "topic": "public servants",
+        "topic": "homeownership",
         "count": 1
       },
       {
-        "topic": "housing scheme",
-        "count": 1
-      },
-      {
-        "topic": "Delta State",
+        "topic": "government spending",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 8,
+    "articleCount": 2,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "bearish": 1
+      "bullish": 2
     },
     "topTopics": [
       {
+        "topic": "National Housing Fund",
+        "count": 1
+      },
+      {
+        "topic": "Federal Mortgage Bank of Nigeria",
+        "count": 1
+      },
+      {
         "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "Lagos real estate market",
         "count": 1
       },
       {
-        "topic": "public servants",
+        "topic": "homeownership",
         "count": 1
       },
       {
-        "topic": "housing scheme",
-        "count": 1
-      },
-      {
-        "topic": "Delta State",
+        "topic": "government spending",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 8,
+    "articleCount": 2,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "bearish": 1
+      "bullish": 2
     },
     "topTopics": [
       {
+        "topic": "National Housing Fund",
+        "count": 1
+      },
+      {
+        "topic": "Federal Mortgage Bank of Nigeria",
+        "count": 1
+      },
+      {
         "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "Lagos real estate market",
         "count": 1
       },
       {
-        "topic": "public servants",
+        "topic": "homeownership",
         "count": 1
       },
       {
-        "topic": "housing scheme",
-        "count": 1
-      },
-      {
-        "topic": "Delta State",
+        "topic": "government spending",
         "count": 1
       }
     ],

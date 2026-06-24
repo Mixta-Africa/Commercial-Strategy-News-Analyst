@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-06-24T07:50:22.336Z",
-  "status": "healthy",
+  "timestamp": "2026-06-24T10:13:31.990Z",
+  "status": "degraded",
   "sources": {
     "gnews": {
       "ok": false,
@@ -9,7 +9,7 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 67,
+      "count": 66,
       "error": null
     },
     "googlenews": {
@@ -18,7 +18,7 @@
       "error": null
     },
     "rss": {
-      "total": 51,
+      "total": 50,
       "feeds": {
         "ThisDay": {
           "ok": true,
@@ -27,12 +27,12 @@
         },
         "Premium Times": {
           "ok": true,
-          "count": 1,
+          "count": 2,
           "error": null
         },
         "BusinessDay": {
           "ok": true,
-          "count": 3,
+          "count": 1,
           "error": null
         },
         "Nairametrics": {
@@ -79,19 +79,20 @@
     }
   },
   "counts": {
-    "raw": 265,
-    "filtered": 8,
-    "analyzed": 8,
+    "raw": 244,
+    "filtered": 2,
+    "analyzed": 2,
     "aiFallbacks": 0
   },
   "synthesis": {
     "ok": true,
-    "themes": 3
+    "themes": 1
   },
   "email": {
     "sent": true
   },
   "warnings": [
-    "Sources down: GNews (0 articles); RSS Estate Intel (HTTP 403)"
+    "Sources down: GNews (0 articles); RSS Estate Intel (HTTP 403)",
+    "Only 2 articles after filtering (below 4)."
   ]
 }

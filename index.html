@@ -1434,7 +1434,7 @@ function renderTrendChart(allDays) {
   const naturalPlotW = weekLabels.length * (weekWidth + weekGap);
   const availablePlotW = Math.max(width - marginLeft - marginRight, 240);
   const plotW = Math.max(availablePlotW, naturalPlotW);
-  const plotH = 380;
+  const plotH = 240;
   const svgW = marginLeft + plotW + marginRight;
   const svgH = marginTop + plotH + marginBottom;
   const yScale = (v) => marginTop + plotH - (v / (maxVal * 1.1)) * plotH;
@@ -1450,7 +1450,7 @@ function renderTrendChart(allDays) {
     extraGapPerWeek = extraSpace / (weekLabels.length - 1);
   }
 
-  let svg = `<svg class="bar-chart-svg" viewBox="0 0 ${svgW} ${svgH}" xmlns="http://www.w3.org/2000/svg">`;
+  let svg = `<svg class="bar-chart-svg" viewBox="0 0 ${svgW} ${svgH}" height="${svgH}" xmlns="http://www.w3.org/2000/svg">`;
 
   const bands = 5;
   for (let i = 0; i <= bands; i++) {
@@ -1904,20 +1904,52 @@ function renderPricing(data) {
   const container = document.getElementById('pricingGroupsContainer');
   const statsBar  = document.getElementById('pricingStatsBar');
 
-  if (!data || !Array.isArray(data.listings) || !data.listings.length) {
+  // ── Schema normalisation: support both old flat schema and new daily-snapshot archive ──
+  // Old schema: { listings: [...], groupedListings: [...] }
+  //   → listings have no scrapedAt; trend chart gets only today's dot
+  // New schema: { dailySnapshots: [{ date, rawListings, groupedListings }, ...] }
+  //   → flatten all snapshots, stamping scrapedAt from the snapshot date so
+  //     the trend chart can plot each day correctly
+  let listings = [];
+  if (Array.isArray(data?.dailySnapshots) && data.dailySnapshots.length) {
+    // New archive schema — flatten all snapshots into a single listing array.
+    // Most-recent snapshot's listings are used for the scatter/groups/stats
+    // (today's market view), while the full flattened array powers the trend chart.
+    for (const snapshot of data.dailySnapshots) {
+      const dateStamp = snapshot.date || (snapshot.scrapedAt || '').slice(0, 10);
+      for (const l of (snapshot.rawListings || [])) {
+        listings.push({ ...l, scrapedAt: l.scrapedAt || dateStamp });
+      }
+    }
+  } else if (Array.isArray(data?.listings) && data.listings.length) {
+    // Old flat schema — pass through as-is
+    listings = data.listings;
+  }
+
+  if (!listings.length) {
     container.innerHTML = `<div class="empty" style="grid-column: 1/-1;">No pricing data available. Run the local scraper pipeline.</div>`;
     const scatterEl = document.getElementById('pricingScatterContainer');
     if (scatterEl) scatterEl.innerHTML = '<div class="scatter-empty">No unit data available yet.</div>';
     return;
   }
 
-  const groups = buildPricingGroupsFromListings(data.listings);
-  buildPricingFilters(data.listings, groups);
+  // For scatter/groups/stats: use only the most recent scrape date's listings
+  // so the "today's market" view isn't polluted with historical data.
+  const mostRecentDate = listings.reduce((max, l) => {
+    const d = (l.scrapedAt || '').slice(0, 10);
+    return d > max ? d : max;
+  }, '');
+  const todayListings = mostRecentDate
+    ? listings.filter(l => (l.scrapedAt || '').slice(0, 10) === mostRecentDate)
+    : listings;
+
+  const groups = buildPricingGroupsFromListings(todayListings);
+  buildPricingFilters(todayListings, groups);
   populateMixtaLocationOptions();
   renderMixtaPriceList();
 
-  const residentialListings = data.listings.filter(l => l.priceValue && l.propertyType !== 'Land / Plot');
-  const landListings = data.listings.filter(l => l.priceValue && l.propertyType === 'Land / Plot');
+  const residentialListings = todayListings.filter(l => l.priceValue && l.propertyType !== 'Land / Plot');
+  const landListings = todayListings.filter(l => l.priceValue && l.propertyType === 'Land / Plot');
 
   const medianOf = arr => {
     if (!arr.length) return 0;
@@ -1933,7 +1965,7 @@ function renderPricing(data) {
     { v: formatNaira(Math.round(medResidential)), l: `Residential Median · ${residentialListings.length} units` },
     ...(landListings.length ? [{ v: formatNaira(Math.round(medLand)), l: `Land/Plot Median · ${landListings.length} parcels` }] : []),
     { v: groups.length, l: 'Price Groups Tracked' },
-    { v: [...new Set(data.listings.map(l => l.location).filter(Boolean))].length, l: 'Locations Covered' },
+    { v: [...new Set(todayListings.map(l => l.location).filter(Boolean))].length, l: 'Locations Covered' },
   ];
 
   statsBar.innerHTML = statsItems.map(x => `
@@ -1942,9 +1974,11 @@ function renderPricing(data) {
       <div class="pricing-stat-inline-label">${esc(x.l)}</div>
     </div>`).join('');
 
-  renderPriceTrendChart(data.listings);
+  // Trend chart gets the FULL historical listing array (all snapshots)
+  // so it can plot a proper multi-day line. Scatter + groups use today only.
+  renderPriceTrendChart(listings);
   renderPricingGroups(groups);
-  renderPricingScatter(data.listings);
+  renderPricingScatter(todayListings);
 }
 
 // ── HELP WIDGET ───────────────────────────────────────────────────────────────
@@ -2394,15 +2428,25 @@ function setPricingBedroom(val, el) {
   el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active'); applyPricingFilters();
 }
+function _getTodayListings() {
+  // Returns today's listings from competitiveCache regardless of schema version.
+  if (!competitiveCache) return [];
+  if (Array.isArray(competitiveCache.dailySnapshots) && competitiveCache.dailySnapshots.length) {
+    const latest = competitiveCache.dailySnapshots[competitiveCache.dailySnapshots.length - 1];
+    return (latest.rawListings || []).map(l => ({ ...l, scrapedAt: l.scrapedAt || latest.date }));
+  }
+  return Array.isArray(competitiveCache.listings) ? competitiveCache.listings : [];
+}
 function applyPricingFilters() {
-  if (!competitiveCache?.listings) return;
-  let groups = buildPricingGroupsFromListings(competitiveCache.listings);
+  const todayListings = _getTodayListings();
+  if (!todayListings.length) return;
+  let groups = buildPricingGroupsFromListings(todayListings);
   if (pricingTypeFilter !== 'all') groups = groups.filter(g => g.propertyType === pricingTypeFilter);
   if (pricingLocationFilter !== 'all') groups = groups.filter(g => g.location === pricingLocationFilter);
   if (pricingBedroomFilter !== 'all') groups = groups.filter(g => g.bedroomLabel === pricingBedroomFilter);
   renderPricingGroups(groups);
-  renderPricingScatter(competitiveCache.listings);
-  if (pricingViewMode === 'bar') renderPricingBarChart(competitiveCache.listings);
+  renderPricingScatter(todayListings);
+  if (pricingViewMode === 'bar') renderPricingBarChart(todayListings);
 }
 
 // ── PRICING VIEW MODE TOGGLE (Scatter vs Tiles) ────────────────────────────
@@ -2726,7 +2770,7 @@ async function loadMixtaPrices() {
 function populateMixtaLocationOptions() {
   const select = document.getElementById('mixtaPriceLocation');
   if (!select || !competitiveCache?.listings) return;
-  const locations = [...new Set(competitiveCache.listings.map(l => l.location).filter(Boolean))].sort();
+  const locations = [...new Set(_getTodayListings().map(l => l.location).filter(Boolean))].sort();
   select.innerHTML = '<option value="">Location</option>' + locations.map(l => `<option value="${esc(l)}">${esc(l)}</option>`).join('');
 }
 
@@ -2853,8 +2897,8 @@ function renderMixtaPriceList() {
 /** Re-renders whichever pricing views are currently relevant after a Mixta price change. */
 function refreshAllPricingViews() {
   if (!competitiveCache?.listings) return;
-  renderPricingScatter(competitiveCache.listings);
-  if (pricingViewMode === 'bar') renderPricingBarChart(competitiveCache.listings);
+  renderPricingScatter(_getTodayListings());
+  if (pricingViewMode === 'bar') renderPricingBarChart(_getTodayListings());
 }
 
 /**

@@ -91,6 +91,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-06-24",
+      "articleCount": 8,
+      "sentimentBreakdown": {
+        "bullish": 7,
+        "bearish": 1
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 3
+        },
+        {
+          "topic": "Lagos real estate market",
+          "count": 1
+        },
+        {
+          "topic": "public servants",
+          "count": 1
+        },
+        {
+          "topic": "housing scheme",
+          "count": 1
+        },
+        {
+          "topic": "Delta State",
+          "count": 1
+        }
+      ]
     }
   ]
 }

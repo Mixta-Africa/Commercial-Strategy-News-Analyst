@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-06-23T11:04:58.119Z",
-  "status": "failed",
+  "timestamp": "2026-06-24T07:50:22.336Z",
+  "status": "healthy",
   "sources": {
     "gnews": {
       "ok": false,
@@ -9,45 +9,45 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 63,
+      "count": 67,
       "error": null
     },
     "googlenews": {
       "ok": true,
-      "count": 126,
+      "count": 128,
       "error": null
     },
     "rss": {
-      "total": 45,
+      "total": 51,
       "feeds": {
         "ThisDay": {
-          "ok": true,
-          "count": 2,
-          "error": null
-        },
-        "Premium Times": {
-          "ok": true,
-          "count": 0,
-          "error": null
-        },
-        "BusinessDay": {
-          "ok": true,
-          "count": 0,
-          "error": null
-        },
-        "Nairametrics": {
           "ok": true,
           "count": 6,
           "error": null
         },
-        "Daily Trust": {
+        "Premium Times": {
+          "ok": true,
+          "count": 1,
+          "error": null
+        },
+        "BusinessDay": {
+          "ok": true,
+          "count": 3,
+          "error": null
+        },
+        "Nairametrics": {
           "ok": true,
           "count": 2,
           "error": null
         },
+        "Daily Trust": {
+          "ok": true,
+          "count": 3,
+          "error": null
+        },
         "The Punch (Business)": {
           "ok": true,
-          "count": 5,
+          "count": 6,
           "error": null
         },
         "Estate Intel": {
@@ -79,21 +79,19 @@
     }
   },
   "counts": {
-    "raw": 234,
-    "filtered": 0,
-    "analyzed": 0,
+    "raw": 265,
+    "filtered": 8,
+    "analyzed": 8,
     "aiFallbacks": 0
   },
   "synthesis": {
-    "ok": false,
-    "themes": 0
+    "ok": true,
+    "themes": 3
   },
   "email": {
-    "sent": false
+    "sent": true
   },
   "warnings": [
-    "Sources down: GNews (0 articles); RSS Estate Intel (HTTP 403)",
-    "No articles passed real-estate filtering.",
-    "Digest email was NOT sent."
+    "Sources down: GNews (0 articles); RSS Estate Intel (HTTP 403)"
   ]
 }

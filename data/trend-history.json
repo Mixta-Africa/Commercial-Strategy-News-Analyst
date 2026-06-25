@@ -121,6 +121,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-06-25",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 7,
+        "bearish": 5,
+        "bullish": 3
+      },
+      "averageSentiment": "bearish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 3
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "land disputes",
+          "count": 1
+        },
+        {
+          "topic": "demographic shifts",
+          "count": 1
+        },
+        {
+          "topic": "security failures",
+          "count": 1
+        }
+      ]
     }
   ]
 }

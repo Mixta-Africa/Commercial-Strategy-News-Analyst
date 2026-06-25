@@ -1,89 +1,95 @@
 {
   "7day": {
-    "articleCount": 2,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 2
+      "neutral": 7,
+      "bearish": 5,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "National Housing Fund",
-        "count": 1
-      },
-      {
-        "topic": "Federal Mortgage Bank of Nigeria",
-        "count": 1
+        "topic": "Lagos real estate",
+        "count": 3
       },
       {
         "topic": "affordable housing",
+        "count": 2
+      },
+      {
+        "topic": "land disputes",
         "count": 1
       },
       {
-        "topic": "homeownership",
+        "topic": "demographic shifts",
         "count": 1
       },
       {
-        "topic": "government spending",
+        "topic": "security failures",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "bearish"
   },
   "30day": {
-    "articleCount": 2,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 2
+      "neutral": 7,
+      "bearish": 5,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "National Housing Fund",
-        "count": 1
-      },
-      {
-        "topic": "Federal Mortgage Bank of Nigeria",
-        "count": 1
+        "topic": "Lagos real estate",
+        "count": 3
       },
       {
         "topic": "affordable housing",
+        "count": 2
+      },
+      {
+        "topic": "land disputes",
         "count": 1
       },
       {
-        "topic": "homeownership",
+        "topic": "demographic shifts",
         "count": 1
       },
       {
-        "topic": "government spending",
+        "topic": "security failures",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "bearish"
   },
   "90day": {
-    "articleCount": 2,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 2
+      "neutral": 7,
+      "bearish": 5,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "National Housing Fund",
-        "count": 1
-      },
-      {
-        "topic": "Federal Mortgage Bank of Nigeria",
-        "count": 1
+        "topic": "Lagos real estate",
+        "count": 3
       },
       {
         "topic": "affordable housing",
+        "count": 2
+      },
+      {
+        "topic": "land disputes",
         "count": 1
       },
       {
-        "topic": "homeownership",
+        "topic": "demographic shifts",
         "count": 1
       },
       {
-        "topic": "government spending",
+        "topic": "security failures",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "bearish"
   }
 }

@@ -153,6 +153,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-06-26",
+      "articleCount": 12,
+      "sentimentBreakdown": {
+        "bullish": 6,
+        "bearish": 3,
+        "neutral": 3
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 5
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "Lagos market",
+          "count": 2
+        },
+        {
+          "topic": "good governance",
+          "count": 1
+        },
+        {
+          "topic": "law reform",
+          "count": 1
+        }
+      ]
     }
   ]
 }

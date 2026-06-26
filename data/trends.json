@@ -1,95 +1,95 @@
 {
   "7day": {
-    "articleCount": 10,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "neutral": 1,
-      "bearish": 2
+      "bullish": 6,
+      "bearish": 3,
+      "neutral": 3
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 4
-      },
-      {
         "topic": "Lagos real estate",
-        "count": 3
+        "count": 5
       },
       {
-        "topic": "affluent buyers",
+        "topic": "affordable housing",
+        "count": 2
+      },
+      {
+        "topic": "Lagos market",
+        "count": 2
+      },
+      {
+        "topic": "good governance",
         "count": 1
       },
       {
-        "topic": "property demand",
-        "count": 1
-      },
-      {
-        "topic": "affordability",
+        "topic": "law reform",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 10,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "neutral": 1,
-      "bearish": 2
+      "bullish": 6,
+      "bearish": 3,
+      "neutral": 3
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 4
-      },
-      {
         "topic": "Lagos real estate",
-        "count": 3
+        "count": 5
       },
       {
-        "topic": "affluent buyers",
+        "topic": "affordable housing",
+        "count": 2
+      },
+      {
+        "topic": "Lagos market",
+        "count": 2
+      },
+      {
+        "topic": "good governance",
         "count": 1
       },
       {
-        "topic": "property demand",
-        "count": 1
-      },
-      {
-        "topic": "affordability",
+        "topic": "law reform",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 10,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "neutral": 1,
-      "bearish": 2
+      "bullish": 6,
+      "bearish": 3,
+      "neutral": 3
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 4
-      },
-      {
         "topic": "Lagos real estate",
-        "count": 3
+        "count": 5
       },
       {
-        "topic": "affluent buyers",
+        "topic": "affordable housing",
+        "count": 2
+      },
+      {
+        "topic": "Lagos market",
+        "count": 2
+      },
+      {
+        "topic": "good governance",
         "count": 1
       },
       {
-        "topic": "property demand",
-        "count": 1
-      },
-      {
-        "topic": "affordability",
+        "topic": "law reform",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   }
 }

@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 12,
     "sentimentBreakdown": {
-      "bullish": 6,
+      "bullish": 3,
       "bearish": 3,
-      "neutral": 3
+      "neutral": 6
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 5
-      },
-      {
-        "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "Lagos market",
-        "count": 2
-      },
-      {
-        "topic": "good governance",
+        "topic": "real estate investment",
         "count": 1
       },
       {
-        "topic": "law reform",
+        "topic": "Lagos market",
+        "count": 1
+      },
+      {
+        "topic": "property prices",
+        "count": 1
+      },
+      {
+        "topic": "housing affordability",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 12,
     "sentimentBreakdown": {
-      "bullish": 6,
+      "bullish": 3,
       "bearish": 3,
-      "neutral": 3
+      "neutral": 6
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 5
-      },
-      {
-        "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "Lagos market",
-        "count": 2
-      },
-      {
-        "topic": "good governance",
+        "topic": "real estate investment",
         "count": 1
       },
       {
-        "topic": "law reform",
+        "topic": "Lagos market",
+        "count": 1
+      },
+      {
+        "topic": "property prices",
+        "count": 1
+      },
+      {
+        "topic": "housing affordability",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 12,
     "sentimentBreakdown": {
-      "bullish": 6,
+      "bullish": 3,
       "bearish": 3,
-      "neutral": 3
+      "neutral": 6
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 5
-      },
-      {
-        "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "Lagos market",
-        "count": 2
-      },
-      {
-        "topic": "good governance",
+        "topic": "real estate investment",
         "count": 1
       },
       {
-        "topic": "law reform",
+        "topic": "Lagos market",
+        "count": 1
+      },
+      {
+        "topic": "property prices",
+        "count": 1
+      },
+      {
+        "topic": "housing affordability",
         "count": 1
       }
     ],

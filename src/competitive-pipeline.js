@@ -221,39 +221,53 @@ function mergeCompetitivePricesSnapshot(groupedListings, rawListings) {
   const today      = new Date().toISOString().slice(0, 10);
 
   // ── 1. Read existing archive (graceful fallback to empty) ──────────────────
+  // Try competitive-prices.json first (the archive file).
+  // If it doesn't exist yet, fall back to competitive-listings.json (the legacy
+  // flat file written by every prior scrape run) so accumulated history is kept.
+  const listingsPath = path.join(DATA_DIR, 'competitive-listings.json');
   let existing = { dailySnapshots: [] };
-  try {
-    const raw    = fs.readFileSync(pricesPath, 'utf-8');
-    const parsed = JSON.parse(raw);
-    // Support both old flat schema (no dailySnapshots) and new archive schema.
-    // If the file is old-format (has groupedListings at root, no dailySnapshots),
-    // treat it as a single snapshot for an unknown prior date and migrate it in.
-    if (Array.isArray(parsed.dailySnapshots)) {
-      existing = parsed;
-    } else if (parsed.groupedListings || parsed.rawListings) {
-      // Old flat format — migrate: use generatedAt date if available, else yesterday
-      const migratedDate = parsed.generatedAt
-        ? parsed.generatedAt.slice(0, 10)
-        : (() => {
-            const d = new Date();
-            d.setDate(d.getDate() - 1);
-            return d.toISOString().slice(0, 10);
-          })();
-      if (migratedDate !== today) {
-        // Only migrate if it's not today — today's run will write the fresh snapshot
-        existing.dailySnapshots = [{
-          date:            migratedDate,
-          scrapedAt:       parsed.generatedAt || migratedDate,
-          listingCount:    (parsed.rawListings || []).length,
-          groupCount:      (parsed.groupedListings || []).length,
-          groupedListings: parsed.groupedListings || [],
-          rawListings:     parsed.rawListings     || [],
-        }];
-        console.log(`[CompPipeline] Migrated old flat competitive-prices.json → snapshot for ${migratedDate}`);
+
+  const tryReadArchive = (filePath, label) => {
+    try {
+      const raw    = fs.readFileSync(filePath, 'utf-8');
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed.dailySnapshots) && parsed.dailySnapshots.length) {
+        console.log(`[CompPipeline] Loaded ${parsed.dailySnapshots.length} existing snapshots from ${label}`);
+        return { found: true, data: parsed };
       }
+      // Flat schema — migrate to a single dated snapshot
+      const rawL = parsed.listings || parsed.rawListings || [];
+      const grpL = parsed.groupedListings || [];
+      if (rawL.length || grpL.length) {
+        const migratedDate = (parsed.generatedAt || '').slice(0, 10) || (() => {
+          const d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().slice(0, 10);
+        })();
+        if (migratedDate && migratedDate !== today) {
+          console.log(`[CompPipeline] Migrated flat ${label} → snapshot for ${migratedDate} (${rawL.length} listings)`);
+          return { found: true, data: { dailySnapshots: [{
+            date: migratedDate, scrapedAt: parsed.generatedAt || migratedDate,
+            listingCount: rawL.length, groupCount: grpL.length,
+            groupedListings: grpL, rawListings: rawL,
+          }]}};
+        }
+      }
+      return { found: false };
+    } catch (e) {
+      return { found: false };
     }
-  } catch (e) {
-    console.log('[CompPipeline] No existing competitive-prices.json — starting fresh archive.');
+  };
+
+  const archiveResult = tryReadArchive(pricesPath, 'competitive-prices.json');
+  if (archiveResult.found) {
+    existing = archiveResult.data;
+  } else {
+    const listingsResult = tryReadArchive(listingsPath, 'competitive-listings.json');
+    if (listingsResult.found) {
+      existing = listingsResult.data;
+      console.log('[CompPipeline] Seeded archive from competitive-listings.json (first migration).');
+    } else {
+      console.log('[CompPipeline] No existing archive found — starting fresh.');
+    }
   }
 
   // ── 2. Build today's snapshot ──────────────────────────────────────────────
@@ -293,6 +307,25 @@ function mergeCompetitivePricesSnapshot(groupedListings, rawListings) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
   fs.writeFileSync(pricesPath, JSON.stringify(archive, null, 2));
   console.log(`[CompPipeline] competitive-prices.json: ${snapshots.length} daily snapshots retained (today's ${snapshots.find(s => s.date === today) ? 'written' : 'missing'}).`);
+
+  // ── 7. Write competitive-listings.json alias (flat today-only schema) ────────
+  // Keeps backward compatibility for anything still referencing the legacy filename.
+  // The dashboard now reads competitive-prices.json, but this ensures the workflow
+  // git add and any other consumers never 404.
+  const todaySnap = snapshots.find(s => s.date === today);
+  if (todaySnap) {
+    const listingsAlias = {
+      generatedAt:    archive.lastUpdated,
+      summary: {
+        totalRawListings: (todaySnap.rawListings || []).length,
+        totalGroups:      (todaySnap.groupedListings || []).length,
+      },
+      listings:        todaySnap.rawListings     || [],
+      groupedListings: todaySnap.groupedListings || [],
+    };
+    fs.writeFileSync(listingsPath, JSON.stringify(listingsAlias, null, 2));
+    console.log(`[CompPipeline] competitive-listings.json: alias written (${listingsAlias.listings.length} today's listings).`);
+  }
 
   return archive;
 }

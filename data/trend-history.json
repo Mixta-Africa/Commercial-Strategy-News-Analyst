@@ -188,32 +188,31 @@
     },
     {
       "date": "2026-06-27",
-      "articleCount": 12,
+      "articleCount": 2,
       "sentimentBreakdown": {
-        "bullish": 3,
-        "bearish": 3,
-        "neutral": 6
+        "neutral": 1,
+        "bullish": 1
       },
       "averageSentiment": "neutral",
       "topTopics": [
         {
+          "topic": "court disputes",
+          "count": 1
+        },
+        {
+          "topic": "property market",
+          "count": 1
+        },
+        {
           "topic": "Lagos real estate",
-          "count": 2
-        },
-        {
-          "topic": "real estate investment",
           "count": 1
         },
         {
-          "topic": "Lagos market",
+          "topic": "innovation",
           "count": 1
         },
         {
-          "topic": "property prices",
-          "count": 1
-        },
-        {
-          "topic": "housing affordability",
+          "topic": "suburban-expansion",
           "count": 1
         }
       ]

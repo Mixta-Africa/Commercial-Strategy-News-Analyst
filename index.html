@@ -3294,7 +3294,7 @@ function renderCompetitorNews(news) {
   const [briefing, memory, articles, health, history, bIndex, geo, competitive, trendHistory] = await Promise.all([
     loadJSON('briefing.json'), loadJSON('themes.json'), loadJSON('articles.json'),
     loadJSON('health.json'), loadJSON('health-history.json'), loadJSON('briefings-index.json'),
-    loadJSON('geoslicer.json'), loadJSON('competitive-listings.json'), loadJSON('trend-history.json')
+    loadJSON('geoslicer.json'), loadJSON('competitive-prices.json'), loadJSON('trend-history.json')
   ]);
   articlesCache = Array.isArray(articles) ? articles : [];
   geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;

@@ -216,6 +216,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-06-28",
+      "articleCount": 4,
+      "sentimentBreakdown": {
+        "neutral": 1,
+        "bullish": 3
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "building collapse",
+          "count": 1
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 1
+        },
+        {
+          "topic": "regulatory compliance",
+          "count": 1
+        },
+        {
+          "topic": "Nigeria real estate market",
+          "count": 1
+        },
+        {
+          "topic": "Lagos property market",
+          "count": 1
+        }
+      ]
     }
   ]
 }

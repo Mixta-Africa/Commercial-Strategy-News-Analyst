@@ -1,17 +1,13 @@
 {
   "7day": {
-    "articleCount": 2,
+    "articleCount": 4,
     "sentimentBreakdown": {
       "neutral": 1,
-      "bullish": 1
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "court disputes",
-        "count": 1
-      },
-      {
-        "topic": "property market",
+        "topic": "building collapse",
         "count": 1
       },
       {
@@ -19,29 +15,29 @@
         "count": 1
       },
       {
-        "topic": "innovation",
+        "topic": "regulatory compliance",
         "count": 1
       },
       {
-        "topic": "suburban-expansion",
+        "topic": "Nigeria real estate market",
+        "count": 1
+      },
+      {
+        "topic": "Lagos property market",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 2,
+    "articleCount": 4,
     "sentimentBreakdown": {
       "neutral": 1,
-      "bullish": 1
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "court disputes",
-        "count": 1
-      },
-      {
-        "topic": "property market",
+        "topic": "building collapse",
         "count": 1
       },
       {
@@ -49,29 +45,29 @@
         "count": 1
       },
       {
-        "topic": "innovation",
+        "topic": "regulatory compliance",
         "count": 1
       },
       {
-        "topic": "suburban-expansion",
+        "topic": "Nigeria real estate market",
+        "count": 1
+      },
+      {
+        "topic": "Lagos property market",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 2,
+    "articleCount": 4,
     "sentimentBreakdown": {
       "neutral": 1,
-      "bullish": 1
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "court disputes",
-        "count": 1
-      },
-      {
-        "topic": "property market",
+        "topic": "building collapse",
         "count": 1
       },
       {
@@ -79,14 +75,18 @@
         "count": 1
       },
       {
-        "topic": "innovation",
+        "topic": "regulatory compliance",
         "count": 1
       },
       {
-        "topic": "suburban-expansion",
+        "topic": "Nigeria real estate market",
+        "count": 1
+      },
+      {
+        "topic": "Lagos property market",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   }
 }

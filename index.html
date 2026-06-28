@@ -3291,10 +3291,30 @@ function renderCompetitorNews(news) {
 // ── BOOTSTRAP ─────────────────────────────────────────────────────────
 (async function boot() {
   initFirebase();
+
+  // Load competitive data: prefer competitive-prices.json (daily snapshot archive)
+  // but fall back to competitive-listings.json if the archive doesn't exist yet.
+  // Once the pipeline has run with the new competitive-pipeline.js, prices.json
+  // will exist and this function will use it automatically on every subsequent load.
+  async function loadCompetitiveData() {
+    try {
+      const res = await fetch(`${DATA_BASE}/competitive-prices.json?t=${Date.now()}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && (Array.isArray(data.dailySnapshots) ? data.dailySnapshots.length > 0 : data.listings?.length > 0)) {
+          console.log('[Boot] Loaded competitive-prices.json');
+          return data;
+        }
+      }
+    } catch (e) { /* fall through */ }
+    console.log('[Boot] competitive-prices.json not ready — falling back to competitive-listings.json');
+    return loadJSON('competitive-listings.json');
+  }
+
   const [briefing, memory, articles, health, history, bIndex, geo, competitive, trendHistory] = await Promise.all([
     loadJSON('briefing.json'), loadJSON('themes.json'), loadJSON('articles.json'),
     loadJSON('health.json'), loadJSON('health-history.json'), loadJSON('briefings-index.json'),
-    loadJSON('geoslicer.json'), loadJSON('competitive-prices.json'), loadJSON('trend-history.json')
+    loadJSON('geoslicer.json'), loadCompetitiveData(), loadJSON('trend-history.json')
   ]);
   articlesCache = Array.isArray(articles) ? articles : [];
   geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;

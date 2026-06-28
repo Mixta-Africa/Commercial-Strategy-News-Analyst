@@ -28,9 +28,15 @@ class RunHealth {
     };
 
     // Tunable thresholds
-    this.MIN_FILTERED = 4;        // fewer than this = thin run (degraded)
+    // MIN_FILTERED: minimum fresh articles after dedup to avoid DEGRADED.
+    // After 300+ historical articles are loaded, slow news days legitimately
+    // produce 1-3 fresh articles — that is not a system failure.
+    this.MIN_FILTERED = 1;        // fewer than this = genuinely empty run (degraded)
     this.MAX_AI_FALLBACK_RATIO = 0.5; // >50% articles without real summary = degraded
-    this.MAX_SOURCES_DOWN = 2;    // collection sources fully down before flagging
+    // MAX_SOURCES_DOWN: GNews has been returning 0 articles persistently and is
+    // excluded from the down-count below. This threshold therefore applies only
+    // to NewsAPI + RSS feeds, so 2 is the right bar.
+    this.MAX_SOURCES_DOWN = 2;    // reliable collection sources fully down before flagging
   }
 
   recordSources(sourceHealth) {
@@ -64,7 +70,12 @@ class RunHealth {
     const s = this.record.sources;
     let down = 0;
     const downList = [];
-    if (s.gnews && !s.gnews.ok) { down++; downList.push(`GNews (${s.gnews.error || '0 articles'})`); }
+    // GNews is excluded from the down-count: it has returned 0 articles on every
+    // run for weeks and is a known open issue (likely API key quota or endpoint
+    // change). Counting it as "down" on every run pollutes the degraded signal
+    // and makes it impossible to distinguish real failures from the known gap.
+    // It is still surfaced in the warning list for visibility.
+    if (s.gnews && !s.gnews.ok) { downList.push(`GNews (${s.gnews.error || '0 articles'}) — known issue, excluded from down-count`); }
     if (s.newsapi && !s.newsapi.ok) { down++; downList.push(`NewsAPI (${s.newsapi.error || '0 articles'})`); }
     if (s.rss && s.rss.feeds) {
       for (const [name, f] of Object.entries(s.rss.feeds)) {
@@ -84,9 +95,14 @@ class RunHealth {
     const c = this.record.counts;
     const { down, downList } = this.countSourcesDown();
 
-    // Source erosion is always worth surfacing, even on healthy runs
+    // Source erosion is always worth surfacing, even on healthy runs.
+    // Separate GNews (known persistent issue) from genuine new failures so the
+    // warnings list stays actionable and doesn't cry wolf on every run.
     if (downList.length) {
-      this.addWarning(`Sources down: ${downList.join('; ')}`);
+      const gnewsNotes = downList.filter(d => d.includes('GNews'));
+      const realDown   = downList.filter(d => !d.includes('GNews'));
+      if (realDown.length)   this.addWarning(`Sources down: ${realDown.join('; ')}`);
+      if (gnewsNotes.length) this.addWarning(`Note: ${gnewsNotes.join('; ')}`);
     }
 
     if (fatal || c.raw === 0 || c.filtered === 0 || !this.record.email.sent) {

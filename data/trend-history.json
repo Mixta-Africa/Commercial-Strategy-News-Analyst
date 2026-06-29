@@ -247,6 +247,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-06-29",
+      "articleCount": 6,
+      "sentimentBreakdown": {
+        "bullish": 3,
+        "bearish": 1,
+        "neutral": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 2
+        },
+        {
+          "topic": "Nigerian real estate market growth",
+          "count": 1
+        },
+        {
+          "topic": "residential property demand",
+          "count": 1
+        },
+        {
+          "topic": "housing supply deficit",
+          "count": 1
+        },
+        {
+          "topic": "urban planning",
+          "count": 1
+        }
+      ]
     }
   ]
 }

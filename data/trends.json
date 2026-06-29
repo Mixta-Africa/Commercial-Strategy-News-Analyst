@@ -1,92 +1,95 @@
 {
   "7day": {
-    "articleCount": 4,
+    "articleCount": 6,
     "sentimentBreakdown": {
-      "neutral": 1,
-      "bullish": 3
+      "bullish": 3,
+      "bearish": 1,
+      "neutral": 2
     },
     "topTopics": [
       {
-        "topic": "building collapse",
-        "count": 1
-      },
-      {
         "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "Nigerian real estate market growth",
         "count": 1
       },
       {
-        "topic": "regulatory compliance",
+        "topic": "residential property demand",
         "count": 1
       },
       {
-        "topic": "Nigeria real estate market",
+        "topic": "housing supply deficit",
         "count": 1
       },
       {
-        "topic": "Lagos property market",
+        "topic": "urban planning",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 4,
+    "articleCount": 6,
     "sentimentBreakdown": {
-      "neutral": 1,
-      "bullish": 3
+      "bullish": 3,
+      "bearish": 1,
+      "neutral": 2
     },
     "topTopics": [
       {
-        "topic": "building collapse",
-        "count": 1
-      },
-      {
         "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "Nigerian real estate market growth",
         "count": 1
       },
       {
-        "topic": "regulatory compliance",
+        "topic": "residential property demand",
         "count": 1
       },
       {
-        "topic": "Nigeria real estate market",
+        "topic": "housing supply deficit",
         "count": 1
       },
       {
-        "topic": "Lagos property market",
+        "topic": "urban planning",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 4,
+    "articleCount": 6,
     "sentimentBreakdown": {
-      "neutral": 1,
-      "bullish": 3
+      "bullish": 3,
+      "bearish": 1,
+      "neutral": 2
     },
     "topTopics": [
       {
-        "topic": "building collapse",
-        "count": 1
-      },
-      {
         "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "Nigerian real estate market growth",
         "count": 1
       },
       {
-        "topic": "regulatory compliance",
+        "topic": "residential property demand",
         "count": 1
       },
       {
-        "topic": "Nigeria real estate market",
+        "topic": "housing supply deficit",
         "count": 1
       },
       {
-        "topic": "Lagos property market",
+        "topic": "urban planning",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   }
 }

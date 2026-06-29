@@ -252,31 +252,29 @@
       "date": "2026-06-29",
       "articleCount": 6,
       "sentimentBreakdown": {
-        "bullish": 3,
-        "bearish": 1,
-        "neutral": 2
+        "bearish": 6
       },
-      "averageSentiment": "neutral",
+      "averageSentiment": "bearish",
       "topTopics": [
         {
-          "topic": "Lagos real estate",
+          "topic": "ADC",
+          "count": 3
+        },
+        {
+          "topic": "Nigeria politics",
           "count": 2
         },
         {
-          "topic": "Nigerian real estate market growth",
-          "count": 1
+          "topic": "Atiku Abubakar",
+          "count": 2
         },
         {
-          "topic": "residential property demand",
-          "count": 1
+          "topic": "2027 election",
+          "count": 2
         },
         {
-          "topic": "housing supply deficit",
-          "count": 1
-        },
-        {
-          "topic": "urban planning",
-          "count": 1
+          "topic": "Nigerian politics",
+          "count": 2
         }
       ]
     }

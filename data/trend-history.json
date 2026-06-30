@@ -280,31 +280,30 @@
     },
     {
       "date": "2026-06-30",
-      "articleCount": 10,
+      "articleCount": 2,
       "sentimentBreakdown": {
-        "bullish": 7,
-        "neutral": 3
+        "bullish": 2
       },
       "averageSentiment": "bullish",
       "topTopics": [
         {
-          "topic": "luxury housing",
-          "count": 2
-        },
-        {
-          "topic": "education",
+          "topic": "rental market",
           "count": 1
         },
         {
-          "topic": "infrastructure",
+          "topic": "real estate regulation",
           "count": 1
         },
         {
-          "topic": "property-market",
+          "topic": "Anambra State",
           "count": 1
         },
         {
-          "topic": "Lagos Mainland",
+          "topic": "office-market",
+          "count": 1
+        },
+        {
+          "topic": "commercial-real-estate",
           "count": 1
         }
       ]

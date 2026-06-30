@@ -1,70 +1,43 @@
 {
-  "executive_summary": "The Nigerian real estate market is witnessing significant developments, with a focus on luxury housing and infrastructure development. According to recent reports, MGE Realty is set to deliver 500 premium residences in Mainland Lagos, while Zularich Properties has handed over completed housing units to subscribers of its Zularich Residences Phase 2. Experts are also backing the growing shift from traditional savings to real estate investment, citing sustained property appreciation and inflation protection as key drivers.\n\nThe Lekki-Epe corridor is emerging as a hotspot for property investment, driven by rising land values, improving infrastructure, and strong rental demand. The commissioning of landmark projects, such as the Lameco overhead bridge in Osun State, is also expected to boost the real estate market. Furthermore, the growing interest in secure property ownership and the increasing demand for luxury apartments are trends that are likely to shape the market in the coming months.\n\nThe Nigerian real estate market is also experiencing an increase in demand for luxury housing, with many developers focusing on delivering high-end properties. The market is expected to continue growing, driven by the country's rapid urbanization and the increasing demand for quality housing. Additionally, the government's efforts to improve infrastructure and provide affordable housing options are likely to have a positive impact on the market.\n\nIn conclusion, the Nigerian real estate market is experiencing significant growth and development, driven by various factors such as infrastructure development, luxury housing, and increasing demand for quality housing. As the market continues to evolve, it is essential to monitor trends and developments to make informed investment decisions.",
+  "executive_summary": "The Nigerian real estate market is witnessing a dichotomy in the office market, with prime Grade A properties in Lagos sustaining strong demand while older Grade B buildings face rising vacancies. According to the latest report by Ubosi Eleh and Company, prime office rents in the Ikoyi submarket have stabilised at about $55 per square metre yearly for standard Grade A spaces. However, premium, newly delivered office buildings with superior infrastructure command significantly higher rents, ranging from $100 to $400 per square metre yearly.\n\nThe residential market is also experiencing changes, with the Anambra State government declaring war on illegal agent fees and vowing to end rent extortion. This move is expected to have a positive impact on the rental market, making it more attractive to potential tenants. The report highlights the need for regulatory oversight and transparency in the real estate sector.\n\nThe real estate market in Nigeria is also being shaped by infrastructure development, with the Green Line Metro, Lekki-Epe Coastal Highway, and Lekki Deep Seaport being major catalysts for growth. The completion of these projects is expected to drive land values and demand in the surrounding areas. Furthermore, the government's efforts to address the housing deficit, which currently exceeds 20 million units, will be crucial in shaping the market.\n\nIn conclusion, the Nigerian real estate market is experiencing significant shifts, driven by changes in the office market, regulatory oversight, and infrastructure development. As the market continues to evolve, it is essential to monitor these trends and their impact on the industry.",
   "themes": [
     {
-      "label": "Luxury Housing Demand",
-      "market": "Nigeria",
-      "novelty": "established",
-      "what_happened": "MGE Realty is set to deliver 500 premium residences in Mainland Lagos, and Zularich Properties has handed over completed housing units to subscribers of its Zularich Residences Phase 2.",
-      "why_it_matters_to_mixta": "The growing demand for luxury housing presents an opportunity for Mixta to focus on delivering high-end properties, which could lead to increased revenue and profitability.",
-      "recommendation": "Consider allocating more resources to the development of luxury housing projects, such as Lakowe Lakes, to capitalize on the growing demand.",
-      "confidence": "high",
-      "sources": [
-        1,
-        3
-      ],
-      "sourceArticles": [
-        {
-          "title": "MGE Realty to Deliver 500 Premium Residences in Mainland Lagos",
-          "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOalpBaVA1MVVDX2xxbl9xUUlqbXdydmdOT01FVjMyaU5zR2FKRDkxVDlJWTkwRVVxNFVNSFY2a0xSY3l0OE9Iajc5RDdLT1JvOWJjQ19BZ2RwR3NIVTQ4aEJFQ2E3c3NmaW1aN2hnZkdNbmw4ZkhJRGl0UDVIdGRZbTJyU19IN3owcWhpdjR4X2R4enhGWkc5bXlMUHNIa014NS1EaQ?oc=5",
-          "source": "THISDAYLIVE"
-        },
-        {
-          "title": "Zularich hands over Lekki homes, unveils AI-powered luxury estate",
-          "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQNDQxNmNNYU9NSzh0VnlmSXByRkVmakRueFBjWTB4eDBDNHRsSTBPc2pYb3Bid1NELWRNOUZVZGsxVnZlQTZPNzVoUHRrMmJ0UVpVM0tKSkI4ZW1mN2FvMEFrZHBWQUx0MkhwN3lxUVdtQml1ZDRkTzFfY08zOTBBV2VsN2ZuZGVGSXVMWlJKeThuOGpScm5sdzBnTHE1ZjhYUmc?oc=5",
-          "source": "The Guardian Nigeria News"
-        }
-      ],
-      "singleSource": false,
-      "timesSeen": 1
-    },
-    {
-      "label": "Infrastructure Development",
+      "label": "Office Market Dichotomy",
       "market": "Nigeria",
       "novelty": "building",
-      "what_happened": "The commissioning of landmark projects, such as the Lameco overhead bridge in Osun State, is expected to boost the real estate market.",
-      "why_it_matters_to_mixta": "Improved infrastructure can increase the value of Mixta's properties and make them more attractive to potential buyers, leading to increased sales and revenue.",
-      "recommendation": "Monitor infrastructure development projects and consider investing in areas with upcoming infrastructure improvements.",
+      "what_happened": "Prime Grade A properties in Lagos are sustaining strong demand, while older Grade B buildings face rising vacancies, with prime office rents stabilising at $55 per square metre yearly.",
+      "why_it_matters_to_mixta": "This trend may impact the pricing strategy for commercial plots in Lagos New Town, with a potential increase in demand for premium office spaces.",
+      "recommendation": "Consider revising the pricing strategy for commercial plots in Lagos New Town to reflect the growing demand for premium office spaces.",
       "confidence": "medium",
       "sources": [
-        7
+        1
       ],
       "sourceArticles": [
         {
-          "title": "Olubadan, Ogiyan of Ejigbo, Ataoja of Osogbo Land Begin Commissioning of Landmark Projects by Osun State Govt",
-          "url": "https://www.thisdaylive.com/2026/06/30/olubadan-ogiyan-of-ejigbo-ataoja-of-osogbo-land-begin-commissioning-of-landmark-projects-by-osun-state-govt/",
-          "source": "ThisDay"
+          "title": "Lagos office market splits between prime demand, rising vacancies",
+          "url": "https://guardian.ng/property/lagos-office-market-splits-between-prime-demand-rising-vacancies/",
+          "source": "Guardian Nigeria (Property)"
         }
       ],
       "singleSource": true,
-      "timesSeen": 4
+      "timesSeen": 1
     },
     {
-      "label": "Real Estate Investment",
+      "label": "Regulatory Oversight",
       "market": "Nigeria",
-      "novelty": "established",
-      "what_happened": "Experts are backing the growing shift from traditional savings to real estate investment, citing sustained property appreciation and inflation protection as key drivers.",
-      "why_it_matters_to_mixta": "The growing interest in real estate investment presents an opportunity for Mixta to attract more investors and increase sales, particularly in the luxury housing segment.",
-      "recommendation": "Consider offering more investment options, such as corporate mortgage schemes, to attract investors and increase sales.",
+      "novelty": "new",
+      "what_happened": "The Anambra State government has declared war on illegal agent fees and vowed to end rent extortion.",
+      "why_it_matters_to_mixta": "This move may lead to increased transparency and regulatory oversight in the real estate sector, potentially impacting the sales and marketing strategies for Mixta's projects.",
+      "recommendation": "Monitor the impact of this regulatory change on the market and adjust sales and marketing strategies accordingly.",
       "confidence": "medium",
       "sources": [
-        2
+        0
       ],
       "sourceArticles": [
         {
-          "title": "Experts Back Growing Shift from Traditional Savings to Real Estate Investment",
-          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxORWE2TW5Ha1Q3SGZKNUQzcGx0RkxSSHBwT3U4X0hBYUttMUZfaFBFc1haNkJWeGg3cTZmOHZQVlI3OFRjZnBUcVN0QUhoWTM3Y3htaHVXS3ExbEdoNEdLb1Via1ZtUWx2Y3VLQkU5endfemM1Z2M2cVYtTl9PaktmV3Zra29MeTBUcm5BR1RjUVlNVVpEd1hHdlJFeXRkTjFHMGpsU3FCSQ?oc=5",
-          "source": "nigeriahousingmarket.com"
+          "title": "Soludo declares war on illegal agent fees, vows to end rent extortion in Anambra",
+          "url": "https://businessday.ng/uncategorized/article/soludo-declares-war-on-illegal-agent-fees-vows-to-end-rent-extortion-in-anambra/",
+          "source": "BusinessDay"
         }
       ],
       "singleSource": true,
@@ -72,9 +45,8 @@
     }
   ],
   "watch_list_hits": [
-    "Infrastructure development, particularly in the Lekki-Epe corridor, is driving up land values and demand for properties.",
-    "The growing demand for luxury housing is presenting opportunities for developers to deliver high-end properties.",
-    "The shift from traditional savings to real estate investment is expected to continue, driven by sustained property appreciation and inflation protection."
+    "Infrastructure development, particularly the Green Line Metro, Lekki-Epe Coastal Highway, and Lekki Deep Seaport, is expected to drive land values and demand in the surrounding areas.",
+    "The government's efforts to address the housing deficit, which currently exceeds 20 million units, will be crucial in shaping the market."
   ],
-  "generatedAt": "2026-06-30T09:05:20.353Z"
+  "generatedAt": "2026-06-30T10:24:03.868Z"
 }

@@ -277,6 +277,37 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-06-30",
+      "articleCount": 10,
+      "sentimentBreakdown": {
+        "bullish": 7,
+        "neutral": 3
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "luxury housing",
+          "count": 2
+        },
+        {
+          "topic": "education",
+          "count": 1
+        },
+        {
+          "topic": "infrastructure",
+          "count": 1
+        },
+        {
+          "topic": "property-market",
+          "count": 1
+        },
+        {
+          "topic": "Lagos Mainland",
+          "count": 1
+        }
+      ]
     }
   ]
 }

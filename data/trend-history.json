@@ -307,6 +307,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-01",
+      "articleCount": 13,
+      "sentimentBreakdown": {
+        "bullish": 11,
+        "bearish": 1,
+        "neutral": 1
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 3
+        },
+        {
+          "topic": "housing deficit",
+          "count": 2
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "urban renewal",
+          "count": 2
+        },
+        {
+          "topic": "Lagos market",
+          "count": 2
+        }
+      ]
     }
   ]
 }

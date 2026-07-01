@@ -1333,13 +1333,13 @@ function renderTrends(trendHistory) {
     { id: 'all', label: 'All Time' },
   ];
   filterRow.innerHTML = periods.map(p => `
-    <button class="pricing-chip${p.id === trendPeriodFilter ? ' active' : ''}" onclick="setTrendPeriod('${p.id}', this)">${esc(p.label)}</button>
+    <button class="pricing-chip${p.id === trendPeriodFilter ? ' active' : ''}" onclick="setTopicTrendPeriod('${p.id}', this)">${esc(p.label)}</button>
   `).join('');
 
   renderTrendChart(days);
 }
 
-function setTrendPeriod(periodId, el) {
+function setTopicTrendPeriod(periodId, el) {
   trendPeriodFilter = periodId;
   el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
@@ -1429,7 +1429,15 @@ function renderTrendChart(allDays) {
   const width = container.clientWidth || 900;
   const _m = window._chartMarginScale ? window._chartMarginScale() : { left: 70, right: 24, bottom: 90 };
   const marginLeft = _m.left, marginRight = _m.right, marginTop = 20, marginBottom = _m.bottom;
-  const barW = 12, barGap = 2, weekGap = 22;
+
+  // Scale bar width down when there are few weeks so the chart doesn't look
+  // disfigured. With 10+ weeks use full 12px; below that, scale proportionally
+  // down to a minimum of 6px so bars stay readable.
+  const maxBarW = 12, minBarW = 6;
+  const barW = Math.max(minBarW, Math.min(maxBarW, Math.floor((width - marginLeft - _m.right) / Math.max(weekLabels.length * (topTopicsOverall.length + 2), 1))));
+  const barGap = Math.max(1, Math.floor(barW / 6));
+  const weekGap = Math.max(16, barW * 3);
+
   const weekWidth = topTopicsOverall.length * (barW + barGap) - barGap;
   const naturalPlotW = weekLabels.length * (weekWidth + weekGap);
   const availablePlotW = Math.max(width - marginLeft - marginRight, 240);
@@ -2130,7 +2138,7 @@ function renderPriceTrendChart(listings) {
     periodContainer.dataset.built = '1';
     periodContainer.innerHTML = periods.map(p => `
       <button class="view-toggle-btn${p.value === _priceTrendPeriod ? ' active' : ''}"
-        onclick="setTrendPeriod('${p.value}')" style="min-width:44px;">${esc(p.label)}</button>`).join('');
+        onclick="setPriceTrendPeriod('${p.value}')" style="min-width:44px;">${esc(p.label)}</button>`).join('');
   }
 
   // Filter listings by period
@@ -2315,7 +2323,7 @@ function renderPriceTrendChart(listings) {
     dataNote;
 }
 
-function setTrendPeriod(p) {
+function setPriceTrendPeriod(p) {
   _priceTrendPeriod = p;
   // Update button active states
   const btns = document.querySelectorAll('#trendPeriodBtns .view-toggle-btn');

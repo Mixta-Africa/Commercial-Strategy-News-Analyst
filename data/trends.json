@@ -1,93 +1,75 @@
 {
   "7day": {
-    "articleCount": 13,
+    "articleCount": 1,
     "sentimentBreakdown": {
-      "bullish": 11,
-      "bearish": 1,
-      "neutral": 1
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 3
-      },
-      {
         "topic": "housing deficit",
-        "count": 2
+        "count": 1
       },
       {
-        "topic": "affordable housing",
-        "count": 2
+        "topic": "affordable mortgages",
+        "count": 1
       },
       {
-        "topic": "urban renewal",
-        "count": 2
+        "topic": "land reforms",
+        "count": 1
       },
       {
-        "topic": "Lagos market",
-        "count": 2
+        "topic": "infrastructure development",
+        "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 13,
+    "articleCount": 1,
     "sentimentBreakdown": {
-      "bullish": 11,
-      "bearish": 1,
-      "neutral": 1
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 3
-      },
-      {
         "topic": "housing deficit",
-        "count": 2
+        "count": 1
       },
       {
-        "topic": "affordable housing",
-        "count": 2
+        "topic": "affordable mortgages",
+        "count": 1
       },
       {
-        "topic": "urban renewal",
-        "count": 2
+        "topic": "land reforms",
+        "count": 1
       },
       {
-        "topic": "Lagos market",
-        "count": 2
+        "topic": "infrastructure development",
+        "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 13,
+    "articleCount": 1,
     "sentimentBreakdown": {
-      "bullish": 11,
-      "bearish": 1,
-      "neutral": 1
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 3
-      },
-      {
         "topic": "housing deficit",
-        "count": 2
+        "count": 1
       },
       {
-        "topic": "affordable housing",
-        "count": 2
+        "topic": "affordable mortgages",
+        "count": 1
       },
       {
-        "topic": "urban renewal",
-        "count": 2
+        "topic": "land reforms",
+        "count": 1
       },
       {
-        "topic": "Lagos market",
-        "count": 2
+        "topic": "infrastructure development",
+        "count": 1
       }
     ],
     "averageSentiment": "bullish"

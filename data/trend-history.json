@@ -333,6 +333,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-02",
+      "articleCount": 14,
+      "sentimentBreakdown": {
+        "neutral": 4,
+        "bearish": 3,
+        "bullish": 7
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 7
+        },
+        {
+          "topic": "affordable housing",
+          "count": 3
+        },
+        {
+          "topic": "Lagos flooding",
+          "count": 1
+        },
+        {
+          "topic": "infrastructure challenges",
+          "count": 1
+        },
+        {
+          "topic": "property market impact",
+          "count": 1
+        }
+      ]
     }
   ]
 }

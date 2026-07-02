@@ -1,77 +1,95 @@
 {
   "7day": {
-    "articleCount": 1,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "bullish": 1
+      "neutral": 4,
+      "bearish": 3,
+      "bullish": 7
     },
     "topTopics": [
       {
-        "topic": "housing deficit",
+        "topic": "Lagos real estate",
+        "count": 7
+      },
+      {
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "Lagos flooding",
         "count": 1
       },
       {
-        "topic": "affordable mortgages",
+        "topic": "infrastructure challenges",
         "count": 1
       },
       {
-        "topic": "land reforms",
-        "count": 1
-      },
-      {
-        "topic": "infrastructure development",
+        "topic": "property market impact",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 1,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "bullish": 1
+      "neutral": 4,
+      "bearish": 3,
+      "bullish": 7
     },
     "topTopics": [
       {
-        "topic": "housing deficit",
+        "topic": "Lagos real estate",
+        "count": 7
+      },
+      {
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "Lagos flooding",
         "count": 1
       },
       {
-        "topic": "affordable mortgages",
+        "topic": "infrastructure challenges",
         "count": 1
       },
       {
-        "topic": "land reforms",
-        "count": 1
-      },
-      {
-        "topic": "infrastructure development",
+        "topic": "property market impact",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 1,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "bullish": 1
+      "neutral": 4,
+      "bearish": 3,
+      "bullish": 7
     },
     "topTopics": [
       {
-        "topic": "housing deficit",
+        "topic": "Lagos real estate",
+        "count": 7
+      },
+      {
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "Lagos flooding",
         "count": 1
       },
       {
-        "topic": "affordable mortgages",
+        "topic": "infrastructure challenges",
         "count": 1
       },
       {
-        "topic": "land reforms",
-        "count": 1
-      },
-      {
-        "topic": "infrastructure development",
+        "topic": "property market impact",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   }
 }

@@ -1,95 +1,95 @@
 {
   "7day": {
-    "articleCount": 14,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "neutral": 4,
       "bearish": 3,
+      "neutral": 2,
       "bullish": 7
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 7
+        "count": 4
       },
       {
         "topic": "affordable housing",
-        "count": 3
+        "count": 4
       },
       {
-        "topic": "Lagos flooding",
+        "topic": "land ownership",
         "count": 1
       },
       {
-        "topic": "infrastructure challenges",
+        "topic": "property disputes",
         "count": 1
       },
       {
-        "topic": "property market impact",
+        "topic": "land reclamation",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 14,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "neutral": 4,
       "bearish": 3,
+      "neutral": 2,
       "bullish": 7
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 7
+        "count": 4
       },
       {
         "topic": "affordable housing",
-        "count": 3
+        "count": 4
       },
       {
-        "topic": "Lagos flooding",
+        "topic": "land ownership",
         "count": 1
       },
       {
-        "topic": "infrastructure challenges",
+        "topic": "property disputes",
         "count": 1
       },
       {
-        "topic": "property market impact",
+        "topic": "land reclamation",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 14,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "neutral": 4,
       "bearish": 3,
+      "neutral": 2,
       "bullish": 7
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 7
+        "count": 4
       },
       {
         "topic": "affordable housing",
-        "count": 3
+        "count": 4
       },
       {
-        "topic": "Lagos flooding",
+        "topic": "land ownership",
         "count": 1
       },
       {
-        "topic": "infrastructure challenges",
+        "topic": "property disputes",
         "count": 1
       },
       {
-        "topic": "property market impact",
+        "topic": "land reclamation",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   }
 }

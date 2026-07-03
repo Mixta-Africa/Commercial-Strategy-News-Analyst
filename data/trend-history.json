@@ -365,6 +365,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-03",
+      "articleCount": 12,
+      "sentimentBreakdown": {
+        "bearish": 3,
+        "neutral": 2,
+        "bullish": 7
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 4
+        },
+        {
+          "topic": "affordable housing",
+          "count": 4
+        },
+        {
+          "topic": "land ownership",
+          "count": 1
+        },
+        {
+          "topic": "property disputes",
+          "count": 1
+        },
+        {
+          "topic": "land reclamation",
+          "count": 1
+        }
+      ]
     }
   ]
 }

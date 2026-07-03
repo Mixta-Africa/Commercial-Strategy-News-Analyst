@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-07-02T09:51:32.475Z",
-  "status": "failed",
+  "timestamp": "2026-07-03T09:49:10.349Z",
+  "status": "healthy",
   "sources": {
     "gnews": {
       "ok": false,
@@ -9,26 +9,26 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 57,
+      "count": 65,
       "error": null
     },
     "googlenews": {
       "ok": true,
-      "count": 128,
+      "count": 127,
       "error": null
     },
     "rss": {
-      "total": 37,
+      "total": 35,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 2,
+          "count": 0,
           "error": null
         },
         "Premium Times": {
-          "ok": false,
+          "ok": true,
           "count": 0,
-          "error": "XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &"
+          "error": null
         },
         "BusinessDay": {
           "ok": true,
@@ -37,12 +37,12 @@
         },
         "Nairametrics": {
           "ok": true,
-          "count": 3,
+          "count": 2,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "The Punch (Business)": {
@@ -79,22 +79,20 @@
     }
   },
   "counts": {
-    "raw": 222,
-    "filtered": 0,
-    "analyzed": 0,
+    "raw": 227,
+    "filtered": 12,
+    "analyzed": 12,
     "aiFallbacks": 0
   },
   "synthesis": {
-    "ok": false,
-    "themes": 0
+    "ok": true,
+    "themes": 3
   },
   "email": {
-    "sent": false
+    "sent": true
   },
   "warnings": [
-    "Sources down: RSS Premium Times (XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &); RSS Estate Intel (HTTP 403)",
-    "Note: GNews (0 articles) — known issue, excluded from down-count",
-    "No articles passed real-estate filtering.",
-    "Digest email was NOT sent."
+    "Sources down: RSS Estate Intel (HTTP 403)",
+    "Note: GNews (0 articles) — known issue, excluded from down-count"
   ]
 }

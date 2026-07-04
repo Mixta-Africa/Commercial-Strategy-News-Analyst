@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 12,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "neutral": 2,
-      "bullish": 7
+      "bullish": 10,
+      "bearish": 2,
+      "neutral": 3
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
+        "count": 3
       },
       {
-        "topic": "affordable housing",
-        "count": 4
+        "topic": "investor confidence",
+        "count": 2
       },
       {
-        "topic": "land ownership",
-        "count": 1
+        "topic": "Lagos real estate market",
+        "count": 2
       },
       {
-        "topic": "property disputes",
-        "count": 1
+        "topic": "real estate investment",
+        "count": 2
       },
       {
-        "topic": "land reclamation",
+        "topic": "Real Estate Today",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 12,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "neutral": 2,
-      "bullish": 7
+      "bullish": 10,
+      "bearish": 2,
+      "neutral": 3
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
+        "count": 3
       },
       {
-        "topic": "affordable housing",
-        "count": 4
+        "topic": "investor confidence",
+        "count": 2
       },
       {
-        "topic": "land ownership",
-        "count": 1
+        "topic": "Lagos real estate market",
+        "count": 2
       },
       {
-        "topic": "property disputes",
-        "count": 1
+        "topic": "real estate investment",
+        "count": 2
       },
       {
-        "topic": "land reclamation",
+        "topic": "Real Estate Today",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 12,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "neutral": 2,
-      "bullish": 7
+      "bullish": 10,
+      "bearish": 2,
+      "neutral": 3
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
+        "count": 3
       },
       {
-        "topic": "affordable housing",
-        "count": 4
+        "topic": "investor confidence",
+        "count": 2
       },
       {
-        "topic": "land ownership",
-        "count": 1
+        "topic": "Lagos real estate market",
+        "count": 2
       },
       {
-        "topic": "property disputes",
-        "count": 1
+        "topic": "real estate investment",
+        "count": 2
       },
       {
-        "topic": "land reclamation",
+        "topic": "Real Estate Today",
         "count": 1
       }
     ],

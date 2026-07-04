@@ -397,6 +397,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-04",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bullish": 10,
+        "bearish": 2,
+        "neutral": 3
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 3
+        },
+        {
+          "topic": "investor confidence",
+          "count": 2
+        },
+        {
+          "topic": "Lagos real estate market",
+          "count": 2
+        },
+        {
+          "topic": "real estate investment",
+          "count": 2
+        },
+        {
+          "topic": "Real Estate Today",
+          "count": 1
+        }
+      ]
     }
   ]
 }

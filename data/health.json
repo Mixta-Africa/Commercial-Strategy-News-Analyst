@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-04T09:13:02.477Z",
+  "timestamp": "2026-07-05T09:33:33.046Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -9,40 +9,40 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 62,
+      "count": 59,
       "error": null
     },
     "googlenews": {
       "ok": true,
-      "count": 124,
+      "count": 125,
       "error": null
     },
     "rss": {
       "total": 39,
       "feeds": {
         "ThisDay": {
-          "ok": false,
+          "ok": true,
           "count": 0,
-          "error": "timeout of 12000ms exceeded"
+          "error": null
         },
         "Premium Times": {
           "ok": true,
-          "count": 4,
+          "count": 3,
           "error": null
         },
         "BusinessDay": {
           "ok": true,
-          "count": 1,
+          "count": 0,
           "error": null
         },
         "Nairametrics": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "The Punch (Business)": {
@@ -79,9 +79,9 @@
     }
   },
   "counts": {
-    "raw": 225,
-    "filtered": 15,
-    "analyzed": 15,
+    "raw": 223,
+    "filtered": 10,
+    "analyzed": 10,
     "aiFallbacks": 0
   },
   "synthesis": {
@@ -92,7 +92,7 @@
     "sent": true
   },
   "warnings": [
-    "Sources down: RSS ThisDay (timeout of 12000ms exceeded); RSS Estate Intel (HTTP 403)",
+    "Sources down: RSS Estate Intel (HTTP 403)",
     "Note: GNews (0 articles) — known issue, excluded from down-count"
   ]
 }

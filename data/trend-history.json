@@ -460,6 +460,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-06",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 5,
+        "bullish": 10
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 5
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "philanthropy",
+          "count": 2
+        },
+        {
+          "topic": "media-coverage",
+          "count": 1
+        },
+        {
+          "topic": "real-estate",
+          "count": 1
+        }
+      ]
     }
   ]
 }

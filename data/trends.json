@@ -1,90 +1,90 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 8,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 10
+      "bullish": 7,
+      "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 5
-      },
-      {
-        "topic": "affordable housing",
-        "count": 2
+        "count": 3
       },
       {
         "topic": "philanthropy",
+        "count": 3
+      },
+      {
+        "topic": "infrastructure development",
         "count": 2
       },
       {
-        "topic": "media-coverage",
-        "count": 1
+        "topic": "land prices",
+        "count": 2
       },
       {
-        "topic": "real-estate",
-        "count": 1
+        "topic": "corporate social responsibility",
+        "count": 2
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 8,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 10
+      "bullish": 7,
+      "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 5
-      },
-      {
-        "topic": "affordable housing",
-        "count": 2
+        "count": 3
       },
       {
         "topic": "philanthropy",
+        "count": 3
+      },
+      {
+        "topic": "infrastructure development",
         "count": 2
       },
       {
-        "topic": "media-coverage",
-        "count": 1
+        "topic": "land prices",
+        "count": 2
       },
       {
-        "topic": "real-estate",
-        "count": 1
+        "topic": "corporate social responsibility",
+        "count": 2
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 8,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 10
+      "bullish": 7,
+      "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 5
-      },
-      {
-        "topic": "affordable housing",
-        "count": 2
+        "count": 3
       },
       {
         "topic": "philanthropy",
+        "count": 3
+      },
+      {
+        "topic": "infrastructure development",
         "count": 2
       },
       {
-        "topic": "media-coverage",
-        "count": 1
+        "topic": "land prices",
+        "count": 2
       },
       {
-        "topic": "real-estate",
-        "count": 1
+        "topic": "corporate social responsibility",
+        "count": 2
       }
     ],
     "averageSentiment": "bullish"

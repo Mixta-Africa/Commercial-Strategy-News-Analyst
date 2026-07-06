@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-06T06:37:36.105Z",
+  "timestamp": "2026-07-06T11:21:52.383Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -9,25 +9,25 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 65,
+      "count": 66,
       "error": null
     },
     "googlenews": {
       "ok": true,
-      "count": 125,
+      "count": 123,
       "error": null
     },
     "rss": {
-      "total": 40,
+      "total": 41,
       "feeds": {
         "ThisDay": {
-          "ok": true,
-          "count": 2,
-          "error": null
+          "ok": false,
+          "count": 0,
+          "error": "timeout of 12000ms exceeded"
         },
         "Premium Times": {
           "ok": true,
-          "count": 0,
+          "count": 3,
           "error": null
         },
         "BusinessDay": {
@@ -79,9 +79,9 @@
     }
   },
   "counts": {
-    "raw": 253,
-    "filtered": 15,
-    "analyzed": 15,
+    "raw": 230,
+    "filtered": 8,
+    "analyzed": 8,
     "aiFallbacks": 0
   },
   "synthesis": {
@@ -92,7 +92,7 @@
     "sent": true
   },
   "warnings": [
-    "Sources down: RSS Estate Intel (HTTP 403)",
+    "Sources down: RSS ThisDay (timeout of 12000ms exceeded); RSS Estate Intel (HTTP 403)",
     "Note: GNews (0 articles) — known issue, excluded from down-count"
   ]
 }

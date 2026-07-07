@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-07T12:26:26.915Z",
+  "generatedAt": "2026-07-07T12:35:58.473Z",
   "summary": {
     "total": 65,
     "bySite": {
@@ -9,8 +9,8 @@
     "byLocation": {
       "Lekki": 15,
       "Ikoyi": 15,
-      "Ajah": 15,
       "Sangotedo": 15,
+      "Ajah": 15,
       "Lakowe": 1,
       "Awoyaya": 2,
       "Ibeju-Lekki": 1,
@@ -22,25 +22,6 @@
     }
   },
   "listings": [
-    {
-      "source": "PropertyPro",
-      "propertyType": "Residential",
-      "bedrooms": null,
-      "bedroomLabel": "Unspecified",
-      "location": "Lekki",
-      "corridorBucket": "Ibeju-Lekki Corridor",
-      "rawLocationText": "Pinnock Beach Estate,  Lekki",
-      "title": "Property For Sale in Pinnock Beach Estate, Lekki",
-      "priceValue": null,
-      "priceFormatted": "N/A",
-      "amenities": [
-        "Estate"
-      ],
-      "amenitiesText": "Estate",
-      "realtorName": "Not listed",
-      "listingUrl": "https://propertypro.ng/property-for-sale/in/lagos/lekki?e=Pinnock+Beach+Estate",
-      "scrapedAt": "2026-07-07T11:52:34.529Z"
-    },
     {
       "source": "PropertyPro",
       "propertyType": "Apartment / Flat",
@@ -55,12 +36,13 @@
       "amenities": [
         "Swimming Pool",
         "Gym / Fitness",
-        "Estate"
+        "Estate",
+        "Furnished"
       ],
-      "amenitiesText": "Swimming Pool, Gym / Fitness, Estate",
+      "amenitiesText": "Swimming Pool, Gym / Fitness, Estate, Furnished",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property-for-sale/flat-apartment/in/lagos/lekki/ikate/1-bedroom",
-      "scrapedAt": "2026-07-07T11:52:34.789Z"
+      "scrapedAt": "2026-07-07T12:28:44.969Z"
     },
     {
       "source": "PropertyPro",
@@ -80,7 +62,26 @@
       "amenitiesText": "Estate, Boys' Quarters",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property-for-sale/flat-apartment/in/lagos/lekki/ologolo/1-bedroom",
-      "scrapedAt": "2026-07-07T11:52:34.987Z"
+      "scrapedAt": "2026-07-07T12:28:45.146Z"
+    },
+    {
+      "source": "PropertyPro",
+      "propertyType": "Residential",
+      "bedrooms": null,
+      "bedroomLabel": "Unspecified",
+      "location": "Lekki",
+      "corridorBucket": "Ibeju-Lekki Corridor",
+      "rawLocationText": "Pinnock Beach Estate,  Lekki",
+      "title": "Property For Sale in Pinnock Beach Estate, Lekki",
+      "priceValue": null,
+      "priceFormatted": "N/A",
+      "amenities": [
+        "Estate"
+      ],
+      "amenitiesText": "Estate",
+      "realtorName": "Not listed",
+      "listingUrl": "https://propertypro.ng/property-for-sale/in/lagos/lekki?e=Pinnock+Beach+Estate",
+      "scrapedAt": "2026-07-07T12:28:45.275Z"
     },
     {
       "source": "PropertyPro",
@@ -100,7 +101,7 @@
       "amenitiesText": "Estate, Boys' Quarters",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/5-bedroom-house-for-sale-banana-island-ikoyi-lagos-9NZPV",
-      "scrapedAt": "2026-07-07T11:52:39.437Z"
+      "scrapedAt": "2026-07-07T12:28:49.025Z"
     },
     {
       "source": "PropertyPro",
@@ -120,7 +121,7 @@
       "amenitiesText": "Estate, Boys' Quarters",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/4-bedroom-house-for-sale-chevron-lekki-lagos-2LNWL",
-      "scrapedAt": "2026-07-07T11:52:39.889Z"
+      "scrapedAt": "2026-07-07T12:28:49.161Z"
     },
     {
       "source": "PropertyPro",
@@ -140,7 +141,7 @@
       "amenitiesText": "Estate, Boys' Quarters",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/house-for-sale-karaoke-estate-off-college-road-ifako-ijaiye-ifako-ogba-ogba-lagos-5PUKB",
-      "scrapedAt": "2026-07-07T11:52:39.988Z"
+      "scrapedAt": "2026-07-07T12:28:49.205Z"
     },
     {
       "source": "PropertyPro",
@@ -159,26 +160,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/5-bedroom-house-for-sale-banana-island-ikoyi-banana-island-ikoyi-lagos-9PUSE",
-      "scrapedAt": "2026-07-07T11:52:44.860Z"
-    },
-    {
-      "source": "PropertyPro",
-      "propertyType": "Apartment / Flat",
-      "bedrooms": null,
-      "bedroomLabel": "Unspecified",
-      "location": "Lekki",
-      "corridorBucket": "Ibeju-Lekki Corridor",
-      "rawLocationText": "Home \n        \n        Property for sale in Lagos  \n        \n        Property for sale in Ogba  \n        \n        House for sale in Ogba",
-      "title": "Duplex With Flats",
-      "priceValue": 290000000,
-      "priceFormatted": "NGN 290.0M",
-      "amenities": [
-        "Estate"
-      ],
-      "amenitiesText": "Estate",
-      "realtorName": "Not listed",
-      "listingUrl": "https://propertypro.ng/property/house-for-sale-off-college-road-ifako-ogba-ogba-lagos-2NCMM",
-      "scrapedAt": "2026-07-07T11:52:45.276Z"
+      "scrapedAt": "2026-07-07T12:28:52.920Z"
     },
     {
       "source": "PropertyPro",
@@ -197,7 +179,26 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/4-bedroom-house-for-sale-orchid-chevron-lekki-lagos-chevron-lekki-lagos-0NVHZ",
-      "scrapedAt": "2026-07-07T11:52:45.414Z"
+      "scrapedAt": "2026-07-07T12:28:52.990Z"
+    },
+    {
+      "source": "PropertyPro",
+      "propertyType": "Apartment / Flat",
+      "bedrooms": null,
+      "bedroomLabel": "Unspecified",
+      "location": "Lekki",
+      "corridorBucket": "Ibeju-Lekki Corridor",
+      "rawLocationText": "Home \n        \n        Property for sale in Lagos  \n        \n        Property for sale in Ogba  \n        \n        House for sale in Ogba",
+      "title": "Duplex With Flats",
+      "priceValue": 290000000,
+      "priceFormatted": "NGN 290.0M",
+      "amenities": [
+        "Estate"
+      ],
+      "amenitiesText": "Estate",
+      "realtorName": "Not listed",
+      "listingUrl": "https://propertypro.ng/property/house-for-sale-off-college-road-ifako-ogba-ogba-lagos-2NCMM",
+      "scrapedAt": "2026-07-07T12:28:53.068Z"
     },
     {
       "source": "PropertyPro",
@@ -217,7 +218,7 @@
       "amenitiesText": "Estate, Boys' Quarters",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/5-bedroom-house-for-sale-banana-island-banana-island-ikoyi-lagos-0NGUD",
-      "scrapedAt": "2026-07-07T11:52:49.675Z"
+      "scrapedAt": "2026-07-07T12:28:55.999Z"
     },
     {
       "source": "PropertyPro",
@@ -237,7 +238,7 @@
       "amenitiesText": "Estate, Boys' Quarters",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/4-bedroom-house-for-sale-chevron-tollgate-chevron-toll-gate-lekki-lagos-0PAFQ",
-      "scrapedAt": "2026-07-07T11:52:50.257Z"
+      "scrapedAt": "2026-07-07T12:28:56.065Z"
     },
     {
       "source": "PropertyPro",
@@ -256,7 +257,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/4-bedroom-house-for-sale-off-college-road-ifako-ogba-ogba-lagos-8NCJS",
-      "scrapedAt": "2026-07-07T11:52:50.673Z"
+      "scrapedAt": "2026-07-07T12:28:56.273Z"
     },
     {
       "source": "PropertyPro",
@@ -275,7 +276,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/5-bedroom-house-for-sale-banana-island-ikoyi-bourdillon-ikoyi-lagos-4PUSU",
-      "scrapedAt": "2026-07-07T11:52:55.244Z"
+      "scrapedAt": "2026-07-07T12:28:59.378Z"
     },
     {
       "source": "PropertyPro",
@@ -294,7 +295,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/4-bedroom-house-for-sale-chevron-2nd-toll-gate-chevron-lekki-lagos-4NLXA",
-      "scrapedAt": "2026-07-07T11:52:55.847Z"
+      "scrapedAt": "2026-07-07T12:28:59.687Z"
     },
     {
       "source": "PropertyPro",
@@ -313,7 +314,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/3-bedroom-house-for-sale-off-college-road-ifako-ogba-ogba-lagos-7NEYC",
-      "scrapedAt": "2026-07-07T11:52:57.440Z"
+      "scrapedAt": "2026-07-07T12:28:59.754Z"
     },
     {
       "source": "PropertyPro",
@@ -332,7 +333,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/5-bedroom-house-for-sale-banana-island-ikoyi-lagos-0PULD",
-      "scrapedAt": "2026-07-07T11:53:01.348Z"
+      "scrapedAt": "2026-07-07T12:29:02.867Z"
     },
     {
       "source": "PropertyPro",
@@ -351,7 +352,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/4-bedroom-house-for-sale-chevron-chevron-lekki-lagos-6PKHD",
-      "scrapedAt": "2026-07-07T11:53:01.912Z"
+      "scrapedAt": "2026-07-07T12:29:03.118Z"
     },
     {
       "source": "PropertyPro",
@@ -370,7 +371,26 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/4-bedroom-house-for-sale-harmony-estate-off-college-road-ogba-lagos-ifako-ogba-ogba-lagos-9NWBF",
-      "scrapedAt": "2026-07-07T11:53:03.131Z"
+      "scrapedAt": "2026-07-07T12:29:03.648Z"
+    },
+    {
+      "source": "PropertyPro",
+      "propertyType": "Land / Plot",
+      "bedrooms": null,
+      "bedroomLabel": "Unspecified",
+      "location": "Ikoyi",
+      "corridorBucket": "Ibeju-Lekki Corridor",
+      "rawLocationText": "Banana Island, Ikoyi Lagos",
+      "title": "Land",
+      "priceValue": 3500000000,
+      "priceFormatted": "NGN 3.50B",
+      "amenities": [
+        "Estate"
+      ],
+      "amenitiesText": "Estate",
+      "realtorName": "Not listed",
+      "listingUrl": "https://propertypro.ng/property/land-for-sale-banana-island-banana-island-ikoyi-lagos-7NGUA",
+      "scrapedAt": "2026-07-07T12:29:06.629Z"
     },
     {
       "source": "PropertyPro",
@@ -390,45 +410,26 @@
       "amenitiesText": "Swimming Pool, Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/5-bedroom-house-for-sale-orchid-road-chevron-lekki-chevron-lekki-lagos-0NVHJ",
-      "scrapedAt": "2026-07-07T11:53:06.611Z"
+      "scrapedAt": "2026-07-07T12:29:06.962Z"
     },
     {
       "source": "PropertyPro",
-      "propertyType": "Land / Plot",
-      "bedrooms": null,
-      "bedroomLabel": "Unspecified",
-      "location": "Ikoyi",
-      "corridorBucket": "Ibeju-Lekki Corridor",
-      "rawLocationText": "Banana Island, Ikoyi Lagos",
-      "title": "Land",
-      "priceValue": 3500000000,
-      "priceFormatted": "NGN 3.50B",
-      "amenities": [
-        "Estate"
-      ],
-      "amenitiesText": "Estate",
-      "realtorName": "Not listed",
-      "listingUrl": "https://propertypro.ng/property/land-for-sale-banana-island-banana-island-ikoyi-lagos-7NGUA",
-      "scrapedAt": "2026-07-07T11:53:07.058Z"
-    },
-    {
-      "source": "PropertyPro",
-      "propertyType": "Duplex",
-      "bedrooms": 4,
-      "bedroomLabel": "4 Bedrooms",
+      "propertyType": "Apartment / Flat",
+      "bedrooms": 2,
+      "bedroomLabel": "2 Bedrooms",
       "location": "Lekki",
       "corridorBucket": "Ibeju-Lekki Corridor",
       "rawLocationText": "Home \n        \n        Property for sale in Lagos  \n        \n        Property for sale in Ogba  \n        \n        House for sale in Ogba",
-      "title": "4 Bedroom Terraced Duplex",
-      "priceValue": 200000000,
-      "priceFormatted": "NGN 200.0M",
+      "title": "5 Units Of 2 Bedroom Flat",
+      "priceValue": 220000000,
+      "priceFormatted": "NGN 220.0M",
       "amenities": [
         "Estate"
       ],
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
-      "listingUrl": "https://propertypro.ng/property/4-bedroom-house-for-sale-off-college-road-ifako-ogba-ogba-lagos-2NCJS",
-      "scrapedAt": "2026-07-07T11:53:07.745Z"
+      "listingUrl": "https://propertypro.ng/property/house-for-sale-off-college-road-ifako-ogba-ogba-lagos-2PGPH",
+      "scrapedAt": "2026-07-07T12:29:07.141Z"
     },
     {
       "source": "PropertyPro",
@@ -448,7 +449,7 @@
       "amenitiesText": "Estate, Boys' Quarters",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/5-bedroom-house-for-sale-banana-island-ikoyi-lagos-0NZZH",
-      "scrapedAt": "2026-07-07T11:53:11.201Z"
+      "scrapedAt": "2026-07-07T12:29:10.441Z"
     },
     {
       "source": "PropertyPro",
@@ -467,7 +468,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/5-bedroom-house-for-sale-old-ikoyi-ikoyi-lagos-6MMFC",
-      "scrapedAt": "2026-07-07T11:53:15.731Z"
+      "scrapedAt": "2026-07-07T12:29:13.933Z"
     },
     {
       "source": "PropertyPro",
@@ -487,7 +488,7 @@
       "amenitiesText": "Swimming Pool, Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/5-bedroom-house-for-sale-banana-island-ikoyi-lagos-6MLVQ",
-      "scrapedAt": "2026-07-07T11:53:20.414Z"
+      "scrapedAt": "2026-07-07T12:29:17.429Z"
     },
     {
       "source": "PropertyPro",
@@ -506,7 +507,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/5-bedroom-house-for-sale-banana-island-ikoyi-lagos-5PULC",
-      "scrapedAt": "2026-07-07T11:53:25.324Z"
+      "scrapedAt": "2026-07-07T12:29:21.728Z"
     },
     {
       "source": "PropertyPro",
@@ -525,7 +526,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/house-for-sale-banana-island-ikoyi-lagos-3NKAZ",
-      "scrapedAt": "2026-07-07T11:53:31.905Z"
+      "scrapedAt": "2026-07-07T12:29:25.787Z"
     },
     {
       "source": "PropertyPro",
@@ -544,7 +545,26 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/4-bedroom-house-for-sale-banana-island-banana-island-ikoyi-lagos-4PHHW",
-      "scrapedAt": "2026-07-07T11:53:36.681Z"
+      "scrapedAt": "2026-07-07T12:29:29.611Z"
+    },
+    {
+      "source": "PropertyPro",
+      "propertyType": "Land / Plot",
+      "bedrooms": null,
+      "bedroomLabel": "Unspecified",
+      "location": "Ikoyi",
+      "corridorBucket": "Ibeju-Lekki Corridor",
+      "rawLocationText": "Banana Island, Ikoyi Lagos",
+      "title": "Land Measuring 500sqm",
+      "priceValue": 1900000000,
+      "priceFormatted": "NGN 1.90B",
+      "amenities": [
+        "Estate"
+      ],
+      "amenitiesText": "Estate",
+      "realtorName": "Not listed",
+      "listingUrl": "https://propertypro.ng/property/land-for-sale-banana-island-ikoyi-lagos-4NFUX",
+      "scrapedAt": "2026-07-07T12:29:33.173Z"
     },
     {
       "source": "PropertyPro",
@@ -563,26 +583,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/land-for-sale-banana-island-ikoyi-lagos-0NZFS",
-      "scrapedAt": "2026-07-07T11:53:41.680Z"
-    },
-    {
-      "source": "PropertyPro",
-      "propertyType": "Land / Plot",
-      "bedrooms": null,
-      "bedroomLabel": "Unspecified",
-      "location": "Ikoyi",
-      "corridorBucket": "Ibeju-Lekki Corridor",
-      "rawLocationText": "Banana Island, Ikoyi Lagos",
-      "title": "852sqm Of Land",
-      "priceValue": 4300000000,
-      "priceFormatted": "NGN 4.30B",
-      "amenities": [
-        "Estate"
-      ],
-      "amenitiesText": "Estate",
-      "realtorName": "Not listed",
-      "listingUrl": "https://propertypro.ng/property/land-for-sale-banana-island-ikoyi-lagos-2NUJL",
-      "scrapedAt": "2026-07-07T11:53:45.903Z"
+      "scrapedAt": "2026-07-07T12:29:36.203Z"
     },
     {
       "source": "PropertyPro",
@@ -601,7 +602,26 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/land-for-sale-osborne-road-ikoyi-lagos-3NXDM",
-      "scrapedAt": "2026-07-07T11:53:50.039Z"
+      "scrapedAt": "2026-07-07T12:29:39.706Z"
+    },
+    {
+      "source": "PropertyPro",
+      "propertyType": "Apartment / Flat",
+      "bedrooms": 1,
+      "bedroomLabel": "1 Bedroom",
+      "location": "Sangotedo",
+      "corridorBucket": "Ibeju-Lekki Corridor",
+      "rawLocationText": "Home \n        \n        Property for sale in Lagos  \n        \n        Property for sale in Sangotedo  \n        \n        Flat Apartment for sale in Sangotedo  \n        \n        Mini Flat for sale in Sangotedo  \n        \n        1 Bedrooms Mini Flat for sale in Sangotedo",
+      "title": "1 Bedroom Mini Flat For Sale in Sangotedo, Lagos, Nigeria.",
+      "priceValue": null,
+      "priceFormatted": "N/A",
+      "amenities": [
+        "Estate"
+      ],
+      "amenitiesText": "Estate",
+      "realtorName": "Not listed",
+      "listingUrl": "https://propertypro.ng/property-for-sale/flat-apartment/mini-flat/in/lagos/sangotedo/1-bedroom",
+      "scrapedAt": "2026-07-07T12:31:08.275Z"
     },
     {
       "source": "PropertyPro",
@@ -621,26 +641,7 @@
       "amenitiesText": "Estate, Furnished",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property-for-sale/flat-apartment/mini-flat/in/lagos/ajah/1-bedroom",
-      "scrapedAt": "2026-07-07T11:56:03.453Z"
-    },
-    {
-      "source": "PropertyPro",
-      "propertyType": "Apartment / Flat",
-      "bedrooms": 1,
-      "bedroomLabel": "1 Bedroom",
-      "location": "Sangotedo",
-      "corridorBucket": "Ibeju-Lekki Corridor",
-      "rawLocationText": "Home \n        \n        Property for sale in Lagos  \n        \n        Property for sale in Sangotedo  \n        \n        Flat Apartment for sale in Sangotedo  \n        \n        Mini Flat for sale in Sangotedo  \n        \n        1 Bedrooms Mini Flat for sale in Sangotedo",
-      "title": "1 Bedroom Mini Flat For Sale in Sangotedo, Lagos, Nigeria.",
-      "priceValue": null,
-      "priceFormatted": "N/A",
-      "amenities": [
-        "Estate"
-      ],
-      "amenitiesText": "Estate",
-      "realtorName": "Not listed",
-      "listingUrl": "https://propertypro.ng/property-for-sale/flat-apartment/mini-flat/in/lagos/sangotedo/1-bedroom",
-      "scrapedAt": "2026-07-07T11:56:06.142Z"
+      "scrapedAt": "2026-07-07T12:31:09.298Z"
     },
     {
       "source": "PropertyPro",
@@ -659,7 +660,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/1-bedroom-flat-apartment-for-sale-mobil-road-ilaje-ajah-lagos-7PMBT",
-      "scrapedAt": "2026-07-07T11:56:14.269Z"
+      "scrapedAt": "2026-07-07T12:31:17.488Z"
     },
     {
       "source": "PropertyPro",
@@ -678,7 +679,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/1-bedroom-flat-apartment-for-sale-greenbay-estate-mobil-road-ilaje-ajah-lagos-0NUWU",
-      "scrapedAt": "2026-07-07T11:56:18.290Z"
+      "scrapedAt": "2026-07-07T12:31:21.122Z"
     },
     {
       "source": "PropertyPro",
@@ -697,7 +698,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/flat-apartment-for-sale-mobil-road-ilaje-ajah-lagos-0PMPM",
-      "scrapedAt": "2026-07-07T11:56:21.572Z"
+      "scrapedAt": "2026-07-07T12:31:24.346Z"
     },
     {
       "source": "PropertyPro",
@@ -716,7 +717,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/2-bedroom-flat-apartment-for-sale-mobil-road-ilaje-ajah-lagos-1PLYL",
-      "scrapedAt": "2026-07-07T11:56:25.505Z"
+      "scrapedAt": "2026-07-07T12:31:28.299Z"
     },
     {
       "source": "PropertyPro",
@@ -735,7 +736,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/3-bedroom-flat-apartment-for-sale-mobil-road-ilaje-ajah-lagos-7PLYL",
-      "scrapedAt": "2026-07-07T11:56:29.549Z"
+      "scrapedAt": "2026-07-07T12:31:31.973Z"
     },
     {
       "source": "PropertyPro",
@@ -754,7 +755,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/1-bedroom-flat-apartment-for-sale-thomas-estate-thomas-estate-ajah-lagos-4PMLG",
-      "scrapedAt": "2026-07-07T11:56:33.113Z"
+      "scrapedAt": "2026-07-07T12:31:35.506Z"
     },
     {
       "source": "PropertyPro",
@@ -773,7 +774,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/1-bedroom-flat-apartment-for-sale-ajah-lagos-3KEFW",
-      "scrapedAt": "2026-07-07T11:56:36.568Z"
+      "scrapedAt": "2026-07-07T12:31:39.223Z"
     },
     {
       "source": "PropertyPro",
@@ -793,7 +794,7 @@
       "amenitiesText": "Estate, Boys' Quarters",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/1-bedroom-flat-apartment-for-sale-abraham-adesanya-estate-ajah-lagos-6EUJZ",
-      "scrapedAt": "2026-07-07T11:56:39.764Z"
+      "scrapedAt": "2026-07-07T12:31:43.906Z"
     },
     {
       "source": "PropertyPro",
@@ -812,7 +813,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/flat-apartment-for-sale-back-of-nnpc-before-eleko-junction-ibeju-lekki-lakowe-ajah-lagos-5EAEV",
-      "scrapedAt": "2026-07-07T11:56:46.996Z"
+      "scrapedAt": "2026-07-07T12:31:50.824Z"
     },
     {
       "source": "PropertyPro",
@@ -831,7 +832,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/flat-apartment-for-sale-badore-road-ajah-lagos-1MQPY",
-      "scrapedAt": "2026-07-07T11:56:50.379Z"
+      "scrapedAt": "2026-07-07T12:31:54.251Z"
     },
     {
       "source": "PropertyPro",
@@ -850,7 +851,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/flat-apartment-for-sale-ajah-lagos-2JSZV",
-      "scrapedAt": "2026-07-07T11:56:54.597Z"
+      "scrapedAt": "2026-07-07T12:31:57.212Z"
     },
     {
       "source": "PropertyPro",
@@ -869,7 +870,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/2-bedroom-house-for-sale-mobil-road-ilaje-ajah-lagos-8NHKZ",
-      "scrapedAt": "2026-07-07T11:57:04.169Z"
+      "scrapedAt": "2026-07-07T12:32:05.578Z"
     },
     {
       "source": "PropertyPro",
@@ -888,7 +889,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/land-for-sale-mobil-road-ilaje-ajah-lagos-0PQPW",
-      "scrapedAt": "2026-07-07T11:57:08.245Z"
+      "scrapedAt": "2026-07-07T12:32:09.292Z"
     },
     {
       "source": "PropertyPro",
@@ -907,7 +908,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/2-bedroom-flat-apartment-for-sale-sangotedo-ajah-lagos-5NJAS",
-      "scrapedAt": "2026-07-07T11:57:12.628Z"
+      "scrapedAt": "2026-07-07T12:32:13.881Z"
     },
     {
       "source": "PropertyPro",
@@ -927,7 +928,7 @@
       "amenitiesText": "Serviced, Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/2-bedroom-flat-apartment-for-sale-abraham-adesanya-ajah-lagos-8MKXR",
-      "scrapedAt": "2026-07-07T11:57:15.639Z"
+      "scrapedAt": "2026-07-07T12:32:17.414Z"
     },
     {
       "source": "PropertyPro",
@@ -946,7 +947,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/2-bedroom-flat-apartment-for-sale-inside-ajayi-apata-the-zularich-residence-c-of-o-sangotedo-ajah-lagos-4LJCH",
-      "scrapedAt": "2026-07-07T11:57:19.918Z"
+      "scrapedAt": "2026-07-07T12:32:20.663Z"
     },
     {
       "source": "PropertyPro",
@@ -967,7 +968,7 @@
       "amenitiesText": "Swimming Pool, Serviced, Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/2-bedroom-flat-apartment-for-sale-abraham-adesanya-estate-ajah-lagos-6MZGF",
-      "scrapedAt": "2026-07-07T11:57:24.132Z"
+      "scrapedAt": "2026-07-07T12:32:24.050Z"
     },
     {
       "source": "PropertyPro",
@@ -986,7 +987,26 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/3-bedroom-flat-apartment-for-sale-majek-sangotedo-ajah-lagos-9PUGW",
-      "scrapedAt": "2026-07-07T11:57:39.912Z"
+      "scrapedAt": "2026-07-07T12:32:38.812Z"
+    },
+    {
+      "source": "PropertyPro",
+      "propertyType": "Apartment / Flat",
+      "bedrooms": 3,
+      "bedroomLabel": "3 Bedrooms",
+      "location": "Sangotedo",
+      "corridorBucket": "Ibeju-Lekki Corridor",
+      "rawLocationText": "Sangotedo, Ajah Lagos",
+      "title": "3 Bedroom Flat",
+      "priceValue": 52000000,
+      "priceFormatted": "NGN 52.0M",
+      "amenities": [
+        "Estate"
+      ],
+      "amenitiesText": "Estate",
+      "realtorName": "Not listed",
+      "listingUrl": "https://propertypro.ng/property/3-bedroom-flat-apartment-for-sale-sangotedo-ajah-lagos-2JFEN",
+      "scrapedAt": "2026-07-07T12:32:49.035Z"
     },
     {
       "source": "PropertyPro",
@@ -1005,26 +1025,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/1-bedroom-flat-apartment-for-sale-sangotedo-by-aptech-ajah-lagos-sangotedo-ajah-lagos-8PTNS",
-      "scrapedAt": "2026-07-07T12:23:24.478Z"
-    },
-    {
-      "source": "PropertyPro",
-      "propertyType": "Apartment / Flat",
-      "bedrooms": 1,
-      "bedroomLabel": "1 Bedroom",
-      "location": "Sangotedo",
-      "corridorBucket": "Ibeju-Lekki Corridor",
-      "rawLocationText": "Sangotedo, Ajah Lagos",
-      "title": "Room And Parlor Apartment",
-      "priceValue": 40000000,
-      "priceFormatted": "NGN 40.0M",
-      "amenities": [
-        "Estate"
-      ],
-      "amenitiesText": "Estate",
-      "realtorName": "Not listed",
-      "listingUrl": "https://propertypro.ng/property/1-bedroom-flat-apartment-for-sale-sangotedo-ajah-lagos-5PFRX",
-      "scrapedAt": "2026-07-07T12:23:32.063Z"
+      "scrapedAt": "2026-07-07T12:33:07.171Z"
     },
     {
       "source": "PropertyPro",
@@ -1043,7 +1044,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/1-bedroom-house-for-sale-sangotedo-ajah-lagos-1PDLV",
-      "scrapedAt": "2026-07-07T12:23:37.799Z"
+      "scrapedAt": "2026-07-07T12:33:11.900Z"
     },
     {
       "source": "PropertyPro",
@@ -1062,7 +1063,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/1-bedroom-house-for-sale-sangotedo-ajah-lagos-0PDLV",
-      "scrapedAt": "2026-07-07T12:23:41.643Z"
+      "scrapedAt": "2026-07-07T12:33:15.175Z"
     },
     {
       "source": "PropertyPro",
@@ -1082,7 +1083,26 @@
       "amenitiesText": "24hr Security, Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/land-for-sale-sangotedo-ajah-lagos-3PJRU",
-      "scrapedAt": "2026-07-07T12:23:44.819Z"
+      "scrapedAt": "2026-07-07T12:33:18.817Z"
+    },
+    {
+      "source": "PropertyPro",
+      "propertyType": "Apartment / Flat",
+      "bedrooms": 1,
+      "bedroomLabel": "1 Bedroom",
+      "location": "Sangotedo",
+      "corridorBucket": "Ibeju-Lekki Corridor",
+      "rawLocationText": "Sangotedo, Ajah Lagos",
+      "title": "Room And Parlor Apartment",
+      "priceValue": 40000000,
+      "priceFormatted": "NGN 40.0M",
+      "amenities": [
+        "Estate"
+      ],
+      "amenitiesText": "Estate",
+      "realtorName": "Not listed",
+      "listingUrl": "https://propertypro.ng/property/1-bedroom-flat-apartment-for-sale-sangotedo-ajah-lagos-5PFRX",
+      "scrapedAt": "2026-07-07T12:33:22.114Z"
     },
     {
       "source": "PropertyPro",
@@ -1102,7 +1122,7 @@
       "amenitiesText": "Solar Power, Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/1-bedroom-house-for-sale-lbs-sangotedo-sangotedo-ajah-lagos-6MYNL",
-      "scrapedAt": "2026-07-07T12:23:48.175Z"
+      "scrapedAt": "2026-07-07T12:33:25.576Z"
     },
     {
       "source": "PropertyPro",
@@ -1121,7 +1141,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/land-for-sale-sangotedo-ajah-lagos-1NDGZ",
-      "scrapedAt": "2026-07-07T12:24:03.277Z"
+      "scrapedAt": "2026-07-07T12:33:38.354Z"
     },
     {
       "source": "PropertyPro",
@@ -1140,7 +1160,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/land-for-sale-sangotedo-ajah-lagos-4NTPF",
-      "scrapedAt": "2026-07-07T12:24:08.142Z"
+      "scrapedAt": "2026-07-07T12:33:41.427Z"
     },
     {
       "source": "PropertyPro",
@@ -1159,7 +1179,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/land-for-sale-sangotedo-ajah-lagos-7PGMZ",
-      "scrapedAt": "2026-07-07T12:24:11.387Z"
+      "scrapedAt": "2026-07-07T12:33:44.590Z"
     },
     {
       "source": "PropertyPro",
@@ -1178,26 +1198,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/land-for-sale-goodnews-sangotedo-ajah-lagos-5PAPM",
-      "scrapedAt": "2026-07-07T12:24:14.464Z"
-    },
-    {
-      "source": "PropertyPro",
-      "propertyType": "Land / Plot",
-      "bedrooms": null,
-      "bedroomLabel": "Unspecified",
-      "location": "Sangotedo",
-      "corridorBucket": "Ibeju-Lekki Corridor",
-      "rawLocationText": "Sangotedo, Ajah Lagos",
-      "title": "Land",
-      "priceValue": 90000000,
-      "priceFormatted": "NGN 90.0M",
-      "amenities": [
-        "Estate"
-      ],
-      "amenitiesText": "Estate",
-      "realtorName": "Not listed",
-      "listingUrl": "https://propertypro.ng/property/land-for-sale-amity-estate-sangotedo-ajah-lagos-6PMLQ",
-      "scrapedAt": "2026-07-07T12:24:17.910Z"
+      "scrapedAt": "2026-07-07T12:33:47.652Z"
     },
     {
       "source": "PropertyPro",
@@ -1216,7 +1217,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/3-bedroom-land-for-sale-elesakan-awoyaya-ajah-lagos-2PLMT",
-      "scrapedAt": "2026-07-07T12:24:49.406Z"
+      "scrapedAt": "2026-07-07T12:34:30.249Z"
     },
     {
       "source": "PropertyPro",
@@ -1235,7 +1236,7 @@
       "amenitiesText": "Estate",
       "realtorName": "Not listed",
       "listingUrl": "https://propertypro.ng/property/3-bedroom-house-for-sale-bogije-eleko-junction-ibeju-lekki-lagos-4PUEN",
-      "scrapedAt": "2026-07-07T12:25:14.396Z"
+      "scrapedAt": "2026-07-07T12:34:43.756Z"
     },
     {
       "source": "Jiji",
@@ -1257,7 +1258,7 @@
       "amenitiesText": "Good Roads, Parking, Smart Home, Fitted Kitchen",
       "realtorName": "Not listed",
       "listingUrl": "https://jiji.ng/off-lekki-epe-expressway/houses-apartments-for-sale/1bdrm-apartment-in-ajah-off-lekki-epe-expressway-for-sale-2to9tvJ13nFtRWA5MsCS73Hj.html",
-      "scrapedAt": "2026-07-07T12:26:21.946Z"
+      "scrapedAt": "2026-07-07T12:35:52.503Z"
     },
     {
       "source": "Jiji",
@@ -1274,7 +1275,7 @@
       "amenitiesText": "",
       "realtorName": "Not listed",
       "listingUrl": "https://jiji.ng/login.html",
-      "scrapedAt": "2026-07-07T12:26:25.360Z"
+      "scrapedAt": "2026-07-07T12:35:56.960Z"
     }
   ]
 }

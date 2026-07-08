@@ -522,6 +522,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-07-08",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 5,
+        "bearish": 4,
+        "bullish": 6
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 5
+        },
+        {
+          "topic": "affordable housing",
+          "count": 4
+        },
+        {
+          "topic": "rental market",
+          "count": 2
+        },
+        {
+          "topic": "housing development",
+          "count": 2
+        },
+        {
+          "topic": "security",
+          "count": 1
+        }
+      ]
     }
   ]
 }

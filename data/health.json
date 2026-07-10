@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-09T10:50:43.747Z",
+  "timestamp": "2026-07-10T10:13:53.830Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -9,46 +9,46 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 69,
+      "count": 68,
       "error": null
     },
     "googlenews": {
       "ok": true,
-      "count": 126,
+      "count": 124,
       "error": null
     },
     "rss": {
-      "total": 39,
+      "total": 43,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 4,
+          "count": 5,
           "error": null
         },
         "Premium Times": {
           "ok": true,
-          "count": 0,
+          "count": 2,
           "error": null
         },
         "BusinessDay": {
           "ok": true,
-          "count": 1,
+          "count": 0,
           "error": null
         },
         "Nairametrics": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "The Punch (Business)": {
-          "ok": true,
+          "ok": false,
           "count": 0,
-          "error": null
+          "error": "HTTP 403"
         },
         "Estate Intel": {
           "ok": false,
@@ -79,20 +79,20 @@
     }
   },
   "counts": {
-    "raw": 260,
-    "filtered": 15,
-    "analyzed": 15,
+    "raw": 235,
+    "filtered": 7,
+    "analyzed": 7,
     "aiFallbacks": 0
   },
   "synthesis": {
     "ok": true,
-    "themes": 5
+    "themes": 3
   },
   "email": {
     "sent": true
   },
   "warnings": [
-    "Sources down: RSS Estate Intel (HTTP 403)",
+    "Sources down: RSS The Punch (Business) (HTTP 403); RSS Estate Intel (HTTP 403)",
     "Note: GNews (0 articles) — known issue, excluded from down-count"
   ]
 }

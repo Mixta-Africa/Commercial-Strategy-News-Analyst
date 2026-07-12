@@ -649,6 +649,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-07-12",
+      "articleCount": 11,
+      "sentimentBreakdown": {
+        "neutral": 3,
+        "bullish": 5,
+        "bearish": 3
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 5
+        },
+        {
+          "topic": "security",
+          "count": 2
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "domestic workers",
+          "count": 1
+        },
+        {
+          "topic": "unregulated workforce",
+          "count": 1
+        }
+      ]
     }
   ]
 }

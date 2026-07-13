@@ -1,18 +1,18 @@
 {
   "7day": {
-    "articleCount": 11,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 3,
-      "bullish": 5,
-      "bearish": 3
+      "bullish": 11,
+      "bearish": 3,
+      "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 5
+        "count": 3
       },
       {
-        "topic": "security",
+        "topic": "housing deficit",
         "count": 2
       },
       {
@@ -20,30 +20,30 @@
         "count": 2
       },
       {
-        "topic": "domestic workers",
+        "topic": "facilities management",
         "count": 1
       },
       {
-        "topic": "unregulated workforce",
+        "topic": "property value enhancement",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 11,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 3,
-      "bullish": 5,
-      "bearish": 3
+      "bullish": 11,
+      "bearish": 3,
+      "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 5
+        "count": 3
       },
       {
-        "topic": "security",
+        "topic": "housing deficit",
         "count": 2
       },
       {
@@ -51,30 +51,30 @@
         "count": 2
       },
       {
-        "topic": "domestic workers",
+        "topic": "facilities management",
         "count": 1
       },
       {
-        "topic": "unregulated workforce",
+        "topic": "property value enhancement",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 11,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 3,
-      "bullish": 5,
-      "bearish": 3
+      "bullish": 11,
+      "bearish": 3,
+      "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 5
+        "count": 3
       },
       {
-        "topic": "security",
+        "topic": "housing deficit",
         "count": 2
       },
       {
@@ -82,14 +82,14 @@
         "count": 2
       },
       {
-        "topic": "domestic workers",
+        "topic": "facilities management",
         "count": 1
       },
       {
-        "topic": "unregulated workforce",
+        "topic": "property value enhancement",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   }
 }

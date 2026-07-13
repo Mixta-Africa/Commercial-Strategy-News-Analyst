@@ -684,32 +684,22 @@
     },
     {
       "date": "2026-07-13",
-      "articleCount": 15,
+      "articleCount": 1,
       "sentimentBreakdown": {
-        "bullish": 11,
-        "bearish": 3,
-        "neutral": 1
+        "bullish": 1
       },
       "averageSentiment": "bullish",
       "topTopics": [
         {
-          "topic": "Lagos real estate",
-          "count": 3
-        },
-        {
-          "topic": "housing deficit",
-          "count": 2
-        },
-        {
           "topic": "affordable housing",
-          "count": 2
-        },
-        {
-          "topic": "facilities management",
           "count": 1
         },
         {
-          "topic": "property value enhancement",
+          "topic": "policy reforms",
+          "count": 1
+        },
+        {
+          "topic": "public-private partnership",
           "count": 1
         }
       ]

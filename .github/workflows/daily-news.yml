@@ -204,6 +204,21 @@ jobs:
         continue-on-error: true
 
       # ---------------------------------------------------------------
+      # WRITE AI CONFIG — bakes provider keys into data/ai-config.json
+      # so the dashboard can call Groq/Cerebras/SambaNova at runtime for
+      # the theme evolution narrative feature.
+      # ---------------------------------------------------------------
+      - name: Write AI config for dashboard
+        run: |
+          cat > data/ai-config.json << EOF
+          {
+            "groq":      { "key": "${{ secrets.GROQ_API_KEY }}",      "model": "llama-3.1-8b-instant",           "url": "https://api.groq.com/openai/v1/chat/completions" },
+            "cerebras":  { "key": "${{ secrets.CEREBRAS_API_KEY }}",  "model": "llama3.1-8b",                    "url": "https://api.cerebras.ai/v1/chat/completions" },
+            "sambanova": { "key": "${{ secrets.SAMBANOVA_API_KEY }}", "model": "Meta-Llama-3.1-8B-Instruct",    "url": "https://api.sambanova.ai/v1/chat/completions" }
+          }
+          EOF
+
+      # ---------------------------------------------------------------
       # COMMIT DASHBOARD DATA BACK TO REPO (for GitHub Pages)
       #
       # This step's job is to land THIS run's freshly generated data/ files

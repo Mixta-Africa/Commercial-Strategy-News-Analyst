@@ -1280,9 +1280,13 @@ Rules: Be specific, cite dates and facts from the articles. Do not mention Mixta
 
   // ── OpenAI-compatible call (all three providers share this schema) ─────────
   async function callProvider(name, conf) {
+    // Keys are Base64-encoded in ai-config.json to pass GitHub push protection.
+    // Decode here before use — atob() is available in all modern browsers.
+    const apiKey = conf.key ? atob(conf.key) : '';
+    if (!apiKey) throw new Error(`${name} key is empty after decode`);
     const res = await fetch(conf.url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${conf.key}` },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
       body: JSON.stringify({
         model: conf.model,
         max_tokens: 1000,

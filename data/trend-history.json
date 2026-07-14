@@ -703,6 +703,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-14",
+      "articleCount": 9,
+      "sentimentBreakdown": {
+        "bearish": 3,
+        "bullish": 5,
+        "neutral": 1
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 3
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 3
+        },
+        {
+          "topic": "rental-appreciation",
+          "count": 1
+        },
+        {
+          "topic": "housing-shortage",
+          "count": 1
+        },
+        {
+          "topic": "decentralized-housing-provision",
+          "count": 1
+        }
+      ]
     }
   ]
 }

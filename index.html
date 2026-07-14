@@ -311,6 +311,29 @@ button, select, input { font-family: inherit; }
 .detail-article a:hover { color: var(--maroon); }
 .art-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); text-transform: uppercase; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; letter-spacing: 0.05em; }
 
+/* ── Theme Evolution Panel ─────────────────────────────────────────────── */
+.evo-section-label { font-family: var(--font-ui); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: var(--maroon); margin: 72px 0 0; padding-bottom: 16px; border-bottom: 2px solid var(--maroon); display: flex; justify-content: space-between; align-items: baseline; }
+.evo-narrative { background: var(--paper-card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 32px 40px; margin-top: 24px; max-width: 860px; }
+.evo-narrative p { font-family: var(--font-body); font-size: 16px; color: var(--ink-soft); line-height: 1.8; margin: 0; }
+.evo-narrative.loading p { color: var(--ink-faint); font-style: italic; }
+.evo-timeline { margin-top: 24px; display: flex; flex-direction: column; gap: 0; }
+.evo-timeline-day { display: flex; gap: 24px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid var(--rule); }
+.evo-timeline-day:last-child { border-bottom: none; }
+.evo-day-date { font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); min-width: 80px; padding-top: 2px; }
+.evo-day-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--maroon); margin-top: 5px; flex-shrink: 0; }
+.evo-day-content { flex: 1; }
+.evo-day-count { font-family: var(--font-ui); font-size: 12px; font-weight: 700; color: var(--maroon); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.evo-day-articles { display: flex; flex-direction: column; gap: 8px; }
+.evo-article-row { background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: 12px 16px; }
+.evo-article-row a { font-family: var(--font-headline); font-size: 15px; font-weight: 600; color: var(--ink); text-decoration: none; display: block; margin-bottom: 6px; line-height: 1.4; }
+.evo-article-row a:hover { color: var(--maroon); }
+.evo-sentiment-bar { display: flex; gap: 16px; margin-top: 16px; align-items: center; }
+.evo-sent-seg { height: 6px; border-radius: 3px; flex: 1; }
+.evo-sent-seg.bullish { background: var(--bull); }
+.evo-sent-seg.bearish { background: var(--bear); }
+.evo-sent-seg.neutral { background: var(--rule); }
+.evo-empty { font-family: var(--font-ui); font-size: 13px; color: var(--ink-faint); font-style: italic; padding: 16px 0; }
+
 /* ════════════════════════════════════════════════════════════════════════
    HELP WIDGET
    ════════════════════════════════════════════════════════════════════════ */
@@ -1136,6 +1159,181 @@ function slugify(s) {
     .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+// ── Theme evolution helpers ───────────────────────────────────────────────────
+
+function _themeMatchScore(label, article) {
+  // Returns a score 0-3 indicating how strongly an article matches a theme label.
+  const labelLower = label.toLowerCase();
+  const labelWords = labelLower.split(/[\s\-\/]+/).filter(w => w.length > 3);
+  const labelSlug = slugify(label);
+  let score = 0;
+
+  // 1. Check trending_topics (best signal)
+  const topics = (article.trending_topics || '').toLowerCase().replace(/,/g, ' ');
+  const topicWords = topics.split(/[\s\-\_]+/).filter(Boolean);
+  const labelWordSet = new Set(labelWords);
+  const topicOverlap = topicWords.filter(w => labelWordSet.has(w) || labelLower.includes(w)).length;
+  if (topicOverlap >= 2) score += 3;
+  else if (topicOverlap === 1) score += 1;
+
+  // 2. Check category
+  const cat = (article.category || '').toLowerCase().replace(/[\-\_]/g, ' ');
+  if (labelWords.some(w => cat.includes(w))) score += 1;
+
+  // 3. Check title + summary
+  const text = ((article.title || '') + ' ' + (article.summary || '')).toLowerCase();
+  const textMatches = labelWords.filter(w => text.includes(w)).length;
+  if (textMatches >= 3) score += 2;
+  else if (textMatches >= 2) score += 1;
+
+  return score;
+}
+
+function _getThemeArticles(label) {
+  // Match articles from the full archive to this theme label.
+  const all = Array.isArray(articlesCache) ? articlesCache : [];
+  return all
+    .map(a => ({ article: a, score: _themeMatchScore(label, a) }))
+    .filter(x => x.score >= 2)
+    .sort((a, b) => {
+      // Sort by date descending, then score
+      const da = new Date(a.article.publishedAt || a.article.addedAt || 0);
+      const db = new Date(b.article.publishedAt || b.article.addedAt || 0);
+      return db - da || b.score - a.score;
+    })
+    .map(x => x.article);
+}
+
+function _groupByDay(articles) {
+  const groups = {};
+  for (const a of articles) {
+    const d = new Date(a.publishedAt || a.addedAt || 0);
+    const key = isNaN(d) ? 'Unknown' : d.toISOString().slice(0, 10);
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(a);
+  }
+  return Object.entries(groups)
+    .sort(([a], [b]) => (a < b ? 1 : -1)); // newest first
+}
+
+function _renderSentimentBar(articles) {
+  const total = articles.length;
+  if (!total) return '';
+  const bull = articles.filter(a => a.sentiment === 'bullish').length;
+  const bear = articles.filter(a => a.sentiment === 'bearish').length;
+  const neut = total - bull - bear;
+  const pct = n => Math.round((n / total) * 100);
+  return `
+    <div class="evo-sentiment-bar" title="Sentiment: ${pct(bull)}% bullish, ${pct(bear)}% bearish, ${pct(neut)}% neutral">
+      ${bull ? `<div class="evo-sent-seg bullish" style="flex:${bull}"></div>` : ''}
+      ${neut ? `<div class="evo-sent-seg neutral" style="flex:${neut}"></div>` : ''}
+      ${bear ? `<div class="evo-sent-seg bearish" style="flex:${bear}"></div>` : ''}
+    </div>
+    <span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);">
+      ${bull} bullish · ${neut} neutral · ${bear} bearish
+    </span>`;
+}
+
+async function _generateThemeNarrative(label, theme, allArticles) {
+  // Three-provider fallback: Groq → Cerebras → SambaNova
+  const narrativeEl = document.getElementById('theme-evo-narrative');
+  if (!narrativeEl) return;
+
+  // ── Build prompt ──────────────────────────────────────────────────────────
+  const snippets = allArticles.slice(0, 12).map((a, i) => {
+    const d = new Date(a.publishedAt || a.addedAt || 0);
+    const date = isNaN(d) ? 'Unknown date' : d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+    return `[${i+1}] ${date} — ${a.title}\n${a.summary ? a.summary.slice(0, 200) : ''}`;
+  }).join('\n\n');
+
+  const todayAnalysis = theme ? [
+    theme.what_happened ? `Latest signal: ${theme.what_happened}` : '',
+    theme.why_it_matters_to_mixta ? `Strategic context: ${theme.why_it_matters_to_mixta}` : ''
+  ].filter(Boolean).join(' ') : '';
+
+  const prompt = `You are a commercial intelligence analyst for Mixta Africa, a Nigerian real estate developer focused on the Ibeju-Lekki corridor (projects: Lakowe Crossings, Lakowe Annexe, Lagos New Town).
+
+Analyse how the theme "${label}" has evolved based on these ${allArticles.length} articles from the news archive (most recent first):
+
+${snippets}
+
+${todayAnalysis ? `Today's briefing analysis: ${todayAnalysis}` : ''}
+
+Write a concise 3-paragraph evolution narrative:
+1. WHERE IT STARTED: When and how this theme first appeared in the news cycle
+2. HOW IT DEVELOPED: Key shifts, new angles, or escalations over time
+3. WHERE IT STANDS NOW & MIXTA IMPLICATION: Current state and one specific, actionable implication for Mixta Africa's commercial strategy
+
+Rules: Be specific, cite dates and facts from the articles. Do not mention Mixta Africa in paragraphs 1-2. Keep each paragraph to 3-4 sentences. Use active tense.`;
+
+  // ── Load provider config written by GitHub Actions ────────────────────────
+  let cfg = null;
+  try {
+    const r = await fetch(`${DATA_BASE}/ai-config.json?t=${Date.now()}`);
+    if (r.ok) cfg = await r.json();
+  } catch(e) { /* config unavailable */ }
+
+  if (!cfg) {
+    narrativeEl.innerHTML = '<span style="color:var(--ink-faint);font-style:italic">AI narrative unavailable — provider config not found. Run the pipeline once to generate it.</span>';
+    return;
+  }
+
+  // ── OpenAI-compatible call (all three providers share this schema) ─────────
+  async function callProvider(name, conf) {
+    const res = await fetch(conf.url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${conf.key}` },
+      body: JSON.stringify({
+        model: conf.model,
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(`${name} ${res.status}: ${err?.error?.message || res.statusText}`);
+    }
+    const data = await res.json();
+    const text = data?.choices?.[0]?.message?.content?.trim();
+    if (!text) throw new Error(`${name} returned empty response`);
+    return text;
+  }
+
+  // ── Fallback chain: Groq → Cerebras → SambaNova ───────────────────────────
+  const providers = [
+    { name: 'Groq',      conf: cfg.groq      },
+    { name: 'Cerebras',  conf: cfg.cerebras  },
+    { name: 'SambaNova', conf: cfg.sambanova },
+  ].filter(p => p.conf?.key);
+
+  let text = null;
+  let lastError = null;
+
+  for (const { name, conf } of providers) {
+    try {
+      narrativeEl.innerHTML = `<span style="color:var(--ink-faint);font-style:italic">Generating via ${name}…</span>`;
+      text = await callProvider(name, conf);
+      break;
+    } catch(e) {
+      lastError = e;
+      console.warn(`[ThemeNarrative] ${name} failed:`, e.message);
+    }
+  }
+
+  if (text) {
+    narrativeEl.innerHTML = text
+      .split(/\n\n+/)
+      .filter(p => p.trim())
+      .map(p => `<p>${esc(p.trim())}</p>`)
+      .join('');
+    narrativeEl.closest('.evo-narrative')?.classList.remove('loading');
+  } else {
+    narrativeEl.innerHTML = `<span style="color:var(--ink-faint);font-style:italic">All providers unavailable: ${esc(lastError?.message || 'unknown error')}. Try again later.</span>`;
+  }
+}
+
+// ── Main openThemeDetail ──────────────────────────────────────────────────────
+
 function openThemeDetail(label, originView) {
   const themes = loadedBriefingCache?.themes || [];
   const slug = slugify(label);
@@ -1144,63 +1342,102 @@ function openThemeDetail(label, originView) {
     || themes.find(t => { const ts = slugify(t.label); return ts.includes(slug) || slug.includes(ts); });
 
   const el = document.getElementById('themeDetailBody');
+  const back = `<button class="detail-back" onclick="returnFromDetail('${esc(originView || 'briefing')}')")>&#8592; Back</button>`;
 
-  if (!theme) {
-    el.innerHTML = `
-      <button class="detail-back" onclick="returnFromDetail('${esc(originView || 'briefing')}')">&#8592; Back to Overview</button>
-      <div class="detail-hero">
-        <h1>${esc(label)}</h1>
-        <p style="color:var(--ink-soft);font-size:16px;margin-top:16px;font-style:italic;">This narrative is not in today's active briefing.</p>
-      </div>`;
-  } else {
-    const articles = Array.isArray(theme.sourceArticles) ? theme.sourceArticles : [];
-    const nov = (theme.novelty || 'established').toLowerCase();
+  // ── Find all matching articles from archive ───────────────────────────────
+  const allMatchedArticles = _getThemeArticles(label);
 
-    let html = `
-      <button class="detail-back" onclick="returnFromDetail('${esc(originView || 'briefing')}')">&#8592; Back to Overview</button>
-      <div class="detail-hero">
-        <h1>${esc(theme.label)}</h1>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <span class="meta-pill ${nov === 'new' ? 'new' : ''}">${esc(nov)}</span>
-          <span class="meta-pill">Confidence: ${esc(theme.confidence || '—')}</span>
-          ${theme.timesSeen != null ? `<span class="meta-pill">Momentum: ${esc(String(theme.timesSeen))} Days</span>` : ''}
-        </div>`;
+  // ── Also include today's sourceArticles if available ─────────────────────
+  const todayArticles = Array.isArray(theme?.sourceArticles) ? theme.sourceArticles : [];
+  const todayUrls = new Set(todayArticles.map(a => a.url).filter(Boolean));
+  const archiveExtras = allMatchedArticles.filter(a => !todayUrls.has(a.url));
+  const combined = [...todayArticles, ...archiveExtras];
 
-    if (theme.what_happened) {
-      html += `<div class="detail-block"><h3>Market Event</h3><p>${esc(theme.what_happened)}</p></div>`;
-    }
-    if (theme.why_it_matters_to_mixta) {
-      html += `<div class="detail-block"><h3>Strategic Implication</h3><p>${esc(theme.why_it_matters_to_mixta)}</p></div>`;
-    }
-    if (theme.recommendation) {
-      html += `<div class="detail-reco"><h3>Executive Recommendation</h3><p>"${esc(theme.recommendation)}"</p></div>`;
-    }
+  // ── Build the header ──────────────────────────────────────────────────────
+  const nov = (theme?.novelty || 'established').toLowerCase();
+  const firstSeen = combined.length ? (() => {
+    const dates = combined.map(a => new Date(a.publishedAt || a.addedAt || 0)).filter(d => !isNaN(d));
+    if (!dates.length) return null;
+    return new Date(Math.min(...dates)).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+  })() : null;
+
+  let html = back;
+  html += `<div class="detail-hero">
+    <h1>${esc(label)}</h1>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;">
+      ${theme ? `<span class="meta-pill ${nov === 'new' ? 'new' : ''}">${esc(nov)}</span>` : ''}
+      ${theme?.confidence ? `<span class="meta-pill">Confidence: ${esc(theme.confidence)}</span>` : ''}
+      ${theme?.timesSeen != null ? `<span class="meta-pill">Momentum: ${esc(String(theme.timesSeen))} Days</span>` : ''}
+      <span class="meta-pill">${combined.length} Article${combined.length !== 1 ? 's' : ''} Found</span>
+      ${firstSeen ? `<span class="meta-pill">First Seen: ${esc(firstSeen)}</span>` : ''}
+    </div>
+  </div>`;
+
+  // ── Today's briefing analysis ─────────────────────────────────────────────
+  if (theme?.what_happened || theme?.why_it_matters_to_mixta) {
+    html += `<div class="detail-block"><h3>Today's Signal</h3>`;
+    if (theme.what_happened) html += `<p style="margin-bottom:16px">${esc(theme.what_happened)}</p>`;
+    if (theme.why_it_matters_to_mixta) html += `<p style="margin-top:0"><strong style="color:var(--maroon)">Mixta implication:</strong> ${esc(theme.why_it_matters_to_mixta)}</p>`;
     html += `</div>`;
-
-    html += `<div class="detail-articles-label"><span>Source References</span><span>${articles.length}</span></div>`;
-    if (articles.length) {
-      html += articles.map(a => {
-        const sent = (a.sentiment || 'neutral').toLowerCase();
-        return `
-          <div class="detail-article">
-            <a href="${esc(a.url || '#')}" target="_blank" rel="noopener noreferrer">${esc(a.title || 'Untitled')}</a>
-            <div class="art-meta">
-              <span style="font-weight:700; color:var(--maroon);">${esc(a.source || 'Unknown')}</span>
-              <span class="sentiment-pill ${sent}">${esc(sent)}</span>
-              ${a.publishedAt ? `<span>${new Date(a.publishedAt).toLocaleDateString()}</span>` : ''}
-            </div>
-          </div>`;
-      }).join('');
-    } else {
-      html += `<div class="empty">No source articles linked to this narrative.</div>`;
-    }
-    el.innerHTML = html;
+  } else if (!theme) {
+    html += `<div class="detail-block"><p style="color:var(--ink-faint);font-style:italic;">This theme is not in today's active briefing — showing full historical record below.</p></div>`;
   }
 
+  if (theme?.recommendation) {
+    html += `<div class="detail-reco"><h3>Executive Recommendation</h3><p>"${esc(theme.recommendation)}"</p></div>`;
+  }
+
+  // ── AI Evolution Narrative ─────────────────────────────────────────────────
+  if (combined.length > 0) {
+    html += `<div class="evo-section-label"><span>How This Theme Has Evolved</span><span style="font-size:11px;color:var(--ink-faint)">AI Analysis</span></div>
+    <div class="evo-narrative loading">
+      <p id="theme-evo-narrative" style="color:var(--ink-faint);font-style:italic;">Analysing ${combined.length} articles across ${_groupByDay(combined).length} days...</p>
+    </div>`;
+  }
+
+  // ── Timeline ──────────────────────────────────────────────────────────────
+  const grouped = _groupByDay(combined);
+  if (grouped.length > 0) {
+    html += `<div class="evo-section-label"><span>Article Timeline</span><span>${combined.length} total</span></div>`;
+    html += `<div class="evo-timeline">`;
+    for (const [dateKey, dayArticles] of grouped) {
+      const dateLabel = dateKey === 'Unknown' ? 'Unknown Date' :
+        new Date(dateKey).toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
+      html += `<div class="evo-timeline-day">
+        <div class="evo-day-date">${esc(dateLabel)}</div>
+        <div class="evo-day-dot"></div>
+        <div class="evo-day-content">
+          <div class="evo-day-count">${dayArticles.length} article${dayArticles.length > 1 ? 's' : ''}</div>
+          <div class="evo-day-articles">`;
+      for (const a of dayArticles) {
+        const sent = (a.sentiment || 'neutral').toLowerCase();
+        html += `<div class="evo-article-row">
+          <a href="${esc(a.url || '#')}" target="_blank" rel="noopener noreferrer">${esc(a.title || 'Untitled')}</a>
+          <div class="art-meta">
+            <span style="font-weight:700;color:var(--maroon)">${esc(a.source || 'Unknown')}</span>
+            <span class="sentiment-pill ${sent}">${esc(sent)}</span>
+            ${a.summary ? `<span style="text-transform:none;font-size:11px;color:var(--ink-faint);letter-spacing:0">${esc(a.summary.slice(0, 120))}…</span>` : ''}
+          </div>
+        </div>`;
+      }
+      html += `</div>${_renderSentimentBar(dayArticles)}</div></div>`;
+    }
+    html += `</div>`;
+  } else {
+    html += `<div class="evo-section-label"><span>Article Timeline</span></div>
+    <div class="evo-empty">No articles found in the archive matching this theme. The archive grows with each daily pipeline run.</div>`;
+  }
+
+  el.innerHTML = html;
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('theme-detail').classList.add('active');
   document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Kick off AI narrative generation asynchronously after render
+  if (combined.length > 0) {
+    _generateThemeNarrative(label, theme, combined);
+  }
 }
 
 function returnFromDetail(originView) {

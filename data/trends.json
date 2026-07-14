@@ -2,64 +2,64 @@
   "7day": {
     "articleCount": 1,
     "sentimentBreakdown": {
-      "bullish": 1
+      "neutral": 1
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
+        "topic": "climate-change",
         "count": 1
       },
       {
-        "topic": "policy reforms",
+        "topic": "real-estate-market",
         "count": 1
       },
       {
-        "topic": "public-private partnership",
+        "topic": "global-trends",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "30day": {
     "articleCount": 1,
     "sentimentBreakdown": {
-      "bullish": 1
+      "neutral": 1
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
+        "topic": "climate-change",
         "count": 1
       },
       {
-        "topic": "policy reforms",
+        "topic": "real-estate-market",
         "count": 1
       },
       {
-        "topic": "public-private partnership",
+        "topic": "global-trends",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "90day": {
     "articleCount": 1,
     "sentimentBreakdown": {
-      "bullish": 1
+      "neutral": 1
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
+        "topic": "climate-change",
         "count": 1
       },
       {
-        "topic": "policy reforms",
+        "topic": "real-estate-market",
         "count": 1
       },
       {
-        "topic": "public-private partnership",
+        "topic": "global-trends",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   }
 }

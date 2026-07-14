@@ -703,6 +703,28 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-14",
+      "articleCount": 1,
+      "sentimentBreakdown": {
+        "neutral": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "climate-change",
+          "count": 1
+        },
+        {
+          "topic": "real-estate-market",
+          "count": 1
+        },
+        {
+          "topic": "global-trends",
+          "count": 1
+        }
+      ]
     }
   ]
 }

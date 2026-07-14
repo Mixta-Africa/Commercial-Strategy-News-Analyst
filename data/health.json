@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-14T10:15:44.406Z",
+  "timestamp": "2026-07-14T12:51:43.359Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -9,20 +9,20 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 67,
+      "count": 68,
       "error": null
     },
     "googlenews": {
       "ok": true,
-      "count": 128,
+      "count": 124,
       "error": null
     },
     "rss": {
-      "total": 35,
+      "total": 36,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "Premium Times": {
@@ -79,21 +79,22 @@
     }
   },
   "counts": {
-    "raw": 252,
-    "filtered": 1,
-    "analyzed": 1,
+    "raw": 228,
+    "filtered": 0,
+    "analyzed": 0,
     "aiFallbacks": 0
   },
   "synthesis": {
-    "ok": true,
-    "themes": 1
+    "ok": false,
+    "themes": 0
   },
   "email": {
-    "sent": true
+    "sent": false
   },
-  "pipelineGate": false,
+  "pipelineGate": true,
   "warnings": [
     "Sources down: RSS Estate Intel (HTTP 403)",
-    "Note: GNews (0 articles) — known issue, excluded from down-count"
+    "Note: GNews (0 articles) — known issue, excluded from down-count",
+    "Note: No fresh articles in the 48-hour window — pipeline halted cleanly. No briefing generated."
   ]
 }

@@ -1,0 +1,17 @@
+{
+  "groq": {
+    "key": "Z3NrX2dSdVluWDdnMU9SZGZsRm81UGY3V0dkeWIzRllKd3o0VjA3TkhEMVpuMkJhRmMyVUlnOGEsZ3NrX0NsQ25ycDlYcDZqMzBkVGg1ZFZ0V0dkeWIzRllZRE9XWVdCMFNTSXg5TU1jWGdVeU9jdDQsZ3NrXzN1OVhYS21LVGdMWmdzWjZrb0ltV0dkeWIzRllLRVNtUTVncEJKMFhGY2VGRlRjTFptRGs=",
+    "model": "llama-3.1-8b-instant",
+    "url": "https://api.groq.com/openai/v1/chat/completions"
+  },
+  "cerebras": {
+    "key": "Y3NrLWYyODQ1dDVjdDV0NXhrYzNjZTZ3dG1qaDR2NXA4eDNkeGhoaHIyOWN2dnc5OXI5ZSxjc2stZDl5NDY2d2s2NmY5NThyeDJqeGpqcHZ5aHhyZDN3cHJrY2tldHZkaDM2cDIyMnBtLGNzay1jNDVud2tma3lwNDJ0eWU2cG1rbnI4dzN0NXlmNHRtazJla3Y4Zm40ZG1kM240bng=",
+    "model": "llama3.1-8b",
+    "url": "https://api.cerebras.ai/v1/chat/completions"
+  },
+  "sambanova": {
+    "key": "Zjg5NzZlYjgtMmVlZC00NGIyLTg5NDAtZmRmMGI4NmJhNWMyLGY3ZWU4MWUxLWE5Y2YtNGU3ZC1iMDkwLWI3MTliNjI3ZjVkYQ==",
+    "model": "Meta-Llama-3.1-8B-Instruct",
+    "url": "https://api.sambanova.ai/v1/chat/completions"
+  }
+}

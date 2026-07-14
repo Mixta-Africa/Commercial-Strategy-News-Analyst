@@ -1012,6 +1012,16 @@ function renderStatus(health) {
   pill.className = 'status-pill ' + s;
   const map = { healthy: 'Pipeline Active', degraded: 'Running Degraded', failed: 'Run Failed', unknown: 'Syncing' };
   text.textContent = map[s] || s;
+
+  // Always set briefingDate from the health timestamp so that on gate-halt days
+  // (where no new briefing.json is written) the date still reflects today's run,
+  // not yesterday's briefing. renderBriefing() will override this if a real
+  // briefing with generatedAt exists.
+  const dateEl = document.getElementById('briefingDate');
+  if (dateEl && health?.timestamp) {
+    const d = new Date(health.timestamp);
+    dateEl.textContent = d.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  }
 }
 
 function esc(s) { return (s == null ? '' : String(s)).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -1023,11 +1033,12 @@ function renderBriefing(b) {
   const dateEl = document.getElementById('briefingDate');
 
   if (!b || !b.themes || !b.themes.length) {
-    heroContainer.innerHTML = '<div class="empty">No active intelligence summary available.</div>';
+    heroContainer.innerHTML = '<div class="empty" style="padding: 32px 0; color: var(--ink-soft); font-family: var(--font-ui); font-size: 14px;">No new signals today — the market was quiet within the 48-hour window. Yesterday\'s intelligence remains current.</div>';
     if (themeFilterSelect) themeFilterSelect.innerHTML = '<option value="All">All Topics</option>';
+    // Date is already set from health.timestamp in renderStatus — do not overwrite.
     return;
   }
-  
+
   if (b.generatedAt) {
     const d = new Date(b.generatedAt);
     dateEl.textContent = d.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });

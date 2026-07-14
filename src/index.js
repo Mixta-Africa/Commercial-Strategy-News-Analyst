@@ -756,7 +756,8 @@ class NewsPipeline {
       if (filtered.length === 0) {
         console.warn('[PIPELINE GATE] Zero unique, fresh articles within the target 48-hour frame passed filtering.');
         console.warn('[PIPELINE GATE] Execution halted naturally to prevent redundant cycles or data fragmentation.');
-        health.finalize({ fatal: false }); // Change from fatal crash to a natural rest cycle
+        health.record.pipelineGate = true; // Signal to health check: this is a clean halt, not a failure
+        health.finalize({ fatal: false });
         health.persist();
         return; 
       }

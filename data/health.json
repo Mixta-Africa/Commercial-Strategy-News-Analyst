@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-07-14T08:58:55.873Z",
-  "status": "healthy",
+  "timestamp": "2026-07-14T09:02:37.115Z",
+  "status": "failed",
   "sources": {
     "gnews": {
       "ok": false,
@@ -80,19 +80,21 @@
   },
   "counts": {
     "raw": 253,
-    "filtered": 9,
-    "analyzed": 9,
+    "filtered": 0,
+    "analyzed": 0,
     "aiFallbacks": 0
   },
   "synthesis": {
-    "ok": true,
-    "themes": 3
+    "ok": false,
+    "themes": 0
   },
   "email": {
-    "sent": true
+    "sent": false
   },
   "warnings": [
     "Sources down: RSS Estate Intel (HTTP 403)",
-    "Note: GNews (0 articles) — known issue, excluded from down-count"
+    "Note: GNews (0 articles) — known issue, excluded from down-count",
+    "No articles passed real-estate filtering.",
+    "Digest email was NOT sent."
   ]
 }

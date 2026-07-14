@@ -1,92 +1,62 @@
 {
   "7day": {
-    "articleCount": 9,
+    "articleCount": 1,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "bullish": 5,
-      "neutral": 1
+      "bullish": 1
     },
     "topTopics": [
       {
         "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "Lagos real estate",
-        "count": 3
-      },
-      {
-        "topic": "rental-appreciation",
         "count": 1
       },
       {
-        "topic": "housing-shortage",
+        "topic": "policy reforms",
         "count": 1
       },
       {
-        "topic": "decentralized-housing-provision",
+        "topic": "public-private partnership",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 9,
+    "articleCount": 1,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "bullish": 5,
-      "neutral": 1
+      "bullish": 1
     },
     "topTopics": [
       {
         "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "Lagos real estate",
-        "count": 3
-      },
-      {
-        "topic": "rental-appreciation",
         "count": 1
       },
       {
-        "topic": "housing-shortage",
+        "topic": "policy reforms",
         "count": 1
       },
       {
-        "topic": "decentralized-housing-provision",
+        "topic": "public-private partnership",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 9,
+    "articleCount": 1,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "bullish": 5,
-      "neutral": 1
+      "bullish": 1
     },
     "topTopics": [
       {
         "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "Lagos real estate",
-        "count": 3
-      },
-      {
-        "topic": "rental-appreciation",
         "count": 1
       },
       {
-        "topic": "housing-shortage",
+        "topic": "policy reforms",
         "count": 1
       },
       {
-        "topic": "decentralized-housing-provision",
+        "topic": "public-private partnership",
         "count": 1
       }
     ],

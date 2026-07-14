@@ -24,6 +24,7 @@ class RunHealth {
       counts: { raw: 0, filtered: 0, analyzed: 0, aiFallbacks: 0 },
       synthesis: { ok: false, themes: 0 },
       email: { sent: false },
+      pipelineGate: false,  // true = pipeline halted cleanly (no fresh articles); not a failure
       warnings: [],
     };
 
@@ -103,6 +104,16 @@ class RunHealth {
       const realDown   = downList.filter(d => !d.includes('GNews'));
       if (realDown.length)   this.addWarning(`Sources down: ${realDown.join('; ')}`);
       if (gnewsNotes.length) this.addWarning(`Note: ${gnewsNotes.join('; ')}`);
+    }
+
+    // Pipeline gate halt: the pipeline deliberately stopped because no fresh articles
+    // existed within the 48-hour window. This is healthy behaviour — not a failure.
+    // Treat it as HEALTHY with an informational note so the dashboard doesn't show
+    // RUN FAILED on quiet news days.
+    if (this.record.pipelineGate) {
+      this.record.status = 'healthy';
+      this.addWarning('Note: No fresh articles in the 48-hour window — pipeline halted cleanly. No briefing generated.');
+      return this.record;
     }
 
     if (fatal || c.raw === 0 || c.filtered === 0 || !this.record.email.sent) {

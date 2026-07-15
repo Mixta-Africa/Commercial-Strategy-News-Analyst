@@ -1469,31 +1469,26 @@ Write a concise 3-paragraph evolution narrative:
 
 Rules: Be specific, cite dates and facts from the articles. Do not mention Mixta Africa in paragraphs 1-2. Keep each paragraph to 3-4 sentences. Use active tense.`;
 
-  // ── Load provider config written by GitHub Actions ────────────────────────
-  let cfg = null;
-  try {
-    const r = await fetch(`${DATA_BASE}/ai-config.json?t=${Date.now()}`);
-    if (r.ok) cfg = await r.json();
-  } catch(e) { /* config unavailable */ }
+  // ── Call providers via Cloudflare Worker (keys never touch the repo) ───────
+  const WORKER_URL = 'https://mixta-ai-proxy.olasunkanmitimilehintaiwo.workers.dev'; // ← replace with your actual Worker URL
 
-  if (!cfg) {
-    narrativeEl.innerHTML = '<span style="color:var(--ink-faint);font-style:italic">AI narrative unavailable — provider config not found. Run the pipeline once to generate it.</span>';
-    return;
-  }
+  const PROVIDER_MODELS = [
+    { name: 'Groq',      provider: 'groq',      model: 'llama-3.1-8b-instant'        },
+    { name: 'SambaNova', provider: 'sambanova', model: 'Meta-Llama-3.3-70B-Instruct' },
+    { name: 'Mistral',   provider: 'mistral',   model: 'mistral-small-latest'         },
+  ];
 
-  // ── OpenAI-compatible call (all three providers share this schema) ─────────
-  async function callProvider(name, conf) {
-    // Keys are Base64-encoded in ai-config.json to pass GitHub push protection.
-    // Decode here before use — atob() is available in all modern browsers.
-    const apiKey = conf.key ? atob(conf.key) : '';
-    if (!apiKey) throw new Error(`${name} key is empty after decode`);
-    const res = await fetch(conf.url, {
+  async function callProvider(name, provider, model) {
+    const res = await fetch(WORKER_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: conf.model,
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
+        provider,
+        payload: {
+          model,
+          max_tokens: 1000,
+          messages: [{ role: 'user', content: prompt }]
+        }
       })
     });
     if (!res.ok) {
@@ -1506,21 +1501,14 @@ Rules: Be specific, cite dates and facts from the articles. Do not mention Mixta
     return text;
   }
 
-  // ── Fallback chain: Groq → SambaNova → Mistral ──────────────────────────────
-  // Cerebras removed: blocks browser requests with CORS policy.
-  const providers = [
-    { name: 'Groq',      conf: cfg.groq      },
-    { name: 'SambaNova', conf: cfg.sambanova },
-    { name: 'Mistral',   conf: cfg.mistral   },
-  ].filter(p => p.conf?.key);
-
+  // ── Fallback chain: Groq → SambaNova → Mistral ───────────────────────────
   let text = null;
   let lastError = null;
 
-  for (const { name, conf } of providers) {
+  for (const { name, provider, model } of PROVIDER_MODELS) {
     try {
       narrativeEl.innerHTML = `<span style="color:var(--ink-faint);font-style:italic">Generating via ${name}…</span>`;
-      text = await callProvider(name, conf);
+      text = await callProvider(name, provider, model);
       break;
     } catch(e) {
       lastError = e;

@@ -388,6 +388,181 @@ class DataSource {
   }
 
   /**
+   * Cross-Sector Market Signals — fetches articles from non-real-estate sectors
+   * that carry verifiable demand transmission mechanisms for Lagos residential property.
+   *
+   * SELECTION CRITERIA (McKinsey-grade gate):
+   * 1. Sector specificity: article must explicitly mention one of the 7 impact sectors
+   * 2. Economic measurability: must contain a rate, price, volume, policy, or timeline
+   * 3. Transmission plausibility: must have a credible path to Lagos property demand
+   * Reject: opinion without data, general politics, crime, sports
+   * Accept: CBN rate decisions, infrastructure milestones, FX policy, corporate expansion
+   *
+   * Output tagged with geoScope for map plotting and sectorTag for Markets panel routing.
+   */
+  async fetchCrossSectorSignals() {
+    console.log('[CrossSector] Fetching cross-sector market signals...');
+    if (!this.newsApiKey) {
+      console.log('[CrossSector] Skipped — NewsAPI key not configured');
+      return [];
+    }
+
+    const queries = [
+      // Monetary policy — direct mortgage affordability signal
+      '(CBN OR "Central Bank of Nigeria") AND ("interest rate" OR "monetary policy" OR "MPR" OR inflation) AND Nigeria',
+      // Infrastructure — corridor value multiplier
+      '(Lekki OR "Ibeju-Lekki" OR Lagos) AND (expressway OR highway OR bridge OR "4th Mainland" OR infrastructure) AND (completion OR construction OR contract)',
+      // FX and diaspora — buyer pool signal
+      '(naira OR forex OR "exchange rate") AND (Nigeria OR Nigerian) AND (dollar OR pound OR remittance OR diaspora)',
+      // Corporate expansion — direct B2B demand
+      '(Lagos OR Nigeria) AND ("new headquarters" OR "office expansion" OR "free trade zone" OR "Lekki FTZ") AND (company OR firm OR employer)',
+      // Energy/power — residential quality signal
+      '(Nigeria OR Lagos) AND ("electricity" OR "power supply" OR "energy sector") AND (reform OR improvement OR investment)',
+      // Capital markets — buyer financing signal
+      '(Nigeria OR Lagos) AND (REIT OR mortgage OR "pension fund" OR "capital market") AND (real estate OR property OR housing)',
+    ];
+
+    const seen = new Set();
+    const allArticles = [];
+
+    // Selection gate — must contain at least one measurable economic signal
+    const economicSignals = [
+      /\d+(\.\d+)?%/, /₦[\d,.]+/, /\$[\d,.]+/, /\bN\d+(\.\d+)?[bm]n?\b/i,
+      /billion|million|trillion/, /basis point|bps/, /per cent|percent/,
+      /deadline|completion|milestone|launch|signed|approved|awarded/i,
+    ];
+
+    for (const q of queries) {
+      try {
+        const response = await axios.get('https://newsapi.org/v2/everything', {
+          params: {
+            q, language: 'en', sortBy: 'publishedAt', pageSize: 15,
+            apiKey: this.newsApiKey,
+          },
+          timeout: this.timeout,
+        });
+
+        const articles = response.data?.articles || [];
+        for (const a of articles) {
+          const key = (a.title || '').toLowerCase().trim();
+          if (!key || seen.has(key)) continue;
+          // Apply economic measurability gate
+          const text = `${a.title || ''} ${a.description || ''}`;
+          const hasEconomicSignal = economicSignals.some(re => re.test(text));
+          if (!hasEconomicSignal) continue;
+          seen.add(key);
+          allArticles.push({
+            title: a.title, description: a.description, content: a.content,
+            url: a.url, source: a.source?.name || 'NewsAPI',
+            publishedAt: a.publishedAt, image: a.urlToImage,
+            _lane: 'cross-sector', geoScope: 'nigeria',
+          });
+        }
+        console.log(`[CrossSector] Query "${q.substring(0, 45)}..." → ${articles.length} raw, ${allArticles.length} total kept`);
+      } catch (error) {
+        console.error(`[CrossSector] Error:`, error.message);
+      }
+    }
+
+    console.log(`[CrossSector] Fetched ${allArticles.length} cross-sector signals`);
+    return allArticles;
+  }
+
+  /**
+   * Innovation Hub — fetches global real estate innovation and disruption content.
+   *
+   * SELECTION CRITERIA:
+   * 1. Novelty: technology, design concept, business model, or regulatory framework
+   *    that is NEW — launched, announced, or described as emerging
+   * 2. Application: direct relevance to residential/commercial real estate development,
+   *    construction, transaction, or financing
+   * 3. Global scope: NOT a local Nigerian market report (that belongs in briefing)
+   * Reject: price reports, developer news, housing shortage opinion, local market analysis
+   * Accept: proptech launches, sustainable construction, modular/prefab, AI valuation,
+   *         smart cities, tokenisation, new financing models, international planning
+   */
+  async fetchInnovationHub() {
+    console.log('[InnoHub] Fetching global real estate innovation...');
+    if (!this.newsApiKey) {
+      console.log('[InnoHub] Skipped — NewsAPI key not configured');
+      return [];
+    }
+
+    const queries = [
+      // Proptech and digital real estate
+      '(proptech OR "property technology") AND (launch OR funding OR platform OR AI)',
+      // Sustainable and green construction
+      '("sustainable construction" OR "green building" OR "net zero" OR "passive house") AND (real estate OR development OR housing)',
+      // Modular, prefab, alternative construction
+      '("modular housing" OR "prefab" OR "3D printed" OR "factory-built") AND (home OR housing OR development)',
+      // AI and data in real estate
+      '("artificial intelligence" OR "machine learning" OR "digital twin") AND (real estate OR property OR construction)',
+      // Smart cities and urban innovation
+      '("smart city" OR "smart building" OR "urban innovation") AND (real estate OR housing OR development)',
+      // New financing and ownership models
+      '("real estate tokenization" OR "fractional ownership" OR "co-living" OR "build-to-rent") AND (platform OR model OR launch OR fund)',
+      // Global design and planning innovation
+      '("mixed-use development" OR "transit-oriented" OR "walkable city") AND (design OR planning OR innovation)',
+    ];
+
+    const seen = new Set();
+    const allArticles = [];
+
+    // Novelty gate — must contain at least one innovation signal
+    const noveltySignals = [
+      /launch(ed|es)?|announce(d|s|ment)?|unveil(ed|s)?|introduc(ed|es|tion)?|pioneer/i,
+      /new (platform|model|concept|technology|approach|method|system)/i,
+      /first (ever|in|to)|world.s first|breakthrough|disrupt/i,
+      /fund(ed|ing|raise)|Series [A-D]|\$\d+m? (round|raise|funding)/i,
+      /innovation|emerging|transform|revolutio/i,
+    ];
+
+    // Hard reject — these are briefing-lane articles
+    const rejectPatterns = [
+      /nigeria property|lagos real estate|lekki (property|prices|development)/i,
+      /housing deficit.*nigeria|nigeria.*housing deficit/i,
+      /affordable housing.*nigeria|fmbn|nhf|lsdpc/i,
+    ];
+
+    for (const q of queries) {
+      try {
+        const response = await axios.get('https://newsapi.org/v2/everything', {
+          params: {
+            q, language: 'en', sortBy: 'publishedAt', pageSize: 15,
+            apiKey: this.newsApiKey,
+          },
+          timeout: this.timeout,
+        });
+
+        const articles = response.data?.articles || [];
+        for (const a of articles) {
+          const key = (a.title || '').toLowerCase().trim();
+          if (!key || seen.has(key)) continue;
+          const text = `${a.title || ''} ${a.description || ''}`;
+          // Apply hard reject (briefing-lane content)
+          if (rejectPatterns.some(re => re.test(text))) continue;
+          // Apply novelty gate
+          const hasNovelty = noveltySignals.some(re => re.test(text));
+          if (!hasNovelty) continue;
+          seen.add(key);
+          allArticles.push({
+            title: a.title, description: a.description, content: a.content,
+            url: a.url, source: a.source?.name || 'NewsAPI',
+            publishedAt: a.publishedAt, image: a.urlToImage,
+            _lane: 'innovation', geoScope: 'global',
+          });
+        }
+        console.log(`[InnoHub] Query "${q.substring(0, 45)}..." → ${articles.length} raw`);
+      } catch (error) {
+        console.error(`[InnoHub] Error:`, error.message);
+      }
+    }
+
+    console.log(`[InnoHub] Fetched ${allArticles.length} innovation articles`);
+    return allArticles;
+  }
+
+  /**
    * Fetch all sources
    */
   async fetchAll() {

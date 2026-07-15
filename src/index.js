@@ -815,6 +815,53 @@ class NewsPipeline {
       health.persist();
       await this.sendOperatorAlert(health);
 
+      // ── PHASE 8.5: SECONDARY INTELLIGENCE LANES ─────────────────────────────
+      // These run AFTER the main pipeline completes and health is already
+      // persisted. They are fully independent — failures here never affect the
+      // briefing, health status, or email. Each lane fetches its own articles
+      // using its own selection criteria and writes a separate JSON file.
+      // The dashboard reads these files independently for the Markets map
+      // (cross-sector.json) and the Innovation Hub tab (innovation.json).
+      try {
+        console.log('[PHASE 8.5] Running secondary intelligence lanes...');
+        const dataDir = path.join(process.cwd(), 'data');
+
+        const [crossSectorRaw, innovationRaw] = await Promise.allSettled([
+          this.datasource.fetchCrossSectorSignals(),
+          this.datasource.fetchInnovationHub(),
+        ]);
+
+        // Cross-sector: write with generatedAt timestamp for freshness display
+        const crossSectorArticles = crossSectorRaw.status === 'fulfilled' ? crossSectorRaw.value : [];
+        fs.writeFileSync(
+          path.join(dataDir, 'cross-sector.json'),
+          JSON.stringify({
+            generatedAt: this.timestamp,
+            count: crossSectorArticles.length,
+            articles: crossSectorArticles,
+          }, null, 2)
+        );
+        console.log(`[PHASE 8.5] cross-sector.json: ${crossSectorArticles.length} articles written`);
+
+        // Innovation Hub: deduplicate by URL, sort newest first
+        const innovationArticles = innovationRaw.status === 'fulfilled' ? innovationRaw.value : [];
+        const innovationDeduped = innovationArticles.filter((a, i, arr) =>
+          arr.findIndex(b => b.url === a.url) === i
+        ).sort((a, b) => new Date(b.publishedAt||0) - new Date(a.publishedAt||0));
+        fs.writeFileSync(
+          path.join(dataDir, 'innovation.json'),
+          JSON.stringify({
+            generatedAt: this.timestamp,
+            count: innovationDeduped.length,
+            articles: innovationDeduped,
+          }, null, 2)
+        );
+        console.log(`[PHASE 8.5] innovation.json: ${innovationDeduped.length} articles written`);
+        console.log('[PHASE 8.5] Secondary intelligence lanes complete.');
+      } catch (e) {
+        console.warn('[PHASE 8.5] Secondary lanes error (non-fatal):', e.message);
+      }
+
       console.log('='.repeat(60));
       console.log(`Pipeline completed (status: ${health.record.status})`);
       console.log('='.repeat(60));

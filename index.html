@@ -495,6 +495,18 @@ button, select, input { font-family: inherit; }
   background: var(--maroon-soft); color: var(--maroon-dark);
   border-radius: 3px; padding: 1px 5px; margin: 1px 2px;
 }
+/* Subtle inline help nudge — appears under each section header */
+.help-hint {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--font-ui); font-size: 11px; color: var(--ink-faint);
+  cursor: pointer; border: none; background: none; padding: 0;
+  transition: color 0.15s;
+}
+.help-hint:hover { color: var(--maroon); }
+.help-hint::before { content: '?'; display: inline-flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px; border-radius: 50%; background: var(--rule-strong);
+  font-size: 9px; font-weight: 700; color: var(--ink-soft); flex-shrink: 0; transition: background 0.15s, color 0.15s; }
+.help-hint:hover::before { background: var(--maroon); color: #fff; }
 .competition-hero { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-bottom: 64px; }
 .pricing-stats-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
 
@@ -808,7 +820,6 @@ button, select, input { font-family: inherit; }
       <button data-view="markets">Markets</button>
       <button data-view="themes">Themes &amp; Trends</button>
       <button data-view="competition">Competition</button>
-      <button data-view="outreach">Outreach</button>
       <button data-view="innovation-hub">Innovation</button>
       <button data-view="library">Library</button>
       <button id="nav-health" data-view="health" style="display:none;">System</button>
@@ -822,7 +833,7 @@ button, select, input { font-family: inherit; }
     <section id="briefing" class="view active">
       
       <div class="section-divider" style="margin-top:0;">
-        <h2>Today's Signal</h2>
+        <h2>Today's Signal</h2><button class="help-hint" onclick="openHelpFor('briefing')">How to read today's intelligence briefing</button>
         <span id="briefingDate" style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--ink-soft);">Syncing temporal data...</span>
       </div>
 
@@ -882,7 +893,7 @@ button, select, input { font-family: inherit; }
 
     <!-- MARKETS (GEOSPATIAL) -->
     <section id="markets" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Strategic Theater Mapping</h2></div>
+      <div class="section-divider" style="margin-top:0;"><h2>Strategic Theater Mapping</h2><button class="help-hint" onclick="openHelpFor('markets')">How to read the markets map and cross-sector signals</button></div>
       
       <div class="geo-console">
         <span class="geo-console-label">Focus Region:</span>
@@ -915,7 +926,7 @@ button, select, input { font-family: inherit; }
 
     <!-- THEMES & TRENDS (NARRATIVE MOMENTUM + TOPIC VOLUME, UNIFIED) -->
     <section id="themes" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Narrative Momentum</h2></div>
+      <div class="section-divider" style="margin-top:0;"><h2>Narrative Momentum</h2><button class="help-hint" onclick="openHelpFor('themes')">How to read themes, trends and sentiment signals</button></div>
       <div class="dateline" style="font-family: var(--font-ui); font-size: 13.5px; color: var(--ink-soft); margin-bottom: 24px;">
         Recurring themes the synthesizer has tracked across briefings, ranked by how many consecutive days each has appeared.
       </div>
@@ -953,9 +964,12 @@ button, select, input { font-family: inherit; }
 
     <!-- COMPETITION (PRICING) -->
     <section id="competition" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Competitive Market Pulse</h2></div>
+      <div class="section-divider" style="margin-top:0;"><h2>Competitive Market Pulse</h2><button class="help-hint" onclick="openHelpFor('competition')">How to read pricing data and competitive positioning</button></div>
       
       <div id="pricingStatsBar" class="pricing-stats-inline"></div>
+
+      <!-- ── USE CASE 2: Outreach Signal Banner (rendered by JS when signals exist) ── -->
+      <div id="outreachSignalContainer"></div>
 
       <!-- ── USE CASE 1: Competitive Positioning Card ───────────────────────────── -->
       <div id="competitivePositioningCard"></div>
@@ -1048,18 +1062,9 @@ button, select, input { font-family: inherit; }
       </div>
     </section>
 
-    <!-- OUTREACH SIGNALS — corporate B2B targeting intelligence -->
-    <section id="outreach" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Corporate Outreach Intelligence</h2></div>
-      <div class="dateline" style="font-family:var(--font-ui);font-size:13.5px;color:var(--ink-soft);margin-bottom:28px;">
-        Active outreach windows ranked by signal quality. A signal requires a macro base condition AND a calendar or event trigger — not just sector news volume.
-      </div>
-      <div id="outreachSignalContainer"></div>
-    </section>
-
     <!-- INNOVATION HUB — global real estate disruption and innovation -->
     <section id="innovation-hub" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Innovation &amp; Disruption Hub</h2></div>
+      <div class="section-divider" style="margin-top:0;"><h2>Innovation &amp; Disruption Hub</h2><button class="help-hint" onclick="openHelpFor('innovation')">How to use the innovation hub</button></div>
       <div class="dateline" style="font-family:var(--font-ui);font-size:13.5px;color:var(--ink-soft);margin-bottom:8px;">
         Global intelligence on technologies, design concepts, business models, and regulatory frameworks redefining real estate. Not localised — this is worldwide signal, curated for strategic relevance to a developer building the future of Lagos.
       </div>
@@ -1070,7 +1075,7 @@ button, select, input { font-family: inherit; }
 
     <!-- LIBRARY (ARCHIVE) -->
     <section id="library" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Intelligence Library</h2></div>
+      <div class="section-divider" style="margin-top:0;"><h2>Intelligence Library</h2><button class="help-hint" onclick="openHelpFor('library')">How to search and use the article library</button></div>
       
       <input id="archSearch" class="search" placeholder="Search historical briefings and source articles..." oninput="renderArchive()" />
       
@@ -2689,200 +2694,271 @@ function renderOutreachSignals(briefingData, trendHistory) {
   const container = document.getElementById('outreachSignalContainer');
   if (!container) return;
 
-  // ── Signal C: macro base ──────────────────────────────────────────────────
+  // ── THREE-SIGNAL MODEL ────────────────────────────────────────────────────
+  // A signal fires only when Signal C (macro base) is true AND
+  // (Signal A (calendar) OR Signal B (event-detected)).
+  // This eliminates the lazy "sector appeared 3x = recommend engagement" pattern.
+
+  // Signal C — Macro base condition
+  // Derived from 7-day sentiment. Outreach is only worth activating when the
+  // macro environment is neutral-to-positive. In a sustained bearish period,
+  // even the best corporate trigger produces low conversion.
   const days = trendHistory?.days || [];
   const last7 = days.slice(-7);
   let macroScore = 0;
   for (const d of last7) {
     const b = d.sentimentBreakdown || {};
-    const total = (b.bullish||0)+(b.bearish||0)+(b.neutral||0);
-    if (total > 0) macroScore += ((b.bullish||0)-(b.bearish||0))/total;
+    const total = (b.bullish||0) + (b.bearish||0) + (b.neutral||0);
+    if (total > 0) macroScore += ((b.bullish||0) - (b.bearish||0)) / total;
   }
-  macroScore = last7.length ? macroScore/last7.length : 0;
-  const macroClear = macroScore > -0.15;
+  macroScore = last7.length ? macroScore / last7.length : 0;
+  const macroClear = macroScore > -0.15; // blocks only sustained bearish periods
 
-  // ── Signal A: calendar ────────────────────────────────────────────────────
-  const month = new Date().getMonth() + 1;
+  // Signal A — Calendar trigger (bonus cycle windows, always on if macro clear)
+  // Nigerian corporate bonus payments cluster in Jan-Feb (year-end close) and
+  // Jul-Aug (H1 close). The 6 weeks following a bonus payment are the highest
+  // conversion window in any property sales cycle.
+  const now = new Date();
+  const month = now.getMonth() + 1; // 1-indexed
   const bonusWindow = (month >= 1 && month <= 2) || (month >= 7 && month <= 8);
-  const bonusLabel  = bonusWindow
-    ? (month <= 2 ? 'Year-end bonus cycle (Jan–Feb)' : 'H1 bonus cycle (Jul–Aug)')
+  const bonusLabel = bonusWindow
+    ? month <= 2 ? 'Year-end bonus cycle (Jan–Feb)' : 'H1 bonus cycle (Jul–Aug)'
     : null;
 
-  // ── Signal B: event detection ─────────────────────────────────────────────
-  const themes = briefingData?.themes || [];
-  const recentTopics = (trendHistory?.days||[]).slice(-14)
-    .flatMap(d => (d.topTopics||[]).map(t => t.topic||''));
+  // Signal B — Event trigger (news-detected corporate lifecycle events)
+  // Five event types, ranked by conversion probability:
+  // 1. Contract win / major expansion announcement
+  // 2. Salary review / minimum wage compliance
+  // 3. IPO / ESOP / share listing
+  // 4. Staff welfare / cooperative / housing benefit programme
+  // 5. Sector-specific growth narrative (lowest weight, needs bonus window too)
 
+  const themes = briefingData?.themes || [];
+  const recentDays = (trendHistory?.days || []).slice(-14);
+  const recentTopics = recentDays.flatMap(d => (d.topTopics || []).map(t => t.topic || ''));
+
+  // Event detection patterns ordered by conversion weight
   const eventPatterns = [
-    { type:'contract_win',   label:'Contract win / expansion',    weight:5, re:/contract|award(ed)?|win(s)?|won|billion.*(deal|project)|expansion|new (office|hq|headquarters)/i },
-    { type:'salary_review',  label:'Salary review / pay rise',    weight:4, re:/salary|pay rise|wage|compensation|review|remuneration|minimum wage/i },
-    { type:'ipo_esop',       label:'IPO / share listing / ESOP',  weight:4, re:/ipo|initial public offer|listing|stock exchange|esop|share (scheme|option|allocation)/i },
-    { type:'welfare',        label:'Staff welfare / cooperative', weight:3, re:/cooperative|staff welfare|housing (benefit|scheme|programme)|welfare fund/i },
-    { type:'sector_growth',  label:'Sector growth narrative',     weight:1, re:/growth|expand|profit|revenue|record|milestone|bullish/i },
+    {
+      type: 'contract_win',
+      label: 'Contract win / expansion',
+      weight: 5,
+      patterns: [/contract|award(ed)?|win(s)?|won|billion.*(deal|project)|expansion|new (office|hq|headquarters)/i],
+    },
+    {
+      type: 'salary_review',
+      label: 'Salary review / pay rise',
+      weight: 4,
+      patterns: [/salary|pay rise|wage|compensation|review|remuneration|minimum wage/i],
+    },
+    {
+      type: 'ipo_esop',
+      label: 'IPO / share listing / ESOP',
+      weight: 4,
+      patterns: [/ipo|initial public offer|listing|stock exchange|esop|share (scheme|option|allocation)/i],
+    },
+    {
+      type: 'welfare',
+      label: 'Staff welfare / cooperative',
+      weight: 3,
+      patterns: [/cooperative|staff welfare|housing (benefit|scheme|programme)|welfare fund/i],
+    },
+    {
+      type: 'sector_growth',
+      label: 'Sector growth narrative',
+      weight: 1, // only actionable alongside bonus window
+      patterns: [/growth|expand|profit|revenue|record|milestone|bullish/i],
+    },
   ];
 
+  // Entry point database — how to approach each sector
+  // This determines the specific action in the outreach recommendation
   const ENTRY_POINTS = {
-    'Energy (Oil & Gas)':                 { channel:'Staff cooperative society',       note:'Approach cooperative chairman directly — faster than HR. Seplat, Oando, TotalEnergies all have active cooperatives.' },
-    'Financial Services & Banking':       { channel:'HR Director (formal letter)',      note:'Submit a bulk-purchase term sheet. Zenith, GTBank, Access have documented housing programmes. Citi/StanChart staff reachable individually on LinkedIn.' },
-    'Telecoms':                           { channel:'Staff cooperative society',       note:'MTN cooperative treats real estate as primary investment class. Airtel responds to direct HR outreach with a group payment plan.' },
-    'FMCG & Consumer Goods':             { channel:'HR / Admin Manager',              note:'Referral from an existing buyer is highest-converting. Nigerian Breweries and Nestlé have strong welfare cultures.' },
-    'Industrials & Construction':         { channel:'Professional association (NSE)',   note:'NSE Lagos chapter event reaches 200+ senior engineers at once. BUA and Lafarge respond to direct HR.' },
-    'Tech & Fintech':                     { channel:'Direct / LinkedIn',               note:'Avoid formal HR — tech staff respond to direct outreach. Twitter/X post tagged at company generates enquiries from Flutterwave, Paystack staff.' },
-    'Professional Services & Consulting': { channel:'Direct / partner network',        note:'Big 4 partners make decisions independently. Referral from existing client is highest-converting for senior managers.' },
-    'International Organisations & NGOs':{ channel:'Admin / procurement officer',     note:'Submit formal proposal. World Bank and UNDP staff are also individually reachable — high-intent, understand asset appreciation.' },
+    'Energy (Oil & Gas)': {
+      primary: 'HR / Welfare Director',
+      route: 'Request a 20-minute slot to present a group bulk-purchase offer. Seplat, Oando, and TotalEnergies all have established staff cooperative societies — approach the cooperative chairman directly for a faster route to a group presentation.',
+      cooperative: true,
+    },
+    'Financial Services & Banking': {
+      primary: 'Head of Human Resources',
+      route: 'Banks respond best to a formal letter of intent addressed to the HR Director, followed by a bulk-discount term sheet. Zenith, GTBank, and Access all have documented staff housing programmes. Citibank and Standard Chartered staff are individually reachable through LinkedIn for personal purchases.',
+      cooperative: false,
+    },
+    'Telecoms': {
+      primary: 'Staff Cooperative Society',
+      route: 'MTN Nigeria has an active staff cooperative with real estate as a primary investment class. Approach the cooperative chairman (typically a senior finance staff member). Airtel responds well to a direct HR approach with a group payment plan proposal.',
+      cooperative: true,
+    },
+    'FMCG & Consumer Goods': {
+      primary: 'HR / Admin Manager',
+      route: 'Nigerian Breweries and Nestlé have strong welfare cultures. The most effective entry is a referral through a staff member who has already purchased, then escalate to a formal HR presentation. Offer a payment plan tied to the salary cycle.',
+      cooperative: false,
+    },
+    'Industrials & Construction': {
+      primary: 'Professional Association Network',
+      route: 'Julius Berger senior engineers are reachable through the Nigerian Society of Engineers (NSE) and COREN events. A presentation at an NSE Lagos chapter event reaches 200+ senior engineers simultaneously. BUA and Lafarge respond to direct HR outreach.',
+      cooperative: false,
+    },
+    'Tech & Fintech': {
+      primary: 'Direct / LinkedIn',
+      route: 'Tech staff respond poorly to formal HR channels — they are individually reachable. Target senior engineers and product managers directly on LinkedIn with a specific unit offering. Flutterwave and Paystack staff are active on Twitter/X — a company-tagged post from a credible account generates direct enquiries.',
+      cooperative: false,
+    },
+    'Professional Services & Consulting': {
+      primary: 'Direct / Partner Network',
+      route: 'Big 4 partners are individually reachable and make decisions independently. Approach PwC and Deloitte partners directly. For senior managers, a referral from an existing client who works there is the highest-conversion route. McKinsey and BCG staff are LinkedIn-reachable.',
+      cooperative: false,
+    },
+    'International Organisations & NGOs': {
+      primary: 'Admin / Procurement Officer',
+      route: 'International organisations have formal procurement processes for staff benefits. Submit a proposal through the admin department. World Bank and UNDP staff are also individually reachable — they are high-intent buyers who understand asset appreciation arguments.',
+      cooperative: false,
+    },
   };
 
-  // ── Evaluate each sector ──────────────────────────────────────────────────
-  const results = [];
+  const signals = [];
 
   for (const sector of SECTOR_THEME_MAP) {
-    if (!macroClear) continue;
+    if (!macroClear) continue; // Signal C gate — suppress all signals in sustained bearish periods
 
+    // Detect Signal B events in recent themes and topics
     const sectorText = (themes.map(t =>
-      (t.label||'')+' '+(t.what_happened||'')+' '+(t.recommendation||'')
+      (t.label||'') + ' ' + (t.what_happened||'') + ' ' + (t.recommendation||'')
     ).join(' ') + ' ' + recentTopics.join(' ')).toLowerCase();
 
+    // Only check if this sector's keywords appear at all
     const sectorMentioned = sector.keywords.some(kw => sectorText.includes(kw.toLowerCase()));
+    if (!sectorMentioned && !bonusWindow) continue;
 
     let detectedEvents = [];
-    let highestWeight  = 0;
+    let highestWeight = 0;
 
     if (sectorMentioned) {
+      // Filter to sector-relevant text chunks
       const sectorChunks = themes
         .filter(t => sector.keywords.some(kw =>
-          ((t.label||'')+(t.what_happened||'')).toLowerCase().includes(kw.toLowerCase())))
-        .map(t => (t.label||'')+' '+(t.what_happened||''));
-      const matchText = sectorChunks.join(' ') + ' ' + recentTopics.join(' ');
+          ((t.label||'') + (t.what_happened||'')).toLowerCase().includes(kw.toLowerCase())))
+        .map(t => (t.label||'') + ' ' + (t.what_happened||''));
 
-      for (const evt of eventPatterns) {
-        if (evt.type === 'sector_growth' && !bonusWindow) continue;
-        if (evt.re.test(matchText)) {
-          detectedEvents.push(evt);
-          highestWeight = Math.max(highestWeight, evt.weight);
+      for (const event of eventPatterns) {
+        // Skip sector_growth events unless bonus window is also active
+        if (event.type === 'sector_growth' && !bonusWindow) continue;
+        const matchText = sectorChunks.join(' ') + ' ' + recentTopics.join(' ');
+        if (event.patterns.some(re => re.test(matchText))) {
+          detectedEvents.push(event);
+          highestWeight = Math.max(highestWeight, event.weight);
         }
       }
     }
 
-    const calendarFires = bonusWindow && (sector.reachablePrimary||0) >= 500;
-    const eventFires    = detectedEvents.length > 0 && highestWeight >= 2;
+    // Signal A: bonus window alone is sufficient for sectors with large reachable pools
+    const calendarFires = bonusWindow && (sector.reachablePrimary || 0) >= 500;
+    // Signal B: event detected
+    const eventFires = detectedEvents.length > 0 && highestWeight >= 2;
+
     if (!calendarFires && !eventFires) continue;
 
+    // Determine signal strength
     let strength, triggerType;
-    if (eventFires && calendarFires && highestWeight >= 4) { strength='Strong';   triggerType='event+calendar'; }
-    else if (eventFires && highestWeight >= 4)              { strength='Strong';   triggerType='event'; }
-    else if (eventFires && calendarFires)                   { strength='Moderate'; triggerType='event+calendar'; }
-    else if (eventFires)                                    { strength='Moderate'; triggerType='event'; }
-    else                                                    { strength='Emerging'; triggerType='calendar'; }
+    if (eventFires && calendarFires && highestWeight >= 4) {
+      strength = 'Strong'; triggerType = 'event+calendar';
+    } else if (eventFires && highestWeight >= 4) {
+      strength = 'Strong'; triggerType = 'event';
+    } else if (eventFires && calendarFires) {
+      strength = 'Moderate'; triggerType = 'event+calendar';
+    } else if (eventFires) {
+      strength = 'Moderate'; triggerType = 'event';
+    } else {
+      strength = 'Emerging'; triggerType = 'calendar';
+    }
 
-    results.push({ sector, strength, triggerType, detectedEvents, highestWeight, calendarFires });
+    signals.push({
+      sector, strength, triggerType, detectedEvents, highestWeight,
+      calendarFires, bonusWindow, bonusLabel, macroClear, macroScore,
+    });
   }
 
-  if (!results.length) {
-    container.innerHTML = macroClear
-      ? `<div style="font-family:var(--font-ui);font-size:13px;color:var(--ink-faint);font-style:italic;padding:24px 0;">No outreach signals active. No bonus window, no qualifying corporate events detected. Check back during Jan–Feb or Jul–Aug bonus cycles.</div>`
-      : `<div style="font-family:var(--font-ui);font-size:13px;color:var(--ink-faint);font-style:italic;padding:24px 0;">⚠ Market sentiment is negative — outreach signals suppressed. Focus on closing existing pipeline rather than generating new leads.</div>`;
+  if (!signals.length) {
+    // Even if no signals fired, show a macro status note during bonus windows
+    if (bonusWindow && macroClear) {
+      container.innerHTML = `<div class="outreach-signal-banner" style="border-color:var(--rule);">
+        <div class="outreach-signal-icon">📅</div>
+        <div class="outreach-signal-body">
+          <div class="outreach-signal-label">Bonus Window Active — No Event Triggers Detected</div>
+          <div class="outreach-signal-text">It is ${bonusLabel}. No specific corporate event has been detected in the news to combine with this window. Consider proactive outreach to the highest-pool sectors (Banking, Energy) on calendar basis alone.</div>
+        </div>
+      </div>`;
+    } else {
+      container.innerHTML = '';
+    }
     return;
   }
 
-  // ── CONSOLIDATION LOGIC ───────────────────────────────────────────────────
-  // If all active signals share the same trigger (calendar only), collapse
-  // them into a single summary card with a ranked sector table.
-  // Only split into individual cards when a sector has a DISTINCT event trigger.
-
-  results.sort((a,b) => {
-    const so = { Strong:0, Moderate:1, Emerging:2 };
-    return (so[a.strength]||9)-(so[b.strength]||9) || (b.sector.reachablePrimary||0)-(a.sector.reachablePrimary||0);
+  // Sort: Strong first, then by reachable pool size
+  signals.sort((a,b) => {
+    const strengthOrder = { 'Strong': 0, 'Moderate': 1, 'Emerging': 2 };
+    const sDiff = (strengthOrder[a.strength]||99) - (strengthOrder[b.strength]||99);
+    return sDiff !== 0 ? sDiff : (b.sector.reachablePrimary||0) - (a.sector.reachablePrimary||0);
   });
 
-  const eventResults    = results.filter(r => r.triggerType !== 'calendar');
-  const calendarResults = results.filter(r => r.triggerType === 'calendar');
+  container.innerHTML = signals.map(sig => {
+    const primaryCos = (sig.sector.companies || []).filter(c => c.priority === 'primary');
+    const secondaryCos = (sig.sector.companies || []).filter(c => c.priority === 'secondary');
+    const totalReachable = sig.sector.reachablePrimary || 0;
+    const entryPoint = ENTRY_POINTS[sig.sector.sector];
+    const icon = sig.strength === 'Strong' ? '🔴' : sig.strength === 'Moderate' ? '🟡' : '📡';
 
-  let html = '';
+    // Build the specific trigger rationale
+    let triggerLine = '';
+    if (sig.triggerType === 'event+calendar') {
+      const evtLabel = sig.detectedEvents[0]?.label || 'sector event';
+      triggerLine = `<strong>Two signals converging:</strong> ${esc(evtLabel)} detected in this week's news + ${esc(sig.bonusLabel)}. This is the highest-quality outreach window — both event receptivity and disposable income align simultaneously.`;
+    } else if (sig.triggerType === 'event') {
+      const evt = sig.detectedEvents[0];
+      triggerLine = `<strong>${esc(evt?.label || 'Event detected')}:</strong> ${
+        evt?.type === 'contract_win' ? 'A major contract or expansion announcement creates job security confidence — the single strongest predictor of property purchase intent. Act within the next 3 weeks while the news is fresh and staff optimism is highest.' :
+        evt?.type === 'salary_review' ? 'A salary review or pay adjustment means affected staff have more disposable income than they did 30 days ago. This is a 4-6 week conversion window.' :
+        evt?.type === 'ipo_esop' ? 'An IPO or ESOP vesting event means staff have realised liquidity or share value. Asset-seeking behaviour peaks in the 60 days following a vesting event.' :
+        evt?.type === 'welfare' ? 'A welfare or cooperative initiative signals that the company is actively facilitating staff financial decisions. Approach the cooperative chairman — they are already in buying mode.' :
+        'Sector growth narrative supports a property conversation framed around asset appreciation.'
+      }`;
+    } else {
+      triggerLine = `<strong>${esc(sig.bonusLabel)}:</strong> Corporate bonus payments in this sector have likely cleared. Staff who received a bonus in the last 6 weeks are in the highest discretionary-spend state of the year. The 6-week post-bonus window is the strongest calendar-based conversion period.`;
+    }
 
-  // Macro status strip
-  const macroBar = `<div style="display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--paper-card);border:1px solid var(--rule);border-radius:var(--radius);margin-bottom:20px;font-family:var(--font-ui);font-size:12px;">
-    <span style="font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.08em;font-size:10px;">Market Conditions</span>
-    <span style="color:${macroScore>0.15?'var(--bull)':macroScore<-0.05?'var(--bear)':'var(--ink-soft)'};font-weight:700;">
-      ${macroScore>0.15?'🟢 Bullish — ideal outreach window':macroScore<-0.05?'🟡 Mixed — focus on warm leads only':'⚪ Neutral — outreach viable'}
-    </span>
-    ${bonusLabel ? `<span style="margin-left:auto;color:var(--maroon);font-weight:700;">📅 ${esc(bonusLabel)}</span>` : ''}
-  </div>`;
-  html += macroBar;
+    // Entry point instruction
+    const entryLine = entryPoint
+      ? `<div style="margin-top:10px;padding:10px 14px;background:rgba(122,31,43,0.04);border-radius:4px;border-left:3px solid var(--maroon);">
+          <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;color:var(--maroon);margin-bottom:4px;">Entry Point: ${esc(entryPoint.primary)}</div>
+          <div style="font-family:var(--font-body);font-size:12px;color:var(--ink-soft);line-height:1.6;">${esc(entryPoint.route)}</div>
+        </div>`
+      : '';
 
-  // ── Event-triggered signals: one card each (genuinely distinct context) ───
-  for (const r of eventResults) {
-    const ep  = ENTRY_POINTS[r.sector.sector] || {};
-    const evt = r.detectedEvents[0];
-    const icon = r.strength === 'Strong' ? '🔴' : '🟡';
-    const top3 = (r.sector.companies||[]).filter(c=>c.priority==='primary').slice(0,3);
+    const primaryList = primaryCos.slice(0, 5).map(c =>
+      `<span style="font-weight:700;color:var(--ink)">${esc(c.name)}</span><span style="color:var(--ink-faint);font-size:10px"> ~${c.estStaff15M} ₦1.5M+ staff</span>`
+    ).join(' · ');
 
-    const triggerRationale =
-      evt.type==='contract_win'  ? 'A contract win or expansion announcement creates a job-security window — the strongest predictor of purchase intent. Act within 3 weeks.' :
-      evt.type==='salary_review' ? 'A salary review means affected staff have more disposable income than 30 days ago. 4–6 week conversion window.' :
-      evt.type==='ipo_esop'      ? 'An IPO or ESOP vesting event means liquidity is in the market. Asset-seeking peaks in the 60 days post-vesting.' :
-      evt.type==='welfare'       ? 'A welfare or cooperative initiative signals the company is actively facilitating staff financial decisions.' :
-      'Sector growth narrative supports a property conversation framed around asset appreciation.';
+    const secondaryNote = secondaryCos.length
+      ? `<div style="margin-top:4px;font-size:10px;color:var(--ink-faint)">Lower priority (₦500K–₦1.5M): ${secondaryCos.map(c=>esc(c.name)).join(' · ')}</div>`
+      : '';
 
-    const calendarBoost = r.calendarFires ? `<div style="margin-top:6px;font-family:var(--font-mono);font-size:10px;color:var(--maroon);">+ Bonus window active — dual trigger, highest conversion probability</div>` : '';
+    const macroNote = sig.macroScore < 0
+      ? `<div style="margin-top:6px;font-size:10px;color:#9E9E9E">⚠ Macro sentiment slightly negative (${(sig.macroScore*100).toFixed(0)}/100) — signal fires on event strength, but lower-than-ideal conversion environment. Focus on highest-intent prospects only.</div>`
+      : '';
 
-    html += `<div class="outreach-signal-banner" style="margin-bottom:12px;">
+    return `<div class="outreach-signal-banner">
       <div class="outreach-signal-icon">${icon}</div>
       <div class="outreach-signal-body">
-        <div class="outreach-signal-label">${esc(r.strength)} · ${esc(r.sector.sector)} · ${(r.sector.reachablePrimary||0).toLocaleString()} reachable</div>
-        <div class="outreach-signal-text"><strong>${esc(evt.label)}:</strong> ${esc(triggerRationale)}${calendarBoost}</div>
-        <div style="margin-top:10px;padding:8px 12px;background:rgba(122,31,43,0.04);border-left:3px solid var(--maroon);border-radius:0 4px 4px 0;">
-          <span style="font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;color:var(--maroon);">Entry: ${esc(ep.channel||'HR')}</span>
-          <div style="font-family:var(--font-body);font-size:12px;color:var(--ink-soft);margin-top:3px;">${esc(ep.note||'')}</div>
-        </div>
-        <div class="outreach-signal-companies" style="margin-top:8px;">
-          ${top3.map(c=>`<span style="font-weight:700">${esc(c.name)}</span> <span style="font-size:10px;color:var(--ink-faint)">~${c.estStaff15M} staff</span>`).join(' · ')}
-        </div>
+        <div class="outreach-signal-label">${esc(sig.strength)} Signal · ${esc(sig.sector.sector)} · ${totalReachable.toLocaleString()} reachable</div>
+        <div class="outreach-signal-text" style="margin-bottom:10px">${triggerLine}</div>
+        ${entryLine}
+        <div class="outreach-signal-companies" style="margin-top:10px">${primaryList}</div>
+        ${secondaryNote}
+        ${macroNote}
       </div>
     </div>`;
-  }
-
-  // ── Calendar-only signals: one consolidated card with ranked table ─────────
-  if (calendarResults.length) {
-    const totalReachable = calendarResults.reduce((s,r)=>s+(r.sector.reachablePrimary||0),0);
-
-    const tableRows = calendarResults.map((r,i) => {
-      const ep   = ENTRY_POINTS[r.sector.sector] || {};
-      const top2 = (r.sector.companies||[]).filter(c=>c.priority==='primary').slice(0,2);
-      return `<tr style="border-bottom:1px solid var(--rule);">
-        <td style="padding:10px 12px;font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);width:28px;">${String(i+1).padStart(2,'0')}</td>
-        <td style="padding:10px 12px;font-family:var(--font-ui);font-size:13px;font-weight:700;color:var(--ink);">${esc(r.sector.sector)}</td>
-        <td style="padding:10px 12px;font-family:var(--font-mono);font-size:11px;color:var(--maroon);font-weight:700;">${(r.sector.reachablePrimary||0).toLocaleString()}</td>
-        <td style="padding:10px 12px;font-family:var(--font-ui);font-size:11px;color:var(--ink-soft);">${esc(ep.channel||'—')}</td>
-        <td style="padding:10px 12px;font-family:var(--font-ui);font-size:11px;color:var(--ink-faint);">${top2.map(c=>esc(c.name)).join(', ')}</td>
-      </tr>`;
-    }).join('');
-
-    html += `<div class="outreach-signal-banner" style="flex-direction:column;gap:0;padding:0;overflow:hidden;">
-      <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--rule);">
-        <div class="outreach-signal-icon" style="margin-top:0;">📅</div>
-        <div class="outreach-signal-body">
-          <div class="outreach-signal-label">Calendar Window · ${calendarResults.length} Sectors Active · ${totalReachable.toLocaleString()} reachable staff</div>
-          <div class="outreach-signal-text">${esc(bonusLabel||'Bonus window')} — ${calendarResults.length} sectors qualify on calendar basis alone. No distinct corporate event detected. Ranked by reachable pool size.</div>
-        </div>
-      </div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;">
-          <thead><tr style="background:var(--paper);border-bottom:2px solid var(--rule);">
-            <th style="padding:8px 12px;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-align:left;">#</th>
-            <th style="padding:8px 12px;font-family:var(--font-ui);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-soft);text-align:left;">Sector</th>
-            <th style="padding:8px 12px;font-family:var(--font-ui);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-soft);text-align:left;">Reachable</th>
-            <th style="padding:8px 12px;font-family:var(--font-ui);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-soft);text-align:left;">Entry Point</th>
-            <th style="padding:8px 12px;font-family:var(--font-ui);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-soft);text-align:left;">Priority Companies</th>
-          </tr></thead>
-          <tbody>${tableRows}</tbody>
-        </table>
-      </div>
-    </div>`;
-  }
-
-  container.innerHTML = html;
+  }).join('');
 }
-
 
 // ════════════════════════════════════════════════════════════════════════
 // USE CASE 3: SENTIMENT SALES CALENDAR
@@ -3330,50 +3406,95 @@ const HELP_CONTENT = {
   briefing: {
     title: 'Briefing — How to read this',
     sections: [
-      { h: 'Today\'s Signal', p: 'The lead story: the article or theme with the highest market impact severity today, chosen by the AI synthesizer. The "So What" box is Mixta-specific commentary written by the AI — it connects the story to Lakowe Crossings, Lakowe Annexe, or Lagos New Town where relevant.' },
-      { h: 'Strategic Signals', p: 'Four market-facing buckets (Market Creation, Financing, Regulatory, Competition), each mapped to the most relevant theme from today\'s briefing. If fewer than 4 distinct themes exist, unfilled buckets show "No distinct signal today" rather than recycling a theme.' },
-      { h: 'Sentiment Pills', p: '<span class="help-tag">Bullish</span> = positive market implications. <span class="help-tag">Bearish</span> = headwinds or risk signals. <span class="help-tag">Neutral</span> = informational with no clear direction. Sentiment is assigned by AI based on market implications, not article tone.' },
-      { h: 'Market Impact Severity', p: '<span class="help-tag">Critical</span> → <span class="help-tag">High</span> → <span class="help-tag">Medium</span> → <span class="help-tag">Low</span> → <span class="help-tag">Negligible</span>. Assigned per article based on how directly and urgently the event affects the Lagos residential real estate market.' },
+      { h: 'Today\'s Signal', p: 'The lead story selected by the AI synthesizer — the article or theme with the highest market impact severity today. The opening sentence always contains a hard metric. The "Executive Takeaway (So What?)" box is Mixta-specific: it connects the story to Lakowe Crossings, Lakowe Annexe, or Lagos New Town.' },
+      { h: 'Strategic Signals', p: 'Four market-facing buckets (Market Creation, Financing, Regulatory, Competition), each mapped to the most relevant theme from today\'s briefing. If fewer than 4 distinct themes exist, unfilled buckets show "No distinct signal today" — they are never filled with a recycled theme.' },
+      { h: 'Theme Cards', p: 'Each theme card shows what happened, why it matters to Mixta, and a recommendation. Click any theme card to open the Theme Evolution Panel — a full timeline of every article that contributed to that narrative, how it developed over time, and an AI-written evolution analysis.' },
+      { h: 'Sentiment Pills', p: '<span class="help-tag">Bullish</span> = positive market implications. <span class="help-tag">Bearish</span> = headwinds or risk signals. <span class="help-tag">Neutral</span> = informational with no clear direction. Assigned by AI based on market implications, not article tone.' },
+      { h: 'Market Impact Severity', p: '<span class="help-tag">Critical</span> → <span class="help-tag">High</span> → <span class="help-tag">Medium</span> → <span class="help-tag">Low</span>. How directly and urgently the event affects the Lagos residential real estate market. Critical means act now; Low means file for context.' },
     ]
   },
   markets: {
     title: 'Markets — How to read this',
     sections: [
-      { h: 'Geospatial Map', p: 'Each dot is a news article, placed at the geographic region it covers. Color indicates sentiment: green = bullish, red = bearish, grey = neutral. Dots are clustered when multiple articles cover the same region.' },
-      { h: 'Geo Scope Filters', p: 'Lagos focuses on hyperlocal corridor news. Nigeria broadens to national policy and macro signals. Africa and Global capture regional and international real estate macro trends that indirectly affect the Nigerian market.' },
-      { h: '7/30/90-day Pulse', p: 'Rolling sentiment ratios and top topics extracted from all analyzed articles in the window. The "average sentiment" tips bullish if >50% of articles are bullish, bearish if >30% are bearish, neutral otherwise.' },
+      { h: 'Geospatial Map', p: 'Each dot is a news article placed at the region it covers. <span class="help-tag" style="background:rgba(30,94,64,0.15);color:#1E5E40">Green</span> = bullish, <span class="help-tag" style="background:rgba(143,42,42,0.15);color:#8F2A2A">Red</span> = bearish, <span class="help-tag">Grey</span> = neutral. <span class="help-tag" style="background:rgba(164,125,41,0.15);color:#7a5a10">Amber diamonds ◆</span> = cross-sector signals (non-real-estate articles whose sector impacts property demand). Click any dot to read the headline and link.' },
+      { h: 'Geo Scope Filters', p: 'Lagos focuses on hyperlocal corridor news. Nigeria broadens to national policy. Africa and Global capture regional trends that indirectly affect the Nigerian market. Changing scope re-filters the dots immediately.' },
+      { h: 'Cross-Sector Market Intelligence', p: 'Seven non-real-estate sectors ranked by their proven impact on Ibeju-Lekki corridor demand. Each card explains the transmission mechanism — exactly how that sector moves real estate prices or buyer behaviour. High-impact sector articles also appear on the map as amber diamond markers. Sectors: Macro Economy, Infrastructure, Energy/Power, FX & Diaspora, Financial Markets, Urban Policy, Corporate Expansion.' },
+      { h: 'Reading the Cross-Sector Cards', p: 'Each card shows the sector\'s impact tier (Critical / High / Moderate), the mechanism in plain English, the specific signals to watch for, and matched articles from the current archive. Cards are ranked 01–07 by impact — scroll through to understand the full demand picture beyond just real estate news.' },
     ]
   },
   themes: {
     title: 'Themes & Trends — How to read this',
     sections: [
-      { h: 'Narrative Momentum', p: 'Themes the AI synthesizer has detected across multiple briefing days, ranked by consecutive appearances. A theme that has appeared 5+ days in a row is a confirmed market narrative, not noise. "New" means it appeared for the first time today.' },
-      { h: 'Topic Volume Over Time', p: 'Counts how many times each topic keyword appeared across all analyzed articles, bucketed by week. This is raw keyword frequency — distinct from the AI-synthesized themes above, which require context and narrative coherence.' },
-      { h: 'Period Filters', p: '30D is the default. All shows the complete forever-retained history. The archive never prunes, so you can track multi-year topic momentum once enough data accumulates.' },
+      { h: 'Narrative Momentum', p: 'Themes the AI synthesizer has tracked across multiple briefing days, ranked by consecutive appearances. A theme appearing 5+ consecutive days is a confirmed market narrative, not noise. <span class="help-tag">New</span> means first appearance today. Click any theme to open the Theme Evolution Panel.' },
+      { h: 'Theme Evolution Panel', p: 'Opens when you click a theme. Shows: (1) today\'s briefing analysis for that theme, (2) an AI-generated 3-paragraph narrative of how the theme developed — where it started, how it evolved, and where it stands now with a Mixta implication, (3) a full article timeline grouped by day with sentiment bars.' },
+      { h: 'Topic Volume Over Time', p: 'Raw keyword frequency across all analyzed articles, bucketed by week. Distinct from AI-synthesized themes — this counts mentions, not narrative coherence. Useful for spotting rising topics before they crystallise into themes.' },
+      { h: 'Market Sentiment Signal', p: 'A 30-day colour-coded strip showing daily sentiment (green = bullish day, red = bearish, grey = neutral). The 7-day signal box beneath it gives a commercial action recommendation: Confidence Window (hold/raise prices), Active Market (close normally), Monitor (focus on pipeline), or Activate Closings (accelerate conversions). This is a decision tool, not just a chart.' },
+      { h: 'Period Filters', p: '30D is the default. All Time shows the complete forever-retained history. The archive never prunes — multi-year topic momentum will become visible as the system accumulates data.' },
     ]
   },
   competition: {
     title: 'Competition — How to read this',
     sections: [
-      { h: 'Stats Strip', p: 'Residential Median = median price across all non-land listings in the current scrape. Land/Plot Median is separate because land and residential units are different asset classes with incompatible pricing bases. Median is used (not mean) to resist distortion by a single extreme outlier.' },
-      { h: 'Pricing Matrix — Scatter Plot', p: 'Each dot is one individual listing. Groups on the X-axis are Location × Bedroom combinations. Color = source site. Star markers (★) are your manually-added Mixta prices — they appear in every group matching their bedroom count, not just Lakowe, so you can see how Mixta prices compare anywhere.' },
-      { h: 'Pricing Matrix — Bar Chart', p: 'Same grouping as scatter, but bars sorted left-to-right by price within each group. Mixta bars appear alongside competitor bars sorted by their actual price, not bolted on at the end.' },
-      { h: 'Add Mixta Price', p: 'Prices you add here are saved to Firebase and persist across sessions. They appear on both the scatter and bar charts. Property type must be set correctly — if you saved entries before today, they were stored as "Residential" by default and should be re-added with the correct type.' },
-      { h: 'Price Trend Chart', p: 'Daily median price per property type × location, smoothed with a 3-day rolling median. Identical properties (same title + location + bedrooms) are normalized to a single canonical data point per day before charting — this prevents different homes being scraped on different runs from creating false trend signals. Trend history accumulates daily; the chart fills in as more scrape runs complete.' },
-      { h: 'Normalization', p: 'Within each day, listings are first grouped by title + location + bedrooms. The median price of each canonical property group is computed, then the day\'s series value is the median of those property medians. This means the trend tracks comparable homes, not random samples.' },
+      { h: 'Stats Strip', p: 'Residential Median and Land/Plot Median from today\'s scrape. Median is used — not mean — to resist distortion from extreme outliers. Statistical outliers (e.g. listings priced in wrong currency units) are automatically removed before calculation using IQR filtering.' },
+      { h: 'Mixta vs Market — Competitive Position', p: 'Compares every Mixta price you have entered against today\'s market median for the same bedroom × location cluster. <span class="help-tag" style="background:rgba(244,67,54,0.1);color:#c62828">▲ Above market</span> means you are priced above the median for that spec. <span class="help-tag" style="background:rgba(46,125,50,0.1);color:#1b5e20">▼ Below market</span> means room to raise. <span class="help-tag" style="background:rgba(245,127,23,0.1);color:#e65100">≈ At market</span> means within ±5%. Updates automatically when you add or remove Mixta prices below.' },
+      { h: 'Pricing Matrix — Scatter Plot', p: 'Each dot is one individual listing. X-axis groups are Location × Bedroom combinations. Colour = source portal. Star markers (★) are your manually added Mixta prices — they appear in every group matching their bedroom count.' },
+      { h: 'Pricing Matrix — Bar Chart', p: 'Same grouping as scatter, bars sorted left-to-right by price. Mixta bars appear alongside competitor bars at their actual price position.' },
+      { h: 'Price Trend Over Time', p: 'Default view groups by bedroom count (1BR, 2BR, 3BR etc.) across the full corridor — 5 clean lines. Selecting a Location filter switches to property-type lines within that location. Selecting a Type filter switches to location lines for that type. Period buttons (7D, 30D etc.) filter the date range. Hover over any point on a line to see the exact date, series, and price in a tooltip.' },
+      { h: 'Add Mixta Price', p: 'Prices saved here persist to Firebase across sessions and appear in the competitive positioning card and all pricing charts. Set property type correctly — it affects which comparison group you appear in.' },
+    ]
+  },
+  outreach: {
+    title: 'Outreach Intelligence — How to read this',
+    sections: [
+      { h: 'Three-Signal Model', p: 'A signal only fires when three conditions align: (1) Signal C — macro base: market sentiment must not be in a sustained bearish period, (2) Signal A — calendar: bonus payment windows (Jan–Feb year-end, Jul–Aug H1) or (3) Signal B — event: a specific corporate lifecycle event detected in the news. News volume alone never triggers a recommendation.' },
+      { h: 'Event Triggers (ranked by conversion weight)', p: '<span class="help-tag">Contract win</span> — strongest signal, act within 3 weeks of announcement. <span class="help-tag">Salary review</span> — 4–6 week conversion window post-announcement. <span class="help-tag">IPO / ESOP</span> — 60-day window after vesting. <span class="help-tag">Welfare / cooperative</span> — company already in buying mode. <span class="help-tag">Sector growth</span> — weakest, only fires during bonus window.' },
+      { h: 'Event Cards vs Calendar Table', p: 'When a sector has a detected corporate event, it gets its own card with a specific rationale and named entry point. When the only trigger is the bonus window (same for all sectors), they collapse into one ranked table — avoids six identical cards saying the same thing.' },
+      { h: 'Entry Points', p: 'Each sector card specifies the channel (HR director, cooperative chairman, professional association, LinkedIn direct) and a specific approach note. The entry point is the difference between a cold call that gets forwarded to voicemail and a warm meeting that leads to a bulk presentation.' },
+      { h: 'Reachable Staff Count', p: 'Estimated Lagos-based staff earning ₦1.5M+/month — the minimum monthly income band for a Mixta product to be accessible on a 10-year payment plan. Lower-priority companies (₦500K–₦1.5M band) appear in a secondary row — they are not ignored, just ranked lower.' },
+      { h: 'Macro Status Strip', p: 'The coloured bar at the top of the page shows the current macro environment. Outreach into a bearish environment produces low conversion regardless of trigger. When the strip shows bearish, focus on closing existing pipeline rather than new outreach.' },
+    ]
+  },
+  innovation: {
+    title: 'Innovation Hub — How to read this',
+    sections: [
+      { h: 'What this section covers', p: 'Global intelligence on technologies, design concepts, business models, and regulatory frameworks redefining real estate worldwide. Deliberately not localised to Nigeria — this is worldwide signal curated for relevance to a developer building the future of Lagos. Nigerian market reports belong in the Briefing section.' },
+      { h: 'Selection criteria', p: 'Every article must pass three gates: (1) Novelty — launched, announced, or described as emerging (not a retrospective), (2) Application — directly applicable to residential/commercial development, construction, transaction, or financing, (3) Non-local — not a Nigerian market report or price analysis.' },
+      { h: 'Category filters', p: '<span class="help-tag">Proptech</span> — digital platforms and apps. <span class="help-tag">AI & Data</span> — machine learning, digital twins, algorithmic tools. <span class="help-tag">Sustainability</span> — green building, net zero, passive house. <span class="help-tag">Construction Tech</span> — modular, prefab, 3D printing. <span class="help-tag">New Financing</span> — tokenisation, fractional ownership, co-living models. <span class="help-tag">Urban Design</span> — mixed-use, transit-oriented, smart cities. <span class="help-tag">Policy</span> — regulatory innovations from other markets.' },
+      { h: 'Mixta Lens', p: 'The amber box on each card translates the global innovation into a specific strategic implication for Mixta — not generic commentary, but a named connection to Lakowe Crossings, Lakowe Annexe, or Lagos New Town where relevant. The lens is fixed per category; it updates as the category definitions evolve.' },
+      { h: 'How to use this section', p: 'Read weekly, not daily. Look for 2–3 ideas per session that are worth a deeper discussion with the commercial or development team. This is your forward scanning — a Mixta partner watching what the global industry is doing 3–5 years ahead of the Nigerian market.' },
     ]
   },
   library: {
     title: 'Library — How to read this',
     sections: [
-      { h: 'Executive Briefings', p: 'Full AI-generated briefings from every pipeline run, stored permanently. Each briefing contains the strategic synthesis, themes, why-it-matters commentary, and recommendations generated that day.' },
-      { h: 'Source Articles', p: 'Every article that passed the recency and relevance filters on any given run, with AI-generated summaries and sentiment tags. Articles are retained for 365 days.' },
-      { h: 'Search', p: 'Searches across titles, dates, and AI summaries simultaneously. Use keywords like "Ibeju-Lekki", "mortgage", or "affordable housing" to find relevant historic coverage quickly.' },
+      { h: 'Executive Briefings', p: 'Full AI-generated briefings from every pipeline run, stored permanently. Each briefing contains the strategic synthesis, themes, why-it-matters commentary, and recommendations generated that day. Use this to track how specific narratives evolved over weeks.' },
+      { h: 'Source Articles', p: 'Every article that passed the 48-hour recency filter and real estate relevance gate, with AI-generated summaries, sentiment tags, and market impact scores. Retained for 365 days. Use as evidence when preparing market presentations.' },
+      { h: 'Search', p: 'Searches across titles, dates, and AI summaries simultaneously. Use keywords like "Ibeju-Lekki", "mortgage", "affordable housing", or "interest rate" to pull relevant historic coverage. Combine keywords with date navigation for precise research.' },
     ]
   },
 };
 
+// Opens the help panel pre-loaded with a specific section's content
+function openHelpFor(key) {
+  _helpOpen = true;
+  const panel = document.getElementById('helpWidgetPanel');
+  const btn   = document.getElementById('helpWidgetBtn');
+  panel.style.display = 'flex';
+  btn.textContent = '×';
+  const content = HELP_CONTENT[key] || HELP_CONTENT.briefing;
+  document.getElementById('helpPanelTitle').textContent = content.title;
+  document.getElementById('helpPanelBody').innerHTML = content.sections.map(s => `
+    <div class="help-section">
+      <h4>${s.h}</h4>
+      <p>${s.p}</p>
+    </div>`).join('');
+  // Scroll panel into view
+  panel.scrollTop = 0;
+}
+
 let _helpOpen = false;
+
+
 
 function toggleHelpWidget() {
   _helpOpen = !_helpOpen;

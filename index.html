@@ -1194,13 +1194,13 @@ function _getThemeArticles(label) {
   const all = Array.isArray(articlesCache) ? articlesCache : [];
   return all
     .map(a => ({ article: a, score: _themeMatchScore(label, a) }))
-    .filter(x => x.score >= 2)
+    .filter(x => x.score >= 4)
     .sort((a, b) => {
-      // Sort by date descending, then score
       const da = new Date(a.article.publishedAt || a.article.addedAt || 0);
       const db = new Date(b.article.publishedAt || b.article.addedAt || 0);
       return db - da || b.score - a.score;
     })
+    .slice(0, 30)
     .map(x => x.article);
 }
 
@@ -1303,11 +1303,12 @@ Rules: Be specific, cite dates and facts from the articles. Do not mention Mixta
     return text;
   }
 
-  // ── Fallback chain: Groq → Cerebras → SambaNova ───────────────────────────
+  // ── Fallback chain: Groq → SambaNova → Mistral ──────────────────────────────
+  // Cerebras removed: blocks browser requests with CORS policy.
   const providers = [
     { name: 'Groq',      conf: cfg.groq      },
-    { name: 'Cerebras',  conf: cfg.cerebras  },
     { name: 'SambaNova', conf: cfg.sambanova },
+    { name: 'Mistral',   conf: cfg.mistral   },
   ].filter(p => p.conf?.key);
 
   let text = null;
@@ -2409,6 +2410,23 @@ function renderPriceTrendChart(listings) {
     return;
   }
 
+  // ── IQR outlier removal ───────────────────────────────────────────────────
+  // Removes extreme data-entry errors (e.g. ₦150B land listed in wrong unit)
+  // before charting. Q3 + 3×IQR is very conservative — only removes genuine
+  // statistical impossibilities, never legitimate premium listings.
+  {
+    const prices = filteredListings.map(l => l.priceValue).filter(Boolean).sort((a,b)=>a-b);
+    if (prices.length >= 4) {
+      const q1 = prices[Math.floor(prices.length * 0.25)];
+      const q3 = prices[Math.floor(prices.length * 0.75)];
+      const ceiling = q3 + 3 * (q3 - q1);
+      const before = filteredListings.length;
+      filteredListings = filteredListings.filter(l => !l.priceValue || l.priceValue <= ceiling);
+      if (filteredListings.length < before)
+        console.log(`[PriceTrend] Removed ${before - filteredListings.length} outlier(s) above ${formatNaira(Math.round(ceiling))}`);
+    }
+  }
+
   // Compute daily median price per (propertyType × location) series
   const medianOf = arr => {
     if (!arr.length) return null;
@@ -2432,11 +2450,17 @@ function renderPriceTrendChart(listings) {
     const dateStr = l.scrapedAt.slice(0, 10);
     const type = l.propertyType || 'Residential';
     const loc  = l.location     || 'Unspecified';
-    const seriesKey = selectedLoc !== 'all'
-      ? type
-      : selectedType !== 'all'
-        ? loc
-        : `${type} · ${loc}`;
+    // Series grouping strategy:
+    // - Both filters "all"      → group by bedroomLabel (5-6 clean meaningful lines)
+    // - Location filter set      → group by property type within that location
+    // - Property type filter set → group by location within that type
+    const seriesKey = selectedLoc !== 'all' && selectedType !== 'all'
+      ? `${type} · ${l.bedroomLabel || 'Unspec'}`
+      : selectedLoc !== 'all'
+        ? (l.bedroomLabel || 'Unspecified')
+        : selectedType !== 'all'
+          ? loc
+          : (l.bedroomLabel || 'Unspecified');
 
     // Canonical property key for normalization within a day
     const propKey = `${(l.title || '').toLowerCase().trim()}||${loc.toLowerCase()}||${(l.bedroomLabel || '').toLowerCase()}`;
@@ -2571,7 +2595,29 @@ function renderPriceTrendChart(listings) {
 
   container.innerHTML = svg +
     `<div class="scatter-legend">${legendHtml}</div>` +
-    `<div style="font-family:var(--font-ui);font-size:10.5px;color:var(--ink-faint);margin-top:6px;">Smoothed 3-day rolling median · ${allDates.length} scrape days · ${filteredListings.length} listings</div>` +
+    (() => {
+      // Build "today's median by bedroom spec" summary — more actionable than scrape metadata
+      const todayDate = allDates[allDates.length - 1];
+      const todayListings = filteredListings.filter(l => l.scrapedAt && l.scrapedAt.slice(0,10) === todayDate && l.priceValue);
+      const specGroups = {};
+      const bedOrder = ['1 Bedroom','2 Bedrooms','3 Bedrooms','4 Bedrooms','5+ Bedrooms','Unspecified'];
+      for (const l of todayListings) {
+        const k = l.bedroomLabel || 'Unspecified';
+        if (!specGroups[k]) specGroups[k] = [];
+        specGroups[k].push(l.priceValue);
+      }
+      const specs = Object.entries(specGroups)
+        .filter(([,v]) => v.length >= 2)
+        .map(([k,v]) => { const s = v.slice().sort((a,b)=>a-b); return {k, med: s[Math.floor(s.length/2)], n: v.length}; })
+        .sort((a,b) => (bedOrder.indexOf(a.k)+99) - (bedOrder.indexOf(b.k)+99))
+        .slice(0,6);
+      const specStr = specs.map(s => `${s.k}: ${formatNaira(Math.round(s.med))}`).join(' · ');
+      const filterNote = [selectedType !== 'all' ? selectedType : '', selectedLoc !== 'all' ? selectedLoc : ''].filter(Boolean).join(', ');
+      const label = specStr
+        ? `Today's median${filterNote ? ' · ' + filterNote : ''} — ${specStr}`
+        : `${allDates.length} scrape days · ${filteredListings.length} listings`;
+      return `<div style="font-family:var(--font-ui);font-size:10.5px;color:var(--ink-faint);margin-top:6px;">${label}</div>`;
+    })() +
     dataNote;
 }
 

@@ -334,6 +334,57 @@ button, select, input { font-family: inherit; }
 .evo-sent-seg.neutral { background: var(--rule); }
 .evo-empty { font-family: var(--font-ui); font-size: 13px; color: var(--ink-faint); font-style: italic; padding: 16px 0; }
 
+/* ── Use Case 1: Competitive Positioning Card ──────────────────────────────── */
+.pos-card { background: var(--paper-card); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; margin-bottom: 40px; }
+.pos-card-header { background: var(--maroon); color: #fff; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+.pos-card-title { font-family: var(--font-ui); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; }
+.pos-card-sub { font-family: var(--font-mono); font-size: 10px; opacity: 0.75; }
+.pos-table { width: 100%; border-collapse: collapse; }
+.pos-table th { font-family: var(--font-ui); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); padding: 10px 16px; border-bottom: 2px solid var(--rule); text-align: left; background: var(--paper); }
+.pos-table td { font-family: var(--font-ui); font-size: 13px; color: var(--ink); padding: 12px 16px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+.pos-table tr:last-child td { border-bottom: none; }
+.pos-table tr:hover td { background: var(--paper); }
+.pos-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; }
+.pos-badge.above { background: rgba(244,67,54,0.1); color: #c62828; }
+.pos-badge.below { background: rgba(46,125,50,0.1); color: #1b5e20; }
+.pos-badge.at { background: rgba(245,127,23,0.1); color: #e65100; }
+.pos-badge.no-data { background: var(--rule); color: var(--ink-faint); }
+.pos-mixta-price { font-weight: 700; color: var(--maroon); }
+.pos-market-price { color: var(--ink-soft); font-size: 12px; }
+.pos-empty { padding: 32px 24px; color: var(--ink-faint); font-family: var(--font-ui); font-size: 13px; font-style: italic; }
+
+/* ── Use Case 2: Outreach Signal Banner ───────────────────────────────────── */
+.outreach-signal-banner { border: 1.5px solid var(--maroon); border-radius: var(--radius); background: rgba(122,31,43,0.04); padding: 16px 20px; margin-bottom: 16px; display: flex; gap: 14px; align-items: flex-start; }
+.outreach-signal-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.outreach-signal-body { flex: 1; }
+.outreach-signal-label { font-family: var(--font-ui); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--maroon); margin-bottom: 4px; }
+.outreach-signal-text { font-family: var(--font-headline); font-size: 15px; color: var(--ink); line-height: 1.5; }
+.outreach-signal-companies { font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); margin-top: 6px; }
+
+/* ── Use Case 3: Sentiment Sales Calendar ─────────────────────────────────── */
+.sentiment-cal-strip { display: flex; gap: 0; margin: 16px 0 8px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--rule); }
+.sentiment-cal-day { flex: 1; height: 36px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 9px; color: rgba(255,255,255,0.85); cursor: default; position: relative; transition: filter 0.15s; min-width: 0; }
+.sentiment-cal-day:hover { filter: brightness(1.15); z-index: 1; }
+.sentiment-cal-day.bullish { background: var(--bull, #2E7D32); }
+.sentiment-cal-day.bearish { background: var(--bear, #C62828); }
+.sentiment-cal-day.neutral  { background: #9E9E9E; }
+.sentiment-cal-day.gate     { background: #E0E0E0; }
+.sentiment-signal-box { background: var(--paper-card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px 24px; margin-top: 16px; }
+.sentiment-signal-label { font-family: var(--font-ui); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); margin-bottom: 8px; }
+.sentiment-signal-reading { font-family: var(--font-headline); font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.sentiment-signal-reading.bullish { color: var(--bull, #2E7D32); }
+.sentiment-signal-reading.bearish { color: var(--bear, #C62828); }
+.sentiment-signal-reading.neutral { color: var(--ink-soft); }
+.sentiment-signal-advice { font-family: var(--font-body); font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+.sentiment-signal-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); margin-top: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* ── Trend chart tooltip ───────────────────────────────────────────────────── */
+#trendTooltip { position: fixed; background: var(--ink); color: #fff; border-radius: 6px; padding: 8px 12px; font-family: var(--font-ui); font-size: 12px; pointer-events: none; z-index: 9999; opacity: 0; transition: opacity 0.12s; max-width: 220px; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+#trendTooltip .tt-date { font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+#trendTooltip .tt-series { font-weight: 700; margin-bottom: 2px; }
+#trendTooltip .tt-price { font-size: 15px; font-weight: 800; }
+#trendTooltip .tt-count { font-size: 10px; opacity: 0.65; margin-top: 3px; }
+
 /* ════════════════════════════════════════════════════════════════════════
    HELP WIDGET
    ════════════════════════════════════════════════════════════════════════ */
@@ -826,6 +877,13 @@ button, select, input { font-family: inherit; }
       <div id="trendTopicsContainer" class="pricing-scatter-container">
         <div class="loading">Loading trend history&hellip;</div>
       </div>
+
+      <!-- ── USE CASE 3: Sentiment Sales Calendar ───────────────────────────── -->
+      <div class="section-divider" style="margin-top:48px;"><h2>Market Sentiment Signal</h2></div>
+      <div class="dateline" style="font-family:var(--font-ui);font-size:13.5px;color:var(--ink-soft);margin-bottom:24px;">
+        Daily sentiment reading from the news pipeline. Use this as a forward-looking indicator: sustained bullish = price confidence; turning neutral = accelerate closings; sustained bearish = activate promotions.
+      </div>
+      <div id="sentimentCalendarContainer"></div>
     </section>
 
     <section id="theme-detail" class="view">
@@ -837,6 +895,12 @@ button, select, input { font-family: inherit; }
       <div class="section-divider" style="margin-top:0;"><h2>Competitive Market Pulse</h2></div>
       
       <div id="pricingStatsBar" class="pricing-stats-inline"></div>
+
+      <!-- ── USE CASE 2: Outreach Signal Banner (rendered by JS when signals exist) ── -->
+      <div id="outreachSignalContainer"></div>
+
+      <!-- ── USE CASE 1: Competitive Positioning Card ───────────────────────────── -->
+      <div id="competitivePositioningCard"></div>
 
       <!-- PRICE TREND CHART — below the matrix, after individual unit data -->
 
@@ -2242,6 +2306,417 @@ function renderPricing(data) {
   renderPricingScatter(todayListings);
 }
 
+  renderPricingScatter(todayListings);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// USE CASE 1: COMPETITIVE POSITIONING CARD
+// Compares every Mixta price entry against today's market median for the
+// same bedroom × location cluster. Shows whether Mixta is above, at, or
+// below market and by how much.
+// ════════════════════════════════════════════════════════════════════════
+
+function renderCompetitivePositioningCard() {
+  const container = document.getElementById('competitivePositioningCard');
+  if (!container) return;
+
+  const mixtaEntries = (window._mixtaPrices || []).filter(m => m.priceValue > 0);
+  const todayListings = _getTodayListings().filter(l => l.priceValue);
+
+  if (!mixtaEntries.length) {
+    container.innerHTML = `<div class="pos-card">
+      <div class="pos-card-header">
+        <span class="pos-card-title">Mixta vs Market — Competitive Position</span>
+        <span class="pos-card-sub">Add Mixta prices below to see positioning</span>
+      </div>
+      <div class="pos-empty">No Mixta prices added yet. Use "Add Mixta Price for Comparison" below to enter your products — they will appear here benchmarked against today's market data.</div>
+    </div>`;
+    return;
+  }
+
+  // Build market medians by bedroomLabel (cross-location — corridor-wide)
+  // AND by bedroomLabel × location (precise match)
+  const medianOf = arr => {
+    if (!arr.length) return null;
+    const s = [...arr].sort((a, b) => a - b);
+    return s.length % 2 ? s[Math.floor(s.length/2)] : (s[Math.floor(s.length/2)-1]+s[Math.floor(s.length/2)])/2;
+  };
+
+  // Apply same IQR filter used in trend chart
+  const allPrices = todayListings.map(l => l.priceValue).sort((a,b)=>a-b);
+  let ceiling = Infinity;
+  if (allPrices.length >= 4) {
+    const q3 = allPrices[Math.floor(allPrices.length*0.75)];
+    const q1 = allPrices[Math.floor(allPrices.length*0.25)];
+    ceiling = q3 + 3*(q3-q1);
+  }
+  const cleanListings = todayListings.filter(l => l.priceValue <= ceiling);
+
+  // Build lookup: bed+loc → median, bed → corridor median
+  const byBedLoc = {}, byBed = {};
+  for (const l of cleanListings) {
+    const bed = l.bedroomLabel || 'Unspecified';
+    const loc = l.location || 'Unspecified';
+    const key = `${bed}||${loc}`;
+    if (!byBedLoc[key]) byBedLoc[key] = [];
+    byBedLoc[key].push(l.priceValue);
+    if (!byBed[bed]) byBed[bed] = [];
+    byBed[bed].push(l.priceValue);
+  }
+
+  const rows = mixtaEntries.map(m => {
+    const bed = m.bedroomLabel || 'Unspecified';
+    const loc = m.location     || 'Unspecified';
+    const exactKey = `${bed}||${loc}`;
+
+    // Prefer exact bed+loc match; fall back to corridor-wide bed median
+    const exactPrices   = byBedLoc[exactKey] || [];
+    const corridorPrices= byBed[bed] || [];
+    const refPrices     = exactPrices.length >= 2 ? exactPrices : corridorPrices;
+    const marketMedian  = medianOf(refPrices);
+    const matchLabel    = exactPrices.length >= 2
+      ? `${bed} in ${loc} (${exactPrices.length} listings)`
+      : corridorPrices.length >= 2
+        ? `${bed} corridor-wide (${corridorPrices.length} listings)`
+        : null;
+
+    let badge, pct;
+    if (!marketMedian || !matchLabel) {
+      badge = `<span class="pos-badge no-data">No comparable data</span>`;
+    } else {
+      pct = ((m.priceValue - marketMedian) / marketMedian * 100).toFixed(1);
+      const absPct = Math.abs(pct);
+      if (pct > 5)       badge = `<span class="pos-badge above">▲ ${absPct}% above market</span>`;
+      else if (pct < -5) badge = `<span class="pos-badge below">▼ ${absPct}% below market</span>`;
+      else               badge = `<span class="pos-badge at">≈ At market (${pct > 0 ? '+' : ''}${pct}%)</span>`;
+    }
+
+    return `<tr>
+      <td><strong>${esc(m.label)}</strong><br><span style="font-size:11px;color:var(--ink-faint)">${esc(bed)} · ${esc(loc)}</span></td>
+      <td class="pos-mixta-price">${esc(formatNaira(m.priceValue))}</td>
+      <td class="pos-market-price">${marketMedian ? esc(formatNaira(Math.round(marketMedian))) : '—'}<br><span style="font-size:10px;color:var(--ink-faint)">${esc(matchLabel || 'Insufficient data')}</span></td>
+      <td>${badge}</td>
+      <td style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint)">${esc(m.propertyType || '—')}</td>
+    </tr>`;
+  }).join('');
+
+  const scrapeDate = _getTodayListings()[0]?.scrapedAt?.slice(0,10) || 'latest scrape';
+  container.innerHTML = `<div class="pos-card">
+    <div class="pos-card-header">
+      <span class="pos-card-title">Mixta vs Market — Competitive Position</span>
+      <span class="pos-card-sub">Market data: ${esc(scrapeDate)} · ${cleanListings.length} comparable listings</span>
+    </div>
+    <table class="pos-table">
+      <thead><tr>
+        <th>Mixta Product</th>
+        <th>Asking Price</th>
+        <th>Market Median</th>
+        <th>Position</th>
+        <th>Type</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// USE CASE 2: OUTREACH SIGNAL BANNER
+// Maps active briefing themes to corporate sector targets.
+// When a bullish/strategic theme matches a sector, surfaces an outreach signal.
+// ════════════════════════════════════════════════════════════════════════
+
+// Sector → theme keyword mapping
+// Add new rows as the corporate targets table grows.
+const SECTOR_THEME_MAP = [
+  {
+    sector: 'Energy (Oil & Gas)',
+    companies: ['Seplat Energy', 'Oando', 'TotalEnergies Nigeria', 'Nestoil', 'ExxonMobil Nigeria', 'Nest Oil Nigeria'],
+    keywords: ['energy', 'oil', 'gas', 'petroleum', 'upstream', 'downstream', 'NNPC', 'refinery', 'pipeline', 'LNG'],
+  },
+  {
+    sector: 'Financial Services & Banking',
+    companies: ['Stanbic IBTC', 'GTBank', 'Access Bank', 'Zenith Bank', 'UBA', 'First Bank', 'FCMB'],
+    keywords: ['banking', 'financial', 'fintech', 'mortgage', 'FMBN', 'NHF', 'interest rate', 'CBN', 'credit', 'investment'],
+  },
+  {
+    sector: 'Telecoms',
+    companies: ['MTN Nigeria', 'Airtel Nigeria', 'IHS Towers', 'ATC Nigeria'],
+    keywords: ['telecom', 'broadband', '5G', 'infrastructure', 'connectivity', 'digital', 'spectrum'],
+  },
+  {
+    sector: 'FMCG',
+    companies: ['Nigerian Breweries', 'Unilever Nigeria', 'Dangote Group', 'PZ Cussons'],
+    keywords: ['consumer', 'FMCG', 'manufacturing', 'brewery', 'food', 'distribution', 'retail'],
+  },
+  {
+    sector: 'Industrials / Construction',
+    companies: ['Julius Berger Nigeria', 'BUA Cement', 'Lafarge Africa'],
+    keywords: ['infrastructure', 'construction', 'highway', 'expressway', 'Lekki', 'corridor', 'building', 'cement', 'Julius Berger'],
+  },
+  {
+    sector: 'Tech / Fintech',
+    companies: ['Paystack', 'Flutterwave', 'Interswitch', 'Andela', 'Konga'],
+    keywords: ['tech', 'startup', 'fintech', 'digital economy', 'proptech', 'innovation', 'AI', 'technology'],
+  },
+];
+
+function renderOutreachSignals(briefingData, trendHistory) {
+  const container = document.getElementById('outreachSignalContainer');
+  if (!container) return;
+
+  const themes = briefingData?.themes || [];
+  const recentDays = (trendHistory?.days || []).slice(-14); // last 14 days
+  const recentTopics = recentDays.flatMap(d => (d.topTopics || []).map(t => t.topic || ''));
+
+  const signals = [];
+
+  for (const sector of SECTOR_THEME_MAP) {
+    // Count how many briefing themes and recent topics match this sector's keywords
+    let matchedThemes = [], matchedTopics = [];
+
+    for (const theme of themes) {
+      const text = ((theme.label || '') + ' ' + (theme.what_happened || '') + ' ' + (theme.why_it_matters_to_mixta || '')).toLowerCase();
+      if (sector.keywords.some(kw => text.includes(kw.toLowerCase()))) {
+        if (theme.sentiment === 'bullish' || theme.confidence === 'high' || theme.mixta_relevance === 'strategic_opportunity') {
+          matchedThemes.push(theme.label);
+        }
+      }
+    }
+
+    for (const topic of recentTopics) {
+      if (sector.keywords.some(kw => topic.toLowerCase().includes(kw.toLowerCase()))) {
+        matchedTopics.push(topic);
+      }
+    }
+
+    if (matchedThemes.length > 0 || matchedTopics.length >= 3) {
+      const strength = matchedThemes.length >= 2 ? 'Strong' : matchedTopics.length >= 5 ? 'Moderate' : 'Emerging';
+      signals.push({ sector, strength, matchedThemes, matchedTopics: [...new Set(matchedTopics)].slice(0, 3) });
+    }
+  }
+
+  // Also fire for infrastructure themes (always relevant to Lekki corridor)
+  const infraThemes = themes.filter(t => {
+    const text = ((t.label || '') + ' ' + (t.what_happened || '')).toLowerCase();
+    return text.includes('infrastructure') || text.includes('expressway') || text.includes('lekki') || text.includes('ibeju');
+  });
+  if (infraThemes.length > 0 && !signals.find(s => s.sector.sector === 'Industrials / Construction')) {
+    signals.push({
+      sector: SECTOR_THEME_MAP.find(s => s.sector === 'Industrials / Construction'),
+      strength: 'Emerging',
+      matchedThemes: infraThemes.map(t => t.label),
+      matchedTopics: [],
+    });
+  }
+
+  if (!signals.length) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = signals.map(sig => `
+    <div class="outreach-signal-banner">
+      <div class="outreach-signal-icon">📡</div>
+      <div class="outreach-signal-body">
+        <div class="outreach-signal-label">${esc(sig.strength)} Outreach Signal · ${esc(sig.sector.sector)}</div>
+        <div class="outreach-signal-text">${sig.matchedThemes.length
+          ? `${esc(sig.matchedThemes[0])} — activate outreach to your ${esc(sig.sector.sector)} targets while this narrative is live.`
+          : `${esc(sig.sector.sector)}-related topics trending (${esc(sig.matchedTopics.join(', '))}) — elevated sector receptivity window.`
+        }</div>
+        <div class="outreach-signal-companies">Target companies: ${esc(sig.sector.companies.slice(0, 4).join(' · '))}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// USE CASE 3: SENTIMENT SALES CALENDAR
+// Renders a colour-coded strip of daily sentiment readings with an
+// interpreted signal and commercial action recommendation.
+// ════════════════════════════════════════════════════════════════════════
+
+function renderSentimentCalendar(trendHistory) {
+  const container = document.getElementById('sentimentCalendarContainer');
+  if (!container) return;
+
+  const days = (trendHistory?.days || []).filter(d => d.date);
+  if (days.length < 3) {
+    container.innerHTML = `<div style="color:var(--ink-faint);font-family:var(--font-ui);font-size:13px;font-style:italic;padding:16px 0;">
+      Sentiment calendar builds as the pipeline runs daily. Check back when at least 7 days of data have accumulated.
+    </div>`;
+    return;
+  }
+
+  // Last 30 days only for the visual strip
+  const recent = days.slice(-30);
+
+  // Compute rolling 5-day sentiment average for the signal
+  const last7 = days.slice(-7);
+  const sentimentScore = (dayArr) => {
+    let score = 0;
+    for (const d of dayArr) {
+      const b = d.sentimentBreakdown || {};
+      const total = (b.bullish || 0) + (b.bearish || 0) + (b.neutral || 0);
+      if (total > 0) score += ((b.bullish || 0) - (b.bearish || 0)) / total;
+    }
+    return dayArr.length ? score / dayArr.length : 0;
+  };
+
+  const score7 = sentimentScore(last7);
+  const scoreTrend = last7.length >= 4
+    ? sentimentScore(last7.slice(-3)) - sentimentScore(last7.slice(0,3))
+    : 0;
+
+  // Determine signal
+  let signalClass, signalText, advice;
+  if (score7 > 0.25) {
+    signalClass = 'bullish';
+    signalText = '🟢 Sustained Bullish — Confidence Window';
+    advice = 'Market sentiment is running consistently positive. This is the window to hold or raise prices, launch new phases, and let qualified prospects self-select. Urgency messaging ("prices increasing") will land well in this environment.';
+  } else if (score7 > 0.05) {
+    signalClass = 'bullish';
+    signalText = '🟡 Mildly Bullish — Active Market';
+    advice = 'Positive but not emphatic. Proceed normally — close pipeline deals at current pricing. Watch for shifts. If 3 consecutive bearish days appear, accelerate closings.';
+  } else if (score7 > -0.1) {
+    signalClass = 'neutral';
+    signalText = '⚪ Neutral — Monitor Closely';
+    advice = 'Market sentiment is ambiguous. Prioritise closing deals already in advanced stages rather than generating new leads. Avoid price increases. Watch for the signal to resolve in either direction.';
+  } else {
+    signalClass = 'bearish';
+    signalText = '🔴 Bearish Signal — Activate Closings';
+    advice = 'Negative sentiment is persisting. Accelerate existing pipeline — follow up with qualified leads, offer flexible payment plans on current stock. Defer new price increases. This is not a sales pause; it is a conversion window for deals already in motion.';
+  }
+
+  const trendArrow = scoreTrend > 0.05 ? ' ↗ improving' : scoreTrend < -0.05 ? ' ↘ deteriorating' : ' → stable';
+
+  // Build colour strip
+  const strip = recent.map(d => {
+    const b = d.sentimentBreakdown || {};
+    const total = (b.bullish || 0) + (b.bearish || 0) + (b.neutral || 0);
+    let cls, tooltip;
+    if (total === 0) {
+      cls = 'gate'; tooltip = `${d.date}: No articles (quiet day)`;
+    } else {
+      const net = ((b.bullish || 0) - (b.bearish || 0)) / total;
+      cls = net > 0.1 ? 'bullish' : net < -0.1 ? 'bearish' : 'neutral';
+      tooltip = `${d.date}: ${b.bullish||0} bullish · ${b.neutral||0} neutral · ${b.bearish||0} bearish`;
+    }
+    const [,mo,dy] = d.date.split('-');
+    const shortDate = `${parseInt(dy)}/${parseInt(mo)}`;
+    return `<div class="sentiment-cal-day ${cls}" title="${esc(tooltip)}">${recent.length <= 14 ? shortDate : ''}</div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="sentiment-cal-strip">${strip}</div>
+    <div style="display:flex;gap:16px;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);margin-bottom:16px;flex-wrap:wrap;">
+      <span>🟢 Bullish day</span><span>🔴 Bearish day</span><span style="color:#9E9E9E">■ Neutral</span><span style="color:#E0E0E0;text-shadow:0 0 0 #999">■ No data</span>
+      <span style="margin-left:auto">${recent.length} days shown · hover for detail</span>
+    </div>
+    <div class="sentiment-signal-box">
+      <div class="sentiment-signal-label">7-Day Signal Reading</div>
+      <div class="sentiment-signal-reading ${signalClass}">${esc(signalText)}</div>
+      <div class="sentiment-signal-advice">${esc(advice)}</div>
+      <div class="sentiment-signal-meta">Score: ${(score7*100).toFixed(0)}/100 · Trend: ${trendArrow} · Based on ${last7.length} days · ${days.length} total days recorded</div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// TREND CHART TOOLTIP
+// Invisible hit-target layer over the SVG that responds to mouse position
+// and shows a floating data dialog.
+// Called by renderPriceTrendChart after building the SVG.
+// ════════════════════════════════════════════════════════════════════════
+
+function attachTrendChartTooltip(container, series, allDates, xScale, yScale, mL, mR, mT, plotH, plotW) {
+  const svgEl = container.querySelector('svg');
+  if (!svgEl) return;
+
+  const tooltip = document.getElementById('trendTooltip');
+  if (!tooltip) return;
+
+  // Build a lookup: for each date, for each series → value + listing count
+  const dataLookup = {}; // date → [ { key, color, val, count } ]
+  for (const s of series) {
+    for (const p of s.points) {
+      if (!dataLookup[p.date]) dataLookup[p.date] = [];
+      dataLookup[p.date].push({ key: s.key, color: s.color, val: p.val, count: p.count || null });
+    }
+  }
+
+  // Create transparent overlay rect that catches mouse events
+  const ns = 'http://www.w3.org/2000/svg';
+  const overlay = document.createElementNS(ns, 'rect');
+  overlay.setAttribute('x', mL);
+  overlay.setAttribute('y', mT);
+  overlay.setAttribute('width', plotW);
+  overlay.setAttribute('height', plotH);
+  overlay.setAttribute('fill', 'transparent');
+  overlay.setAttribute('style', 'cursor:crosshair;');
+  svgEl.appendChild(overlay);
+
+  // Vertical crosshair line
+  const crosshair = document.createElementNS(ns, 'line');
+  crosshair.setAttribute('y1', mT);
+  crosshair.setAttribute('y2', mT + plotH);
+  crosshair.setAttribute('stroke', 'rgba(0,0,0,0.15)');
+  crosshair.setAttribute('stroke-width', '1');
+  crosshair.setAttribute('stroke-dasharray', '4,3');
+  crosshair.setAttribute('visibility', 'hidden');
+  svgEl.appendChild(crosshair);
+
+  overlay.addEventListener('mousemove', (e) => {
+    const rect = svgEl.getBoundingClientRect();
+    const svgViewW = parseFloat(svgEl.getAttribute('viewBox')?.split(' ')[2]) || rect.width;
+    const scaleX = svgViewW / rect.width;
+    const mouseX = (e.clientX - rect.left) * scaleX;
+
+    if (allDates.length < 2) return;
+    const step = plotW / (allDates.length - 1);
+    const rawIdx = Math.round((mouseX - mL) / step);
+    const idx = Math.max(0, Math.min(allDates.length - 1, rawIdx));
+    const date = allDates[idx];
+    const cx = mL + (idx / (allDates.length - 1)) * plotW;
+
+    // Show crosshair
+    crosshair.setAttribute('x1', cx.toFixed(1));
+    crosshair.setAttribute('x2', cx.toFixed(1));
+    crosshair.setAttribute('visibility', 'visible');
+
+    const entries = dataLookup[date] || [];
+    if (!entries.length) { tooltip.style.opacity = '0'; return; }
+
+    // Format date nicely
+    const [, mo, dy] = date.split('-');
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const dateLabel = `${months[parseInt(mo)-1]} ${parseInt(dy)}`;
+
+    // Show all series values for this date
+    const lines = entries.map(en =>
+      `<div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${en.color};flex-shrink:0;"></span>
+        <span style="flex:1;font-size:11px;opacity:0.85;">${esc(en.key)}</span>
+        <span style="font-weight:800;font-size:13px;">${esc(formatNaira(Math.round(en.val)))}</span>
+       </div>`
+    ).join('');
+
+    tooltip.innerHTML = `<div class="tt-date">${dateLabel}</div>${lines}`;
+    tooltip.style.opacity = '1';
+
+    // Position tooltip — keep it on screen
+    const tW = 220, tH = 40 + entries.length * 26;
+    let left = e.clientX + 14;
+    let top  = e.clientY - 20;
+    if (left + tW > window.innerWidth - 8) left = e.clientX - tW - 14;
+    if (top + tH > window.innerHeight - 8) top = window.innerHeight - tH - 8;
+    tooltip.style.left = left + 'px';
+    tooltip.style.top  = top  + 'px';
+  });
+
+  overlay.addEventListener('mouseleave', () => {
+    tooltip.style.opacity = '0';
+    crosshair.setAttribute('visibility', 'hidden');
+  });
+}
+
 // ── HELP WIDGET ───────────────────────────────────────────────────────────────
 
 const HELP_CONTENT = {
@@ -2619,6 +3094,9 @@ function renderPriceTrendChart(listings) {
       return `<div style="font-family:var(--font-ui);font-size:10.5px;color:var(--ink-faint);margin-top:6px;">${label}</div>`;
     })() +
     dataNote;
+
+  // Attach interactive tooltip after DOM is updated
+  attachTrendChartTooltip(container, series, allDates, xScale, yScale, mL, mR, mT, plotH, plotW);
 }
 
 function setPriceTrendPeriod(p) {
@@ -3205,6 +3683,7 @@ function refreshAllPricingViews() {
   if (!competitiveCache?.listings) return;
   renderPricingScatter(_getTodayListings());
   if (pricingViewMode === 'bar') renderPricingBarChart(_getTodayListings());
+  renderCompetitivePositioningCard();
 }
 
 /**
@@ -3639,10 +4118,28 @@ function renderCompetitorNews(news) {
   renderArchive();
   renderPricing(competitiveCache);
   renderTrends(trendHistory);
+
+  // ── Use Case 1: Competitive Positioning Card ─────────────────────────────
+  renderCompetitivePositioningCard();
+
+  // ── Use Case 2: Outreach Signal Banner ───────────────────────────────────
+  renderOutreachSignals(briefing, trendHistory);
+
+  // ── Use Case 3: Sentiment Sales Calendar ─────────────────────────────────
+  renderSentimentCalendar(trendHistory);
+
   await loadConfigState();
   renderConfig();
 })();
 </script>
+  <!-- TREND CHART TOOLTIP -->
+  <div id="trendTooltip">
+    <div class="tt-date"></div>
+    <div class="tt-series"></div>
+    <div class="tt-price"></div>
+    <div class="tt-count"></div>
+  </div>
+
   <!-- HELP WIDGET — floating context-aware explainer -->
   <button id="helpWidgetBtn" onclick="toggleHelpWidget()" title="How does this work?">?</button>
   <div id="helpWidgetPanel" class="help-panel" style="display:none;">

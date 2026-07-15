@@ -211,18 +211,19 @@ jobs:
       - name: Write AI config for dashboard
         run: |
           node -e "
+            const getFirstKey = (s) => (s || '').split(',')[0].trim();
             const cfg = {
-              groq:      { key: Buffer.from(process.env.GROQ_API_KEY      || '').toString('base64'), model: 'llama-3.1-8b-instant',        url: 'https://api.groq.com/openai/v1/chat/completions' },
-              cerebras:  { key: Buffer.from(process.env.CEREBRAS_API_KEY  || '').toString('base64'), model: 'llama3.1-8b',                 url: 'https://api.cerebras.ai/v1/chat/completions' },
-              sambanova: { key: Buffer.from(process.env.SAMBANOVA_API_KEY || '').toString('base64'), model: 'Meta-Llama-3.1-8B-Instruct', url: 'https://api.sambanova.ai/v1/chat/completions' }
+              groq:      { key: Buffer.from(getFirstKey(process.env.GROQ_API_KEY)).toString('base64'),      model: 'llama-3.1-8b-instant',       url: 'https://api.groq.com/openai/v1/chat/completions' },
+              sambanova: { key: Buffer.from(getFirstKey(process.env.SAMBANOVA_API_KEY)).toString('base64'), model: 'Meta-Llama-3.3-70B-Instruct', url: 'https://api.sambanova.ai/v1/chat/completions' },
+              mistral:   { key: Buffer.from(getFirstKey(process.env.MISTRAL_API_KEY)).toString('base64'),   model: 'mistral-small-latest',        url: 'https://api.mistral.ai/v1/chat/completions' }
             };
             require('fs').writeFileSync('data/ai-config.json', JSON.stringify(cfg, null, 2));
-            console.log('ai-config.json written (keys base64-encoded)');
+            console.log('ai-config.json written (Groq first-key extracted, Cerebras removed: CORS blocked)');
           "
         env:
           GROQ_API_KEY:      ${{ secrets.GROQ_API_KEY }}
-          CEREBRAS_API_KEY:  ${{ secrets.CEREBRAS_API_KEY }}
           SAMBANOVA_API_KEY: ${{ secrets.SAMBANOVA_API_KEY }}
+          MISTRAL_API_KEY:   ${{ secrets.MISTRAL_API_KEY }}
 
       # ---------------------------------------------------------------
       # COMMIT DASHBOARD DATA BACK TO REPO (for GitHub Pages)

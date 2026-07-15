@@ -378,6 +378,31 @@ button, select, input { font-family: inherit; }
 .sentiment-signal-advice { font-family: var(--font-body); font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
 .sentiment-signal-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); margin-top: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
 
+/* ── Innovation Hub ─────────────────────────────────────────────────────────── */
+.innov-filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.innov-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; }
+.innov-card { background: var(--paper-card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px 24px; display: flex; flex-direction: column; gap: 10px; transition: box-shadow 0.15s; }
+.innov-card:hover { box-shadow: 0 4px 20px rgba(122,31,43,0.08); }
+.innov-card-header { display: flex; gap: 10px; align-items: flex-start; }
+.innov-category-pill { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 12px; white-space: nowrap; flex-shrink: 0; }
+.innov-category-pill.proptech    { background: rgba(46,125,50,0.1);  color: #1b5e20; }
+.innov-category-pill.sustainable { background: rgba(27,94,32,0.1);   color: #2E7D32; }
+.innov-category-pill.design      { background: rgba(1,87,155,0.1);   color: #01579B; }
+.innov-category-pill.finance     { background: rgba(164,125,41,0.1); color: #7a5a10; }
+.innov-category-pill.ai          { background: rgba(74,20,140,0.1);  color: #4A148C; }
+.innov-category-pill.construction{ background: rgba(230,81,0,0.1);   color: #E65100; }
+.innov-category-pill.policy      { background: rgba(83,92,104,0.1);  color: #455A64; }
+.innov-card-title { font-family: var(--font-headline); font-size: 16px; font-weight: 700; color: var(--ink); line-height: 1.4; }
+.innov-card-title a { color: inherit; text-decoration: none; }
+.innov-card-title a:hover { color: var(--maroon); }
+.innov-card-desc { font-family: var(--font-body); font-size: 13px; color: var(--ink-soft); line-height: 1.6; flex: 1; }
+.innov-card-meta { display: flex; gap: 12px; align-items: center; margin-top: 4px; flex-wrap: wrap; }
+.innov-card-source { font-family: var(--font-mono); font-size: 10px; color: var(--maroon); font-weight: 700; text-transform: uppercase; }
+.innov-card-date { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); }
+.innov-why-box { background: rgba(122,31,43,0.04); border-left: 3px solid var(--maroon); padding: 8px 12px; border-radius: 0 4px 4px 0; font-family: var(--font-ui); font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
+.innov-why-box strong { color: var(--maroon); }
+.innov-empty { padding: 40px 0; text-align: center; color: var(--ink-faint); font-family: var(--font-ui); font-size: 13px; font-style: italic; }
+
 /* ── Cross-Sector Intelligence ────────────────────────────────────────────── */
 .csector-grid { display: flex; flex-direction: column; gap: 12px; }
 .csector-card { background: var(--paper-card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px 24px; display: flex; gap: 20px; align-items: flex-start; }
@@ -783,6 +808,7 @@ button, select, input { font-family: inherit; }
       <button data-view="markets">Markets</button>
       <button data-view="themes">Themes &amp; Trends</button>
       <button data-view="competition">Competition</button>
+      <button data-view="innovation-hub">Innovation</button>
       <button data-view="library">Library</button>
       <button id="nav-health" data-view="health" style="display:none;">System</button>
       <button id="nav-config" data-view="config" style="display:none;">Config</button>
@@ -1021,6 +1047,17 @@ button, select, input { font-family: inherit; }
       </div>
       <div id="priceTrendContainer" class="pricing-scatter-container" style="min-height:260px;">
         <div class="loading">Calculating price trend&hellip;</div>
+      </div>
+    </section>
+
+    <!-- INNOVATION HUB — global real estate disruption and innovation -->
+    <section id="innovation-hub" class="view">
+      <div class="section-divider" style="margin-top:0;"><h2>Innovation &amp; Disruption Hub</h2></div>
+      <div class="dateline" style="font-family:var(--font-ui);font-size:13.5px;color:var(--ink-soft);margin-bottom:8px;">
+        Global intelligence on technologies, design concepts, business models, and regulatory frameworks redefining real estate. Not localised — this is worldwide signal, curated for strategic relevance to a developer building the future of Lagos.
+      </div>
+      <div id="innovationHubContainer">
+        <div class="loading">Loading innovation intelligence&hellip;</div>
       </div>
     </section>
 
@@ -2920,6 +2957,120 @@ function attachTrendChartTooltip(container, series, allDates, xScale, yScale, mL
 }
 
 // ════════════════════════════════════════════════════════════════════════
+// INNOVATION HUB
+// Renders global real estate innovation and disruption intelligence.
+// Articles sourced by the pipeline's fetchInnovationHub() lane — entirely
+// separate from briefing articles.
+// ════════════════════════════════════════════════════════════════════════
+
+const INNOVATION_CATEGORIES = {
+  proptech:     { label: 'Proptech',        keywords: ['proptech', 'platform', 'app', 'digital', 'online', 'marketplace', 'software', 'saas'] },
+  ai:           { label: 'AI & Data',       keywords: ['artificial intelligence', 'machine learning', 'AI', 'data', 'algorithm', 'automation', 'digital twin'] },
+  sustainable:  { label: 'Sustainability',  keywords: ['sustainable', 'green', 'net zero', 'carbon', 'passive house', 'energy efficient', 'solar', 'renewable'] },
+  construction: { label: 'Construction Tech', keywords: ['modular', 'prefab', '3D print', 'factory-built', 'offsite', 'construction tech', 'material'] },
+  finance:      { label: 'New Financing',   keywords: ['tokeniz', 'fractional', 'REIT', 'co-living', 'build-to-rent', 'crowdfund', 'fund', 'investment model'] },
+  design:       { label: 'Urban Design',    keywords: ['mixed-use', 'transit-oriented', 'walkable', 'smart city', 'urban planning', 'masterplan', 'community'] },
+  policy:       { label: 'Policy & Regulation', keywords: ['regulation', 'policy', 'zoning', 'reform', 'planning', 'government', 'law', 'act'] },
+};
+
+// McKinsey-grade "why it matters to Mixta" inference
+// Maps innovation category → specific strategic implication
+const CATEGORY_IMPLICATION = {
+  proptech:     'Mixta should evaluate adoption for sales digitalisation, lead management, and buyer journey automation across Lakowe Crossings and Lagos New Town.',
+  ai:           'AI-driven valuation and demand forecasting tools could sharpen Mixta\'s pricing decisions and reduce unsold inventory risk on future phases.',
+  sustainable:  'Sustainable construction premium is 15–25% in comparable emerging markets. Green certification of Lakowe Annexe units creates a defensible price moat.',
+  construction: 'Modular and prefab techniques could compress Mixta\'s construction timeline by 30–40%, improving IRR and enabling faster phase delivery.',
+  finance:      'New financing structures — fractional ownership, tokenisation — expand the buyer pool beyond traditional mortgage-qualified buyers into the diaspora and HNI segments.',
+  design:       'Mixed-use and walkable masterplan concepts are what separates Lagos New Town from a dormitory suburb. These ideas define the premium Mixta can command.',
+  policy:       'International regulatory frameworks often predict Nigeria\'s next policy cycle by 2–3 years. Tracking them gives Mixta lead time to structure projects accordingly.',
+};
+
+function _classifyInnovation(article) {
+  const text = ((article.title||'') + ' ' + (article.description||'')).toLowerCase();
+  for (const [key, cat] of Object.entries(INNOVATION_CATEGORIES)) {
+    if (cat.keywords.some(kw => text.includes(kw.toLowerCase()))) return key;
+  }
+  return 'proptech'; // default
+}
+
+let _innovationFilter = 'all';
+
+function renderInnovationHub(data) {
+  const container = document.getElementById('innovationHubContainer');
+  if (!container) return;
+
+  const articles = Array.isArray(data?.articles) ? data.articles : [];
+
+  if (!articles.length) {
+    container.innerHTML = `<div class="innov-empty">
+      Innovation intelligence populates after the first pipeline run with the new Phase 8.5 fetch lanes.<br>
+      <span style="font-size:11px;margin-top:8px;display:block">The pipeline fetches global proptech, sustainable construction, AI, and new financing model content separately from the Nigerian real estate briefing.</span>
+    </div>`;
+    return;
+  }
+
+  // Tag each article with its category
+  const tagged = articles.map(a => ({ ...a, _category: _classifyInnovation(a) }));
+
+  // Build category filter row
+  const categoryCounts = {};
+  tagged.forEach(a => { categoryCounts[a._category] = (categoryCounts[a._category]||0) + 1; });
+
+  const filterHtml = [
+    `<button class="pricing-chip${_innovationFilter==='all'?' active':''}" onclick="setInnovationFilter('all',this)">All (${tagged.length})</button>`,
+    ...Object.entries(INNOVATION_CATEGORIES)
+      .filter(([key]) => categoryCounts[key])
+      .map(([key, cat]) =>
+        `<button class="pricing-chip${_innovationFilter===key?' active':''}" onclick="setInnovationFilter('${key}',this)">${esc(cat.label)} (${categoryCounts[key]||0})</button>`
+      )
+  ].join('');
+
+  // Filter articles
+  const visible = _innovationFilter === 'all' ? tagged : tagged.filter(a => a._category === _innovationFilter);
+
+  const freshNote = data?.generatedAt
+    ? `<div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);margin-bottom:20px;">Last fetched: ${new Date(data.generatedAt).toLocaleString('en-GB')} · ${articles.length} articles · ${Object.keys(categoryCounts).length} categories</div>`
+    : '';
+
+  const cards = visible.map(a => {
+    const cat = a._category;
+    const catLabel = INNOVATION_CATEGORIES[cat]?.label || cat;
+    const implication = CATEGORY_IMPLICATION[cat] || '';
+    const date = a.publishedAt ? new Date(a.publishedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) : '';
+    const desc = (a.description || '').slice(0, 180);
+
+    return `<div class="innov-card">
+      <div class="innov-card-header">
+        <span class="innov-category-pill ${cat}">${esc(catLabel)}</span>
+      </div>
+      <div class="innov-card-title">
+        ${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.title)}</a>` : esc(a.title)}
+      </div>
+      ${desc ? `<div class="innov-card-desc">${esc(desc)}${desc.length >= 180 ? '…' : ''}</div>` : ''}
+      ${implication ? `<div class="innov-why-box"><strong>Mixta lens:</strong> ${esc(implication)}</div>` : ''}
+      <div class="innov-card-meta">
+        <span class="innov-card-source">${esc(a.source||'')}</span>
+        ${date ? `<span class="innov-card-date">${date}</span>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="innov-filter-row">${filterHtml}</div>
+    ${freshNote}
+    <div class="innov-grid">${cards || '<div class="innov-empty">No articles match this filter.</div>'}</div>`;
+}
+
+function setInnovationFilter(cat, el) {
+  _innovationFilter = cat;
+  el.closest('.innov-filter-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  // Re-render with new filter using cached data
+  const data = window._innovationData;
+  if (data) renderInnovationHub(data);
+}
+
+// ════════════════════════════════════════════════════════════════════════
 // CROSS-SECTOR MARKET INTELLIGENCE
 // Identifies articles from non-real-estate sectors that carry demand signals
 // for the Ibeju-Lekki corridor. Renders below the map in the Markets section.
@@ -4435,10 +4586,11 @@ function renderCompetitorNews(news) {
     return loadJSON('competitive-listings.json');
   }
 
-  const [briefing, memory, articles, health, history, bIndex, geo, competitive, trendHistory] = await Promise.all([
+  const [briefing, memory, articles, health, history, bIndex, geo, competitive, trendHistory, crossSector, innovation] = await Promise.all([
     loadJSON('briefing.json'), loadJSON('themes.json'), loadJSON('articles.json'),
     loadJSON('health.json'), loadJSON('health-history.json'), loadJSON('briefings-index.json'),
-    loadJSON('geoslicer.json'), loadCompetitiveData(), loadJSON('trend-history.json')
+    loadJSON('geoslicer.json'), loadCompetitiveData(), loadJSON('trend-history.json'),
+    loadJSON('cross-sector.json'), loadJSON('innovation.json')
   ]);
   articlesCache = Array.isArray(articles) ? articles : [];
   geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;
@@ -4468,7 +4620,11 @@ function renderCompetitorNews(news) {
   renderSentimentCalendar(trendHistory);
 
   // ── Cross-Sector Market Intelligence (Markets section) ────────────────────
-  renderCrossSectorIntel(articlesCache);
+  renderCrossSectorIntel(crossSector?.articles || articlesCache);
+
+  // ── Innovation Hub ─────────────────────────────────────────────────────────
+  window._innovationData = innovation;
+  renderInnovationHub(innovation);
 
   await loadConfigState();
   renderConfig();

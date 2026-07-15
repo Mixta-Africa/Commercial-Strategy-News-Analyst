@@ -353,13 +353,60 @@ button, select, input { font-family: inherit; }
 .pos-market-price { color: var(--ink-soft); font-size: 12px; }
 .pos-empty { padding: 32px 24px; color: var(--ink-faint); font-family: var(--font-ui); font-size: 13px; font-style: italic; }
 
-/* ── Use Case 2: Outreach Signal Banner ───────────────────────────────────── */
-.outreach-signal-banner { border: 1.5px solid var(--maroon); border-radius: var(--radius); background: rgba(122,31,43,0.04); padding: 16px 20px; margin-bottom: 16px; display: flex; gap: 14px; align-items: flex-start; }
-.outreach-signal-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+/* ── Outreach Section ─────────────────────────────────────────────────────── */
+/* Macro status strip */
+.outreach-macro-strip {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-ui); font-size: 13px; font-weight: 500;
+  padding: 12px 18px; border-radius: var(--radius); margin-bottom: 16px;
+  border: 1px solid var(--rule);
+}
+.outreach-macro-bull { background: var(--bull-soft); border-color: #CDE2D6; color: var(--bull); }
+.outreach-macro-bear { background: var(--bear-soft); border-color: #EACCCC; color: var(--bear); }
+.outreach-macro-neutral { background: var(--neutral-soft); color: var(--neutral-sig); border-color: var(--rule); }
+.outreach-macro-dot { font-size: 16px; flex-shrink: 0; }
+.outreach-bonus-badge {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  background: rgba(122,31,43,0.06); border: 1px solid var(--maroon-line); color: var(--maroon);
+  padding: 8px 14px; border-radius: var(--radius); margin-bottom: 24px; display: inline-block;
+}
+/* Section label (separates event vs calendar groups) */
+.outreach-section-label {
+  font-family: var(--font-ui); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--ink-soft); margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid var(--rule); padding-bottom: 8px;
+}
+.outreach-section-count {
+  font-family: var(--font-mono); font-size: 10px; padding: 2px 8px; border-radius: 12px;
+  background: var(--maroon); color: #fff; font-weight: 700;
+}
+/* Signal card (event-triggered) */
+.outreach-signal-banner { border: 1.5px solid var(--maroon); border-radius: var(--radius); background: rgba(122,31,43,0.04); padding: 18px 20px; margin-bottom: 14px; display: flex; gap: 14px; align-items: flex-start; }
+.outreach-signal-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
 .outreach-signal-body { flex: 1; }
-.outreach-signal-label { font-family: var(--font-ui); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--maroon); margin-bottom: 4px; }
-.outreach-signal-text { font-family: var(--font-headline); font-size: 15px; color: var(--ink); line-height: 1.5; }
-.outreach-signal-companies { font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); margin-top: 6px; }
+.outreach-signal-label { font-family: var(--font-ui); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--maroon); margin-bottom: 6px; }
+.outreach-signal-text { font-family: var(--font-body); font-size: 14px; color: var(--ink); line-height: 1.6; }
+.outreach-entry-block { margin-top: 10px; padding: 10px 14px; background: rgba(122,31,43,0.04); border-radius: 4px; border-left: 3px solid var(--maroon); }
+.outreach-entry-label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--maroon); margin-bottom: 4px; }
+.outreach-entry-route { font-family: var(--font-body); font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+.outreach-signal-companies { font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); margin-top: 10px; }
+.outreach-co-name { font-weight: 700; color: var(--ink); }
+.outreach-co-staff { color: var(--ink-faint); font-size: 10px; }
+.outreach-co-sep { color: var(--rule-strong); }
+.outreach-secondary-note { margin-top: 4px; font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); }
+/* Calendar-only consolidated card */
+.outreach-calendar-card { background: var(--paper-card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 16px; }
+.outreach-calendar-desc { font-family: var(--font-body); font-size: 13.5px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+.outreach-cal-table { width: 100%; border-collapse: collapse; }
+.outreach-cal-table th { font-family: var(--font-ui); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); padding: 8px 12px; border-bottom: 2px solid var(--rule); text-align: left; }
+.outreach-cal-table td { font-family: var(--font-ui); font-size: 13px; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: middle; color: var(--ink); }
+.outreach-cal-table tr:last-child td { border-bottom: none; }
+.outreach-cal-table tr:hover td { background: var(--paper); }
+.cal-rank { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--maroon); width: 28px; }
+.cal-sector { font-weight: 700; }
+.cal-reachable { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--maroon); }
+.cal-entry { font-size: 12px; color: var(--ink-soft); }
+.cal-cos { font-size: 12px; color: var(--ink-soft); }
 
 /* ── Use Case 3: Sentiment Sales Calendar ─────────────────────────────────── */
 .sentiment-cal-strip { display: flex; gap: 0; margin: 16px 0 8px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--rule); }
@@ -441,18 +488,19 @@ button, select, input { font-family: inherit; }
    HELP WIDGET
    ════════════════════════════════════════════════════════════════════════ */
 #helpWidgetBtn {
-  position: fixed; bottom: 28px; right: 28px; z-index: 200;
   width: 42px; height: 42px; border-radius: 50%;
   background: var(--maroon); color: #fff;
   font-family: var(--font-headline); font-size: 18px; font-weight: 700;
   border: none; cursor: pointer; box-shadow: 0 4px 16px rgba(122,31,43,0.28);
   transition: transform 0.15s, box-shadow 0.15s;
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 #helpWidgetBtn:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(122,31,43,0.38); }
+#helpWidgetBtn:hover ~ #helpWidgetLabel,
+#helpWidgetWrap:hover #helpWidgetLabel { opacity: 1; }
 
 .help-panel {
-  position: fixed; bottom: 82px; right: 28px; z-index: 199;
+  position: fixed; bottom: 100px; right: 28px; z-index: 199;
   width: 340px; max-height: 70vh;
   background: var(--paper-card); border: 1px solid var(--rule-strong);
   border-radius: var(--radius); box-shadow: 0 8px 32px rgba(60,40,20,0.15);
@@ -820,6 +868,7 @@ button, select, input { font-family: inherit; }
       <button data-view="markets">Markets</button>
       <button data-view="themes">Themes &amp; Trends</button>
       <button data-view="competition">Competition</button>
+      <button data-view="outreach">Outreach</button>
       <button data-view="innovation-hub">Innovation</button>
       <button data-view="library">Library</button>
       <button id="nav-health" data-view="health" style="display:none;">System</button>
@@ -833,7 +882,7 @@ button, select, input { font-family: inherit; }
     <section id="briefing" class="view active">
       
       <div class="section-divider" style="margin-top:0;">
-        <h2>Today's Signal</h2><button class="help-hint" onclick="openHelpFor('briefing')">How to read today's intelligence briefing</button>
+        <h2>Today's Signal</h2>
         <span id="briefingDate" style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--ink-soft);">Syncing temporal data...</span>
       </div>
 
@@ -893,7 +942,7 @@ button, select, input { font-family: inherit; }
 
     <!-- MARKETS (GEOSPATIAL) -->
     <section id="markets" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Strategic Theater Mapping</h2><button class="help-hint" onclick="openHelpFor('markets')">How to read the markets map and cross-sector signals</button></div>
+      <div class="section-divider" style="margin-top:0;"><h2>Strategic Theater Mapping</h2></div>
       
       <div class="geo-console">
         <span class="geo-console-label">Focus Region:</span>
@@ -926,7 +975,7 @@ button, select, input { font-family: inherit; }
 
     <!-- THEMES & TRENDS (NARRATIVE MOMENTUM + TOPIC VOLUME, UNIFIED) -->
     <section id="themes" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Narrative Momentum</h2><button class="help-hint" onclick="openHelpFor('themes')">How to read themes, trends and sentiment signals</button></div>
+      <div class="section-divider" style="margin-top:0;"><h2>Narrative Momentum</h2></div>
       <div class="dateline" style="font-family: var(--font-ui); font-size: 13.5px; color: var(--ink-soft); margin-bottom: 24px;">
         Recurring themes the synthesizer has tracked across briefings, ranked by how many consecutive days each has appeared.
       </div>
@@ -964,12 +1013,9 @@ button, select, input { font-family: inherit; }
 
     <!-- COMPETITION (PRICING) -->
     <section id="competition" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Competitive Market Pulse</h2><button class="help-hint" onclick="openHelpFor('competition')">How to read pricing data and competitive positioning</button></div>
+      <div class="section-divider" style="margin-top:0;"><h2>Competitive Market Pulse</h2></div>
       
       <div id="pricingStatsBar" class="pricing-stats-inline"></div>
-
-      <!-- ── USE CASE 2: Outreach Signal Banner (rendered by JS when signals exist) ── -->
-      <div id="outreachSignalContainer"></div>
 
       <!-- ── USE CASE 1: Competitive Positioning Card ───────────────────────────── -->
       <div id="competitivePositioningCard"></div>
@@ -1062,9 +1108,18 @@ button, select, input { font-family: inherit; }
       </div>
     </section>
 
+    <!-- OUTREACH INTELLIGENCE -->
+    <section id="outreach" class="view">
+      <div class="section-divider" style="margin-top:0;"><h2>Outreach Intelligence</h2></div>
+      <div class="dateline" style="font-family:var(--font-ui);font-size:13.5px;color:var(--ink-soft);margin-bottom:28px;">
+        Corporate outreach recommendations triggered by the three-signal model: macro base (Signal C), calendar window (Signal A), and event detection (Signal B). A signal only fires when macro conditions are neutral-to-positive and at least one additional trigger is active.
+      </div>
+      <div id="outreachSignalContainer"></div>
+    </section>
+
     <!-- INNOVATION HUB — global real estate disruption and innovation -->
     <section id="innovation-hub" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Innovation &amp; Disruption Hub</h2><button class="help-hint" onclick="openHelpFor('innovation')">How to use the innovation hub</button></div>
+      <div class="section-divider" style="margin-top:0;"><h2>Innovation &amp; Disruption Hub</h2></div>
       <div class="dateline" style="font-family:var(--font-ui);font-size:13.5px;color:var(--ink-soft);margin-bottom:8px;">
         Global intelligence on technologies, design concepts, business models, and regulatory frameworks redefining real estate. Not localised — this is worldwide signal, curated for strategic relevance to a developer building the future of Lagos.
       </div>
@@ -1075,7 +1130,7 @@ button, select, input { font-family: inherit; }
 
     <!-- LIBRARY (ARCHIVE) -->
     <section id="library" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Intelligence Library</h2><button class="help-hint" onclick="openHelpFor('library')">How to search and use the article library</button></div>
+      <div class="section-divider" style="margin-top:0;"><h2>Intelligence Library</h2></div>
       
       <input id="archSearch" class="search" placeholder="Search historical briefings and source articles..." oninput="renderArchive()" />
       
@@ -2879,85 +2934,135 @@ function renderOutreachSignals(briefingData, trendHistory) {
   }
 
   if (!signals.length) {
-    // Even if no signals fired, show a macro status note during bonus windows
     if (bonusWindow && macroClear) {
-      container.innerHTML = `<div class="outreach-signal-banner" style="border-color:var(--rule);">
-        <div class="outreach-signal-icon">📅</div>
-        <div class="outreach-signal-body">
-          <div class="outreach-signal-label">Bonus Window Active — No Event Triggers Detected</div>
-          <div class="outreach-signal-text">It is ${bonusLabel}. No specific corporate event has been detected in the news to combine with this window. Consider proactive outreach to the highest-pool sectors (Banking, Energy) on calendar basis alone.</div>
-        </div>
-      </div>`;
+      container.innerHTML = `
+        <div class="outreach-macro-strip outreach-macro-neutral">
+          <span class="outreach-macro-dot">📅</span>
+          <span><strong>Bonus Window Active</strong> — ${esc(bonusLabel)}. No specific corporate event has been detected to combine with this window. Consider proactive outreach to the highest-pool sectors (Banking, Energy) on calendar basis alone.</span>
+        </div>`;
     } else {
-      container.innerHTML = '';
+      container.innerHTML = `<div style="color:var(--ink-faint);font-family:var(--font-ui);font-size:13px;font-style:italic;padding:24px 0;">No outreach signals are active today. Signals require macro conditions to be neutral-to-positive plus a calendar window or detected corporate event.</div>`;
     }
     return;
   }
 
-  // Sort: Strong first, then by reachable pool size
-  signals.sort((a,b) => {
-    const strengthOrder = { 'Strong': 0, 'Moderate': 1, 'Emerging': 2 };
-    const sDiff = (strengthOrder[a.strength]||99) - (strengthOrder[b.strength]||99);
-    return sDiff !== 0 ? sDiff : (b.sector.reachablePrimary||0) - (a.sector.reachablePrimary||0);
+  // ── Macro status strip (reads once, applies to all cards below) ───────────
+  const macroStripClass = macroScore > 0.1 ? 'outreach-macro-bull' : macroScore < -0.05 ? 'outreach-macro-bear' : 'outreach-macro-neutral';
+  const macroStripText = macroScore > 0.1
+    ? `✅ Macro: Bullish — favourable conversion environment. Outreach signals active.`
+    : macroScore < -0.05
+    ? `⚠ Macro: Slightly negative (${(macroScore*100).toFixed(0)}/100) — signals fire on event strength but conversion environment is below ideal. Focus on highest-intent prospects.`
+    : `◎ Macro: Neutral — conditions adequate for outreach. Prioritise event-triggered sectors over calendar-only.`;
+
+  let html = `<div class="outreach-macro-strip ${macroStripClass}">${esc(macroStripText)}</div>`;
+  if (bonusWindow) {
+    html += `<div class="outreach-bonus-badge">📅 ${esc(bonusLabel)} — bonus window active across all qualifying sectors</div>`;
+  }
+
+  // ── Split into event-triggered vs calendar-only ───────────────────────────
+  const eventSignals = signals.filter(s => s.triggerType !== 'calendar');
+  const calendarSignals = signals.filter(s => s.triggerType === 'calendar');
+
+  // Sort: Strong first, then by reachable pool
+  const sortByStrength = arr => arr.sort((a,b) => {
+    const order = { 'Strong': 0, 'Moderate': 1, 'Emerging': 2 };
+    const d = (order[a.strength]||99) - (order[b.strength]||99);
+    return d !== 0 ? d : (b.sector.reachablePrimary||0) - (a.sector.reachablePrimary||0);
   });
+  sortByStrength(eventSignals);
+  sortByStrength(calendarSignals);
 
-  container.innerHTML = signals.map(sig => {
-    const primaryCos = (sig.sector.companies || []).filter(c => c.priority === 'primary');
-    const secondaryCos = (sig.sector.companies || []).filter(c => c.priority === 'secondary');
-    const totalReachable = sig.sector.reachablePrimary || 0;
-    const entryPoint = ENTRY_POINTS[sig.sector.sector];
-    const icon = sig.strength === 'Strong' ? '🔴' : sig.strength === 'Moderate' ? '🟡' : '📡';
+  // ── Event-triggered cards (individual, time-sensitive) ────────────────────
+  if (eventSignals.length) {
+    html += `<div class="outreach-section-label">Event-Triggered Signals <span class="outreach-section-count">${eventSignals.length}</span></div>`;
+    html += eventSignals.map(sig => {
+      const primaryCos = (sig.sector.companies || []).filter(c => c.priority === 'primary');
+      const secondaryCos = (sig.sector.companies || []).filter(c => c.priority === 'secondary');
+      const totalReachable = sig.sector.reachablePrimary || 0;
+      const entryPoint = ENTRY_POINTS[sig.sector.sector];
+      const icon = sig.strength === 'Strong' ? '🔴' : '🟡';
 
-    // Build the specific trigger rationale
-    let triggerLine = '';
-    if (sig.triggerType === 'event+calendar') {
-      const evtLabel = sig.detectedEvents[0]?.label || 'sector event';
-      triggerLine = `<strong>Two signals converging:</strong> ${esc(evtLabel)} detected in this week's news + ${esc(sig.bonusLabel)}. This is the highest-quality outreach window — both event receptivity and disposable income align simultaneously.`;
-    } else if (sig.triggerType === 'event') {
-      const evt = sig.detectedEvents[0];
-      triggerLine = `<strong>${esc(evt?.label || 'Event detected')}:</strong> ${
-        evt?.type === 'contract_win' ? 'A major contract or expansion announcement creates job security confidence — the single strongest predictor of property purchase intent. Act within the next 3 weeks while the news is fresh and staff optimism is highest.' :
-        evt?.type === 'salary_review' ? 'A salary review or pay adjustment means affected staff have more disposable income than they did 30 days ago. This is a 4-6 week conversion window.' :
-        evt?.type === 'ipo_esop' ? 'An IPO or ESOP vesting event means staff have realised liquidity or share value. Asset-seeking behaviour peaks in the 60 days following a vesting event.' :
-        evt?.type === 'welfare' ? 'A welfare or cooperative initiative signals that the company is actively facilitating staff financial decisions. Approach the cooperative chairman — they are already in buying mode.' :
-        'Sector growth narrative supports a property conversation framed around asset appreciation.'
-      }`;
-    } else {
-      triggerLine = `<strong>${esc(sig.bonusLabel)}:</strong> Corporate bonus payments in this sector have likely cleared. Staff who received a bonus in the last 6 weeks are in the highest discretionary-spend state of the year. The 6-week post-bonus window is the strongest calendar-based conversion period.`;
-    }
+      let triggerLine = '';
+      if (sig.triggerType === 'event+calendar') {
+        const evtLabel = sig.detectedEvents[0]?.label || 'sector event';
+        triggerLine = `<strong>Two signals converging:</strong> ${esc(evtLabel)} detected in this week's news + ${esc(sig.bonusLabel)}. Both event receptivity and disposable income align simultaneously — highest-quality window.`;
+      } else {
+        const evt = sig.detectedEvents[0];
+        triggerLine = `<strong>${esc(evt?.label || 'Event detected')}:</strong> ${
+          evt?.type === 'contract_win' ? 'A major contract or expansion announcement creates job security confidence — the single strongest predictor of property purchase intent. Act within the next 3 weeks while the news is fresh.' :
+          evt?.type === 'salary_review' ? 'A salary review or pay adjustment means affected staff have more disposable income than 30 days ago. This is a 4–6 week conversion window.' :
+          evt?.type === 'ipo_esop' ? 'An IPO or ESOP vesting event means staff have realised liquidity or share value. Asset-seeking behaviour peaks in the 60 days following a vesting event.' :
+          evt?.type === 'welfare' ? 'A welfare or cooperative initiative signals the company is actively facilitating staff financial decisions. Approach the cooperative chairman — they are already in buying mode.' :
+          'Sector growth narrative supports a property conversation framed around asset appreciation.'
+        }`;
+      }
 
-    // Entry point instruction
-    const entryLine = entryPoint
-      ? `<div style="margin-top:10px;padding:10px 14px;background:rgba(122,31,43,0.04);border-radius:4px;border-left:3px solid var(--maroon);">
-          <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;color:var(--maroon);margin-bottom:4px;">Entry Point: ${esc(entryPoint.primary)}</div>
-          <div style="font-family:var(--font-body);font-size:12px;color:var(--ink-soft);line-height:1.6;">${esc(entryPoint.route)}</div>
-        </div>`
-      : '';
+      const entryLine = entryPoint
+        ? `<div class="outreach-entry-block">
+            <div class="outreach-entry-label">Entry Point: ${esc(entryPoint.primary)}</div>
+            <div class="outreach-entry-route">${esc(entryPoint.route)}</div>
+          </div>` : '';
 
-    const primaryList = primaryCos.slice(0, 5).map(c =>
-      `<span style="font-weight:700;color:var(--ink)">${esc(c.name)}</span><span style="color:var(--ink-faint);font-size:10px"> ~${c.estStaff15M} ₦1.5M+ staff</span>`
-    ).join(' · ');
+      const top3 = primaryCos.slice(0, 3).map(c =>
+        `<span class="outreach-co-name">${esc(c.name)}</span><span class="outreach-co-staff"> ~${c.estStaff15M.toLocaleString()} staff</span>`
+      ).join('<span class="outreach-co-sep"> · </span>');
 
-    const secondaryNote = secondaryCos.length
-      ? `<div style="margin-top:4px;font-size:10px;color:var(--ink-faint)">Lower priority (₦500K–₦1.5M): ${secondaryCos.map(c=>esc(c.name)).join(' · ')}</div>`
-      : '';
+      const secNote = secondaryCos.length
+        ? `<div class="outreach-secondary-note">Secondary (₦500K–₦1.5M): ${secondaryCos.map(c=>esc(c.name)).join(' · ')}</div>` : '';
 
-    const macroNote = sig.macroScore < 0
-      ? `<div style="margin-top:6px;font-size:10px;color:#9E9E9E">⚠ Macro sentiment slightly negative (${(sig.macroScore*100).toFixed(0)}/100) — signal fires on event strength, but lower-than-ideal conversion environment. Focus on highest-intent prospects only.</div>`
-      : '';
+      return `<div class="outreach-signal-banner">
+        <div class="outreach-signal-icon">${icon}</div>
+        <div class="outreach-signal-body">
+          <div class="outreach-signal-label">${esc(sig.strength)} Signal · ${esc(sig.sector.sector)} · ${totalReachable.toLocaleString()} reachable primary staff</div>
+          <div class="outreach-signal-text">${triggerLine}</div>
+          ${entryLine}
+          <div class="outreach-signal-companies">${top3}</div>
+          ${secNote}
+        </div>
+      </div>`;
+    }).join('');
+  }
 
-    return `<div class="outreach-signal-banner">
-      <div class="outreach-signal-icon">${icon}</div>
-      <div class="outreach-signal-body">
-        <div class="outreach-signal-label">${esc(sig.strength)} Signal · ${esc(sig.sector.sector)} · ${totalReachable.toLocaleString()} reachable</div>
-        <div class="outreach-signal-text" style="margin-bottom:10px">${triggerLine}</div>
-        ${entryLine}
-        <div class="outreach-signal-companies" style="margin-top:10px">${primaryList}</div>
-        ${secondaryNote}
-        ${macroNote}
+  // ── Calendar-only signals — ONE consolidated card ─────────────────────────
+  if (calendarSignals.length) {
+    const totalReachable = calendarSignals.reduce((sum, s) => sum + (s.sector.reachablePrimary||0), 0);
+    const tableRows = calendarSignals.map((sig, i) => {
+      const ep = ENTRY_POINTS[sig.sector.sector];
+      const top3Names = (sig.sector.companies||[]).filter(c=>c.priority==='primary').slice(0,3).map(c=>c.name).join(', ');
+      return `<tr>
+        <td class="cal-rank">${i+1}</td>
+        <td class="cal-sector">${esc(sig.sector.sector)}</td>
+        <td class="cal-reachable">${(sig.sector.reachablePrimary||0).toLocaleString()}</td>
+        <td class="cal-entry">${ep ? esc(ep.primary) : '—'}</td>
+        <td class="cal-cos">${esc(top3Names)}</td>
+      </tr>`;
+    }).join('');
+
+    html += `
+      <div class="outreach-section-label" style="margin-top:${eventSignals.length ? '36px' : '0'};">
+        Calendar Window · ${calendarSignals.length} Sector${calendarSignals.length > 1 ? 's' : ''} Active · ${totalReachable.toLocaleString()} reachable staff
+        <span class="outreach-section-count">${calendarSignals.length}</span>
       </div>
-    </div>`;
-  }).join('');
+      <div class="outreach-calendar-card">
+        <div class="outreach-calendar-desc">
+          ${esc(bonusLabel || 'Bonus window')} — the 6 weeks following bonus payments are the highest discretionary-spend period in the property sales cycle. No event trigger has been detected for these sectors, but the calendar window alone justifies outreach to the highest-pool targets below.
+        </div>
+        <table class="outreach-cal-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Sector</th>
+              <th>Reachable Staff</th>
+              <th>Entry Channel</th>
+              <th>Priority Companies</th>
+            </tr>
+          </thead>
+          <tbody>${tableRows}</tbody>
+        </table>
+      </div>`;
+  }
+
+  container.innerHTML = html;
 }
 
 // ════════════════════════════════════════════════════════════════════════
@@ -4877,7 +4982,10 @@ function renderCompetitorNews(news) {
   </div>
 
   <!-- HELP WIDGET — floating context-aware explainer -->
-  <button id="helpWidgetBtn" onclick="toggleHelpWidget()" title="How does this work?">?</button>
+  <div id="helpWidgetWrap" style="position:fixed;bottom:28px;right:28px;z-index:200;display:flex;flex-direction:row;align-items:center;gap:10px;">
+    <span id="helpWidgetLabel" style="font-family:var(--font-ui);font-size:11px;font-weight:600;letter-spacing:0.04em;color:var(--ink-faint);opacity:0.8;white-space:nowrap;pointer-events:none;">How to read this page &rsaquo;&rsaquo;</span>
+    <button id="helpWidgetBtn" onclick="toggleHelpWidget()" title="How to read this view">?</button>
+  </div>
   <div id="helpWidgetPanel" class="help-panel" style="display:none;">
     <div class="help-panel-header">
       <span id="helpPanelTitle" class="help-panel-title">How to use this view</span>

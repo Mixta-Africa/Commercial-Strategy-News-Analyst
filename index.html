@@ -378,6 +378,33 @@ button, select, input { font-family: inherit; }
 .sentiment-signal-advice { font-family: var(--font-body); font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
 .sentiment-signal-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); margin-top: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
 
+/* ── Cross-Sector Intelligence ────────────────────────────────────────────── */
+.csector-grid { display: flex; flex-direction: column; gap: 12px; }
+.csector-card { background: var(--paper-card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px 24px; display: flex; gap: 20px; align-items: flex-start; }
+.csector-card.impact-critical { border-left: 4px solid #7A1F2B; }
+.csector-card.impact-high     { border-left: 4px solid #A47D29; }
+.csector-card.impact-moderate { border-left: 4px solid #535C68; }
+.csector-rank { font-family: var(--font-mono); font-size: 22px; font-weight: 800; color: var(--ink-faint); min-width: 32px; text-align: center; margin-top: 2px; }
+.csector-body { flex: 1; }
+.csector-header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.csector-name { font-family: var(--font-ui); font-size: 14px; font-weight: 800; color: var(--ink); }
+.csector-impact-badge { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 12px; }
+.csector-impact-badge.critical { background: rgba(122,31,43,0.12); color: var(--maroon); }
+.csector-impact-badge.high     { background: rgba(164,125,41,0.12); color: #7a5a10; }
+.csector-impact-badge.moderate { background: rgba(83,92,104,0.12); color: #535C68; }
+.csector-signal-count { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); margin-left: auto; }
+.csector-mechanism { font-family: var(--font-body); font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 10px; }
+.csector-articles { display: flex; flex-direction: column; gap: 4px; border-top: 1px solid var(--rule); padding-top: 10px; margin-top: 4px; }
+.csector-article-row { display: flex; gap: 10px; align-items: baseline; }
+.csector-article-sent { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.csector-article-sent.bullish { background: var(--bull, #2E7D32); }
+.csector-article-sent.bearish { background: var(--bear, #C62828); }
+.csector-article-sent.neutral  { background: #9E9E9E; }
+.csector-article-title { font-family: var(--font-ui); font-size: 12px; color: var(--ink); flex: 1; }
+.csector-article-title a { color: var(--ink); text-decoration: none; }
+.csector-article-title a:hover { color: var(--maroon); }
+.csector-article-source { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); white-space: nowrap; }
+
 /* ── Trend chart tooltip ───────────────────────────────────────────────────── */
 #trendTooltip { position: fixed; background: var(--ink); color: #fff; border-radius: 6px; padding: 8px 12px; font-family: var(--font-ui); font-size: 12px; pointer-events: none; z-index: 9999; opacity: 0; transition: opacity 0.12s; max-width: 220px; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
 #trendTooltip .tt-date { font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
@@ -850,6 +877,13 @@ button, select, input { font-family: inherit; }
       </div>
 
       <div id="mapContainer"><div class="loading" style="padding-top: 300px;">Initializing cartography engine...</div></div>
+
+      <!-- ── CROSS-SECTOR MARKET INTELLIGENCE (below map, markets section only) ── -->
+      <div class="section-divider" style="margin-top:40px;"><h2>Cross-Sector Market Intelligence</h2></div>
+      <div class="dateline" style="font-family:var(--font-ui);font-size:13.5px;color:var(--ink-soft);margin-bottom:24px;">
+        Sectors not directly related to real estate that carry significant demand signals for the Ibeju-Lekki corridor. Ranked by impact level. Articles in high-impact sectors are also plotted on the map above.
+      </div>
+      <div id="crossSectorIntelContainer"></div>
     </section>
 
     <!-- THEMES & TRENDS (NARRATIVE MOMENTUM + TOPIC VOLUME, UNIFIED) -->
@@ -1051,6 +1085,7 @@ let activeGlobalThemeFilter = "All";
 let loadedBriefingCache = null;
 let geoMap = null;
 let mapMarkers = [];
+let _crossSectorArticles = [];
 let geoCache = []; 
 let competitiveCache = null; 
 let pricingTypeFilter = 'all';
@@ -2188,7 +2223,15 @@ function plotGeospatialData(articles) {
   // Also count signals for the homepage previews
   let counts = { lagos: 0, abuja: 0, ghana: 0, senegal: 0, morocco: 0 };
 
-  articles.forEach(article => {
+  // Combine real-estate articles with cross-sector intelligence articles
+  const crossSectorUrls = new Set((_crossSectorArticles || []).map(a => a.url).filter(Boolean));
+  const combinedArticles = [
+    ...articles,
+    ...(_crossSectorArticles || []).filter(a => !articles.find(b => b.url === a.url)),
+  ];
+
+  combinedArticles.forEach(article => {
+    const isCrossSector = crossSectorUrls.has(article.url) && !articles.find(b => b.url === article.url);
     const scope = resolveScope(article);
     if (counts[scope] !== undefined) counts[scope]++;
     
@@ -2198,11 +2241,25 @@ function plotGeospatialData(articles) {
     const lat = anchor.lat + (Math.random() - 0.5) * jitterSpread;
     const lng = anchor.lng + (Math.random() - 0.5) * jitterSpread;
     const sent = (article.sentiment || 'neutral').toLowerCase();
-    const color = sent === 'bullish' ? '#1E5E40' : sent === 'bearish' ? '#8F2A2A' : '#7A1F2B'; // Default marker to Maroon
 
-    const marker = L.circleMarker([lat, lng], {
-      radius: 6, fillColor: color, color: '#FFFFFF', weight: 1.5, opacity: 1, fillOpacity: 0.9
-    }).addTo(geoMap);
+    // Cross-sector articles: diamond shape (square rotated 45°), distinct colour
+    // Real-estate articles: circle, existing colour scheme
+    let marker;
+    if (isCrossSector) {
+      const color = '#A47D29'; // amber — cross-sector signal
+      marker = L.marker([lat, lng], {
+        icon: L.divIcon({
+          className: '',
+          html: `<div style="width:10px;height:10px;background:${color};transform:rotate(45deg);border:1.5px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.3);"></div>`,
+          iconSize: [10, 10], iconAnchor: [5, 5],
+        })
+      }).addTo(geoMap);
+    } else {
+      const color = sent === 'bullish' ? '#1E5E40' : sent === 'bearish' ? '#8F2A2A' : '#7A1F2B';
+      marker = L.circleMarker([lat, lng], {
+        radius: 6, fillColor: color, color: '#FFFFFF', weight: 1.5, opacity: 1, fillOpacity: 0.9
+      }).addTo(geoMap);
+    }
 
     marker.bindPopup(`
       <div style="min-width: 240px; padding: 8px 0;">
@@ -2210,7 +2267,7 @@ function plotGeospatialData(articles) {
           ${esc(article.title)}
         </a>
         <div style="font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: #827F79; text-transform: uppercase; border-top: 1px solid #D6D1C4; padding-top: 8px;">
-          <strong style="color:#7A1F2B;">${esc(article.source)}</strong> &middot; ${esc(scope.replace(/_/g, ' '))}
+          <strong style="color:${isCrossSector ? '#A47D29' : '#7A1F2B'};">${esc(article.source)}</strong> &middot; ${isCrossSector ? '⬦ Cross-sector signal' : esc(scope.replace(/_/g, ' '))}
         </div>
       </div>
     `);
@@ -2424,36 +2481,163 @@ function renderCompetitivePositioningCard() {
 
 // Sector → theme keyword mapping
 // Add new rows as the corporate targets table grows.
+// ── Corporate targeting database ─────────────────────────────────────────────
+// Each entry: sector label, primary companies (₦1.5M+/month salary capacity),
+// secondary companies (₦500K-₦1.5M — lower priority, still reachable), 
+// employee band estimates at ₦1.5M+, and keyword triggers from the news pipeline.
+// "estStaff15M" = estimated Lagos-based staff earning ₦1.5M+/month.
 const SECTOR_THEME_MAP = [
   {
     sector: 'Energy (Oil & Gas)',
-    companies: ['Seplat Energy', 'Oando', 'TotalEnergies Nigeria', 'Nestoil', 'ExxonMobil Nigeria', 'Nest Oil Nigeria'],
-    keywords: ['energy', 'oil', 'gas', 'petroleum', 'upstream', 'downstream', 'NNPC', 'refinery', 'pipeline', 'LNG'],
+    // Primary: Confirmed ₦1.5M+/month median for professional staff
+    companies: [
+      { name: 'Seplat Energy',         estStaff15M: 1380, note: 'ENGAGED', priority: 'primary' },
+      { name: 'TotalEnergies Nigeria', estStaff15M: 500,  note: 'IOC pay scale',  priority: 'primary' },
+      { name: 'ExxonMobil Nigeria',    estStaff15M: 300,  note: 'reduced headcount', priority: 'primary' },
+      { name: 'Renaissance Africa Energy (Shell Nigeria)', estStaff15M: 450, note: 'SNEPCo staff', priority: 'primary' },
+      { name: 'Oando',                 estStaff15M: 900,  note: 'grown via NAOC',  priority: 'primary' },
+      { name: 'Nestoil',               estStaff15M: 360,  note: 'EPCC engineers',  priority: 'primary' },
+      { name: 'Savannah Energy',       estStaff15M: 120,  note: 'Lagos HQ',        priority: 'primary' },
+      { name: 'Dangote Refinery',      estStaff15M: 400,  note: 'operational staff growing', priority: 'primary' },
+    ],
+    secondary: [
+      { name: 'Nest Oil Nigeria',      estStaff15M: 200,  note: 'mid-tier operator', priority: 'secondary' },
+      { name: 'Shoreline Energy',      estStaff15M: 80,   note: 'Lagos-based', priority: 'secondary' },
+      { name: 'AITEO Group',           estStaff15M: 150,  note: 'upstream operator', priority: 'secondary' },
+    ],
+    keywords: ['energy', 'oil', 'gas', 'petroleum', 'upstream', 'downstream', 'NNPC', 'refinery', 'pipeline', 'LNG', 'crude', 'hydrocarbon'],
+    reachablePrimary: 3410,
   },
   {
     sector: 'Financial Services & Banking',
-    companies: ['Stanbic IBTC', 'GTBank', 'Access Bank', 'Zenith Bank', 'UBA', 'First Bank', 'FCMB'],
-    keywords: ['banking', 'financial', 'fintech', 'mortgage', 'FMBN', 'NHF', 'interest rate', 'CBN', 'credit', 'investment'],
+    companies: [
+      { name: 'Stanbic IBTC',          estStaff15M: 600,  note: 'investment banking tier', priority: 'primary' },
+      { name: 'Zenith Bank',           estStaff15M: 1200, note: 'large Lagos base', priority: 'primary' },
+      { name: 'GTBank',                estStaff15M: 900,  note: 'VI HQ concentration', priority: 'primary' },
+      { name: 'Access Bank',           estStaff15M: 1100, note: 'post-merger growth', priority: 'primary' },
+      { name: 'UBA',                   estStaff15M: 800,  note: 'pan-Africa HQ Lagos', priority: 'primary' },
+      { name: 'First Bank',            estStaff15M: 950,  note: 'legacy senior cohort', priority: 'primary' },
+      { name: 'Citibank Nigeria',      estStaff15M: 180,  note: 'all-senior staff', priority: 'primary' },
+      { name: 'Standard Chartered Nigeria', estStaff15M: 150, note: 'Lagos only', priority: 'primary' },
+      { name: 'HSBC Nigeria',          estStaff15M: 80,   note: 'representative office', priority: 'primary' },
+      { name: 'Coronation Merchant Bank', estStaff15M: 120, note: 'senior-heavy', priority: 'primary' },
+      { name: 'CardinalStone',         estStaff15M: 90,   note: 'asset management', priority: 'primary' },
+    ],
+    secondary: [
+      { name: 'FCMB',                  estStaff15M: 400,  note: 'mid-band dominant', priority: 'secondary' },
+      { name: 'Fidelity Bank',         estStaff15M: 350,  note: 'growing retail', priority: 'secondary' },
+      { name: 'Union Bank',            estStaff15M: 300,  note: 'post-Titan acquisition', priority: 'secondary' },
+      { name: 'Polaris Bank',          estStaff15M: 200,  note: 'recovering portfolio', priority: 'secondary' },
+    ],
+    keywords: ['banking', 'financial', 'mortgage', 'FMBN', 'NHF', 'interest rate', 'CBN', 'credit', 'investment banking', 'capital market', 'asset management'],
+    reachablePrimary: 6170,
   },
   {
     sector: 'Telecoms',
-    companies: ['MTN Nigeria', 'Airtel Nigeria', 'IHS Towers', 'ATC Nigeria'],
-    keywords: ['telecom', 'broadband', '5G', 'infrastructure', 'connectivity', 'digital', 'spectrum'],
+    companies: [
+      { name: 'MTN Nigeria',           estStaff15M: 1600, note: 'Lagos commercial HQ', priority: 'primary' },
+      { name: 'Airtel Nigeria',        estStaff15M: 700,  note: 'V/I HQ', priority: 'primary' },
+      { name: 'IHS Towers',            estStaff15M: 300,  note: 'infrastructure play', priority: 'primary' },
+      { name: 'ATC Nigeria (American Tower)', estStaff15M: 150, note: 'Lagos-concentrated', priority: 'primary' },
+      { name: 'Ericsson Nigeria',      estStaff15M: 120,  note: 'vendor staff', priority: 'primary' },
+      { name: 'Nokia Nigeria',         estStaff15M: 80,   note: 'Lagos office', priority: 'primary' },
+    ],
+    secondary: [
+      { name: 'Glo (Globacom)',        estStaff15M: 500,  note: 'Lagos HQ, salary verification needed', priority: 'secondary' },
+      { name: '9mobile',               estStaff15M: 200,  note: 'reduced post-acquisition', priority: 'secondary' },
+    ],
+    keywords: ['telecom', 'broadband', '5G', 'connectivity', 'digital', 'spectrum', 'MTN', 'Airtel', 'network rollout'],
+    reachablePrimary: 2950,
   },
   {
-    sector: 'FMCG',
-    companies: ['Nigerian Breweries', 'Unilever Nigeria', 'Dangote Group', 'PZ Cussons'],
-    keywords: ['consumer', 'FMCG', 'manufacturing', 'brewery', 'food', 'distribution', 'retail'],
+    sector: 'FMCG & Consumer Goods',
+    companies: [
+      { name: 'Nigerian Breweries',    estStaff15M: 800,  note: 'confirmed ₦4.2M avg salary (2024)', priority: 'primary' },
+      { name: 'Unilever Nigeria',      estStaff15M: 400,  note: 'Lagos HQ, FMCG premium pay', priority: 'primary' },
+      { name: 'Nestlé Nigeria',        estStaff15M: 350,  note: 'Ilupeju HQ', priority: 'primary' },
+      { name: 'PZ Cussons Nigeria',    estStaff15M: 250,  note: 'Ilupeju', priority: 'primary' },
+      { name: 'Coca-Cola HBC Nigeria', estStaff15M: 300,  note: 'Lagos + Abuja', priority: 'primary' },
+      { name: 'Procter & Gamble Nigeria', estStaff15M: 180, note: 'Lagos office', priority: 'primary' },
+      { name: 'British American Tobacco Nigeria', estStaff15M: 120, note: 'Ibadan + Lagos', priority: 'primary' },
+    ],
+    secondary: [
+      { name: 'Dangote Group (Consumer)',  estStaff15M: 300, note: 'sugar, flour, pasta — Lagos HQ', priority: 'secondary' },
+      { name: 'Honeywell Group',       estStaff15M: 150,  note: 'flour + diversified', priority: 'secondary' },
+      { name: 'Chi Limited',           estStaff15M: 100,  note: 'Ikeja', priority: 'secondary' },
+    ],
+    keywords: ['consumer', 'FMCG', 'manufacturing', 'brewery', 'food', 'retail', 'Nestlé', 'Unilever', 'consumer goods'],
+    reachablePrimary: 2400,
   },
   {
-    sector: 'Industrials / Construction',
-    companies: ['Julius Berger Nigeria', 'BUA Cement', 'Lafarge Africa'],
-    keywords: ['infrastructure', 'construction', 'highway', 'expressway', 'Lekki', 'corridor', 'building', 'cement', 'Julius Berger'],
+    sector: 'Industrials & Construction',
+    companies: [
+      { name: 'Julius Berger Nigeria', estStaff15M: 360,  note: 'Lekki-Epe corridor positioning', priority: 'primary' },
+      { name: 'BUA Cement',            estStaff15M: 200,  note: 'Lagos operations', priority: 'primary' },
+      { name: 'Lafarge Africa',        estStaff15M: 250,  note: 'Sagamu + Lagos HQ', priority: 'primary' },
+      { name: 'Flour Mills of Nigeria', estStaff15M: 180, note: 'Apapa — industrial belt', priority: 'primary' },
+      { name: 'Dangote Cement',        estStaff15M: 200,  note: 'Obajana + Lagos HQ', priority: 'primary' },
+      { name: 'Coscharis Group',       estStaff15M: 120,  note: 'auto + industrial Lagos', priority: 'primary' },
+    ],
+    secondary: [
+      { name: 'Arbico',                estStaff15M: 80,   note: 'construction services', priority: 'secondary' },
+      { name: 'RCC Nigeria',           estStaff15M: 60,   note: 'road construction', priority: 'secondary' },
+    ],
+    keywords: ['infrastructure', 'construction', 'highway', 'expressway', 'Lekki', 'corridor', 'building', 'cement', 'Julius Berger', 'bridge', 'road'],
+    reachablePrimary: 1310,
   },
   {
-    sector: 'Tech / Fintech',
-    companies: ['Paystack', 'Flutterwave', 'Interswitch', 'Andela', 'Konga'],
-    keywords: ['tech', 'startup', 'fintech', 'digital economy', 'proptech', 'innovation', 'AI', 'technology'],
+    sector: 'Tech & Fintech',
+    companies: [
+      { name: 'Flutterwave',           estStaff15M: 500,  note: 'all staff above ₦1.5M band', priority: 'primary' },
+      { name: 'Paystack (Stripe)',     estStaff15M: 300,  note: 'Lagos HQ, competitive pay', priority: 'primary' },
+      { name: 'Interswitch',           estStaff15M: 400,  note: 'V/I HQ', priority: 'primary' },
+      { name: 'Andela',                estStaff15M: 250,  note: 'remote-first but Lagos base', priority: 'primary' },
+      { name: 'Konga / Yudala',        estStaff15M: 120,  note: 'e-commerce, mixed band', priority: 'primary' },
+      { name: 'SeamlessHR',            estStaff15M: 100,  note: 'HRtech, Lagos', priority: 'primary' },
+      { name: 'Mono Technologies',     estStaff15M: 80,   note: 'fintech infrastructure', priority: 'primary' },
+      { name: 'TeamApt / Moniepoint',  estStaff15M: 350,  note: 'fast-growing, Lagos HQ', priority: 'primary' },
+      { name: 'PiggyVest / PiggyTech', estStaff15M: 80,   note: 'Lagos-based', priority: 'primary' },
+    ],
+    secondary: [
+      { name: 'Jumia Nigeria',         estStaff15M: 200,  note: 'mixed salary band', priority: 'secondary' },
+      { name: 'Opay',                  estStaff15M: 150,  note: 'growing headcount', priority: 'secondary' },
+    ],
+    keywords: ['tech', 'startup', 'fintech', 'digital economy', 'proptech', 'innovation', 'AI', 'technology', 'software', 'payments'],
+    reachablePrimary: 2180,
+  },
+  {
+    sector: 'Professional Services & Consulting',
+    companies: [
+      { name: 'PwC Nigeria',           estStaff15M: 600,  note: 'all senior/manager above band', priority: 'primary' },
+      { name: 'Deloitte Nigeria',      estStaff15M: 500,  note: 'V/I HQ', priority: 'primary' },
+      { name: 'KPMG Nigeria',          estStaff15M: 450,  note: 'Lagos Harbour dominant', priority: 'primary' },
+      { name: 'EY Nigeria',            estStaff15M: 400,  note: 'Lagos office', priority: 'primary' },
+      { name: 'McKinsey Nigeria',      estStaff15M: 80,   note: 'all-senior, small office', priority: 'primary' },
+      { name: 'BCG Nigeria',           estStaff15M: 60,   note: 'all-senior', priority: 'primary' },
+      { name: 'Accenture Nigeria',     estStaff15M: 300,  note: 'Lagos + VI', priority: 'primary' },
+    ],
+    secondary: [
+      { name: 'BDO Nigeria',           estStaff15M: 150,  note: 'mid-tier advisory', priority: 'secondary' },
+      { name: 'RSM Nigeria',           estStaff15M: 100,  note: 'mid-tier', priority: 'secondary' },
+    ],
+    keywords: ['consulting', 'advisory', 'audit', 'professional services', 'accounting', 'management consulting'],
+    reachablePrimary: 2390,
+  },
+  {
+    sector: 'International Organisations & NGOs',
+    companies: [
+      { name: 'World Bank (Lagos office)', estStaff15M: 120, note: 'expat + senior local', priority: 'primary' },
+      { name: 'UNDP Nigeria',          estStaff15M: 80,   note: 'Abuja + Lagos', priority: 'primary' },
+      { name: 'British High Commission / FCDO', estStaff15M: 60, note: 'Lagos consular staff', priority: 'primary' },
+      { name: 'US Consulate Lagos',    estStaff15M: 80,   note: 'diplomatic + LE staff', priority: 'primary' },
+      { name: 'Gates Foundation Nigeria', estStaff15M: 50, note: 'programme staff', priority: 'primary' },
+    ],
+    secondary: [
+      { name: 'USAID Nigeria',         estStaff15M: 60,   note: 'Lagos + Abuja', priority: 'secondary' },
+      { name: 'UNICEF Nigeria',        estStaff15M: 80,   note: 'Abuja-dominant', priority: 'secondary' },
+    ],
+    keywords: ['international', 'development', 'NGO', 'World Bank', 'UN', 'foreign mission', 'diplomat'],
+    reachablePrimary: 390,
   },
 ];
 
@@ -2462,24 +2646,20 @@ function renderOutreachSignals(briefingData, trendHistory) {
   if (!container) return;
 
   const themes = briefingData?.themes || [];
-  const recentDays = (trendHistory?.days || []).slice(-14); // last 14 days
+  const recentDays = (trendHistory?.days || []).slice(-14);
   const recentTopics = recentDays.flatMap(d => (d.topTopics || []).map(t => t.topic || ''));
 
   const signals = [];
 
   for (const sector of SECTOR_THEME_MAP) {
-    // Count how many briefing themes and recent topics match this sector's keywords
     let matchedThemes = [], matchedTopics = [];
 
     for (const theme of themes) {
-      const text = ((theme.label || '') + ' ' + (theme.what_happened || '') + ' ' + (theme.why_it_matters_to_mixta || '')).toLowerCase();
+      const text = ((theme.label||'') + ' ' + (theme.what_happened||'') + ' ' + (theme.why_it_matters_to_mixta||'')).toLowerCase();
       if (sector.keywords.some(kw => text.includes(kw.toLowerCase()))) {
-        if (theme.sentiment === 'bullish' || theme.confidence === 'high' || theme.mixta_relevance === 'strategic_opportunity') {
-          matchedThemes.push(theme.label);
-        }
+        matchedThemes.push(theme);
       }
     }
-
     for (const topic of recentTopics) {
       if (sector.keywords.some(kw => topic.toLowerCase().includes(kw.toLowerCase()))) {
         matchedTopics.push(topic);
@@ -2492,37 +2672,62 @@ function renderOutreachSignals(briefingData, trendHistory) {
     }
   }
 
-  // Also fire for infrastructure themes (always relevant to Lekki corridor)
+  // Infrastructure themes always relevant — auto-fire for Industrials if not already matched
   const infraThemes = themes.filter(t => {
-    const text = ((t.label || '') + ' ' + (t.what_happened || '')).toLowerCase();
+    const text = ((t.label||'') + ' ' + (t.what_happened||'')).toLowerCase();
     return text.includes('infrastructure') || text.includes('expressway') || text.includes('lekki') || text.includes('ibeju');
   });
-  if (infraThemes.length > 0 && !signals.find(s => s.sector.sector === 'Industrials / Construction')) {
-    signals.push({
-      sector: SECTOR_THEME_MAP.find(s => s.sector === 'Industrials / Construction'),
-      strength: 'Emerging',
-      matchedThemes: infraThemes.map(t => t.label),
-      matchedTopics: [],
-    });
+  const industrialSector = SECTOR_THEME_MAP.find(s => s.sector === 'Industrials & Construction');
+  if (infraThemes.length > 0 && industrialSector && !signals.find(s => s.sector === industrialSector)) {
+    signals.push({ sector: industrialSector, strength: 'Emerging', matchedThemes: infraThemes, matchedTopics: [] });
   }
 
-  if (!signals.length) {
-    container.innerHTML = '';
-    return;
-  }
+  if (!signals.length) { container.innerHTML = ''; return; }
 
-  container.innerHTML = signals.map(sig => `
-    <div class="outreach-signal-banner">
-      <div class="outreach-signal-icon">📡</div>
+  // Sort: Strong first, then Moderate, then Emerging
+  const strengthOrder = { 'Strong': 0, 'Moderate': 1, 'Emerging': 2 };
+  signals.sort((a,b) => (strengthOrder[a.strength]||99) - (strengthOrder[b.strength]||99));
+
+  container.innerHTML = signals.map(sig => {
+    const primaryCos = (sig.sector.companies || []).filter(c => c.priority === 'primary');
+    const totalReachable = sig.sector.reachablePrimary || 0;
+
+    // Build specific action sentence based on what triggered the signal
+    let actionText = '';
+    if (sig.matchedThemes.length) {
+      const theme = sig.matchedThemes[0];
+      const themeLabel = theme.label || '';
+      const whatHappened = theme.what_happened || '';
+      // Pull the most concrete detail from the theme
+      const context = whatHappened.length > 20 ? whatHappened.slice(0, 120) : themeLabel;
+      actionText = `<strong>${esc(context)}</strong> — this narrative creates a direct housing conversation opener: ${esc(sig.sector.sector)} professionals whose employers are in the news for positive reasons are at peak receptivity. Call ${esc(primaryCos[0]?.name || '')}${primaryCos[1] ? ', ' + primaryCos[1].name : ''} contacts this week.`;
+    } else {
+      const topicStr = sig.matchedTopics.slice(0,2).join(' and ');
+      actionText = `<strong>${esc(topicStr)}</strong> has appeared ${sig.matchedTopics.length} times in recent news — ${esc(sig.sector.sector)} sector staff are reading this context daily. Lead with corridor appreciation when reaching out.`;
+    }
+
+    // Build company list with priority distinction
+    const primaryList = primaryCos.slice(0, 5).map(c =>
+      `<span style="font-weight:700;color:var(--ink)">${esc(c.name)}</span><span style="color:var(--ink-faint);font-size:10px"> (~${c.estStaff15M} ₦1.5M+ staff)</span>`
+    ).join(' · ');
+
+    const secondaryCos = (sig.sector.companies||[]).filter(c => c.priority === 'secondary').slice(0,3);
+    const secondaryList = secondaryCos.length
+      ? `<div style="margin-top:6px;font-size:10px;color:var(--ink-faint)">Lower priority (₦500K-₦1.5M band): ${secondaryCos.map(c=>esc(c.name)).join(' · ')}</div>`
+      : '';
+
+    const icon = sig.strength === 'Strong' ? '🔴' : sig.strength === 'Moderate' ? '🟡' : '📡';
+
+    return `<div class="outreach-signal-banner">
+      <div class="outreach-signal-icon">${icon}</div>
       <div class="outreach-signal-body">
-        <div class="outreach-signal-label">${esc(sig.strength)} Outreach Signal · ${esc(sig.sector.sector)}</div>
-        <div class="outreach-signal-text">${sig.matchedThemes.length
-          ? `${esc(sig.matchedThemes[0])} — activate outreach to your ${esc(sig.sector.sector)} targets while this narrative is live.`
-          : `${esc(sig.sector.sector)}-related topics trending (${esc(sig.matchedTopics.join(', '))}) — elevated sector receptivity window.`
-        }</div>
-        <div class="outreach-signal-companies">Target companies: ${esc(sig.sector.companies.slice(0, 4).join(' · '))}</div>
+        <div class="outreach-signal-label">${esc(sig.strength)} Signal · ${esc(sig.sector.sector)} · ${totalReachable.toLocaleString()} reachable staff</div>
+        <div class="outreach-signal-text">${actionText}</div>
+        <div class="outreach-signal-companies" style="margin-top:8px">${primaryList}</div>
+        ${secondaryList}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // ════════════════════════════════════════════════════════════════════════
@@ -2712,6 +2917,143 @@ function attachTrendChartTooltip(container, series, allDates, xScale, yScale, mL
     tooltip.style.opacity = '0';
     crosshair.setAttribute('visibility', 'hidden');
   });
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// CROSS-SECTOR MARKET INTELLIGENCE
+// Identifies articles from non-real-estate sectors that carry demand signals
+// for the Ibeju-Lekki corridor. Renders below the map in the Markets section.
+// High-impact articles are also passed to plotGeospatialData as extra markers.
+// ════════════════════════════════════════════════════════════════════════
+
+// Sector definitions: each has a mechanism explaining WHY it affects real estate,
+// an impact tier, keyword triggers, and signal examples for the write-up.
+const CROSS_SECTOR_INTELLIGENCE = [
+  {
+    sector: 'Macro Economy & Monetary Policy',
+    impact: 'critical',
+    mechanism: 'CBN interest rate decisions directly determine mortgage affordability and developer financing costs. A 100bps rate cut can move 200,000+ Lagos households from "cannot qualify" to "can qualify" for a mortgage. Exchange rate stability determines construction input costs (cement, rebar, fittings are partly USD-linked) and diaspora buyer confidence.',
+    keywords: ['interest rate', 'CBN', 'monetary policy', 'inflation', 'naira', 'forex', 'exchange rate', 'MPR', 'CRR', 'GDP growth', 'recession'],
+    watchFor: ['Rate cut signals', 'Naira stabilisation', 'Inflation trajectory', 'GDP growth forecasts'],
+  },
+  {
+    sector: 'Infrastructure & Transport',
+    impact: 'critical',
+    mechanism: 'The Lekki-Epe Expressway, Lagos-Calabar highway, and 4th Mainland Bridge are direct value multipliers for Lakowe Crossings, Lakowe Annexe, and Lagos New Town. Every infrastructure project that reduces travel time to the corridor increases addressable buyer pool. Infrastructure delays suppress prices; completions trigger price step-changes.',
+    keywords: ['expressway', 'highway', 'bridge', 'Lekki-Epe', 'Calabar highway', 'port', 'rail', 'BRT', 'transport', 'road', 'infrastructure', 'Lagos Calabar'],
+    watchFor: ['Expressway completion milestones', 'New highway route announcements', 'Port expansion affecting Ibeju-Lekki'],
+  },
+  {
+    sector: 'Energy & Power Supply',
+    impact: 'high',
+    mechanism: 'Reliable power supply is a top-3 purchase criterion for Lagos residential buyers, particularly for diaspora and high-income buyers. Estates with solar or backup infrastructure command 15-25% price premiums. National grid improvements reduce generator dependency, improving lifestyle quality and Mixta\'s competitive positioning on infrastructure investment.',
+    keywords: ['electricity', 'power supply', 'NERC', 'grid', 'solar', 'renewable', 'Electricity Act', 'load shedding', 'meter', 'GenCo', 'DisCo'],
+    watchFor: ['Power sector privatisation', 'Solar adoption rates', 'Grid reliability improvements in Epe/Ibeju axis'],
+  },
+  {
+    sector: 'Foreign Exchange & Diaspora',
+    impact: 'high',
+    mechanism: 'Nigerian diaspora accounted for an estimated 35-40% of Lagos premium real estate transactions in 2024-2025. Naira depreciation makes Mixta properties cheaper in USD terms for diaspora buyers, creating opportunistic buying windows. Remittance volume correlates directly with off-plan deposit conversion rates.',
+    keywords: ['diaspora', 'remittance', 'Nigerians abroad', 'dollar', 'pound', 'naira depreciation', 'offshore', 'foreign buyer', 'NiDCOM'],
+    watchFor: ['Naira depreciation against USD/GBP', 'Remittance record highs', 'Diaspora investment policy changes'],
+  },
+  {
+    sector: 'Financial Markets & Capital',
+    impact: 'high',
+    mechanism: 'REITs, mortgage-backed securities, and pension fund real estate allocations directly fund the buyers and developers in Mixta\'s market. MREIF policy changes and NHF expansion create new buyer financing pools. Capital market volatility drives HNWIs toward real assets like land.',
+    keywords: ['REIT', 'mortgage', 'NHF', 'FMBN', 'pension', 'capital market', 'stock exchange', 'bond', 'MREIF', 'securities'],
+    watchFor: ['New mortgage product launches', 'REIT performance', 'Pension fund real estate allocation increases'],
+  },
+  {
+    sector: 'Urban Policy & Land Use',
+    impact: 'high',
+    mechanism: 'Lagos State land use charge increases, building permit reforms, and estate management regulations directly affect operating costs, buyer confidence, and developer feasibility. Ibeju-Lekki-specific policies (free trade zone expansion, C of O processing speed) are direct Mixta corridor signals.',
+    keywords: ['land use', 'land charge', 'C of O', 'building permit', 'urban', 'zoning', 'Lagos State', 'LASG', 'estate management', 'planning', 'Ibeju-Lekki'],
+    watchFor: ['Land charge rate revisions', 'Permit processing reforms', 'Ibeju-Lekki FTZ expansion'],
+  },
+  {
+    sector: 'Corporate Expansion & Employer Moves',
+    impact: 'moderate',
+    mechanism: 'New corporate HQ relocations, major office expansions, and large employer announcements in Lagos create concentrated demand clusters. A company adding 500+ Lagos staff creates an immediate addressable pool for Mixta\'s B2B outreach channel. Companies expanding into Ibeju-Lekki FTZ are direct corridor demand drivers.',
+    keywords: ['headquarters', 'expansion', 'new office', 'relocation', 'hiring', 'jobs', 'employment', 'free trade zone', 'Lekki FTZ', 'LFTZ'],
+    watchFor: ['FTZ tenant announcements', 'Lagos corporate HQ relocations', 'Large employer hiring surges'],
+  },
+];
+
+// _crossSectorArticles declared at top of file
+
+function renderCrossSectorIntel(articles) {
+  const container = document.getElementById('crossSectorIntelContainer');
+  if (!container) return;
+
+  const allArticles = Array.isArray(articles) ? articles : [];
+  if (!allArticles.length) {
+    container.innerHTML = '<div class="evo-empty">No articles loaded yet.</div>';
+    return;
+  }
+
+  _crossSectorArticles = []; // reset
+  const impactOrder = { critical: 0, high: 1, moderate: 2 };
+
+  const sectorResults = CROSS_SECTOR_INTELLIGENCE.map(sector => {
+    // Match articles to this sector
+    const matched = allArticles.filter(a => {
+      const text = ((a.title||'') + ' ' + (a.summary||'') + ' ' + (a.description||'')).toLowerCase();
+      return sector.keywords.some(kw => text.includes(kw.toLowerCase()));
+    }).sort((a,b) => {
+      // Sort: most recent first
+      return new Date(b.publishedAt||b.addedAt||0) - new Date(a.publishedAt||a.addedAt||0);
+    });
+
+    return { ...sector, matched };
+  }).sort((a,b) => (impactOrder[a.impact]||9) - (impactOrder[b.impact]||9));
+
+  // Collect high-priority articles for map plotting
+  _crossSectorArticles = sectorResults
+    .filter(s => s.impact === 'critical' || s.impact === 'high')
+    .flatMap(s => s.matched.slice(0, 3))
+    .filter((a, i, arr) => arr.findIndex(b => b.url === a.url) === i); // dedupe
+
+  const html = sectorResults.map((sector, idx) => {
+    const count = sector.matched.length;
+    const impactClass = sector.impact;
+    const badgeClass = impactClass;
+    const rankLabel = String(idx + 1).padStart(2, '0');
+    const articles = sector.matched.slice(0, 4);
+
+    const articleRows = articles.map(a => {
+      const sent = (a.sentiment || 'neutral').toLowerCase();
+      const date = a.publishedAt ? new Date(a.publishedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short' }) : '';
+      return `<div class="csector-article-row">
+        <div class="csector-article-sent ${sent}"></div>
+        <div class="csector-article-title">
+          ${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.title)}</a>` : esc(a.title)}
+        </div>
+        <div class="csector-article-source">${esc(a.source||'')}${date ? ' · '+date : ''}</div>
+      </div>`;
+    }).join('');
+
+    const watchItems = sector.watchFor.slice(0,3).map(w => `<span style="display:inline-block;background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:2px 10px;font-family:var(--font-mono);font-size:10px;margin:2px;">${esc(w)}</span>`).join('');
+
+    return `<div class="csector-card impact-${impactClass}">
+      <div class="csector-rank">${rankLabel}</div>
+      <div class="csector-body">
+        <div class="csector-header">
+          <span class="csector-name">${esc(sector.sector)}</span>
+          <span class="csector-impact-badge ${badgeClass}">${impactClass} impact</span>
+          <span class="csector-signal-count">${count} article${count !== 1 ? 's' : ''} detected</span>
+        </div>
+        <div class="csector-mechanism">${esc(sector.mechanism)}</div>
+        <div style="margin-bottom:8px;">${watchItems}</div>
+        ${articles.length ? `<div class="csector-articles">${articleRows}</div>` : `<div class="evo-empty" style="padding:8px 0;">No articles in the current archive match this sector — pipeline will populate this as coverage grows.</div>`}
+      </div>
+    </div>`;
+  }).join('');
+
+  container.innerHTML = `<div class="csector-grid">${html}</div>`;
+
+  // Re-plot map markers to include cross-sector articles
+  if (_crossSectorArticles.length) plotGeospatialData(geoCache);
 }
 
 // ── HELP WIDGET ───────────────────────────────────────────────────────────────
@@ -4124,6 +4466,9 @@ function renderCompetitorNews(news) {
 
   // ── Use Case 3: Sentiment Sales Calendar ─────────────────────────────────
   renderSentimentCalendar(trendHistory);
+
+  // ── Cross-Sector Market Intelligence (Markets section) ────────────────────
+  renderCrossSectorIntel(articlesCache);
 
   await loadConfigState();
   renderConfig();

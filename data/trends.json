@@ -1,65 +1,95 @@
 {
   "7day": {
-    "articleCount": 1,
+    "articleCount": 3,
     "sentimentBreakdown": {
-      "neutral": 1
+      "bullish": 1,
+      "neutral": 1,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "climate-change",
+        "topic": "housing deficit",
         "count": 1
       },
       {
-        "topic": "real-estate-market",
+        "topic": "government partnership",
         "count": 1
       },
       {
-        "topic": "global-trends",
+        "topic": "mass housing project",
+        "count": 1
+      },
+      {
+        "topic": "land grabbing",
+        "count": 1
+      },
+      {
+        "topic": "Lagos real estate",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "30day": {
-    "articleCount": 1,
+    "articleCount": 3,
     "sentimentBreakdown": {
-      "neutral": 1
+      "bullish": 1,
+      "neutral": 1,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "climate-change",
+        "topic": "housing deficit",
         "count": 1
       },
       {
-        "topic": "real-estate-market",
+        "topic": "government partnership",
         "count": 1
       },
       {
-        "topic": "global-trends",
+        "topic": "mass housing project",
+        "count": 1
+      },
+      {
+        "topic": "land grabbing",
+        "count": 1
+      },
+      {
+        "topic": "Lagos real estate",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "90day": {
-    "articleCount": 1,
+    "articleCount": 3,
     "sentimentBreakdown": {
-      "neutral": 1
+      "bullish": 1,
+      "neutral": 1,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "climate-change",
+        "topic": "housing deficit",
         "count": 1
       },
       {
-        "topic": "real-estate-market",
+        "topic": "government partnership",
         "count": 1
       },
       {
-        "topic": "global-trends",
+        "topic": "mass housing project",
+        "count": 1
+      },
+      {
+        "topic": "land grabbing",
+        "count": 1
+      },
+      {
+        "topic": "Lagos real estate",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   }
 }

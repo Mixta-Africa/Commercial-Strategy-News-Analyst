@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-14T12:51:43.359Z",
+  "timestamp": "2026-07-15T11:55:05.636Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -9,7 +9,7 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 68,
+      "count": 69,
       "error": null
     },
     "googlenews": {
@@ -18,31 +18,31 @@
       "error": null
     },
     "rss": {
-      "total": 36,
+      "total": 44,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 3,
+          "count": 9,
           "error": null
         },
         "Premium Times": {
           "ok": true,
-          "count": 0,
+          "count": 1,
           "error": null
         },
         "BusinessDay": {
           "ok": true,
-          "count": 0,
+          "count": 1,
           "error": null
         },
         "Nairametrics": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 1,
+          "count": 0,
           "error": null
         },
         "The Punch (Business)": {
@@ -79,22 +79,21 @@
     }
   },
   "counts": {
-    "raw": 228,
-    "filtered": 0,
-    "analyzed": 0,
+    "raw": 260,
+    "filtered": 3,
+    "analyzed": 3,
     "aiFallbacks": 0
   },
   "synthesis": {
-    "ok": false,
-    "themes": 0
+    "ok": true,
+    "themes": 2
   },
   "email": {
-    "sent": false
+    "sent": true
   },
-  "pipelineGate": true,
+  "pipelineGate": false,
   "warnings": [
     "Sources down: RSS Estate Intel (HTTP 403)",
-    "Note: GNews (0 articles) — known issue, excluded from down-count",
-    "Note: No fresh articles in the 48-hour window — pipeline halted cleanly. No briefing generated."
+    "Note: GNews (0 articles) — known issue, excluded from down-count"
   ]
 }

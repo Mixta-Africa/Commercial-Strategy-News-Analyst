@@ -725,6 +725,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-15",
+      "articleCount": 3,
+      "sentimentBreakdown": {
+        "bullish": 1,
+        "neutral": 1,
+        "bearish": 1
+      },
+      "averageSentiment": "bearish",
+      "topTopics": [
+        {
+          "topic": "housing deficit",
+          "count": 1
+        },
+        {
+          "topic": "government partnership",
+          "count": 1
+        },
+        {
+          "topic": "mass housing project",
+          "count": 1
+        },
+        {
+          "topic": "land grabbing",
+          "count": 1
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 1
+        }
+      ]
     }
   ]
 }

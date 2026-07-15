@@ -2682,86 +2682,267 @@ function renderOutreachSignals(briefingData, trendHistory) {
   const container = document.getElementById('outreachSignalContainer');
   if (!container) return;
 
+  // ── THREE-SIGNAL MODEL ────────────────────────────────────────────────────
+  // A signal fires only when Signal C (macro base) is true AND
+  // (Signal A (calendar) OR Signal B (event-detected)).
+  // This eliminates the lazy "sector appeared 3x = recommend engagement" pattern.
+
+  // Signal C — Macro base condition
+  // Derived from 7-day sentiment. Outreach is only worth activating when the
+  // macro environment is neutral-to-positive. In a sustained bearish period,
+  // even the best corporate trigger produces low conversion.
+  const days = trendHistory?.days || [];
+  const last7 = days.slice(-7);
+  let macroScore = 0;
+  for (const d of last7) {
+    const b = d.sentimentBreakdown || {};
+    const total = (b.bullish||0) + (b.bearish||0) + (b.neutral||0);
+    if (total > 0) macroScore += ((b.bullish||0) - (b.bearish||0)) / total;
+  }
+  macroScore = last7.length ? macroScore / last7.length : 0;
+  const macroClear = macroScore > -0.15; // blocks only sustained bearish periods
+
+  // Signal A — Calendar trigger (bonus cycle windows, always on if macro clear)
+  // Nigerian corporate bonus payments cluster in Jan-Feb (year-end close) and
+  // Jul-Aug (H1 close). The 6 weeks following a bonus payment are the highest
+  // conversion window in any property sales cycle.
+  const now = new Date();
+  const month = now.getMonth() + 1; // 1-indexed
+  const bonusWindow = (month >= 1 && month <= 2) || (month >= 7 && month <= 8);
+  const bonusLabel = bonusWindow
+    ? month <= 2 ? 'Year-end bonus cycle (Jan–Feb)' : 'H1 bonus cycle (Jul–Aug)'
+    : null;
+
+  // Signal B — Event trigger (news-detected corporate lifecycle events)
+  // Five event types, ranked by conversion probability:
+  // 1. Contract win / major expansion announcement
+  // 2. Salary review / minimum wage compliance
+  // 3. IPO / ESOP / share listing
+  // 4. Staff welfare / cooperative / housing benefit programme
+  // 5. Sector-specific growth narrative (lowest weight, needs bonus window too)
+
   const themes = briefingData?.themes || [];
   const recentDays = (trendHistory?.days || []).slice(-14);
   const recentTopics = recentDays.flatMap(d => (d.topTopics || []).map(t => t.topic || ''));
 
+  // Event detection patterns ordered by conversion weight
+  const eventPatterns = [
+    {
+      type: 'contract_win',
+      label: 'Contract win / expansion',
+      weight: 5,
+      patterns: [/contract|award(ed)?|win(s)?|won|billion.*(deal|project)|expansion|new (office|hq|headquarters)/i],
+    },
+    {
+      type: 'salary_review',
+      label: 'Salary review / pay rise',
+      weight: 4,
+      patterns: [/salary|pay rise|wage|compensation|review|remuneration|minimum wage/i],
+    },
+    {
+      type: 'ipo_esop',
+      label: 'IPO / share listing / ESOP',
+      weight: 4,
+      patterns: [/ipo|initial public offer|listing|stock exchange|esop|share (scheme|option|allocation)/i],
+    },
+    {
+      type: 'welfare',
+      label: 'Staff welfare / cooperative',
+      weight: 3,
+      patterns: [/cooperative|staff welfare|housing (benefit|scheme|programme)|welfare fund/i],
+    },
+    {
+      type: 'sector_growth',
+      label: 'Sector growth narrative',
+      weight: 1, // only actionable alongside bonus window
+      patterns: [/growth|expand|profit|revenue|record|milestone|bullish/i],
+    },
+  ];
+
+  // Entry point database — how to approach each sector
+  // This determines the specific action in the outreach recommendation
+  const ENTRY_POINTS = {
+    'Energy (Oil & Gas)': {
+      primary: 'HR / Welfare Director',
+      route: 'Request a 20-minute slot to present a group bulk-purchase offer. Seplat, Oando, and TotalEnergies all have established staff cooperative societies — approach the cooperative chairman directly for a faster route to a group presentation.',
+      cooperative: true,
+    },
+    'Financial Services & Banking': {
+      primary: 'Head of Human Resources',
+      route: 'Banks respond best to a formal letter of intent addressed to the HR Director, followed by a bulk-discount term sheet. Zenith, GTBank, and Access all have documented staff housing programmes. Citibank and Standard Chartered staff are individually reachable through LinkedIn for personal purchases.',
+      cooperative: false,
+    },
+    'Telecoms': {
+      primary: 'Staff Cooperative Society',
+      route: 'MTN Nigeria has an active staff cooperative with real estate as a primary investment class. Approach the cooperative chairman (typically a senior finance staff member). Airtel responds well to a direct HR approach with a group payment plan proposal.',
+      cooperative: true,
+    },
+    'FMCG & Consumer Goods': {
+      primary: 'HR / Admin Manager',
+      route: 'Nigerian Breweries and Nestlé have strong welfare cultures. The most effective entry is a referral through a staff member who has already purchased, then escalate to a formal HR presentation. Offer a payment plan tied to the salary cycle.',
+      cooperative: false,
+    },
+    'Industrials & Construction': {
+      primary: 'Professional Association Network',
+      route: 'Julius Berger senior engineers are reachable through the Nigerian Society of Engineers (NSE) and COREN events. A presentation at an NSE Lagos chapter event reaches 200+ senior engineers simultaneously. BUA and Lafarge respond to direct HR outreach.',
+      cooperative: false,
+    },
+    'Tech & Fintech': {
+      primary: 'Direct / LinkedIn',
+      route: 'Tech staff respond poorly to formal HR channels — they are individually reachable. Target senior engineers and product managers directly on LinkedIn with a specific unit offering. Flutterwave and Paystack staff are active on Twitter/X — a company-tagged post from a credible account generates direct enquiries.',
+      cooperative: false,
+    },
+    'Professional Services & Consulting': {
+      primary: 'Direct / Partner Network',
+      route: 'Big 4 partners are individually reachable and make decisions independently. Approach PwC and Deloitte partners directly. For senior managers, a referral from an existing client who works there is the highest-conversion route. McKinsey and BCG staff are LinkedIn-reachable.',
+      cooperative: false,
+    },
+    'International Organisations & NGOs': {
+      primary: 'Admin / Procurement Officer',
+      route: 'International organisations have formal procurement processes for staff benefits. Submit a proposal through the admin department. World Bank and UNDP staff are also individually reachable — they are high-intent buyers who understand asset appreciation arguments.',
+      cooperative: false,
+    },
+  };
+
   const signals = [];
 
   for (const sector of SECTOR_THEME_MAP) {
-    let matchedThemes = [], matchedTopics = [];
+    if (!macroClear) continue; // Signal C gate — suppress all signals in sustained bearish periods
 
-    for (const theme of themes) {
-      const text = ((theme.label||'') + ' ' + (theme.what_happened||'') + ' ' + (theme.why_it_matters_to_mixta||'')).toLowerCase();
-      if (sector.keywords.some(kw => text.includes(kw.toLowerCase()))) {
-        matchedThemes.push(theme);
+    // Detect Signal B events in recent themes and topics
+    const sectorText = (themes.map(t =>
+      (t.label||'') + ' ' + (t.what_happened||'') + ' ' + (t.recommendation||'')
+    ).join(' ') + ' ' + recentTopics.join(' ')).toLowerCase();
+
+    // Only check if this sector's keywords appear at all
+    const sectorMentioned = sector.keywords.some(kw => sectorText.includes(kw.toLowerCase()));
+    if (!sectorMentioned && !bonusWindow) continue;
+
+    let detectedEvents = [];
+    let highestWeight = 0;
+
+    if (sectorMentioned) {
+      // Filter to sector-relevant text chunks
+      const sectorChunks = themes
+        .filter(t => sector.keywords.some(kw =>
+          ((t.label||'') + (t.what_happened||'')).toLowerCase().includes(kw.toLowerCase())))
+        .map(t => (t.label||'') + ' ' + (t.what_happened||''));
+
+      for (const event of eventPatterns) {
+        // Skip sector_growth events unless bonus window is also active
+        if (event.type === 'sector_growth' && !bonusWindow) continue;
+        const matchText = sectorChunks.join(' ') + ' ' + recentTopics.join(' ');
+        if (event.patterns.some(re => re.test(matchText))) {
+          detectedEvents.push(event);
+          highestWeight = Math.max(highestWeight, event.weight);
+        }
       }
     }
-    for (const topic of recentTopics) {
-      if (sector.keywords.some(kw => topic.toLowerCase().includes(kw.toLowerCase()))) {
-        matchedTopics.push(topic);
-      }
+
+    // Signal A: bonus window alone is sufficient for sectors with large reachable pools
+    const calendarFires = bonusWindow && (sector.reachablePrimary || 0) >= 500;
+    // Signal B: event detected
+    const eventFires = detectedEvents.length > 0 && highestWeight >= 2;
+
+    if (!calendarFires && !eventFires) continue;
+
+    // Determine signal strength
+    let strength, triggerType;
+    if (eventFires && calendarFires && highestWeight >= 4) {
+      strength = 'Strong'; triggerType = 'event+calendar';
+    } else if (eventFires && highestWeight >= 4) {
+      strength = 'Strong'; triggerType = 'event';
+    } else if (eventFires && calendarFires) {
+      strength = 'Moderate'; triggerType = 'event+calendar';
+    } else if (eventFires) {
+      strength = 'Moderate'; triggerType = 'event';
+    } else {
+      strength = 'Emerging'; triggerType = 'calendar';
     }
 
-    if (matchedThemes.length > 0 || matchedTopics.length >= 3) {
-      const strength = matchedThemes.length >= 2 ? 'Strong' : matchedTopics.length >= 5 ? 'Moderate' : 'Emerging';
-      signals.push({ sector, strength, matchedThemes, matchedTopics: [...new Set(matchedTopics)].slice(0, 3) });
-    }
+    signals.push({
+      sector, strength, triggerType, detectedEvents, highestWeight,
+      calendarFires, bonusWindow, bonusLabel, macroClear, macroScore,
+    });
   }
 
-  // Infrastructure themes always relevant — auto-fire for Industrials if not already matched
-  const infraThemes = themes.filter(t => {
-    const text = ((t.label||'') + ' ' + (t.what_happened||'')).toLowerCase();
-    return text.includes('infrastructure') || text.includes('expressway') || text.includes('lekki') || text.includes('ibeju');
+  if (!signals.length) {
+    // Even if no signals fired, show a macro status note during bonus windows
+    if (bonusWindow && macroClear) {
+      container.innerHTML = `<div class="outreach-signal-banner" style="border-color:var(--rule);">
+        <div class="outreach-signal-icon">📅</div>
+        <div class="outreach-signal-body">
+          <div class="outreach-signal-label">Bonus Window Active — No Event Triggers Detected</div>
+          <div class="outreach-signal-text">It is ${bonusLabel}. No specific corporate event has been detected in the news to combine with this window. Consider proactive outreach to the highest-pool sectors (Banking, Energy) on calendar basis alone.</div>
+        </div>
+      </div>`;
+    } else {
+      container.innerHTML = '';
+    }
+    return;
+  }
+
+  // Sort: Strong first, then by reachable pool size
+  signals.sort((a,b) => {
+    const strengthOrder = { 'Strong': 0, 'Moderate': 1, 'Emerging': 2 };
+    const sDiff = (strengthOrder[a.strength]||99) - (strengthOrder[b.strength]||99);
+    return sDiff !== 0 ? sDiff : (b.sector.reachablePrimary||0) - (a.sector.reachablePrimary||0);
   });
-  const industrialSector = SECTOR_THEME_MAP.find(s => s.sector === 'Industrials & Construction');
-  if (infraThemes.length > 0 && industrialSector && !signals.find(s => s.sector === industrialSector)) {
-    signals.push({ sector: industrialSector, strength: 'Emerging', matchedThemes: infraThemes, matchedTopics: [] });
-  }
-
-  if (!signals.length) { container.innerHTML = ''; return; }
-
-  // Sort: Strong first, then Moderate, then Emerging
-  const strengthOrder = { 'Strong': 0, 'Moderate': 1, 'Emerging': 2 };
-  signals.sort((a,b) => (strengthOrder[a.strength]||99) - (strengthOrder[b.strength]||99));
 
   container.innerHTML = signals.map(sig => {
     const primaryCos = (sig.sector.companies || []).filter(c => c.priority === 'primary');
+    const secondaryCos = (sig.sector.companies || []).filter(c => c.priority === 'secondary');
     const totalReachable = sig.sector.reachablePrimary || 0;
+    const entryPoint = ENTRY_POINTS[sig.sector.sector];
+    const icon = sig.strength === 'Strong' ? '🔴' : sig.strength === 'Moderate' ? '🟡' : '📡';
 
-    // Build specific action sentence based on what triggered the signal
-    let actionText = '';
-    if (sig.matchedThemes.length) {
-      const theme = sig.matchedThemes[0];
-      const themeLabel = theme.label || '';
-      const whatHappened = theme.what_happened || '';
-      // Pull the most concrete detail from the theme
-      const context = whatHappened.length > 20 ? whatHappened.slice(0, 120) : themeLabel;
-      actionText = `<strong>${esc(context)}</strong> — this narrative creates a direct housing conversation opener: ${esc(sig.sector.sector)} professionals whose employers are in the news for positive reasons are at peak receptivity. Call ${esc(primaryCos[0]?.name || '')}${primaryCos[1] ? ', ' + primaryCos[1].name : ''} contacts this week.`;
+    // Build the specific trigger rationale
+    let triggerLine = '';
+    if (sig.triggerType === 'event+calendar') {
+      const evtLabel = sig.detectedEvents[0]?.label || 'sector event';
+      triggerLine = `<strong>Two signals converging:</strong> ${esc(evtLabel)} detected in this week's news + ${esc(sig.bonusLabel)}. This is the highest-quality outreach window — both event receptivity and disposable income align simultaneously.`;
+    } else if (sig.triggerType === 'event') {
+      const evt = sig.detectedEvents[0];
+      triggerLine = `<strong>${esc(evt?.label || 'Event detected')}:</strong> ${
+        evt?.type === 'contract_win' ? 'A major contract or expansion announcement creates job security confidence — the single strongest predictor of property purchase intent. Act within the next 3 weeks while the news is fresh and staff optimism is highest.' :
+        evt?.type === 'salary_review' ? 'A salary review or pay adjustment means affected staff have more disposable income than they did 30 days ago. This is a 4-6 week conversion window.' :
+        evt?.type === 'ipo_esop' ? 'An IPO or ESOP vesting event means staff have realised liquidity or share value. Asset-seeking behaviour peaks in the 60 days following a vesting event.' :
+        evt?.type === 'welfare' ? 'A welfare or cooperative initiative signals that the company is actively facilitating staff financial decisions. Approach the cooperative chairman — they are already in buying mode.' :
+        'Sector growth narrative supports a property conversation framed around asset appreciation.'
+      }`;
     } else {
-      const topicStr = sig.matchedTopics.slice(0,2).join(' and ');
-      actionText = `<strong>${esc(topicStr)}</strong> has appeared ${sig.matchedTopics.length} times in recent news — ${esc(sig.sector.sector)} sector staff are reading this context daily. Lead with corridor appreciation when reaching out.`;
+      triggerLine = `<strong>${esc(sig.bonusLabel)}:</strong> Corporate bonus payments in this sector have likely cleared. Staff who received a bonus in the last 6 weeks are in the highest discretionary-spend state of the year. The 6-week post-bonus window is the strongest calendar-based conversion period.`;
     }
 
-    // Build company list with priority distinction
-    const primaryList = primaryCos.slice(0, 5).map(c =>
-      `<span style="font-weight:700;color:var(--ink)">${esc(c.name)}</span><span style="color:var(--ink-faint);font-size:10px"> (~${c.estStaff15M} ₦1.5M+ staff)</span>`
-    ).join(' · ');
-
-    const secondaryCos = (sig.sector.companies||[]).filter(c => c.priority === 'secondary').slice(0,3);
-    const secondaryList = secondaryCos.length
-      ? `<div style="margin-top:6px;font-size:10px;color:var(--ink-faint)">Lower priority (₦500K-₦1.5M band): ${secondaryCos.map(c=>esc(c.name)).join(' · ')}</div>`
+    // Entry point instruction
+    const entryLine = entryPoint
+      ? `<div style="margin-top:10px;padding:10px 14px;background:rgba(122,31,43,0.04);border-radius:4px;border-left:3px solid var(--maroon);">
+          <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;color:var(--maroon);margin-bottom:4px;">Entry Point: ${esc(entryPoint.primary)}</div>
+          <div style="font-family:var(--font-body);font-size:12px;color:var(--ink-soft);line-height:1.6;">${esc(entryPoint.route)}</div>
+        </div>`
       : '';
 
-    const icon = sig.strength === 'Strong' ? '🔴' : sig.strength === 'Moderate' ? '🟡' : '📡';
+    const primaryList = primaryCos.slice(0, 5).map(c =>
+      `<span style="font-weight:700;color:var(--ink)">${esc(c.name)}</span><span style="color:var(--ink-faint);font-size:10px"> ~${c.estStaff15M} ₦1.5M+ staff</span>`
+    ).join(' · ');
+
+    const secondaryNote = secondaryCos.length
+      ? `<div style="margin-top:4px;font-size:10px;color:var(--ink-faint)">Lower priority (₦500K–₦1.5M): ${secondaryCos.map(c=>esc(c.name)).join(' · ')}</div>`
+      : '';
+
+    const macroNote = sig.macroScore < 0
+      ? `<div style="margin-top:6px;font-size:10px;color:#9E9E9E">⚠ Macro sentiment slightly negative (${(sig.macroScore*100).toFixed(0)}/100) — signal fires on event strength, but lower-than-ideal conversion environment. Focus on highest-intent prospects only.</div>`
+      : '';
 
     return `<div class="outreach-signal-banner">
       <div class="outreach-signal-icon">${icon}</div>
       <div class="outreach-signal-body">
-        <div class="outreach-signal-label">${esc(sig.strength)} Signal · ${esc(sig.sector.sector)} · ${totalReachable.toLocaleString()} reachable staff</div>
-        <div class="outreach-signal-text">${actionText}</div>
-        <div class="outreach-signal-companies" style="margin-top:8px">${primaryList}</div>
-        ${secondaryList}
+        <div class="outreach-signal-label">${esc(sig.strength)} Signal · ${esc(sig.sector.sector)} · ${totalReachable.toLocaleString()} reachable</div>
+        <div class="outreach-signal-text" style="margin-bottom:10px">${triggerLine}</div>
+        ${entryLine}
+        <div class="outreach-signal-companies" style="margin-top:10px">${primaryList}</div>
+        ${secondaryNote}
+        ${macroNote}
       </div>
     </div>`;
   }).join('');

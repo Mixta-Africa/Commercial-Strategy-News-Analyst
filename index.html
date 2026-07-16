@@ -477,7 +477,62 @@ button, select, input { font-family: inherit; }
 .csector-article-title a:hover { color: var(--maroon); }
 .csector-article-source { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); white-space: nowrap; }
 
-/* ── Trend chart tooltip ───────────────────────────────────────────────────── */
+/* ── Thought Leadership Rail ────────────────────────────────────────────────── */
+.tl-section { margin-top: 0; }
+.tl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
+.tl-card {
+  background: var(--paper-card); border: 1px solid var(--maroon-line);
+  border-left: 4px solid var(--maroon); border-radius: var(--radius);
+  padding: 20px 24px; display: flex; flex-direction: column; gap: 10px;
+  transition: box-shadow 0.15s;
+}
+.tl-card:hover { box-shadow: 0 4px 20px rgba(122,31,43,0.1); }
+.tl-card-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.tl-pill {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em; padding: 2px 8px;
+  border-radius: 12px; background: rgba(122,31,43,0.08); color: var(--maroon);
+  border: 1px solid var(--maroon-line); white-space: nowrap; flex-shrink: 0;
+}
+.tl-org { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--maroon); text-transform: uppercase; }
+.tl-title { font-family: var(--font-headline); font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.4; }
+.tl-title a { color: inherit; text-decoration: none; }
+.tl-title a:hover { color: var(--maroon); }
+.tl-desc { font-family: var(--font-body); font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+.tl-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); }
+.tl-empty { padding: 32px 0; color: var(--ink-faint); font-family: var(--font-ui); font-size: 13px; font-style: italic; }
+
+/* ── Focus Mode ─────────────────────────────────────────────────────────────── */
+.focus-toggle-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 7px 14px; background: transparent; color: var(--ink-soft);
+  border: 1px solid var(--rule); cursor: pointer; transition: all 0.2s ease; border-radius: var(--radius);
+}
+.focus-toggle-btn:hover { border-color: var(--maroon); color: var(--maroon); }
+.focus-toggle-btn.active { background: var(--maroon); color: #fff; border-color: var(--maroon); }
+
+/* ── Collapsible sections ────────────────────────────────────────────────────── */
+.collapsible-toggle {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-faint); background: none; border: none; cursor: pointer; padding: 0; transition: color 0.2s;
+}
+.collapsible-toggle:hover { color: var(--maroon); }
+.collapsible-toggle .ct-arrow { font-size: 10px; transition: transform 0.2s; display: inline-block; }
+.collapsible-toggle.collapsed .ct-arrow { transform: rotate(-90deg); }
+.collapsible-body { overflow: hidden; transition: max-height 0.35s ease, opacity 0.25s ease; }
+.collapsible-body.collapsed { max-height: 0 !important; opacity: 0; pointer-events: none; }
+
+/* ── Dateline condensed ──────────────────────────────────────────────────────── */
+.dateline-short {
+  font-family: var(--font-ui); font-size: 13px; color: var(--ink-faint);
+  margin-bottom: 20px; line-height: 1.5;
+}
+
+/* Focus mode — hides secondary panels ─────────────────────────────────────── */
+body.focus-mode .tl-section,
+body.focus-mode .collapsible-secondary { display: none !important; }
 #trendTooltip { position: fixed; background: var(--ink); color: #fff; border-radius: 6px; padding: 8px 12px; font-family: var(--font-ui); font-size: 12px; pointer-events: none; z-index: 9999; opacity: 0; transition: opacity 0.12s; max-width: 220px; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
 #trendTooltip .tt-date { font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
 #trendTooltip .tt-series { font-weight: 700; margin-bottom: 2px; }
@@ -853,6 +908,9 @@ button, select, input { font-family: inherit; }
            onerror="this.style.display='none';document.getElementById('masthead-fallback').style.display='block';" />
       <span id="masthead-fallback" class="masthead-title" style="display:none;">Mixta Africa Intelligence</span>
       <div class="masthead-controls">
+        <button id="focusModeBtn" class="focus-toggle-btn" onclick="toggleFocusMode()" title="Hide secondary panels to reduce visual noise">
+          <span id="focusModeIcon">◎</span> Focus
+        </button>
         <span id="statusPill" class="status-pill"><span class="status-dot"></span><span id="statusText">Loading</span></span>
         <button id="refreshTriggerBtn" onclick="triggerPipelineRefresh()" class="refresh-trigger-btn" title="Trigger a new pipeline run">
           <span id="refreshBtnIcon">&#8635;</span> <span id="refreshBtnLabel">Refresh Data</span>
@@ -938,6 +996,20 @@ button, select, input { font-family: inherit; }
         <div class="loading" style="grid-column: 1/-1;">Streaming intelligence articles...</div>
       </div>
 
+      <!-- THOUGHT LEADERSHIP PERSPECTIVES -->
+      <div class="section-divider" style="margin-top:48px;">
+        <h2>Perspectives</h2>
+        <button class="collapsible-toggle" onclick="toggleCollapsible('tlBriefingBody', this)" title="Show/hide thought leadership">
+          <span class="ct-arrow">▾</span> <span>Hide</span>
+        </button>
+      </div>
+      <div class="dateline-short">Research and analysis from Knight Frank, JLL, McKinsey, KPMG Africa, AfDB, and Savills. Global and African perspectives on the forces shaping real estate markets.</div>
+      <div id="tlBriefingBody" class="collapsible-body tl-section">
+        <div id="tlBriefingContainer" class="tl-grid">
+          <div class="tl-empty">Loading perspectives…</div>
+        </div>
+      </div>
+
     </section>
 
     <!-- MARKETS (GEOSPATIAL) -->
@@ -966,11 +1038,18 @@ button, select, input { font-family: inherit; }
       <div id="mapContainer"><div class="loading" style="padding-top: 300px;">Initializing cartography engine...</div></div>
 
       <!-- ── CROSS-SECTOR MARKET INTELLIGENCE (below map, markets section only) ── -->
-      <div class="section-divider" style="margin-top:40px;"><h2>Cross-Sector Market Intelligence</h2></div>
-      <div class="dateline" style="font-family:var(--font-ui);font-size:13.5px;color:var(--ink-soft);margin-bottom:24px;">
-        Sectors not directly related to real estate that carry significant demand signals for the Ibeju-Lekki corridor. Ranked by impact level. Articles in high-impact sectors are also plotted on the map above.
+      <div class="section-divider" style="margin-top:40px;">
+        <h2>Cross-Sector Market Intelligence</h2>
+        <button class="collapsible-toggle" onclick="toggleCollapsible('crossSectorBody', this)">
+          <span class="ct-arrow">▾</span> <span>Hide</span>
+        </button>
       </div>
-      <div id="crossSectorIntelContainer"></div>
+      <div class="dateline-short collapsible-secondary">
+        Non-real-estate sectors ranked by their proven impact on Ibeju-Lekki corridor demand. High-impact articles also appear on the map above.
+      </div>
+      <div id="crossSectorBody" class="collapsible-body">
+        <div id="crossSectorIntelContainer"></div>
+      </div>
     </section>
 
     <!-- THEMES & TRENDS (NARRATIVE MOMENTUM + TOPIC VOLUME, UNIFIED) -->
@@ -981,30 +1060,38 @@ button, select, input { font-family: inherit; }
       </div>
       <div id="themesBody" class="momentum-grid"><div class="loading">Loading temporal index...</div></div>
 
-      <div class="section-divider"><h2>Topic Volume Over Time</h2></div>
-      <div class="dateline" style="font-family: var(--font-ui); font-size: 13.5px; color: var(--ink-soft); margin-bottom: 24px;">
-        Tracks how often each theme appeared in analyzed articles, bucketed by week. Built from a forever-retained daily archive, independent of the 1-year article history window above.
+      <div class="section-divider">
+        <h2>Topic Volume Over Time</h2>
+        <button class="collapsible-toggle" onclick="toggleCollapsible('trendTopicsBody', this)">
+          <span class="ct-arrow">▾</span> <span>Hide</span>
+        </button>
       </div>
+      <div class="dateline-short collapsible-secondary">Keyword frequency across analyzed articles, bucketed by week. Counts mentions — distinct from AI-synthesized themes above.</div>
 
-      <div class="pricing-controls" style="margin-bottom: 28px;">
-        <div class="pricing-filter-group">
-          <label class="pricing-filter-label">Period</label>
-          <div id="trendPeriodFilters" class="pricing-chip-row"></div>
+      <div id="trendTopicsBody" class="collapsible-body">
+        <div class="pricing-controls" style="margin-bottom: 28px;">
+          <div class="pricing-filter-group">
+            <label class="pricing-filter-label">Period</label>
+            <div id="trendPeriodFilters" class="pricing-chip-row"></div>
+          </div>
+        </div>
+        <div id="trendStatsBar" class="pricing-stats-bar" style="margin-bottom: 28px;"></div>
+        <div id="trendTopicsContainer" class="pricing-scatter-container">
+          <div class="loading">Loading trend history&hellip;</div>
         </div>
       </div>
 
-      <div id="trendStatsBar" class="pricing-stats-bar" style="margin-bottom: 28px;"></div>
-
-      <div id="trendTopicsContainer" class="pricing-scatter-container">
-        <div class="loading">Loading trend history&hellip;</div>
-      </div>
-
       <!-- ── USE CASE 3: Sentiment Sales Calendar ───────────────────────────── -->
-      <div class="section-divider" style="margin-top:48px;"><h2>Market Sentiment Signal</h2></div>
-      <div class="dateline" style="font-family:var(--font-ui);font-size:13.5px;color:var(--ink-soft);margin-bottom:24px;">
-        Daily sentiment reading from the news pipeline. Use this as a forward-looking indicator: sustained bullish = price confidence; turning neutral = accelerate closings; sustained bearish = activate promotions.
+      <div class="section-divider" style="margin-top:48px;">
+        <h2>Market Sentiment Signal</h2>
+        <button class="collapsible-toggle" onclick="toggleCollapsible('sentimentCalBody', this)">
+          <span class="ct-arrow">▾</span> <span>Hide</span>
+        </button>
       </div>
-      <div id="sentimentCalendarContainer"></div>
+      <div class="dateline-short collapsible-secondary">Daily sentiment reading. Sustained bullish = hold/raise prices; turning neutral = accelerate closings; sustained bearish = activate promotions.</div>
+      <div id="sentimentCalBody" class="collapsible-body">
+        <div id="sentimentCalendarContainer"></div>
+      </div>
     </section>
 
     <section id="theme-detail" class="view">
@@ -1092,7 +1179,8 @@ button, select, input { font-family: inherit; }
 
       <!-- PRICE TREND CHART — intentionally after the pricing matrix so users
            understand the current snapshot first before looking at the time series -->
-      <div class="section-divider"><h2>Price Trend Over Time</h2>
+      <div class="section-divider">
+        <h2>Price Trend Over Time</h2>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
           <div id="trendPeriodBtns" style="display:flex;gap:0;border:1px solid var(--rule-strong);border-radius:var(--radius);overflow:hidden;"></div>
           <select id="trendTypeFilter" class="mixta-input" style="font-size:12px;padding:6px 10px;" onchange="renderPriceTrendChart()">
@@ -1101,10 +1189,15 @@ button, select, input { font-family: inherit; }
           <select id="trendLocationFilter" class="mixta-input" style="font-size:12px;padding:6px 10px;" onchange="renderPriceTrendChart()">
             <option value="all">All Locations</option>
           </select>
+          <button class="collapsible-toggle" style="margin-left:8px;" onclick="toggleCollapsible('priceTrendBody', this)">
+            <span class="ct-arrow">▾</span> <span>Hide</span>
+          </button>
         </div>
       </div>
-      <div id="priceTrendContainer" class="pricing-scatter-container" style="min-height:260px;">
-        <div class="loading">Calculating price trend&hellip;</div>
+      <div id="priceTrendBody" class="collapsible-body">
+        <div id="priceTrendContainer" class="pricing-scatter-container" style="min-height:260px;">
+          <div class="loading">Calculating price trend&hellip;</div>
+        </div>
       </div>
     </section>
 
@@ -1120,11 +1213,25 @@ button, select, input { font-family: inherit; }
     <!-- INNOVATION HUB — global real estate disruption and innovation -->
     <section id="innovation-hub" class="view">
       <div class="section-divider" style="margin-top:0;"><h2>Innovation &amp; Disruption Hub</h2></div>
-      <div class="dateline" style="font-family:var(--font-ui);font-size:13.5px;color:var(--ink-soft);margin-bottom:8px;">
-        Global intelligence on technologies, design concepts, business models, and regulatory frameworks redefining real estate. Not localised — this is worldwide signal, curated for strategic relevance to a developer building the future of Lagos.
+      <div class="dateline-short">
+        Global intelligence on technologies, design concepts, and business models redefining real estate — curated for a developer building the future of Lagos.
       </div>
       <div id="innovationHubContainer">
         <div class="loading">Loading innovation intelligence&hellip;</div>
+      </div>
+
+      <!-- THOUGHT LEADERSHIP in Innovation context -->
+      <div class="section-divider" style="margin-top:48px;">
+        <h2>Research &amp; Thought Leadership</h2>
+        <button class="collapsible-toggle" onclick="toggleCollapsible('tlInnovBody', this)">
+          <span class="ct-arrow">▾</span> <span>Hide</span>
+        </button>
+      </div>
+      <div class="dateline-short">Long-form research and white papers from global advisory and research institutions.</div>
+      <div id="tlInnovBody" class="collapsible-body tl-section">
+        <div id="tlInnovContainer" class="tl-grid">
+          <div class="tl-empty">Loading perspectives…</div>
+        </div>
       </div>
     </section>
 
@@ -1251,6 +1358,54 @@ function renderStatus(health) {
 }
 
 function esc(s) { return (s == null ? '' : String(s)).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+// ── REAL-TIME INTELLIGENCE POLLING ────────────────────────────────────────────
+// Polls health.json every 15 minutes. If the pipeline has run since page load,
+// shows a non-intrusive toast prompting the user to refresh — never auto-reloads
+// so in-progress reading is never interrupted.
+(function startPolling() {
+  let _lastKnownTimestamp = null;
+  let _toastShown = false;
+
+  function showUpdateToast() {
+    if (_toastShown) return;
+    _toastShown = true;
+    const toast = document.createElement('div');
+    toast.id = 'updateToast';
+    toast.innerHTML = `
+      <span style="flex:1;">New intelligence available from the latest pipeline run.</span>
+      <button onclick="location.reload()" style="font-family:var(--font-ui);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;background:var(--paper-card);color:var(--maroon);border:1px solid var(--maroon);border-radius:var(--radius);padding:6px 14px;cursor:pointer;white-space:nowrap;">Refresh</button>
+      <button onclick="this.closest('#updateToast').remove()" style="background:none;border:none;color:var(--ink-faint);font-size:16px;cursor:pointer;padding:0 4px;line-height:1;">&#x2715;</button>
+    `;
+    toast.style.cssText = `
+      position:fixed;bottom:80px;right:28px;z-index:300;
+      display:flex;align-items:center;gap:12px;
+      background:var(--paper-card);border:1.5px solid var(--maroon);border-radius:var(--radius);
+      padding:14px 18px;box-shadow:0 8px 32px rgba(122,31,43,0.15);
+      font-family:var(--font-ui);font-size:13px;color:var(--ink);
+      max-width:400px;animation:fadeIn 0.3s ease;
+    `;
+    document.body.appendChild(toast);
+  }
+
+  async function pollHealth() {
+    try {
+      const r = await fetch(`${DATA_BASE}/health.json?t=${Date.now()}`);
+      if (!r.ok) return;
+      const h = await r.json();
+      const ts = h?.timestamp;
+      if (!ts) return;
+      if (_lastKnownTimestamp === null) {
+        _lastKnownTimestamp = ts; // baseline on first poll
+        return;
+      }
+      if (ts !== _lastKnownTimestamp) showUpdateToast();
+    } catch (e) { /* silent — network failure should not surface */ }
+  }
+
+  // First poll after 15 minutes, then every 15 minutes
+  setTimeout(() => { pollHealth(); setInterval(pollHealth, 15 * 60 * 1000); }, 15 * 60 * 1000);
+})();
 
 function renderBriefing(b) {
   loadedBriefingCache = b;
@@ -3666,8 +3821,14 @@ function renderPriceTrendChart(listings) {
   const allLocs  = [...new Set(allListings.map(l => l.location).filter(Boolean))].sort();
 
   if (typeEl && typeEl.options.length <= 1) {
+    // Surface Land / Plot explicitly even if scraper uses slightly different
+    // capitalisation — normalise display label so the toggle is always visible.
+    const typeLabels = allTypes.map(t => ({
+      value: t,
+      label: (t === 'Land / Plot' || t === 'Land/Plot' || t === 'Land') ? 'Land / Plot' : t,
+    }));
     typeEl.innerHTML = `<option value="all">All Property Types</option>` +
-      allTypes.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
+      typeLabels.map(({value, label}) => `<option value="${esc(value)}">${esc(label)}</option>`).join('');
     typeEl.value = selectedType;
   }
   if (locEl && locEl.options.length <= 1) {
@@ -3750,13 +3911,18 @@ function renderPriceTrendChart(listings) {
     // - Both filters "all"      → group by bedroomLabel (5-6 clean meaningful lines)
     // - Location filter set      → group by property type within that location
     // - Property type filter set → group by location within that type
+    // Land/Plot listings have no bedroom count by nature — give them a
+    // named series key so they form a distinct visible line, not a bucket
+    // mixed with residential listings that genuinely failed bedroom extraction.
+    const isLand = type === 'Land / Plot' || (l.bedroomLabel === 'N/A (Land/Plot)');
+    const bedroomKey = isLand ? 'Plot / Land' : (l.bedroomLabel || 'Unspecified');
     const seriesKey = selectedLoc !== 'all' && selectedType !== 'all'
-      ? `${type} · ${l.bedroomLabel || 'Unspec'}`
+      ? (isLand ? 'Plot / Land' : `${type} · ${bedroomKey}`)
       : selectedLoc !== 'all'
-        ? (l.bedroomLabel || 'Unspecified')
+        ? bedroomKey
         : selectedType !== 'all'
           ? loc
-          : (l.bedroomLabel || 'Unspecified');
+          : bedroomKey;
 
     // Canonical property key for normalization within a day
     const propKey = `${(l.title || '').toLowerCase().trim()}||${loc.toLowerCase()}||${(l.bedroomLabel || '').toLowerCase()}`;
@@ -4894,6 +5060,119 @@ function renderCompetitorNews(news) {
     </div>`).join('');
 }
 
+// ── THOUGHT LEADERSHIP ────────────────────────────────────────────────────────
+// Client-side RSS fetch via allorigins.win CORS proxy. Sources are reputable
+// global research and advisory organisations with free public RSS feeds.
+// Hard-coded here (not in the pipeline) so they never contaminate the briefing.
+const THOUGHT_LEADERSHIP_SOURCES = [
+  { org: 'Knight Frank', url: 'https://www.knightfrank.com/blog/feed', category: 'Market Research' },
+  { org: 'JLL', url: 'https://www.jll.co.uk/en/trends-and-insights/rss', category: 'Market Research' },
+  { org: 'McKinsey Global Institute', url: 'https://www.mckinsey.com/mgi/rss/rss.xml', category: 'Economic Analysis' },
+  { org: 'KPMG Africa', url: 'https://home.kpmg/africa/en/home/insights.rss', category: 'Advisory' },
+  { org: 'AfDB', url: 'https://www.afdb.org/en/rss', category: 'Development Finance' },
+  { org: 'Savills', url: 'https://www.savills.com/research_articles/rss/research.xml', category: 'Market Research' },
+  { org: 'PwC Africa', url: 'https://www.pwc.com/gx/en/issues/economy/global-economy-watch.rss', category: 'Advisory' },
+];
+
+let _tlCache = null; // avoid re-fetching on tab switches
+
+async function fetchThoughtLeadership() {
+  if (_tlCache) return _tlCache;
+
+  const PROXY = 'https://api.allorigins.win/get?url=';
+  const results = [];
+
+  for (const source of THOUGHT_LEADERSHIP_SOURCES) {
+    try {
+      const r = await fetch(`${PROXY}${encodeURIComponent(source.url)}`, { signal: AbortSignal.timeout(8000) });
+      if (!r.ok) continue;
+      const json = await r.json();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(json.contents, 'text/xml');
+      const items = [...xml.querySelectorAll('item, entry')].slice(0, 3);
+      for (const item of items) {
+        const title = item.querySelector('title')?.textContent?.trim();
+        const link = item.querySelector('link')?.textContent?.trim() || item.querySelector('link')?.getAttribute('href') || '';
+        const desc = item.querySelector('description, summary')?.textContent?.replace(/<[^>]+>/g, '').trim().slice(0, 160);
+        const pubDate = item.querySelector('pubDate, published, updated')?.textContent?.trim();
+        if (title && link) {
+          results.push({ org: source.org, category: source.category, title, link, desc, pubDate });
+        }
+      }
+    } catch (e) { /* individual source failure is non-fatal */ }
+  }
+
+  // Sort by date, most recent first
+  results.sort((a, b) => new Date(b.pubDate || 0) - new Date(a.pubDate || 0));
+  _tlCache = results;
+  return results;
+}
+
+function renderThoughtLeadership(items, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  if (!items || !items.length) {
+    container.innerHTML = `<div class="tl-empty">Unable to fetch perspectives right now — sources may be temporarily unavailable. Try again in a few minutes.</div>`;
+    return;
+  }
+
+  container.innerHTML = items.slice(0, 9).map(item => {
+    const dateStr = item.pubDate
+      ? new Date(item.pubDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+      : '';
+    return `<div class="tl-card">
+      <div class="tl-card-header">
+        <span class="tl-pill">Perspective</span>
+        <span class="tl-org">${esc(item.org)}</span>
+      </div>
+      <div class="tl-title"><a href="${esc(item.link)}" target="_blank" rel="noopener noreferrer">${esc(item.title)}</a></div>
+      ${item.desc ? `<div class="tl-desc">${esc(item.desc)}…</div>` : ''}
+      <div class="tl-meta">${esc(item.category)}${dateStr ? ' · ' + dateStr : ''}</div>
+    </div>`;
+  }).join('');
+}
+
+async function loadAndRenderThoughtLeadership() {
+  const briefingContainer = document.getElementById('tlBriefingContainer');
+  const innovContainer    = document.getElementById('tlInnovContainer');
+  if (briefingContainer) briefingContainer.innerHTML = '<div class="tl-empty">Loading perspectives…</div>';
+  if (innovContainer)    innovContainer.innerHTML    = '<div class="tl-empty">Loading perspectives…</div>';
+
+  const items = await fetchThoughtLeadership();
+  renderThoughtLeadership(items, 'tlBriefingContainer');
+  renderThoughtLeadership(items, 'tlInnovContainer');
+}
+
+// ── COLLAPSIBLE SECTIONS ──────────────────────────────────────────────────────
+function toggleCollapsible(bodyId, toggleEl) {
+  const body = document.getElementById(bodyId);
+  if (!body) return;
+  const isCollapsed = body.classList.contains('collapsed');
+  if (isCollapsed) {
+    body.classList.remove('collapsed');
+    body.style.maxHeight = body.scrollHeight + 'px';
+    setTimeout(() => { body.style.maxHeight = ''; }, 350); // let it grow naturally after animation
+    toggleEl.classList.remove('collapsed');
+    toggleEl.querySelector('span:last-child').textContent = 'Hide';
+  } else {
+    body.style.maxHeight = body.scrollHeight + 'px'; // anchor current height before collapsing
+    requestAnimationFrame(() => { body.classList.add('collapsed'); body.style.maxHeight = '0'; });
+    toggleEl.classList.add('collapsed');
+    toggleEl.querySelector('span:last-child').textContent = 'Show';
+  }
+}
+
+// ── FOCUS MODE ────────────────────────────────────────────────────────────────
+function toggleFocusMode() {
+  const body = document.body;
+  const btn  = document.getElementById('focusModeBtn');
+  const icon = document.getElementById('focusModeIcon');
+  const active = body.classList.toggle('focus-mode');
+  btn.classList.toggle('active', active);
+  icon.textContent = active ? '◉' : '◎';
+}
+
 // ── BOOTSTRAP ─────────────────────────────────────────────────────────
 (async function boot() {
   initFirebase();
@@ -4956,6 +5235,9 @@ function renderCompetitorNews(news) {
   // ── Innovation Hub ─────────────────────────────────────────────────────────
   window._innovationData = innovation;
   renderInnovationHub(innovation);
+
+  // ── Thought Leadership (async — fetches external RSS, non-blocking) ────────
+  loadAndRenderThoughtLeadership();
 
   await loadConfigState();
   renderConfig();

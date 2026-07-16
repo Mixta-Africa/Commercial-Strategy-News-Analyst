@@ -760,32 +760,31 @@
     },
     {
       "date": "2026-07-16",
-      "articleCount": 15,
+      "articleCount": 6,
       "sentimentBreakdown": {
-        "bullish": 10,
-        "neutral": 3,
-        "bearish": 2
+        "bullish": 5,
+        "neutral": 1
       },
       "averageSentiment": "bullish",
       "topTopics": [
         {
-          "topic": "Lagos real estate",
-          "count": 7
+          "topic": "housing deficit",
+          "count": 2
         },
         {
           "topic": "affordable housing",
-          "count": 5
+          "count": 2
         },
         {
-          "topic": "government revenue",
+          "topic": "Lekki corridor",
           "count": 1
         },
         {
-          "topic": "infrastructure investment",
+          "topic": "Ikoyi",
           "count": 1
         },
         {
-          "topic": "NREIT",
+          "topic": "rental yields",
           "count": 1
         }
       ]

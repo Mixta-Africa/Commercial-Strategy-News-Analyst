@@ -502,16 +502,6 @@ button, select, input { font-family: inherit; }
 .tl-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); }
 .tl-empty { padding: 32px 0; color: var(--ink-faint); font-family: var(--font-ui); font-size: 13px; font-style: italic; }
 
-/* ── Focus Mode ─────────────────────────────────────────────────────────────── */
-.focus-toggle-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-  padding: 7px 14px; background: transparent; color: var(--ink-soft);
-  border: 1px solid var(--rule); cursor: pointer; transition: all 0.2s ease; border-radius: var(--radius);
-}
-.focus-toggle-btn:hover { border-color: var(--maroon); color: var(--maroon); }
-.focus-toggle-btn.active { background: var(--maroon); color: #fff; border-color: var(--maroon); }
-
 /* ── Collapsible sections ────────────────────────────────────────────────────── */
 .collapsible-toggle {
   display: flex; align-items: center; gap: 6px;
@@ -530,9 +520,69 @@ button, select, input { font-family: inherit; }
   margin-bottom: 20px; line-height: 1.5;
 }
 
-/* Focus mode — hides secondary panels ─────────────────────────────────────── */
-body.focus-mode .tl-section,
-body.focus-mode .collapsible-secondary { display: none !important; }
+/* ── Focus Mode — Morning Brief ─────────────────────────────────────────────
+   Two-state dashboard: Reference Mode (default, everything visible) and
+   Morning Brief Mode (only decision-relevant primary content).
+   Uses opacity+max-height transitions instead of display:none so layout
+   doesn't jump. Elements tagged data-focus="secondary" fade and collapse;
+   data-focus="primary" elements are never touched.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* Floating pill — fixed bottom-right, above the help button */
+#focusModePill {
+  position: fixed; bottom: 88px; right: 28px; z-index: 250;
+  display: flex; align-items: center; gap: 8px;
+  background: var(--paper-card); border: 1.5px solid var(--rule-strong);
+  border-radius: 24px; padding: 10px 18px 10px 14px;
+  box-shadow: 0 4px 20px rgba(122,31,43,0.10);
+  cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  font-family: var(--font-ui); font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft);
+  user-select: none;
+}
+#focusModePill:hover { border-color: var(--maroon); color: var(--maroon); box-shadow: 0 4px 24px rgba(122,31,43,0.18); }
+#focusModePill.active { background: var(--maroon); border-color: var(--maroon); color: #fff; box-shadow: 0 4px 24px rgba(122,31,43,0.35); }
+#focusModePill .fmp-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-faint); transition: background 0.2s; flex-shrink: 0; }
+#focusModePill.active .fmp-dot { background: rgba(255,255,255,0.7); }
+#focusModePill .fmp-label { white-space: nowrap; }
+
+/* Secondary elements: smooth collapse */
+[data-focus="secondary"] {
+  transition: opacity 0.3s ease, max-height 0.35s ease, margin 0.3s ease, padding 0.3s ease;
+  overflow: hidden;
+}
+body.focus-mode [data-focus="secondary"] {
+  opacity: 0;
+  max-height: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  pointer-events: none;
+}
+/* Library nav tab fades in focus mode — it's a reference tool, not a triage tool */
+body.focus-mode [data-focus="nav-library"] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+/* Focus mode banner — thin maroon bar at top of each section to signal mode */
+body.focus-mode .view.active::before {
+  content: 'MORNING BRIEF · FOCUSED VIEW';
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #fff;
+  background: var(--maroon);
+  padding: 5px 20px;
+  margin: -20px -40px 24px -40px;
+  text-align: center;
+}
+@media (max-width: 600px) {
+  body.focus-mode .view.active::before { margin: -12px -16px 16px -16px; }
+  #focusModePill { bottom: 80px; right: 16px; padding: 8px 14px 8px 12px; }
+}
 #trendTooltip { position: fixed; background: var(--ink); color: #fff; border-radius: 6px; padding: 8px 12px; font-family: var(--font-ui); font-size: 12px; pointer-events: none; z-index: 9999; opacity: 0; transition: opacity 0.12s; max-width: 220px; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
 #trendTooltip .tt-date { font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
 #trendTooltip .tt-series { font-weight: 700; margin-bottom: 2px; }
@@ -908,9 +958,6 @@ body.focus-mode .collapsible-secondary { display: none !important; }
            onerror="this.style.display='none';document.getElementById('masthead-fallback').style.display='block';" />
       <span id="masthead-fallback" class="masthead-title" style="display:none;">Mixta Africa Intelligence</span>
       <div class="masthead-controls">
-        <button id="focusModeBtn" class="focus-toggle-btn" onclick="toggleFocusMode()" title="Hide secondary panels to reduce visual noise">
-          <span id="focusModeIcon">◎</span> Focus
-        </button>
         <span id="statusPill" class="status-pill"><span class="status-dot"></span><span id="statusText">Loading</span></span>
         <button id="refreshTriggerBtn" onclick="triggerPipelineRefresh()" class="refresh-trigger-btn" title="Trigger a new pipeline run">
           <span id="refreshBtnIcon">&#8635;</span> <span id="refreshBtnLabel">Refresh Data</span>
@@ -928,7 +975,7 @@ body.focus-mode .collapsible-secondary { display: none !important; }
       <button data-view="competition">Competition</button>
       <button data-view="outreach">Outreach</button>
       <button data-view="innovation-hub">Innovation</button>
-      <button data-view="library">Library</button>
+      <button data-view="library" data-focus="nav-library">Library</button>
       <button id="nav-health" data-view="health" style="display:none;">System</button>
       <button id="nav-config" data-view="config" style="display:none;">Config</button>
     </div>
@@ -958,10 +1005,10 @@ body.focus-mode .collapsible-secondary { display: none !important; }
       </div>
 
       <!-- MARKETS UNDER WATCH (PREVIEW) -->
-      <div class="section-divider">
+      <div class="section-divider" data-focus="secondary">
         <h2>Markets Under Observation</h2>
       </div>
-      <div class="markets-watch-row">
+      <div class="markets-watch-row" data-focus="secondary">
         <div class="market-watch-card" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('lagos');">
           <span class="mw-name">Lagos</span>
           <span class="mw-signals" id="count-lagos">Active Signals</span>
@@ -982,26 +1029,26 @@ body.focus-mode .collapsible-secondary { display: none !important; }
       </div>
 
       <!-- INTELLIGENCE FEED -->
-      <div class="section-divider">
+      <div class="section-divider" data-focus="secondary">
         <h2 id="evidenceStreamTitle">Intelligence Feed</h2>
         <select id="themeFilterSelect" class="theme-filter-select" onchange="filterEvidenceStream(this.value)">
           <option value="All">All Topics</option>
         </select>
       </div>
       
-      <div id="evidenceTableContainer" class="intelligence-grid">
+      <div id="evidenceTableContainer" class="intelligence-grid" data-focus="secondary">
         <div class="loading" style="grid-column: 1/-1;">Streaming intelligence articles...</div>
       </div>
 
       <!-- THOUGHT LEADERSHIP PERSPECTIVES -->
-      <div class="section-divider" style="margin-top:48px;">
+      <div class="section-divider" style="margin-top:48px;" data-focus="secondary">
         <h2>Perspectives</h2>
         <button class="collapsible-toggle" onclick="toggleCollapsible('tlBriefingBody', this)" title="Show/hide thought leadership">
           <span class="ct-arrow">▾</span> <span>Hide</span>
         </button>
       </div>
-      <div class="dateline-short">Research and analysis from Knight Frank, JLL, McKinsey, KPMG Africa, AfDB, and Savills. Global and African perspectives on the forces shaping real estate markets.</div>
-      <div id="tlBriefingBody" class="collapsible-body tl-section">
+      <div class="dateline-short" data-focus="secondary">Research and analysis from Knight Frank, JLL, McKinsey, KPMG Africa, AfDB, and Savills. Global and African perspectives on the forces shaping real estate markets.</div>
+      <div id="tlBriefingBody" class="collapsible-body tl-section" data-focus="secondary">
         <div id="tlBriefingContainer" class="tl-grid">
           <div class="tl-empty">Loading perspectives…</div>
         </div>
@@ -1058,16 +1105,16 @@ body.focus-mode .collapsible-secondary { display: none !important; }
       <div id="mapContainer"><div class="loading" style="padding-top: 300px;">Initializing cartography engine...</div></div>
 
       <!-- ── CROSS-SECTOR MARKET INTELLIGENCE (below map, markets section only) ── -->
-      <div class="section-divider" style="margin-top:40px;">
+      <div class="section-divider" style="margin-top:40px;" data-focus="secondary">
         <h2>Cross-Sector Market Intelligence</h2>
         <button class="collapsible-toggle" onclick="toggleCollapsible('crossSectorBody', this)">
           <span class="ct-arrow">▾</span> <span>Hide</span>
         </button>
       </div>
-      <div class="dateline-short collapsible-secondary">
+      <div class="dateline-short collapsible-secondary" data-focus="secondary">
         Non-real-estate sectors ranked by their proven impact on Ibeju-Lekki corridor demand. High-impact articles also appear on the map above.
       </div>
-      <div id="crossSectorBody" class="collapsible-body">
+      <div id="crossSectorBody" class="collapsible-body" data-focus="secondary">
         <div id="crossSectorIntelContainer"></div>
       </div>
     </section>
@@ -1080,15 +1127,15 @@ body.focus-mode .collapsible-secondary { display: none !important; }
       </div>
       <div id="themesBody" class="momentum-grid"><div class="loading">Loading temporal index...</div></div>
 
-      <div class="section-divider">
+      <div class="section-divider" data-focus="secondary">
         <h2>Topic Volume Over Time</h2>
         <button class="collapsible-toggle" onclick="toggleCollapsible('trendTopicsBody', this)">
           <span class="ct-arrow">▾</span> <span>Hide</span>
         </button>
       </div>
-      <div class="dateline-short collapsible-secondary">Keyword frequency across analyzed articles, bucketed by week. Counts mentions — distinct from AI-synthesized themes above.</div>
+      <div class="dateline-short collapsible-secondary" data-focus="secondary">Keyword frequency across analyzed articles, bucketed by week. Counts mentions — distinct from AI-synthesized themes above.</div>
 
-      <div id="trendTopicsBody" class="collapsible-body">
+      <div id="trendTopicsBody" class="collapsible-body" data-focus="secondary">
         <div class="pricing-controls" style="margin-bottom: 28px;">
           <div class="pricing-filter-group">
             <label class="pricing-filter-label">Period</label>
@@ -1102,14 +1149,14 @@ body.focus-mode .collapsible-secondary { display: none !important; }
       </div>
 
       <!-- ── USE CASE 3: Sentiment Sales Calendar ───────────────────────────── -->
-      <div class="section-divider" style="margin-top:48px;">
+      <div class="section-divider" style="margin-top:48px;" data-focus="secondary">
         <h2>Market Sentiment Signal</h2>
         <button class="collapsible-toggle" onclick="toggleCollapsible('sentimentCalBody', this)">
           <span class="ct-arrow">▾</span> <span>Hide</span>
         </button>
       </div>
-      <div class="dateline-short collapsible-secondary">Daily sentiment reading. Sustained bullish = hold/raise prices; turning neutral = accelerate closings; sustained bearish = activate promotions.</div>
-      <div id="sentimentCalBody" class="collapsible-body">
+      <div class="dateline-short collapsible-secondary" data-focus="secondary">Daily sentiment reading. Sustained bullish = hold/raise prices; turning neutral = accelerate closings; sustained bearish = activate promotions.</div>
+      <div id="sentimentCalBody" class="collapsible-body" data-focus="secondary">
         <div id="sentimentCalendarContainer"></div>
       </div>
     </section>
@@ -1129,8 +1176,8 @@ body.focus-mode .collapsible-secondary { display: none !important; }
 
       <!-- PRICE TREND CHART — below the matrix, after individual unit data -->
 
-      <div class="section-divider"><h2>Pricing Matrix</h2></div>
-      <div class="pricing-controls">
+      <div class="section-divider" data-focus="secondary"><h2>Pricing Matrix</h2></div>
+      <div class="pricing-controls" data-focus="secondary">
         <div class="pricing-filter-group">
           <label class="pricing-filter-label">Property</label>
           <div id="pricingTypeFilters" class="pricing-chip-row"></div>
@@ -1145,7 +1192,7 @@ body.focus-mode .collapsible-secondary { display: none !important; }
         </div>
       </div>
 
-      <div class="section-divider">
+      <div class="section-divider" data-focus="secondary">
         <h2>Individual Unit Pricing</h2>
         <div class="pricing-view-toggle">
           <button id="scatterViewBtn" class="view-toggle-btn active" onclick="setPricingViewMode('scatter')">Scatter Plot</button>
@@ -1154,7 +1201,7 @@ body.focus-mode .collapsible-secondary { display: none !important; }
         </div>
       </div>
 
-      <div class="mixta-price-panel">
+      <div class="mixta-price-panel" data-focus="secondary">
         <div class="mixta-price-panel-header">
           <span class="mixta-price-label">Add Mixta Price for Comparison</span>
           <span id="mixtaSaveStatus" class="mixta-save-status"></span>
@@ -1185,21 +1232,20 @@ body.focus-mode .collapsible-secondary { display: none !important; }
         <div id="mixtaPriceList" class="mixta-price-list"></div>
       </div>
 
-      <div id="pricingScatterContainer" class="pricing-scatter-container">
+      <div id="pricingScatterContainer" class="pricing-scatter-container" data-focus="secondary">
         <div class="loading">Loading individual unit data&hellip;</div>
       </div>
 
-      <div id="pricingBarContainer" class="pricing-scatter-container" style="display:none;">
+      <div id="pricingBarContainer" class="pricing-scatter-container" style="display:none;" data-focus="secondary">
         <div class="loading">Loading bar chart&hellip;</div>
       </div>
 
-      <div id="pricingGroupsContainer" class="pricing-groups" style="display:none;">
+      <div id="pricingGroupsContainer" class="pricing-groups" style="display:none;" data-focus="secondary">
         <div class="loading" style="grid-column: 1/-1;">Aggregating market pricing data...</div>
       </div>
 
-      <!-- PRICE TREND CHART — intentionally after the pricing matrix so users
-           understand the current snapshot first before looking at the time series -->
-      <div class="section-divider">
+      <!-- PRICE TREND CHART -->
+      <div class="section-divider" data-focus="secondary">
         <h2>Price Trend Over Time</h2>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
           <div id="trendPeriodBtns" style="display:flex;gap:0;border:1px solid var(--rule-strong);border-radius:var(--radius);overflow:hidden;"></div>
@@ -1214,7 +1260,7 @@ body.focus-mode .collapsible-secondary { display: none !important; }
           </button>
         </div>
       </div>
-      <div id="priceTrendBody" class="collapsible-body">
+      <div id="priceTrendBody" class="collapsible-body" data-focus="secondary">
         <div id="priceTrendContainer" class="pricing-scatter-container" style="min-height:260px;">
           <div class="loading">Calculating price trend&hellip;</div>
         </div>
@@ -1241,14 +1287,14 @@ body.focus-mode .collapsible-secondary { display: none !important; }
       </div>
 
       <!-- THOUGHT LEADERSHIP in Innovation context -->
-      <div class="section-divider" style="margin-top:48px;">
+      <div class="section-divider" style="margin-top:48px;" data-focus="secondary">
         <h2>Research &amp; Thought Leadership</h2>
         <button class="collapsible-toggle" onclick="toggleCollapsible('tlInnovBody', this)">
           <span class="ct-arrow">▾</span> <span>Hide</span>
         </button>
       </div>
-      <div class="dateline-short">Long-form research and white papers from global advisory and research institutions.</div>
-      <div id="tlInnovBody" class="collapsible-body tl-section">
+      <div class="dateline-short" data-focus="secondary">Long-form research and white papers from global advisory and research institutions.</div>
+      <div id="tlInnovBody" class="collapsible-body tl-section" data-focus="secondary">
         <div id="tlInnovContainer" class="tl-grid">
           <div class="tl-empty">Loading perspectives…</div>
         </div>
@@ -5368,15 +5414,28 @@ function toggleCollapsible(bodyId, toggleEl) {
   }
 }
 
-// ── FOCUS MODE ────────────────────────────────────────────────────────────────
-function toggleFocusMode() {
-  const body = document.body;
-  const btn  = document.getElementById('focusModeBtn');
-  const icon = document.getElementById('focusModeIcon');
-  const active = body.classList.toggle('focus-mode');
-  btn.classList.toggle('active', active);
-  icon.textContent = active ? '◉' : '◎';
+// ── FOCUS MODE — Morning Brief ─────────────────────────────────────────────
+// Switches the dashboard between Reference Mode (everything visible) and
+// Morning Brief Mode (only primary decision content, secondary collapses).
+// State is persisted in sessionStorage so it survives tab navigation.
+let _focusModeActive = sessionStorage.getItem('focusMode') === 'true';
+
+function _applyFocusMode(active) {
+  const pill = document.getElementById('focusModePill');
+  const label = document.getElementById('focusPillLabel');
+  document.body.classList.toggle('focus-mode', active);
+  if (pill) pill.classList.toggle('active', active);
+  if (label) label.textContent = active ? 'Exit Brief' : 'Morning Brief';
+  sessionStorage.setItem('focusMode', active);
 }
+
+function toggleFocusMode() {
+  _focusModeActive = !_focusModeActive;
+  _applyFocusMode(_focusModeActive);
+}
+
+// Restore state on load (after a brief tick so DOM is ready)
+if (_focusModeActive) requestAnimationFrame(() => _applyFocusMode(true));
 
 // ── BOOTSTRAP ─────────────────────────────────────────────────────────
 (async function boot() {
@@ -5462,6 +5521,12 @@ function toggleFocusMode() {
     <div class="tt-series"></div>
     <div class="tt-price"></div>
     <div class="tt-count"></div>
+  </div>
+
+  <!-- FOCUS MODE PILL — floating, always accessible, above help button -->
+  <div id="focusModePill" onclick="toggleFocusMode()" title="Switch to Morning Brief — shows only decision-relevant content">
+    <span class="fmp-dot"></span>
+    <span class="fmp-label" id="focusPillLabel">Morning Brief</span>
   </div>
 
   <!-- HELP WIDGET — floating context-aware explainer -->

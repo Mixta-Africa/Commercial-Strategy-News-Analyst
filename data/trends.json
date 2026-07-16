@@ -1,95 +1,95 @@
 {
   "7day": {
-    "articleCount": 3,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 1,
-      "neutral": 1,
-      "bearish": 1
+      "bullish": 10,
+      "neutral": 3,
+      "bearish": 2
     },
     "topTopics": [
       {
-        "topic": "housing deficit",
-        "count": 1
-      },
-      {
-        "topic": "government partnership",
-        "count": 1
-      },
-      {
-        "topic": "mass housing project",
-        "count": 1
-      },
-      {
-        "topic": "land grabbing",
-        "count": 1
-      },
-      {
         "topic": "Lagos real estate",
+        "count": 7
+      },
+      {
+        "topic": "affordable housing",
+        "count": 5
+      },
+      {
+        "topic": "government revenue",
+        "count": 1
+      },
+      {
+        "topic": "infrastructure investment",
+        "count": 1
+      },
+      {
+        "topic": "NREIT",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 3,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 1,
-      "neutral": 1,
-      "bearish": 1
+      "bullish": 10,
+      "neutral": 3,
+      "bearish": 2
     },
     "topTopics": [
       {
-        "topic": "housing deficit",
-        "count": 1
-      },
-      {
-        "topic": "government partnership",
-        "count": 1
-      },
-      {
-        "topic": "mass housing project",
-        "count": 1
-      },
-      {
-        "topic": "land grabbing",
-        "count": 1
-      },
-      {
         "topic": "Lagos real estate",
+        "count": 7
+      },
+      {
+        "topic": "affordable housing",
+        "count": 5
+      },
+      {
+        "topic": "government revenue",
+        "count": 1
+      },
+      {
+        "topic": "infrastructure investment",
+        "count": 1
+      },
+      {
+        "topic": "NREIT",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 3,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 1,
-      "neutral": 1,
-      "bearish": 1
+      "bullish": 10,
+      "neutral": 3,
+      "bearish": 2
     },
     "topTopics": [
       {
-        "topic": "housing deficit",
-        "count": 1
-      },
-      {
-        "topic": "government partnership",
-        "count": 1
-      },
-      {
-        "topic": "mass housing project",
-        "count": 1
-      },
-      {
-        "topic": "land grabbing",
-        "count": 1
-      },
-      {
         "topic": "Lagos real estate",
+        "count": 7
+      },
+      {
+        "topic": "affordable housing",
+        "count": 5
+      },
+      {
+        "topic": "government revenue",
+        "count": 1
+      },
+      {
+        "topic": "infrastructure investment",
+        "count": 1
+      },
+      {
+        "topic": "NREIT",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "bullish"
   }
 }

@@ -966,21 +966,18 @@ body.focus-mode .collapsible-secondary { display: none !important; }
           <span class="mw-name">Lagos</span>
           <span class="mw-signals" id="count-lagos">Active Signals</span>
         </div>
+        <div class="market-watch-card" style="border: 2px solid rgba(255,255,255,0.35); position:relative;" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('port_harcourt');">
+          <span style="position:absolute;top:10px;right:12px;font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:0.08em;background:rgba(255,255,255,0.18);padding:2px 7px;border-radius:10px;text-transform:uppercase;color:rgba(255,255,255,0.85);">New</span>
+          <span class="mw-name">Port Harcourt</span>
+          <span class="mw-signals" id="count-port_harcourt">Active Signals</span>
+        </div>
         <div class="market-watch-card" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('abuja');">
           <span class="mw-name">Abuja</span>
           <span class="mw-signals" id="count-abuja">Active Signals</span>
         </div>
-        <div class="market-watch-card" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('ghana');">
-          <span class="mw-name">Accra</span>
-          <span class="mw-signals" id="count-ghana">Active Signals</span>
-        </div>
         <div class="market-watch-card" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('senegal');">
           <span class="mw-name">Dakar</span>
           <span class="mw-signals" id="count-senegal">Active Signals</span>
-        </div>
-        <div class="market-watch-card" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('morocco');">
-          <span class="mw-name">Casablanca</span>
-          <span class="mw-signals" id="count-morocco">Active Signals</span>
         </div>
       </div>
 
@@ -1025,13 +1022,36 @@ body.focus-mode .collapsible-secondary { display: none !important; }
         </select>
         <span class="geo-console-label" style="margin-left: 24px;">Specific Market:</span>
         <select id="geoMicroSelect" class="geo-select" onchange="executeGeoFocus(this.value)">
-          <option value="" disabled selected>Select Specific Market...</option>
-          <option value="nigeria">Nigeria (National)</option>
-          <option value="lagos">Lagos (Micro)</option>
-          <option value="senegal">Senegal (Dakar)</option>
-          <option value="morocco">Morocco (Casablanca)</option>
-          <option value="ivory_coast">Côte d'Ivoire</option>
-          <option value="ghana">Ghana (Accra)</option>
+          <option value="" disabled selected>Select City / Market...</option>
+          <optgroup label="Nigeria">
+            <option value="nigeria">Nigeria (National)</option>
+            <option value="lagos">Lagos</option>
+            <option value="port_harcourt">Port Harcourt</option>
+            <option value="abuja">Abuja</option>
+          </optgroup>
+          <optgroup label="West Africa">
+            <option value="accra">Accra, Ghana</option>
+            <option value="dakar">Dakar, Senegal</option>
+            <option value="abidjan">Abidjan, Côte d'Ivoire</option>
+            <option value="douala">Douala, Cameroon</option>
+          </optgroup>
+          <optgroup label="North Africa">
+            <option value="casablanca">Casablanca, Morocco</option>
+            <option value="tunis">Tunis, Tunisia</option>
+            <option value="cairo">Cairo, Egypt</option>
+          </optgroup>
+          <optgroup label="East Africa">
+            <option value="nairobi">Nairobi, Kenya</option>
+            <option value="kigali">Kigali, Rwanda</option>
+            <option value="addis_ababa">Addis Ababa, Ethiopia</option>
+            <option value="dar_es_salaam">Dar es Salaam, Tanzania</option>
+          </optgroup>
+          <optgroup label="Southern Africa">
+            <option value="johannesburg">Johannesburg, South Africa</option>
+            <option value="cape_town">Cape Town, South Africa</option>
+            <option value="luanda">Luanda, Angola</option>
+            <option value="lusaka">Lusaka, Zambia</option>
+          </optgroup>
         </select>
       </div>
 
@@ -1609,7 +1629,7 @@ async function _generateThemeNarrative(label, theme, allArticles) {
     theme.why_it_matters_to_mixta ? `Strategic context: ${theme.why_it_matters_to_mixta}` : ''
   ].filter(Boolean).join(' ') : '';
 
-  const prompt = `You are a commercial intelligence analyst for Mixta Africa, a Nigerian real estate developer focused on the Ibeju-Lekki corridor (projects: Lakowe Crossings, Lakowe Annexe, Lagos New Town).
+  const prompt = `You are a commercial intelligence analyst for Mixta Africa, a Nigerian real estate developer with projects across two active corridors: the Ibeju-Lekki corridor in Lagos (Lakowe Crossings, Lakowe Annexe, Lagos New Town) and Greater Port Harcourt (Garden City Golf Annexe — 494-unit M-REIF affordable housing development off the Port Harcourt–Owerri Expressway, targeting oil & gas workers, civil servants, and cooperative societies).
 
 Analyse how the theme "${label}" has evolved based on these ${allArticles.length} articles from the news archive (most recent first):
 
@@ -2381,24 +2401,48 @@ async function triggerPipelineRefresh() {
 
 // ── GEOSPATIAL INTELLIGENCE ENGINE ─────────────────────────────────────────────
 const geoAnchors = {
-  'global':       { lat: 20.0, lng: 0.0, zoom: 2 },
-  'africa':       { lat: 1.0, lng: 17.0, zoom: 3 },
-  'west_africa':  { lat: 12.0, lng: 0.0, zoom: 5 },
-  'north_africa': { lat: 28.0, lng: 10.0, zoom: 4 },
-  'nigeria':      { lat: 9.0820, lng: 8.6753, zoom: 6 },
-  'lagos':        { lat: 6.5244, lng: 3.3792, zoom: 10 },
-  'abuja':        { lat: 9.0765, lng: 7.3986, zoom: 10 },
-  'port_harcourt':{ lat: 4.8156, lng: 7.0498, zoom: 10 },
-  'ibadan':       { lat: 7.3776, lng: 3.9470, zoom: 10 },
-  'kano':         { lat: 12.0022, lng: 8.5920, zoom: 10 },
-  'senegal':      { lat: 14.7167, lng: -17.4677, zoom: 6 }, 
-  'morocco':      { lat: 33.5731, lng: -7.5898, zoom: 6 }, 
-  'ivory_coast':  { lat: 5.3320, lng: -4.0305, zoom: 6 },  
-  'kenya':        { lat: -1.2921, lng: 36.8219, zoom: 6 }, 
-  'south_africa': { lat: -26.2041, lng: 28.0473, zoom: 6 },
-  'ghana':        { lat: 5.6037, lng: -0.1870, zoom: 6 },  
-  'egypt':        { lat: 30.0444, lng: 31.2357, zoom: 6 }, 
-  'rwanda':       { lat: -1.9706, lng: 30.1044, zoom: 7 }  
+  'global':        { lat: 20.0, lng: 0.0, zoom: 2 },
+  'africa':        { lat: 1.0, lng: 17.0, zoom: 3 },
+  'west_africa':   { lat: 12.0, lng: 0.0, zoom: 5 },
+  'north_africa':  { lat: 28.0, lng: 10.0, zoom: 4 },
+  'nigeria':       { lat: 9.0820, lng: 8.6753, zoom: 6 },
+  'lagos':         { lat: 6.5244, lng: 3.3792, zoom: 10 },
+  'abuja':         { lat: 9.0765, lng: 7.3986, zoom: 10 },
+  'port_harcourt': { lat: 4.8156, lng: 7.0498, zoom: 10 },
+  'ibadan':        { lat: 7.3776, lng: 3.9470, zoom: 10 },
+  'kano':          { lat: 12.0022, lng: 8.5920, zoom: 10 },
+  // West Africa
+  'senegal':       { lat: 14.7167, lng: -17.4677, zoom: 6 },
+  'dakar':         { lat: 14.7167, lng: -17.4677, zoom: 11 },
+  'ghana':         { lat: 5.6037, lng: -0.1870, zoom: 6 },
+  'accra':         { lat: 5.6037, lng: -0.1870, zoom: 11 },
+  'ivory_coast':   { lat: 5.3320, lng: -4.0305, zoom: 6 },
+  'abidjan':       { lat: 5.3600, lng: -4.0083, zoom: 11 },
+  'cameroon':      { lat: 3.8480, lng: 11.5021, zoom: 6 },
+  'douala':        { lat: 4.0511, lng: 9.7679, zoom: 11 },
+  // North Africa
+  'morocco':       { lat: 33.5731, lng: -7.5898, zoom: 6 },
+  'casablanca':    { lat: 33.5731, lng: -7.5898, zoom: 11 },
+  'tunis':         { lat: 36.8065, lng: 10.1815, zoom: 11 },
+  'egypt':         { lat: 30.0444, lng: 31.2357, zoom: 6 },
+  'cairo':         { lat: 30.0444, lng: 31.2357, zoom: 11 },
+  // East Africa
+  'kenya':         { lat: -1.2921, lng: 36.8219, zoom: 6 },
+  'nairobi':       { lat: -1.2921, lng: 36.8219, zoom: 11 },
+  'rwanda':        { lat: -1.9706, lng: 30.1044, zoom: 7 },
+  'kigali':        { lat: -1.9441, lng: 30.0619, zoom: 11 },
+  'ethiopia':      { lat: 9.0252, lng: 38.7469, zoom: 6 },
+  'addis_ababa':   { lat: 9.0252, lng: 38.7469, zoom: 11 },
+  'tanzania':      { lat: -6.7924, lng: 39.2083, zoom: 6 },
+  'dar_es_salaam': { lat: -6.7924, lng: 39.2083, zoom: 11 },
+  // Southern Africa
+  'south_africa':  { lat: -26.2041, lng: 28.0473, zoom: 6 },
+  'johannesburg':  { lat: -26.2041, lng: 28.0473, zoom: 11 },
+  'cape_town':     { lat: -33.9249, lng: 18.4241, zoom: 11 },
+  'angola':        { lat: -8.8368, lng: 13.2343, zoom: 6 },
+  'luanda':        { lat: -8.8368, lng: 13.2343, zoom: 11 },
+  'zambia':        { lat: -15.4167, lng: 28.2833, zoom: 6 },
+  'lusaka':        { lat: -15.4167, lng: 28.2833, zoom: 11 },
 };
 
 let currentGeoScope = 'nigeria';
@@ -2438,27 +2482,71 @@ function resolveScope(article) {
   
   if (scope === 'nigeria' || scope === 'lagos') {
     if (text.includes('lagos') || text.includes('lekki') || text.includes('ikoyi')) return 'lagos';
-    if (text.includes('abuja')) return 'abuja';
+    if (text.includes('abuja') || text.includes('fct')) return 'abuja';
+    if (text.includes('port harcourt') || text.includes('garden city golf') || text.includes('rivers state') || text.includes('omagwa') || text.includes('nlng') || text.includes('greater port harcourt')) return 'port_harcourt';
     return scope === 'lagos' ? 'lagos' : 'nigeria';
   }
+  if (scope === 'port_harcourt') return 'port_harcourt';
+
+  // City-level aliases passed directly from dropdown
+  const directCities = ['casablanca','tunis','nairobi','kigali','addis_ababa','dar_es_salaam',
+    'johannesburg','cape_town','luanda','lusaka','douala','dakar','accra','cairo','abidjan',
+    'port_harcourt','lagos','abuja'];
+  if (directCities.includes(scope)) return scope;
+
+  // Africa-scope articles: resolve to country/city by text
   if (scope === 'africa') {
+    if (text.includes('port harcourt') || text.includes('rivers state') || text.includes('nlng')) return 'port_harcourt';
+    if (text.includes('lagos') || text.includes('lekki')) return 'lagos';
+    if (text.includes('abuja')) return 'abuja';
     if (text.includes('ghana') || text.includes('accra')) return 'ghana';
     if (text.includes('senegal') || text.includes('dakar')) return 'senegal';
-    if (text.includes('morocco') || text.includes('casablanca')) return 'morocco';
+    if (text.includes('morocco') || text.includes('casablanca') || text.includes('rabat')) return 'morocco';
+    if (text.includes('kenya') || text.includes('nairobi')) return 'kenya';
+    if (text.includes('rwanda') || text.includes('kigali')) return 'rwanda';
+    if (text.includes('ethiopia') || text.includes('addis')) return 'ethiopia';
+    if (text.includes('south africa') || text.includes('johannesburg') || text.includes('cape town')) return 'south_africa';
+    if (text.includes("côte d'ivoire") || text.includes('abidjan') || text.includes('ivory coast')) return 'ivory_coast';
+    if (text.includes('tunisia') || text.includes('tunis')) return 'tunis';
+    if (text.includes('angola') || text.includes('luanda')) return 'angola';
+    if (text.includes('tanzania') || text.includes('dar es salaam')) return 'tanzania';
+    if (text.includes('zambia') || text.includes('lusaka')) return 'zambia';
+    if (text.includes('cameroon') || text.includes('douala')) return 'cameroon';
+    if (text.includes('egypt') || text.includes('cairo')) return 'egypt';
   }
   return scope; 
 }
 
 function scopeVisibleAt(scope, granularity) {
   const nigerianCities = ['nigeria', 'lagos', 'abuja', 'port_harcourt', 'ibadan', 'kano'];
+  const westAfrica = ['west_africa', 'nigeria', 'lagos', 'abuja', 'port_harcourt', 'ghana', 'accra', 'senegal', 'dakar', 'ivory_coast', 'abidjan', 'cameroon', 'douala'];
+  const northAfrica = ['north_africa', 'egypt', 'cairo', 'morocco', 'casablanca', 'tunis'];
+  const eastAfrica  = ['kenya', 'nairobi', 'rwanda', 'kigali', 'ethiopia', 'addis_ababa', 'tanzania', 'dar_es_salaam'];
+  const southAfrica = ['south_africa', 'johannesburg', 'cape_town', 'zambia', 'lusaka', 'angola', 'luanda'];
+
   switch (granularity) {
-    case 'global':       return true;                         
-    case 'africa':       return true;   
-    case 'west_africa':  return ['west_africa', 'nigeria', 'lagos', 'abuja', 'ghana', 'senegal', 'ivory_coast'].includes(scope);
-    case 'north_africa': return ['north_africa', 'egypt', 'morocco'].includes(scope);
-    case 'nigeria':      return nigerianCities.includes(scope);
-    case 'lagos':        return scope === 'lagos';
-    default:             return true;
+    case 'global':        return true;
+    case 'africa':        return true;
+    case 'west_africa':   return westAfrica.includes(scope);
+    case 'north_africa':  return northAfrica.includes(scope);
+    case 'nigeria':       return nigerianCities.includes(scope);
+    case 'lagos':         return scope === 'lagos';
+    case 'port_harcourt': return scope === 'port_harcourt';
+    case 'accra': case 'ghana':         return ['accra','ghana'].includes(scope);
+    case 'dakar': case 'senegal':       return ['dakar','senegal'].includes(scope);
+    case 'abidjan': case 'ivory_coast': return ['abidjan','ivory_coast'].includes(scope);
+    case 'casablanca': case 'morocco':  return ['casablanca','morocco'].includes(scope);
+    case 'tunis':         return scope === 'tunis';
+    case 'cairo': case 'egypt':         return ['cairo','egypt'].includes(scope);
+    case 'nairobi': case 'kenya':       return ['nairobi','kenya'].includes(scope);
+    case 'kigali': case 'rwanda':       return ['kigali','rwanda'].includes(scope);
+    case 'addis_ababa': case 'ethiopia':return ['addis_ababa','ethiopia'].includes(scope);
+    case 'dar_es_salaam': case 'tanzania': return ['dar_es_salaam','tanzania'].includes(scope);
+    case 'johannesburg': case 'cape_town': return southAfrica.includes(scope);
+    case 'luanda': case 'angola':       return ['luanda','angola'].includes(scope);
+    case 'lusaka': case 'zambia':       return ['lusaka','zambia'].includes(scope);
+    case 'douala': case 'cameroon':     return ['douala','cameroon'].includes(scope);
+    default:              return true;
   }
 }
 
@@ -2468,7 +2556,7 @@ function plotGeospatialData(articles) {
   mapMarkers = [];
   
   // Also count signals for the homepage previews
-  let counts = { lagos: 0, abuja: 0, ghana: 0, senegal: 0, morocco: 0 };
+  let counts = { lagos: 0, abuja: 0, ghana: 0, senegal: 0, morocco: 0, port_harcourt: 0 };
 
   // Combine real-estate articles with cross-sector intelligence articles
   const crossSectorUrls = new Set((_crossSectorArticles || []).map(a => a.url).filter(Boolean));
@@ -3417,7 +3505,7 @@ const INNOVATION_CATEGORIES = {
 // McKinsey-grade "why it matters to Mixta" inference
 // Maps innovation category → specific strategic implication
 const CATEGORY_IMPLICATION = {
-  proptech:     'Mixta should evaluate adoption for sales digitalisation, lead management, and buyer journey automation across Lakowe Crossings and Lagos New Town.',
+  proptech:     'Mixta should evaluate adoption for sales digitalisation, lead management, and buyer journey automation across Lakowe Crossings, Lagos New Town, and Garden City Golf Annexe in Port Harcourt — particularly cooperative and group-sales channel tooling for the PH market.',
   ai:           'AI-driven valuation and demand forecasting tools could sharpen Mixta\'s pricing decisions and reduce unsold inventory risk on future phases.',
   sustainable:  'Sustainable construction premium is 15–25% in comparable emerging markets. Green certification of Lakowe Annexe units creates a defensible price moat.',
   construction: 'Modular and prefab techniques could compress Mixta\'s construction timeline by 30–40%, improving IRR and enabling faster phase delivery.',
@@ -3543,6 +3631,13 @@ const CROSS_SECTOR_INTELLIGENCE = [
     watchFor: ['Power sector privatisation', 'Solar adoption rates', 'Grid reliability improvements in Epe/Ibeju axis'],
   },
   {
+    sector: 'Oil & Gas Sector (Port Harcourt)',
+    impact: 'critical',
+    mechanism: 'Garden City Golf Annexe targets oil & gas workers, NLNG cooperative members, and civil servants as primary buyers. Oil price movements, NNPC restructuring, upstream licensing, and LNG expansion directly affect disposable income and purchase timing for this buyer segment. Shell, TotalEnergies, NLNG cooperative, and oil-service companies are primary outreach targets. Positive sector news accelerates off-plan conversion; sector headwinds delay purchase decisions.',
+    keywords: ['oil', 'gas', 'petroleum', 'NNPC', 'upstream', 'downstream', 'LNG', 'NLNG', 'Shell', 'TotalEnergies', 'crude', 'refinery', 'Port Harcourt', 'Rivers State', 'oil price', 'hydrocarbon', 'OPEC', 'Seplat'],
+    watchFor: ['NLNG expansion announcements', 'Oil price movement above/below $70', 'NNPC staff reorganisation or pay changes', 'Rivers State economic policy'],
+  },
+  {
     sector: 'Foreign Exchange & Diaspora',
     impact: 'high',
     mechanism: 'Nigerian diaspora accounted for an estimated 35-40% of Lagos premium real estate transactions in 2024-2025. Naira depreciation makes Mixta properties cheaper in USD terms for diaspora buyers, creating opportunistic buying windows. Remittance volume correlates directly with off-plan deposit conversion rates.',
@@ -3566,9 +3661,9 @@ const CROSS_SECTOR_INTELLIGENCE = [
   {
     sector: 'Corporate Expansion & Employer Moves',
     impact: 'moderate',
-    mechanism: 'New corporate HQ relocations, major office expansions, and large employer announcements in Lagos create concentrated demand clusters. A company adding 500+ Lagos staff creates an immediate addressable pool for Mixta\'s B2B outreach channel. Companies expanding into Ibeju-Lekki FTZ are direct corridor demand drivers.',
-    keywords: ['headquarters', 'expansion', 'new office', 'relocation', 'hiring', 'jobs', 'employment', 'free trade zone', 'Lekki FTZ', 'LFTZ'],
-    watchFor: ['FTZ tenant announcements', 'Lagos corporate HQ relocations', 'Large employer hiring surges'],
+    mechanism: 'New corporate HQ relocations and large employer announcements in Lagos create concentrated demand clusters for Lakowe Crossings and Annexe. For Garden City Golf Annexe in Port Harcourt, employer moves within Rivers State — oil-service firms, NNPC subsidiaries, and public sector expansions — directly affect the addressable buyer pool. A company adding 500+ staff in either corridor creates an immediate outreach target.',
+    keywords: ['headquarters', 'expansion', 'new office', 'relocation', 'hiring', 'jobs', 'employment', 'free trade zone', 'Lekki FTZ', 'LFTZ', 'Rivers State', 'Port Harcourt expansion', 'AMCON'],
+    watchFor: ['FTZ tenant announcements', 'Lagos corporate HQ relocations', 'Rivers State employer hiring surges', 'NLNG or Shell PH expansion'],
   },
 ];
 
@@ -3654,7 +3749,7 @@ const HELP_CONTENT = {
   briefing: {
     title: 'Briefing — How to read this',
     sections: [
-      { h: 'Today\'s Signal', p: 'The lead story selected by the AI synthesizer — the article or theme with the highest market impact severity today. The opening sentence always contains a hard metric. The "Executive Takeaway (So What?)" box is Mixta-specific: it connects the story to Lakowe Crossings, Lakowe Annexe, or Lagos New Town.' },
+      { h: 'Today\'s Signal', p: 'The lead story selected by the AI synthesizer — the article or theme with the highest market impact severity today. The opening sentence always contains a hard metric. The "Executive Takeaway (So What?)" box is Mixta-specific: it connects the story to Lakowe Crossings, Lakowe Annexe, Lagos New Town, or Garden City Golf Annexe (Port Harcourt).' },
       { h: 'Strategic Signals', p: 'Four market-facing buckets (Market Creation, Financing, Regulatory, Competition), each mapped to the most relevant theme from today\'s briefing. If fewer than 4 distinct themes exist, unfilled buckets show "No distinct signal today" — they are never filled with a recycled theme.' },
       { h: 'Theme Cards', p: 'Each theme card shows what happened, why it matters to Mixta, and a recommendation. Click any theme card to open the Theme Evolution Panel — a full timeline of every article that contributed to that narrative, how it developed over time, and an AI-written evolution analysis.' },
       { h: 'Sentiment Pills', p: '<span class="help-tag">Bullish</span> = positive market implications. <span class="help-tag">Bearish</span> = headwinds or risk signals. <span class="help-tag">Neutral</span> = informational with no clear direction. Assigned by AI based on market implications, not article tone.' },

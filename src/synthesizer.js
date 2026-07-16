@@ -158,11 +158,34 @@ Respond ONLY with a valid JSON block matching this structural layout exactly (no
     const pricingView = context?.internal_pricing_strategy_view || {};
 
     const cleanPriorities = priorities.map(p => `- ${p}`).join('\n');
-    const nigeriaProjects = activeProjects
-      .filter(p => (p.location || '').toLowerCase().includes('lagos') || (p.location || '').toLowerCase().includes('lekki'))
-      .map(p => `- ${p.name}: ${p.segment}. Open issues: ${(p.open_issues || []).join(', ') || 'None'}`).join('\n');
 
-    return `Active projects: \n${nigeriaProjects}\n\nStrategic priorities:\n${cleanPriorities}\n\nInternal pricing strategy: ${pricingView.headline_argument || 'N/A'}`;
+    // Lagos corridor projects
+    const lagosProjects = activeProjects
+      .filter(p => {
+        const loc = (p.location || '').toLowerCase();
+        return loc.includes('lagos') || loc.includes('lekki') || loc.includes('ibeju');
+      })
+      .map(p => `- ${p.name} (Lagos): ${p.segment}. Open issues: ${(p.open_issues || []).join(', ') || 'None'}`).join('\n');
+
+    // Port Harcourt projects
+    const phProjects = activeProjects
+      .filter(p => {
+        const loc = (p.location || '').toLowerCase();
+        return loc.includes('port harcourt') || loc.includes('harcourt') || loc.includes('rivers');
+      })
+      .map(p => {
+        const ph = p;
+        const priceRange = ph.gross_pricing_naira_millions
+          ? `Pricing: ₦${ph.gross_pricing_naira_millions['2bed_detached_bungalow']}M–₦${ph.gross_pricing_naira_millions['3bed_semi_detached_duplex_golf_view']}M`
+          : '';
+        const econ = ph.unit_economics_scenario_2_phase_1_only
+          ? `Phase 1 economics: revenue ₦${ph.unit_economics_scenario_2_phase_1_only.projected_revenue_naira}, margin ${ph.unit_economics_scenario_2_phase_1_only.net_profit_margin_pct}`
+          : '';
+        const issues = (ph.open_issues || []).join(', ') || 'None';
+        return `- ${ph.name}: ${ph.segment}. ${priceRange}. ${econ}. Open issues: ${issues}`;
+      }).join('\n');
+
+    return `LAGOS CORRIDOR ACTIVE PROJECTS:\n${lagosProjects || 'None'}\n\nPORT HARCOURT ACTIVE PROJECTS:\n${phProjects || 'None'}\n\nStrategic priorities:\n${cleanPriorities}\n\nInternal pricing strategy: ${pricingView.headline_argument || 'N/A'}`;
   }
 
   parseBriefing(text) {
@@ -188,7 +211,7 @@ Respond ONLY with a valid JSON block matching this structural layout exactly (no
    */
   sanitizeExecutiveSummary(text) {
     if (!text) return text;
-    const bannedTerms = ['Mixta Africa', 'Mixta', 'Lakowe Crossings', 'Lakowe Annexe', 'Lakowe', 'Lagos New Town'];
+    const bannedTerms = ['Mixta Africa', 'Mixta', 'Lakowe Crossings', 'Lakowe Annexe', 'Lakowe', 'Lagos New Town', 'Garden City Golf Annexe', 'Garden City Golf'];
     for (const term of bannedTerms) {
       const re = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
       if (re.test(text)) {

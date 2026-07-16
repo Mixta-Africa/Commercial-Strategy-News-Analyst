@@ -3,7 +3,7 @@
 
   "company": {
     "name": "Mixta Africa",
-    "description": "Pan-African real estate, infrastructure and hospitality developer, building affordable-to-premium residential communities primarily along the Lagos / Ibeju-Lekki corridor, with a 20+ year track record, project experience in 8 African countries, operations in 5 countries (Nigeria, Senegal, Tunisia, Morocco, Côte d'Ivoire), 20,000+ housing units completed, 47 projects fully delivered, and 5,000+ units sold.",
+    "description": "Pan-African real estate, infrastructure and hospitality developer, building affordable-to-premium residential communities along two active Nigerian corridors — the Lagos / Ibeju-Lekki corridor and Greater Port Harcourt — with a 20+ year track record, project experience in 8 African countries, operations in 5 countries (Nigeria, Senegal, Tunisia, Morocco, Côte d'Ivoire), 30,000+ homes and plots sold, 47 projects fully delivered.",
     "headquarters": "8 Kasumu Ekemode Street, off Saka Tinubu, Victoria Island, Lagos, Nigeria",
     "leadership": {
       "chairman": "Dapo Oshinusi",
@@ -30,7 +30,8 @@
       "Maintain DFI credibility (EBRD, IFC) for ongoing capital raises",
       "Grow the diaspora buyer channel via the 'Own It 4 Sure' (O4S) S.U.R.E. framework and dedicated diaspora sales line (sales_diaspora@mixtafrica.com)",
       "Scale Lagos New Town (LNT) - currently 30% of 1,561 hectares developed, hosting 35K+ people, targeting 200,000 residents at completion",
-      "Find a healthcare operator partner for the proposed Lakowe Wellness and Medical Center"
+      "Find a healthcare operator partner for the proposed Lakowe Wellness and Medical Center",
+      "Execute Garden City Golf Annexe Phase 1 (Port Harcourt M-REIF): deliver Release 1 (39 units — 2&3-bed detached bungalows and 3-bed semi-detached duplexes with golf fairway views) on a 9.8Ha site off the Port Harcourt–Owerri Expressway (Omagwa). Phase 1 total is 151 units; full project is 494 units across 3 phases. Target buyer segments: oil & gas workers, NLNG cooperative members, civil servants, SME owners, and diaspora buyers funding family homes. ARM PH subsidiary is the primary sales channel partner. Show home fast-tracked as primary conversion tool. Sensitise PH market through site visibility and work-in-progress storytelling to unlock off-plan demand."
     ]
   },
 
@@ -68,13 +69,104 @@
       "price_band_naira_per_sqm": "Varies by sub-project: Elms Gardens from N99,246.95/sqm (affordable); LNT commercial plots from N292,648.46/sqm (mid); Lakowe Lakes Golf Estate plots from N407,642.98/sqm garden view up to N783,392.96/sqm waterfront (premium)",
       "status": "Active - 1,561 hectares total Mixta landbank, 30% developed, currently hosts 35K+ people (Summerville estate, Adiva Plainfields, Beechwood Park, private bulk land developers and private settlements), targeting 200,000 residents at completion. Twice the size of Victoria Island. Per the public website, LNT spans 15 million sqm.",
       "notes": "Mixta's flagship infrastructure-arbitrage play - positioned to capture valuation upside as the Green Line Metro (68km, 177 stations including Lakowe), the Lekki-Epe International Airport (projected 5,000,000 passengers/year), the Lekki Deep Seaport, and the Dangote Refinery (135,000+ jobs at maturity) come fully onstream. Coastal Road commissioned May 2025, cutting commute time to LNT to ~20 minutes. Sub-projects within LNT include Lakowe Crossings, Nova Park (21.58-hectare industrial hub, 53 plots), Lakowe Wellness and Medical Center (seeking healthcare operator partner), Elms Gardens, Marula Park, Beechwood Park, Adiva Plainfields, Townsville Estate, and Lakowe Lakes Golf & Country Estate."
+    },
+    {
+      "name": "Garden City Golf Annexe (Port Harcourt)",
+      "location": "Greater Port Harcourt — 9.8Ha site taken from the Greater Port Harcourt JV land of 187Ha, accessed via 0.77km road from the Port Harcourt–Owerri Expressway (Omagwa). Adjacent to the Garden City Golf Estate.",
+      "corridor_landmarks_drive_times": {
+        "Greater Port Harcourt Airport": "10 minutes",
+        "Adokiye Amiesimaka Stadium": "7 minutes",
+        "Salvation Ministries Five-Finger Cathedral": "7 minutes",
+        "Omagwa Main Market": "20 minutes",
+        "Wigwe University Isiokpo": "25 minutes"
+      },
+      "sales_contacts": "+234 912 190 1731 · +234 704 998 8104 · mixtafrica.com",
+      "investment_narrative": "Golf-adjacency repricing model — properties near golf developments reprice when construction begins. Early buyers can sell at that inflection point and upgrade into the Golf Estate itself. Validated by Lakowe Lakes trajectory: launch ₦9M (2009) → ₦85M (2026) = 11.3x. The golf course has not yet opened at Garden City Golf Annexe — current pricing is pre-repricing, equivalent to Lakowe's 2009 entry point.",
+      "core_positioning_line": "The structure is ours. The expression is entirely yours.",
+      "segment": "Affordable-to-mid-market residential — M-REIF/MOFI scheme (Ministry of Finance Incorporated). Shell-finish delivery strategy aligned with Port Harcourt buyer culture preference for personal-compound ownership.",
+      "scheme": "M-REIF under MOFI — part of the 7,552-unit national pilot; 1,760-unit initial rollout across Lagos and Port Harcourt; PH development is 494 units.",
+      "total_units": 494,
+      "phases": {
+        "phase_1_release_1": {
+          "units": 39,
+          "product_types": [
+            "2-Bedroom Detached Bungalow (21 units, 78sqm GFA, 276sqm plot)",
+            "3-Bedroom Detached Bungalow (10 units, 114sqm GFA, 347sqm plot)",
+            "3-Bedroom Semi-Detached Duplex Golf View (8 units, 147sqm GFA, 176sqm plot)"
+          ],
+          "status": "In execution — contractors prequalified (Croff, Fide Vivo, Larry & Del, Eaz Roc Ltd, Silverbird shortlisted); boundary survey, site clearing, soil test, and topo survey done; layout approval received.",
+          "funding": "N1.5bn loan (26% p.a., 24-month tenor, 6-month moratorium) to fund Release 1; subsequent releases funded through presales inflows."
+        },
+        "phase_1_release_2": {
+          "units": 112,
+          "product_types": [
+            "1-Bedroom Apartment Block G+3 (48 units)",
+            "2-Bedroom Apartment Block H-Type G+3 (32 units)",
+            "2-Bedroom Apartment Block Row-House Type G+3 (32 units)"
+          ]
+        },
+        "phase_1_total": 151,
+        "phases_2_and_3": "343 additional units; total masterplan 494 units across 27,253–41,096sqm per release"
+      },
+      "unit_economics_scenario_1_all_phases": {
+        "total_project_cost_naira": "N23.7bn (land N2.5bn, infra N2.6bn, build N16.2bn, pre-dev N1.1bn, finance N0.8bn, marketing N0.6bn)",
+        "projected_revenue_naira": "N39.0bn",
+        "net_profit_naira": "N15.2bn",
+        "net_profit_margin_pct": "39%",
+        "irr_pct": "152%",
+        "roe_pct": "621%"
+      },
+      "unit_economics_scenario_2_phase_1_only": {
+        "total_project_cost_naira": "N7.0bn",
+        "projected_revenue_naira": "N10.3bn",
+        "net_profit_naira": "N3.2bn",
+        "net_profit_margin_pct": "32%",
+        "irr_pct": "168%",
+        "roe_pct": "475%"
+      },
+      "gross_pricing_naira_millions": {
+        "2bed_detached_bungalow": 74,
+        "3bed_detached_bungalow": 102.4,
+        "3bed_semi_detached_duplex_golf_view": 108.5,
+        "3bed_semi_detached_duplex_front_golf": 104.2,
+        "1bed_apartment": 40.9,
+        "2bed_apartment_h_type": 55.0,
+        "2bed_apartment_row_house": 55.2
+      },
+      "design_pivot": "Moved from high-density finished-spec apartments (old strategy) to tropical-style shell-finish bungalows and duplexes with golf fairway views, personal compounds, and low density — matching Port Harcourt buyer preference for compound ownership and customization.",
+      "competitor_reference": "TAF Africa (Greater TAF City) — 2-bed bungalow N41.8M–N49.5M, 3-bed bungalow N51M–N59.5M, 4-bed duplex N97M–N115M, all shell/carcass finish. Mixta is positioned above TAF on specification and location quality.",
+      "primary_buyer_segments": [
+        "Oil & gas workers and upstream/downstream sector professionals",
+        "Civil servants and public-sector employees",
+        "NLNG cooperative society members",
+        "SME owners",
+        "Diaspora buyers funding family homes",
+        "ARM PH existing client base (cross-sell via ARM subsidiary)"
+      ],
+      "sales_partners": "ARM PH subsidiary — joint engagement, cross-selling to ARM PH existing clients, co-branding. Active conversations with NLNG Cooperative, AMCON, Zenith Bank PH, Epenal Group of Companies.",
+      "marketing_budget_naira": "N200m across 9 months (N80m Phase 1 credibility build, N70m Phase 2 momentum sales, N40m Phase 3 scale, N10m contingency). Strategy prioritises site-led marketing over lifestyle campaigns — off-plan demand in PH unlocked primarily by visible construction activity.",
+      "key_risks": [
+        "Security risk on site (HIGH) — mitigated by perimeter wall, police post, CCTV",
+        "Access road construction delays by JV partner (HIGH)",
+        "Inflation / construction input cost escalation (HIGH) — 70% advance payment locks in contractor cost",
+        "Rainy-season schedule disruption March–November (MEDIUM)",
+        "Funding pausity (HIGH) — ring-fenced project funding recommended",
+        "Community action disrupting site activities (HIGH) — PH-experienced contractors, CLO engagement"
+      ],
+      "open_issues": [
+        "Access road execution dependent on JV partner — discussions ongoing",
+        "Show home fast-track critical to Phase 1 conversion",
+        "ARM PH sales activation and cooperative society engagement not yet formally launched",
+        "Firebase Mixta price entries for PH to be added once units are priced and activated in the dashboard"
+      ],
+      "governance": "Approved by GHP Board (May 2024) and Mixta Investment Committee (November 2024). Independent PM firm engaged for QA/QC; IPD inhouse resident engineer assigned for oversight. Consultants: Architect — Moss & Coin; Structural — Pin Consult; MEP — Omuled; QS — Jabak."
     }
   ],
 
   "completed_flagship_projects": [
     {
       "name": "Lakowe Lakes Golf & Country Estate",
-      "description": "Mixta's flagship hospitality and premium residential project; 18-hole championship golf course; 327 households currently occupying completed homes; marketed as 'West Africa's Best Kept Secret'.",
+      "description": "Mixta's flagship hospitality and premium residential project; 18-hole championship golf course (opened 2012); 308ha estate footprint; 14+ man-made lakes; 327 households currently occupying completed homes; marketed as 'West Africa's Best Kept Secret'. Price trajectory (validated 2026 marketing pitch): launched at ₦9M in 2009 → golf course introduced 2012 (1.2x) → first buyer 2016 (1.4x) → first handover 2019 → now ₦85M in 2026 (11.3x from launch, 7.9x from handover). This trajectory is the primary proof-of-concept used in Garden City Golf Annexe sales materials.",
       "rental_pool": "Managed by Newmark Hotels; owners can enlist 1-3 bedroom furnished villas/apartments for short-stay hospitality rentals; clients retain full discretion to enroll or withdraw at any time."
     },
     {"name": "Beechwood Park", "households_or_units": "250 households occupying completed homes; 648+ affordable units overall; 404 units sold project-wide on Beechwood Park II, 377 completed, 11 available"},
@@ -208,6 +300,22 @@
     {
       "topic": "Healthcare operator partnership for Lakowe Wellness and Medical Center",
       "why": "Mixta is actively seeking a partner for this facility; news of a signed operator (or a competitor securing one nearby) would be a meaningful corridor development."
+    },
+    {
+      "topic": "Oil price and NNPC/upstream sector news (Port Harcourt)",
+      "why": "Garden City Golf Annexe's Phase 1 buyer base is predominantly oil & gas workers and NLNG cooperative members. Oil price movement above or below $70/bbl, NNPC restructuring, salary review cycles, or upstream licensing rounds directly affect disposable income and purchase timing for this buyer segment. Positive sector news is the single strongest conversion trigger for PH off-plan sales."
+    },
+    {
+      "topic": "Rivers State economic policy, governance, and security",
+      "why": "Garden City Golf Annexe is a 494-unit development in Greater Port Harcourt. Rivers State political stability, land administration, building permit reform, and security conditions (particularly along the Port Harcourt–Owerri Expressway / Omagwa axis) directly affect site execution, buyer confidence, and agent activation timelines."
+    },
+    {
+      "topic": "NLNG cooperative society and institutional buyer activity in Port Harcourt",
+      "why": "NLNG cooperative is a named primary sales target for Garden City Golf Annexe. Group-purchase decisions by the cooperative, AMCON, or Zenith Bank PH staff cooperatives represent high-conversion bulk sales events. News of cooperative society activity, corporate housing benefit changes, or financial sector welfare programmes in PH are direct demand signals."
+    },
+    {
+      "topic": "Port Harcourt real estate supply and competitor activity (TAF Africa / Greater TAF City)",
+      "why": "TAF Africa's Greater TAF City is the primary identified competitor for Garden City Golf Annexe — selling 2-bed shell-finish bungalows at N41.8M–N49.5M and 3-beds at N51M–N59.5M. Any price changes, new phases, or marketing campaigns from TAF (or new competitor entrants) in the affordable PH market directly affect Mixta's pricing headroom and positioning."
     }
   ],
 
@@ -217,8 +325,12 @@
     "receivables_concentration": "FILL_IN (which project holds most of it) - not present in source documents",
     "mortgage_uptake": "near-zero historically; MREIF/MOFI partnership (rates from 9.75%, up to N100M, up to 20-year tenor) is the primary structural counter-measure currently in market",
     "revenue_target_2026_naira": "FILL_IN - not present in source documents",
-    "units_sold_total_company": "5,000+ (company-wide, per Real Estate Acquisition deck)",
-    "units_sold_lnt_specifically": "5,000+ (LNT-specific figure cited separately in the same deck, page 13 - worth reconciling whether this is the same 5,000+ or additive)",
+    "units_sold_total_company": "30,000+ homes and plots (company-wide, per Garden City Golf Annexe marketing pitch July 2026 — supersedes earlier '5,000+ units' figure which appears to be Nigeria-only or built-unit-only)",
+    "units_sold_lnt_specifically": "5,000+ (LNT-specific figure cited separately in the Real Estate Acquisition deck, page 13 — worth reconciling whether this is additive to or a subset of the 30,000+ company-wide figure)",
+    "lakowe_lakes_launch_price_2009_naira": "₦9M (validated, Garden City Golf Annexe marketing pitch)",
+    "lakowe_lakes_current_price_2026_naira": "₦85M (validated, Garden City Golf Annexe marketing pitch July 2026)",
+    "lakowe_lakes_price_multiple_launch_to_2026": "11.3x (launch 2009 → 2025/2026)",
+    "lakowe_lakes_price_multiple_handover_to_2026": "7.9x (first handover 2019 → 2025/2026)",
     "housing_units_completed_total": "20,000+",
     "projects_fully_delivered": "47 across 8 African countries",
     "lnt_total_hectares": "1,561 hectares (Mixta landbank figure) / 15,000,000 sqm per public website corporate page - these two figures are consistent (1,561 ha ≈ 15.61M sqm)",
@@ -242,9 +354,12 @@
     "Mixta Affordable Segment CMA Q2 2026 PDF, May 2026 (13-name Lekki-Epe corridor competitor set, TCO normalization methodology, 58-criterion specification matrix, naira/sqm positioning analysis, proposed Q2 pricing table, mortgage lender alignment) - merged June 2026",
     "Affordable Housing Competitive Analysis 2026 workbook (wider Ibeju-Lekki/Sangotedo competitor scan - Bloom Haven, Veritasi Homes, County Apartments, etc.) - merged June 2026",
     "All Project Masterlist (internal pricing/classification history 2014-2026) - referenced for cross-check, not yet fully mined",
-    "Price Sheet 2020-2026 Final workbook (internal price-sheet ground truth, property classification by class/segment) - referenced for cross-check, not yet fully mined"
+    "Price Sheet 2020-2026 Final workbook (internal price-sheet ground truth, property classification by class/segment) - referenced for cross-check, not yet fully mined",
+    "Garden_City_Marketing_Pitch_finalll.pdf — Garden City Golf Annexe consumer-facing sales pitch (July 2026): validates 30,000+ homes and plots sold (company-wide), corridor landmarks with drive times (airport 10min, stadium 7min, cathedral 7min, Omagwa market 20min, Wigwe University 25min), Lakowe Lakes price trajectory (₦9M 2009 → ₦85M 2026 = 11.3x), golf-adjacency repricing investment narrative, core positioning line ('The structure is ours. The expression is entirely yours.'), sales contacts (+234 912 190 1731 / +234 704 998 8104). Designated most recent and validated source — supersedes stale figures in prior documents where conflicts exist — merged July 2026"
   ],
   "_changelog": [
-    {"date": "2026-06-17", "change": "Merged Q2 2026 affordable-segment CMA (13-name Lekki-Epe corridor competitor set + pricing/spec analysis) and a separate wider competitive-analysis workbook into competitors[] as neutral reference data; added internal_pricing_strategy_view as a clearly-separated, explicitly-caveated block for the CMA's argumentative conclusions so they don't bias general news synthesis. Two source competitor sets do not overlap and were both preserved with source tagging rather than deduplicated/merged into single entries."}
+    {"date": "2026-06-17", "change": "Merged Q2 2026 affordable-segment CMA (13-name Lekki-Epe corridor competitor set + pricing/spec analysis) and a separate wider competitive-analysis workbook into competitors[] as neutral reference data; added internal_pricing_strategy_view as a clearly-separated, explicitly-caveated block for the CMA's argumentative conclusions so they don't bias general news synthesis. Two source competitor sets do not overlap and were both preserved with source tagging rather than deduplicated/merged into single entries."},
+    {"date": "2026-07-16", "change": "Added Garden City Golf Annexe (Port Harcourt) as a fourth active_projects entry — full M-REIF/MOFI project detail, unit economics (both scenarios), phase structure, pricing, buyer segments, sales partner (ARM PH), competitor (TAF Africa), key risks and open issues, from the January 2026 AMC presentation. Updated company.description to include Port Harcourt corridor. Added strategic_priorities_2026 item for PH delivery. Added 5 new watch_list items covering oil price/NNPC, Rivers State policy, NLNG cooperative, and PH competitor activity."},
+    {"date": "2026-07-16", "change": "Cross-validated against Garden City Golf Annexe consumer marketing pitch (finalll.pdf, July 2026 — designated most recent validated source). Corrections applied: company-wide sales figure updated from '5,000+ units' to '30,000+ homes and plots'; Lakowe Lakes price trajectory added (₦9M 2009 → ₦85M 2026 = 11.3x, 7.9x from handover); Garden City Golf Annexe entry enriched with corridor landmarks/drive times, sales contacts, investment narrative, and core positioning line. data_hooks updated accordingly."}
   ]
 }

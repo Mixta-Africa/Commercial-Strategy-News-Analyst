@@ -1264,6 +1264,7 @@ body.focus-mode .collapsible-secondary { display: none !important; }
       <div class="archive-seg-row">
         <button id="segBriefings" class="archive-seg-btn active" onclick="setArchTab('briefings')">Executive Briefings</button>
         <button id="segArticles" class="archive-seg-btn" onclick="setArchTab('articles')">Source Articles</button>
+        <button id="segInnovation" class="archive-seg-btn" onclick="setArchTab('innovation')">Innovation Archive</button>
       </div>
       
       <div id="archiveBody"></div>
@@ -1311,6 +1312,7 @@ const DATA_BASE = (function() {
 
 let fb = null, db = null, firebaseReady = false;
 let articlesCache = [], briefingsIndex = [], archTab = 'briefings';
+let innovationCache = []; // archive of innovation.json articles for Library tab
 let cfgWatch = [], cfgRss = [], cfgGoogle = [];
 let activeGlobalThemeFilter = "All";
 let loadedBriefingCache = null;
@@ -2139,15 +2141,19 @@ function setArchTab(tab) {
   archTab = tab;
   document.getElementById('segBriefings').classList.toggle('active', tab === 'briefings');
   document.getElementById('segArticles').classList.toggle('active', tab === 'articles');
+  document.getElementById('segInnovation').classList.toggle('active', tab === 'innovation');
   document.getElementById('archSearch').placeholder = tab === 'briefings'
     ? 'Search historical executive briefings...'
-    : 'Search source articles by title or keyword...';
+    : tab === 'innovation'
+      ? 'Search innovation articles by title, category, or keyword...'
+      : 'Search source articles by title or keyword...';
   renderArchive();
 }
 
 function renderArchive() {
   const el = document.getElementById('archiveBody');
   const q = document.getElementById('archSearch').value.toLowerCase().trim();
+
   if (archTab === 'briefings') {
     let items = briefingsIndex;
     if (q) items = items.filter(b =>
@@ -2161,6 +2167,67 @@ function renderArchive() {
         <div class="arch-summary">${esc((b.executive_summary || '').slice(0, 220))}${(b.executive_summary||'').length > 220 ? '...' : ''}</div>
         <div style="font-family: var(--font-ui); font-size: 11px; color: var(--maroon); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">${(b.themeLabels || []).map(esc).join(' &middot; ')}</div>
       </div>`).join('');
+
+  } else if (archTab === 'innovation') {
+    let items = innovationCache;
+    if (!items.length) {
+      el.innerHTML = '<div class="empty">No innovation articles archived yet. The innovation pipeline populates this after the first run with Phase 8.5 fetch lanes active.</div>';
+      return;
+    }
+    if (q) items = items.filter(a =>
+      (a.title || '').toLowerCase().includes(q) ||
+      (a.source || '').toLowerCase().includes(q) ||
+      (a.description || '').toLowerCase().includes(q) ||
+      (a._category || '').toLowerCase().includes(q) ||
+      Object.values(INNOVATION_CATEGORIES).some(cat =>
+        cat.label.toLowerCase().includes(q) && a._category === Object.keys(INNOVATION_CATEGORIES).find(k => INNOVATION_CATEGORIES[k] === cat)
+      )
+    );
+    if (!items.length) { el.innerHTML = '<div class="empty">No innovation articles match your search.</div>'; return; }
+
+    // Group by category for a cleaner archive view
+    const byCategory = {};
+    items.forEach(a => {
+      const cat = a._category || 'proptech';
+      if (!byCategory[cat]) byCategory[cat] = [];
+      byCategory[cat].push(a);
+    });
+
+    // Sort categories by count descending
+    const sortedCats = Object.entries(byCategory).sort((a, b) => b[1].length - a[1].length);
+
+    el.innerHTML = `
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);margin-bottom:28px;text-transform:uppercase;letter-spacing:0.08em;">
+        ${items.length} articles archived · ${sortedCats.length} categories · sourced from global proptech and innovation feeds
+      </div>
+      ${sortedCats.map(([catKey, catItems]) => {
+        const catLabel = INNOVATION_CATEGORIES[catKey]?.label || catKey;
+        return `
+          <div style="margin-bottom:40px;">
+            <div style="font-family:var(--font-ui);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--maroon);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--maroon);">
+              ${esc(catLabel)} <span style="font-weight:400;color:var(--ink-faint);">(${catItems.length})</span>
+            </div>
+            ${catItems.map(a => {
+              const date = a.publishedAt
+                ? new Date(a.publishedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
+                : (a.addedAt ? new Date(a.addedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) : '');
+              const desc = (a.description || '').slice(0, 200);
+              return `
+                <div class="arch-item" style="cursor:default;">
+                  ${a.url
+                    ? `<a href="${esc(a.url)}" target="_blank" rel="noopener" style="font-family:var(--font-headline);font-size:18px;font-weight:600;color:var(--ink);text-decoration:none;display:block;margin-bottom:10px;line-height:1.35;">${esc(a.title)}</a>`
+                    : `<div style="font-family:var(--font-headline);font-size:18px;font-weight:600;color:var(--ink);margin-bottom:10px;line-height:1.35;">${esc(a.title)}</div>`
+                  }
+                  ${desc ? `<div style="font-family:var(--font-body);font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:10px;">${esc(desc)}${desc.length >= 200 ? '…' : ''}</div>` : ''}
+                  <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.05em;display:flex;gap:16px;flex-wrap:wrap;">
+                    ${a.source ? `<span style="font-weight:700;color:var(--maroon);">${esc(a.source)}</span>` : ''}
+                    ${date ? `<span>${date}</span>` : ''}
+                  </div>
+                </div>`;
+            }).join('')}
+          </div>`;
+      }).join('')}`;
+
   } else {
     let items = articlesCache;
     if (q) items = items.filter(a =>
@@ -3854,6 +3921,7 @@ const HELP_CONTENT = {
     sections: [
       { h: 'Executive Briefings', p: 'Full AI-generated briefings from every pipeline run, stored permanently. Each briefing contains the strategic synthesis, themes, why-it-matters commentary, and recommendations generated that day. Use this to track how specific narratives evolved over weeks.' },
       { h: 'Source Articles', p: 'Every article that passed the 48-hour recency filter and real estate relevance gate, with AI-generated summaries, sentiment tags, and market impact scores. Retained for 365 days. Use as evidence when preparing market presentations.' },
+      { h: 'Innovation Archive', p: 'All global proptech, sustainability, AI, construction tech, and financing model articles fetched by the Phase 8.5 innovation lane. Grouped by category and searchable by title, source, or keyword. This is a permanent reference library of disruption signals — separate from the Nigerian real estate briefing feed.' },
       { h: 'Search', p: 'Searches across titles, dates, and AI summaries simultaneously. Use keywords like "Ibeju-Lekki", "mortgage", "affordable housing", or "interest rate" to pull relevant historic coverage. Combine keywords with date navigation for precise research.' },
     ]
   },
@@ -5343,6 +5411,14 @@ function toggleFocusMode() {
   geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;
   competitiveCache = competitive || null;
   briefingsIndex = bIndex?.briefings || [];
+
+  // Populate innovation archive — classify articles now so the Library tab
+  // can filter/search by category without re-running classification on every keystroke.
+  const rawInnovArticles = Array.isArray(innovation?.articles) ? innovation.articles : [];
+  innovationCache = rawInnovArticles
+    .filter(a => (a.title || '').trim()) // skip untitled
+    .map(a => ({ ...a, _category: _classifyInnovation(a) }))
+    .sort((a, b) => new Date(b.publishedAt || b.addedAt || 0) - new Date(a.publishedAt || a.addedAt || 0));
   
   // Plot geospatial maps hidden to prepopulate counts on the homepage
   plotGeospatialData(geoCache);

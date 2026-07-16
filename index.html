@@ -2411,7 +2411,6 @@ const geoAnchors = {
   'port_harcourt': { lat: 4.8156, lng: 7.0498, zoom: 10 },
   'ibadan':        { lat: 7.3776, lng: 3.9470, zoom: 10 },
   'kano':          { lat: 12.0022, lng: 8.5920, zoom: 10 },
-  // West Africa
   'senegal':       { lat: 14.7167, lng: -17.4677, zoom: 6 },
   'dakar':         { lat: 14.7167, lng: -17.4677, zoom: 11 },
   'ghana':         { lat: 5.6037, lng: -0.1870, zoom: 6 },
@@ -2420,13 +2419,11 @@ const geoAnchors = {
   'abidjan':       { lat: 5.3600, lng: -4.0083, zoom: 11 },
   'cameroon':      { lat: 3.8480, lng: 11.5021, zoom: 6 },
   'douala':        { lat: 4.0511, lng: 9.7679, zoom: 11 },
-  // North Africa
   'morocco':       { lat: 33.5731, lng: -7.5898, zoom: 6 },
   'casablanca':    { lat: 33.5731, lng: -7.5898, zoom: 11 },
   'tunis':         { lat: 36.8065, lng: 10.1815, zoom: 11 },
   'egypt':         { lat: 30.0444, lng: 31.2357, zoom: 6 },
   'cairo':         { lat: 30.0444, lng: 31.2357, zoom: 11 },
-  // East Africa
   'kenya':         { lat: -1.2921, lng: 36.8219, zoom: 6 },
   'nairobi':       { lat: -1.2921, lng: 36.8219, zoom: 11 },
   'rwanda':        { lat: -1.9706, lng: 30.1044, zoom: 7 },
@@ -2435,7 +2432,6 @@ const geoAnchors = {
   'addis_ababa':   { lat: 9.0252, lng: 38.7469, zoom: 11 },
   'tanzania':      { lat: -6.7924, lng: 39.2083, zoom: 6 },
   'dar_es_salaam': { lat: -6.7924, lng: 39.2083, zoom: 11 },
-  // Southern Africa
   'south_africa':  { lat: -26.2041, lng: 28.0473, zoom: 6 },
   'johannesburg':  { lat: -26.2041, lng: 28.0473, zoom: 11 },
   'cape_town':     { lat: -33.9249, lng: 18.4241, zoom: 11 },
@@ -2488,13 +2484,13 @@ function resolveScope(article) {
   }
   if (scope === 'port_harcourt') return 'port_harcourt';
 
-  // City-level aliases passed directly from dropdown
-  const directCities = ['casablanca','tunis','nairobi','kigali','addis_ababa','dar_es_salaam',
+  // City-level keys passed directly from dropdown — return as-is
+  const knownCities = ['casablanca','tunis','nairobi','kigali','addis_ababa','dar_es_salaam',
     'johannesburg','cape_town','luanda','lusaka','douala','dakar','accra','cairo','abidjan',
     'port_harcourt','lagos','abuja'];
-  if (directCities.includes(scope)) return scope;
+  if (knownCities.includes(scope)) return scope;
 
-  // Africa-scope articles: resolve to country/city by text
+  // Africa-scope: resolve to country/city by text content
   if (scope === 'africa') {
     if (text.includes('port harcourt') || text.includes('rivers state') || text.includes('nlng')) return 'port_harcourt';
     if (text.includes('lagos') || text.includes('lekki')) return 'lagos';
@@ -2519,11 +2515,10 @@ function resolveScope(article) {
 
 function scopeVisibleAt(scope, granularity) {
   const nigerianCities = ['nigeria', 'lagos', 'abuja', 'port_harcourt', 'ibadan', 'kano'];
-  const westAfrica = ['west_africa', 'nigeria', 'lagos', 'abuja', 'port_harcourt', 'ghana', 'accra', 'senegal', 'dakar', 'ivory_coast', 'abidjan', 'cameroon', 'douala'];
-  const northAfrica = ['north_africa', 'egypt', 'cairo', 'morocco', 'casablanca', 'tunis'];
-  const eastAfrica  = ['kenya', 'nairobi', 'rwanda', 'kigali', 'ethiopia', 'addis_ababa', 'tanzania', 'dar_es_salaam'];
-  const southAfrica = ['south_africa', 'johannesburg', 'cape_town', 'zambia', 'lusaka', 'angola', 'luanda'];
-
+  const westAfrica = ['west_africa','nigeria','lagos','abuja','port_harcourt','ghana','accra','senegal','dakar','ivory_coast','abidjan','cameroon','douala'];
+  const northAfrica = ['north_africa','egypt','cairo','morocco','casablanca','tunis'];
+  const eastAfrica  = ['kenya','nairobi','rwanda','kigali','ethiopia','addis_ababa','tanzania','dar_es_salaam'];
+  const southAfrica = ['south_africa','johannesburg','cape_town','zambia','lusaka','angola','luanda'];
   switch (granularity) {
     case 'global':        return true;
     case 'africa':        return true;
@@ -2532,20 +2527,20 @@ function scopeVisibleAt(scope, granularity) {
     case 'nigeria':       return nigerianCities.includes(scope);
     case 'lagos':         return scope === 'lagos';
     case 'port_harcourt': return scope === 'port_harcourt';
-    case 'accra': case 'ghana':         return ['accra','ghana'].includes(scope);
-    case 'dakar': case 'senegal':       return ['dakar','senegal'].includes(scope);
-    case 'abidjan': case 'ivory_coast': return ['abidjan','ivory_coast'].includes(scope);
-    case 'casablanca': case 'morocco':  return ['casablanca','morocco'].includes(scope);
-    case 'tunis':         return scope === 'tunis';
-    case 'cairo': case 'egypt':         return ['cairo','egypt'].includes(scope);
-    case 'nairobi': case 'kenya':       return ['nairobi','kenya'].includes(scope);
-    case 'kigali': case 'rwanda':       return ['kigali','rwanda'].includes(scope);
-    case 'addis_ababa': case 'ethiopia':return ['addis_ababa','ethiopia'].includes(scope);
+    case 'accra': case 'ghana':          return ['accra','ghana'].includes(scope);
+    case 'dakar': case 'senegal':        return ['dakar','senegal'].includes(scope);
+    case 'abidjan': case 'ivory_coast':  return ['abidjan','ivory_coast'].includes(scope);
+    case 'casablanca': case 'morocco':   return ['casablanca','morocco'].includes(scope);
+    case 'tunis':          return scope === 'tunis';
+    case 'cairo': case 'egypt':          return ['cairo','egypt'].includes(scope);
+    case 'nairobi': case 'kenya':        return ['nairobi','kenya'].includes(scope);
+    case 'kigali': case 'rwanda':        return ['kigali','rwanda'].includes(scope);
+    case 'addis_ababa': case 'ethiopia': return ['addis_ababa','ethiopia'].includes(scope);
     case 'dar_es_salaam': case 'tanzania': return ['dar_es_salaam','tanzania'].includes(scope);
     case 'johannesburg': case 'cape_town': return southAfrica.includes(scope);
-    case 'luanda': case 'angola':       return ['luanda','angola'].includes(scope);
-    case 'lusaka': case 'zambia':       return ['lusaka','zambia'].includes(scope);
-    case 'douala': case 'cameroon':     return ['douala','cameroon'].includes(scope);
+    case 'luanda': case 'angola':        return ['luanda','angola'].includes(scope);
+    case 'lusaka': case 'zambia':        return ['lusaka','zambia'].includes(scope);
+    case 'douala': case 'cameroon':      return ['douala','cameroon'].includes(scope);
     default:              return true;
   }
 }
@@ -2565,23 +2560,53 @@ function plotGeospatialData(articles) {
     ...(_crossSectorArticles || []).filter(a => !articles.find(b => b.url === a.url)),
   ];
 
+  // ── Deterministic jitter seed ──────────────────────────────────────────────
+  // Each article gets a stable position based on a hash of its url+title so
+  // dots don't jump around on every re-render. Without this, articles that
+  // overlap on re-render appear to "disappear" between clicks.
+  function hashStr(s) {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) { h = Math.imul(31, h) + s.charCodeAt(i) | 0; }
+    return h;
+  }
+  function seededRand(seed) {
+    // LCG — deterministic float in [0,1) from an integer seed
+    const x = Math.abs(Math.imul(seed ^ (seed >>> 16), 0x45d9f3b));
+    return (x >>> 0) / 4294967296;
+  }
+
   combinedArticles.forEach(article => {
+    // ── Guard: skip articles with no usable title — they would produce empty popups ──
+    const title = (article.title || '').trim();
+    if (!title) return;
+
     const isCrossSector = crossSectorUrls.has(article.url) && !articles.find(b => b.url === article.url);
     const scope = resolveScope(article);
     if (counts[scope] !== undefined) counts[scope]++;
     
     if (!scopeVisibleAt(scope, currentGeoScope)) return;
     const anchor = geoAnchors[scope] || geoAnchors['nigeria'];
-    const jitterSpread = anchor.zoom >= 9 ? 0.06 : anchor.zoom >= 5 ? 1.2 : 6.0;
-    const lat = anchor.lat + (Math.random() - 0.5) * jitterSpread;
-    const lng = anchor.lng + (Math.random() - 0.5) * jitterSpread;
-    const sent = (article.sentiment || 'neutral').toLowerCase();
 
-    // Cross-sector articles: diamond shape (square rotated 45°), distinct colour
-    // Real-estate articles: circle, existing colour scheme
+    // ── Deterministic position from article identity ──────────────────────────
+    // Use url if present, fall back to title. Same article always lands in
+    // the same spot regardless of how many times the map re-renders.
+    const identity = (article.url || title).trim();
+    const seedA = hashStr(identity);
+    const seedB = hashStr(identity + '_lng');
+    const jitterSpread = anchor.zoom >= 10 ? 0.04 : anchor.zoom >= 9 ? 0.06 : anchor.zoom >= 5 ? 1.0 : 5.0;
+    const lat = anchor.lat + (seededRand(seedA) - 0.5) * jitterSpread;
+    const lng = anchor.lng + (seededRand(seedB) - 0.5) * jitterSpread;
+
+    const sent = (article.sentiment || 'neutral').toLowerCase();
+    const hasUrl = !!(article.url || '').trim();
+    const dateStr = article.publishedAt
+      ? new Date(article.publishedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
+      : (article.addedAt ? new Date(article.addedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short' }) : '');
+
+    // Cross-sector articles: amber diamond. Real-estate articles: coloured circle.
     let marker;
     if (isCrossSector) {
-      const color = '#A47D29'; // amber — cross-sector signal
+      const color = '#A47D29';
       marker = L.marker([lat, lng], {
         icon: L.divIcon({
           className: '',
@@ -2596,13 +2621,30 @@ function plotGeospatialData(articles) {
       }).addTo(geoMap);
     }
 
+    // ── Popup — gracefully handles missing url ────────────────────────────────
+    const titleHtml = hasUrl
+      ? `<a href="${esc(article.url)}" target="_blank" rel="noopener noreferrer"
+            style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;color:#111;text-decoration:none;display:block;margin-bottom:8px;line-height:1.4;"
+         >${esc(title)}</a>`
+      : `<span style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;color:#111;display:block;margin-bottom:8px;line-height:1.4;">${esc(title)}</span>`;
+
+    const summaryHtml = article.summary
+      ? `<div style="font-family:'Poppins',sans-serif;font-size:12px;color:#4A4A4A;line-height:1.5;margin-bottom:8px;">${esc(article.summary.slice(0, 150))}…</div>`
+      : '';
+
+    const metaLine = [
+      article.source ? `<strong style="color:${isCrossSector ? '#A47D29' : '#7A1F2B'};">${esc(article.source)}</strong>` : '',
+      dateStr,
+      !hasUrl ? '<em style="color:#c0392b;">No link available</em>' : '',
+      isCrossSector ? '⬦ Cross-sector' : esc(scope.replace(/_/g, ' ')),
+    ].filter(Boolean).join(' &middot; ');
+
     marker.bindPopup(`
-      <div style="min-width: 240px; padding: 8px 0;">
-        <a href="${esc(article.url)}" target="_blank" rel="noopener noreferrer" style="font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 600; color: #111; text-decoration: none; display: block; margin-bottom: 8px; line-height: 1.3;">
-          ${esc(article.title)}
-        </a>
-        <div style="font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: #827F79; text-transform: uppercase; border-top: 1px solid #D6D1C4; padding-top: 8px;">
-          <strong style="color:${isCrossSector ? '#A47D29' : '#7A1F2B'};">${esc(article.source)}</strong> &middot; ${isCrossSector ? '⬦ Cross-sector signal' : esc(scope.replace(/_/g, ' '))}
+      <div style="min-width:240px;max-width:300px;padding:8px 0;">
+        ${titleHtml}
+        ${summaryHtml}
+        <div style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:#827F79;text-transform:uppercase;border-top:1px solid #D6D1C4;padding-top:8px;">
+          ${metaLine}
         </div>
       </div>
     `);

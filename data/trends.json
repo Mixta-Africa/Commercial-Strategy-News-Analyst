@@ -1,93 +1,90 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 5,
     "sentimentBreakdown": {
-      "neutral": 3,
-      "bullish": 8,
-      "bearish": 4
+      "bullish": 4,
+      "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 5
+        "count": 2
       },
       {
         "topic": "affordable housing",
-        "count": 4
+        "count": 1
       },
       {
-        "topic": "real estate development",
-        "count": 2
+        "topic": "mortgage access",
+        "count": 1
       },
       {
-        "topic": "housing deficit",
-        "count": 2
+        "topic": "homeownership",
+        "count": 1
       },
       {
-        "topic": "Nigeria",
-        "count": 2
+        "topic": "Nigeria Immigration",
+        "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 5,
     "sentimentBreakdown": {
-      "neutral": 3,
-      "bullish": 8,
-      "bearish": 4
+      "bullish": 4,
+      "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 5
+        "count": 2
       },
       {
         "topic": "affordable housing",
-        "count": 4
+        "count": 1
       },
       {
-        "topic": "real estate development",
-        "count": 2
+        "topic": "mortgage access",
+        "count": 1
       },
       {
-        "topic": "housing deficit",
-        "count": 2
+        "topic": "homeownership",
+        "count": 1
       },
       {
-        "topic": "Nigeria",
-        "count": 2
+        "topic": "Nigeria Immigration",
+        "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 5,
     "sentimentBreakdown": {
-      "neutral": 3,
-      "bullish": 8,
-      "bearish": 4
+      "bullish": 4,
+      "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 5
+        "count": 2
       },
       {
         "topic": "affordable housing",
-        "count": 4
+        "count": 1
       },
       {
-        "topic": "real estate development",
-        "count": 2
+        "topic": "mortgage access",
+        "count": 1
       },
       {
-        "topic": "housing deficit",
-        "count": 2
+        "topic": "homeownership",
+        "count": 1
       },
       {
-        "topic": "Nigeria",
-        "count": 2
+        "topic": "Nigeria Immigration",
+        "count": 1
       }
     ],
     "averageSentiment": "bullish"

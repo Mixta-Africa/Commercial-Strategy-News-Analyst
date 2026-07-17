@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-17T07:29:19.181Z",
+  "timestamp": "2026-07-17T09:02:56.542Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -18,7 +18,7 @@
       "error": null
     },
     "rss": {
-      "total": 43,
+      "total": 44,
       "feeds": {
         "ThisDay": {
           "ok": true,
@@ -26,9 +26,9 @@
           "error": null
         },
         "Premium Times": {
-          "ok": true,
+          "ok": false,
           "count": 0,
-          "error": null
+          "error": "XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &"
         },
         "BusinessDay": {
           "ok": true,
@@ -42,7 +42,7 @@
         },
         "Daily Trust": {
           "ok": true,
-          "count": 4,
+          "count": 5,
           "error": null
         },
         "The Punch (Business)": {
@@ -79,9 +79,9 @@
     }
   },
   "counts": {
-    "raw": 253,
-    "filtered": 15,
-    "analyzed": 15,
+    "raw": 239,
+    "filtered": 5,
+    "analyzed": 5,
     "aiFallbacks": 0
   },
   "synthesis": {
@@ -93,7 +93,7 @@
   },
   "pipelineGate": false,
   "warnings": [
-    "Sources down: RSS Estate Intel (HTTP 403)",
+    "Sources down: RSS Premium Times (XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &); RSS Estate Intel (HTTP 403)",
     "Note: GNews (0 articles) — known issue, excluded from down-count"
   ]
 }

@@ -1,90 +1,93 @@
 {
   "7day": {
-    "articleCount": 6,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 5,
-      "neutral": 1
+      "neutral": 3,
+      "bullish": 8,
+      "bearish": 4
     },
     "topTopics": [
+      {
+        "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
+        "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "real estate development",
+        "count": 2
+      },
       {
         "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "affordable housing",
+        "topic": "Nigeria",
         "count": 2
-      },
-      {
-        "topic": "Lekki corridor",
-        "count": 1
-      },
-      {
-        "topic": "Ikoyi",
-        "count": 1
-      },
-      {
-        "topic": "rental yields",
-        "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 6,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 5,
-      "neutral": 1
+      "neutral": 3,
+      "bullish": 8,
+      "bearish": 4
     },
     "topTopics": [
+      {
+        "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
+        "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "real estate development",
+        "count": 2
+      },
       {
         "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "affordable housing",
+        "topic": "Nigeria",
         "count": 2
-      },
-      {
-        "topic": "Lekki corridor",
-        "count": 1
-      },
-      {
-        "topic": "Ikoyi",
-        "count": 1
-      },
-      {
-        "topic": "rental yields",
-        "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 6,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 5,
-      "neutral": 1
+      "neutral": 3,
+      "bullish": 8,
+      "bearish": 4
     },
     "topTopics": [
+      {
+        "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
+        "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "real estate development",
+        "count": 2
+      },
       {
         "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "affordable housing",
+        "topic": "Nigeria",
         "count": 2
-      },
-      {
-        "topic": "Lekki corridor",
-        "count": 1
-      },
-      {
-        "topic": "Ikoyi",
-        "count": 1
-      },
-      {
-        "topic": "rental yields",
-        "count": 1
       }
     ],
     "averageSentiment": "bullish"

@@ -819,6 +819,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-18",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bullish": 6,
+        "bearish": 3,
+        "neutral": 6
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 5
+        },
+        {
+          "topic": "luxury real estate",
+          "count": 2
+        },
+        {
+          "topic": "public-private partnerships",
+          "count": 1
+        },
+        {
+          "topic": "housing gap",
+          "count": 1
+        },
+        {
+          "topic": "digital land registry",
+          "count": 1
+        }
+      ]
     }
   ]
 }

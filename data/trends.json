@@ -1,92 +1,95 @@
 {
   "7day": {
-    "articleCount": 5,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 4,
-      "neutral": 1
+      "bullish": 6,
+      "bearish": 3,
+      "neutral": 6
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
+        "topic": "luxury real estate",
         "count": 2
       },
       {
-        "topic": "affordable housing",
+        "topic": "public-private partnerships",
         "count": 1
       },
       {
-        "topic": "mortgage access",
+        "topic": "housing gap",
         "count": 1
       },
       {
-        "topic": "homeownership",
-        "count": 1
-      },
-      {
-        "topic": "Nigeria Immigration",
+        "topic": "digital land registry",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 5,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 4,
-      "neutral": 1
+      "bullish": 6,
+      "bearish": 3,
+      "neutral": 6
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
+        "topic": "luxury real estate",
         "count": 2
       },
       {
-        "topic": "affordable housing",
+        "topic": "public-private partnerships",
         "count": 1
       },
       {
-        "topic": "mortgage access",
+        "topic": "housing gap",
         "count": 1
       },
       {
-        "topic": "homeownership",
-        "count": 1
-      },
-      {
-        "topic": "Nigeria Immigration",
+        "topic": "digital land registry",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 5,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 4,
-      "neutral": 1
+      "bullish": 6,
+      "bearish": 3,
+      "neutral": 6
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
+        "topic": "luxury real estate",
         "count": 2
       },
       {
-        "topic": "affordable housing",
+        "topic": "public-private partnerships",
         "count": 1
       },
       {
-        "topic": "mortgage access",
+        "topic": "housing gap",
         "count": 1
       },
       {
-        "topic": "homeownership",
-        "count": 1
-      },
-      {
-        "topic": "Nigeria Immigration",
+        "topic": "digital land registry",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   }
 }

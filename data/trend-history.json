@@ -851,6 +851,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-19",
+      "articleCount": 6,
+      "sentimentBreakdown": {
+        "bullish": 3,
+        "neutral": 2,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Nigeria",
+          "count": 2
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 2
+        },
+        {
+          "topic": "luxury real estate",
+          "count": 1
+        },
+        {
+          "topic": "Abuja",
+          "count": 1
+        },
+        {
+          "topic": "high-end properties",
+          "count": 1
+        }
+      ]
     }
   ]
 }

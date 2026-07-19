@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 6,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "bearish": 3,
-      "neutral": 6
+      "bullish": 3,
+      "neutral": 2,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 5
-      },
-      {
-        "topic": "luxury real estate",
+        "topic": "Nigeria",
         "count": 2
       },
       {
-        "topic": "public-private partnerships",
+        "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "luxury real estate",
         "count": 1
       },
       {
-        "topic": "housing gap",
+        "topic": "Abuja",
         "count": 1
       },
       {
-        "topic": "digital land registry",
+        "topic": "high-end properties",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 6,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "bearish": 3,
-      "neutral": 6
+      "bullish": 3,
+      "neutral": 2,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 5
-      },
-      {
-        "topic": "luxury real estate",
+        "topic": "Nigeria",
         "count": 2
       },
       {
-        "topic": "public-private partnerships",
+        "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "luxury real estate",
         "count": 1
       },
       {
-        "topic": "housing gap",
+        "topic": "Abuja",
         "count": 1
       },
       {
-        "topic": "digital land registry",
+        "topic": "high-end properties",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 6,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "bearish": 3,
-      "neutral": 6
+      "bullish": 3,
+      "neutral": 2,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 5
-      },
-      {
-        "topic": "luxury real estate",
+        "topic": "Nigeria",
         "count": 2
       },
       {
-        "topic": "public-private partnerships",
+        "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "luxury real estate",
         "count": 1
       },
       {
-        "topic": "housing gap",
+        "topic": "Abuja",
         "count": 1
       },
       {
-        "topic": "digital land registry",
+        "topic": "high-end properties",
         "count": 1
       }
     ],

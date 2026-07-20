@@ -883,6 +883,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-20",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 3,
+        "bullish": 11,
+        "bearish": 1
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 5
+        },
+        {
+          "topic": "estate management",
+          "count": 2
+        },
+        {
+          "topic": "court-rulings",
+          "count": 1
+        },
+        {
+          "topic": "property-forfeiture",
+          "count": 1
+        },
+        {
+          "topic": "Lagos-real-estate",
+          "count": 1
+        }
+      ]
     }
   ]
 }

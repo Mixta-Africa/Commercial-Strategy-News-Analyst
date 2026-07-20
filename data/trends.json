@@ -1,95 +1,95 @@
 {
   "7day": {
-    "articleCount": 6,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 3,
-      "neutral": 2,
+      "neutral": 3,
+      "bullish": 11,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Nigeria",
-        "count": 2
-      },
-      {
         "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
+        "topic": "estate management",
         "count": 2
       },
       {
-        "topic": "luxury real estate",
+        "topic": "court-rulings",
         "count": 1
       },
       {
-        "topic": "Abuja",
+        "topic": "property-forfeiture",
         "count": 1
       },
       {
-        "topic": "high-end properties",
+        "topic": "Lagos-real-estate",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 6,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 3,
-      "neutral": 2,
+      "neutral": 3,
+      "bullish": 11,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Nigeria",
-        "count": 2
-      },
-      {
         "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
+        "topic": "estate management",
         "count": 2
       },
       {
-        "topic": "luxury real estate",
+        "topic": "court-rulings",
         "count": 1
       },
       {
-        "topic": "Abuja",
+        "topic": "property-forfeiture",
         "count": 1
       },
       {
-        "topic": "high-end properties",
+        "topic": "Lagos-real-estate",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 6,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 3,
-      "neutral": 2,
+      "neutral": 3,
+      "bullish": 11,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Nigeria",
-        "count": 2
-      },
-      {
         "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
+        "topic": "estate management",
         "count": 2
       },
       {
-        "topic": "luxury real estate",
+        "topic": "court-rulings",
         "count": 1
       },
       {
-        "topic": "Abuja",
+        "topic": "property-forfeiture",
         "count": 1
       },
       {
-        "topic": "high-end properties",
+        "topic": "Lagos-real-estate",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   }
 }

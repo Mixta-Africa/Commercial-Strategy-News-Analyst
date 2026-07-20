@@ -1029,14 +1029,14 @@ body.focus-mode .view.active::before {
       </div>
 
       <!-- INTELLIGENCE FEED -->
-      <div class="section-divider" data-focus="secondary">
+      <div class="section-divider">
         <h2 id="evidenceStreamTitle">Intelligence Feed</h2>
         <select id="themeFilterSelect" class="theme-filter-select" onchange="filterEvidenceStream(this.value)">
           <option value="All">All Topics</option>
         </select>
       </div>
       
-      <div id="evidenceTableContainer" class="intelligence-grid" data-focus="secondary">
+      <div id="evidenceTableContainer" class="intelligence-grid">
         <div class="loading" style="grid-column: 1/-1;">Streaming intelligence articles...</div>
       </div>
 
@@ -1359,6 +1359,7 @@ const DATA_BASE = (function() {
 let fb = null, db = null, firebaseReady = false;
 let articlesCache = [], briefingsIndex = [], archTab = 'briefings';
 let innovationCache = []; // archive of innovation.json articles for Library tab
+let innovationIndexEntries = []; // entries from innovation-index.json for Library archive
 let cfgWatch = [], cfgRss = [], cfgGoogle = [];
 let activeGlobalThemeFilter = "All";
 let loadedBriefingCache = null;
@@ -2215,64 +2216,52 @@ function renderArchive() {
       </div>`).join('');
 
   } else if (archTab === 'innovation') {
-    let items = innovationCache;
-    if (!items.length) {
-      el.innerHTML = '<div class="empty">No innovation articles archived yet. The innovation pipeline populates this after the first run with Phase 8.5 fetch lanes active.</div>';
-      return;
+    // Primary source: innovation-index.json entries (one per pipeline run)
+    // Fallback: treat current innovation.json articles as a single synthetic entry
+    // so the tab always renders something even before innovation-index.json exists.
+    if (innovationIndexEntries.length > 0) {
+      let entries = innovationIndexEntries;
+      if (q) entries = entries.filter(e =>
+        (e.date || '').includes(q) ||
+        Object.keys(e.categories || {}).some(cat =>
+          (INNOVATION_CATEGORIES[cat]?.label || cat).toLowerCase().includes(q)
+        )
+      );
+      if (!entries.length) { el.innerHTML = '<div class="empty">No innovation runs match your search.</div>'; return; }
+
+      el.innerHTML = `
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);margin-bottom:28px;text-transform:uppercase;letter-spacing:0.08em;">
+          ${innovationIndexEntries.length} pipeline run${innovationIndexEntries.length !== 1 ? 's' : ''} archived · click a run to load its articles
+        </div>
+        ${entries.map(entry => {
+          const catBreakdown = Object.entries(entry.categories || {})
+            .sort((a, b) => b[1] - a[1])
+            .map(([cat, count]) => `${INNOVATION_CATEGORIES[cat]?.label || cat} (${count})`)
+            .join(' · ');
+          return `
+            <div class="arch-item" onclick="openInnovationRun('${entry.date}', '${entry.file}')" style="cursor:pointer;">
+              <div class="arch-date">${entry.date}</div>
+              <div class="arch-summary" style="font-size:16px;">${entry.count} article${entry.count !== 1 ? 's' : ''}</div>
+              ${catBreakdown ? `<div style="font-family:var(--font-ui);font-size:11px;color:var(--maroon);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;">${esc(catBreakdown)}</div>` : ''}
+            </div>`;
+        }).join('')}`;
+
+    } else {
+      // Fallback — no index yet, render current innovationCache directly
+      let items = innovationCache;
+      if (!items.length) {
+        el.innerHTML = '<div class="empty">No innovation articles archived yet. The archive builds after the first pipeline run following this update.</div>';
+        return;
+      }
+      if (q) items = items.filter(a =>
+        (a.title || '').toLowerCase().includes(q) ||
+        (a.source || '').toLowerCase().includes(q) ||
+        (a.description || '').toLowerCase().includes(q) ||
+        (INNOVATION_CATEGORIES[a._category]?.label || '').toLowerCase().includes(q)
+      );
+      if (!items.length) { el.innerHTML = '<div class="empty">No innovation articles match your search.</div>'; return; }
+      _renderInnovationArticleList(el, items, 'Current run · no index yet');
     }
-    if (q) items = items.filter(a =>
-      (a.title || '').toLowerCase().includes(q) ||
-      (a.source || '').toLowerCase().includes(q) ||
-      (a.description || '').toLowerCase().includes(q) ||
-      (a._category || '').toLowerCase().includes(q) ||
-      Object.values(INNOVATION_CATEGORIES).some(cat =>
-        cat.label.toLowerCase().includes(q) && a._category === Object.keys(INNOVATION_CATEGORIES).find(k => INNOVATION_CATEGORIES[k] === cat)
-      )
-    );
-    if (!items.length) { el.innerHTML = '<div class="empty">No innovation articles match your search.</div>'; return; }
-
-    // Group by category for a cleaner archive view
-    const byCategory = {};
-    items.forEach(a => {
-      const cat = a._category || 'proptech';
-      if (!byCategory[cat]) byCategory[cat] = [];
-      byCategory[cat].push(a);
-    });
-
-    // Sort categories by count descending
-    const sortedCats = Object.entries(byCategory).sort((a, b) => b[1].length - a[1].length);
-
-    el.innerHTML = `
-      <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);margin-bottom:28px;text-transform:uppercase;letter-spacing:0.08em;">
-        ${items.length} articles archived · ${sortedCats.length} categories · sourced from global proptech and innovation feeds
-      </div>
-      ${sortedCats.map(([catKey, catItems]) => {
-        const catLabel = INNOVATION_CATEGORIES[catKey]?.label || catKey;
-        return `
-          <div style="margin-bottom:40px;">
-            <div style="font-family:var(--font-ui);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--maroon);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--maroon);">
-              ${esc(catLabel)} <span style="font-weight:400;color:var(--ink-faint);">(${catItems.length})</span>
-            </div>
-            ${catItems.map(a => {
-              const date = a.publishedAt
-                ? new Date(a.publishedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
-                : (a.addedAt ? new Date(a.addedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) : '');
-              const desc = (a.description || '').slice(0, 200);
-              return `
-                <div class="arch-item" style="cursor:default;">
-                  ${a.url
-                    ? `<a href="${esc(a.url)}" target="_blank" rel="noopener" style="font-family:var(--font-headline);font-size:18px;font-weight:600;color:var(--ink);text-decoration:none;display:block;margin-bottom:10px;line-height:1.35;">${esc(a.title)}</a>`
-                    : `<div style="font-family:var(--font-headline);font-size:18px;font-weight:600;color:var(--ink);margin-bottom:10px;line-height:1.35;">${esc(a.title)}</div>`
-                  }
-                  ${desc ? `<div style="font-family:var(--font-body);font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:10px;">${esc(desc)}${desc.length >= 200 ? '…' : ''}</div>` : ''}
-                  <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.05em;display:flex;gap:16px;flex-wrap:wrap;">
-                    ${a.source ? `<span style="font-weight:700;color:var(--maroon);">${esc(a.source)}</span>` : ''}
-                    ${date ? `<span>${date}</span>` : ''}
-                  </div>
-                </div>`;
-            }).join('')}
-          </div>`;
-      }).join('')}`;
 
   } else {
     let items = articlesCache;
@@ -2294,6 +2283,80 @@ function renderArchive() {
       </div>`;
     }).join('');
   }
+}
+
+
+// ── INNOVATION ARCHIVE DRILL-DOWN ─────────────────────────────────────────────
+// Loads a specific day's archive file (data/archive/innovation-YYYY-MM-DD.json)
+// and renders its articles inline in the Library archive body — same UX pattern
+// as openBriefing() but for innovation runs.
+async function openInnovationRun(date, filePath) {
+  const el = document.getElementById('archiveBody');
+  el.innerHTML = `<div class="loading" style="padding: 40px 0;">Loading innovation articles for ${esc(date)}…</div>`;
+
+  const data = await loadJSON(filePath);
+  if (!data || !Array.isArray(data.articles) || !data.articles.length) {
+    el.innerHTML = `
+      <div style="padding: 20px 0;">
+        <button onclick="setArchTab('innovation')" style="font-family:var(--font-ui);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;background:none;border:none;color:var(--maroon);cursor:pointer;padding:0;margin-bottom:24px;">← Back to Innovation Archive</button>
+        <div class="empty">Could not load articles for ${esc(date)} — the archive file may be missing.</div>
+      </div>`;
+    return;
+  }
+
+  const classified = data.articles
+    .filter(a => (a.title || '').trim())
+    .map(a => ({ ...a, _category: _classifyInnovation(a) }));
+
+  el.innerHTML = `<button onclick="setArchTab('innovation')" style="font-family:var(--font-ui);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;background:none;border:none;color:var(--maroon);cursor:pointer;padding:0;margin-bottom:32px;">← Back to Innovation Archive</button>`;
+  _renderInnovationArticleList(el, classified, date, true);
+}
+
+// Shared renderer — used by both the fallback path and the drill-down.
+// append=true appends to el.innerHTML instead of replacing it.
+function _renderInnovationArticleList(el, items, label, append = false) {
+  const byCategory = {};
+  items.forEach(a => {
+    const cat = a._category || 'proptech';
+    if (!byCategory[cat]) byCategory[cat] = [];
+    byCategory[cat].push(a);
+  });
+  const sortedCats = Object.entries(byCategory).sort((a, b) => b[1].length - a[1].length);
+
+  const html = `
+    <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);margin-bottom:28px;text-transform:uppercase;letter-spacing:0.08em;">
+      ${items.length} article${items.length !== 1 ? 's' : ''} · ${sortedCats.length} categor${sortedCats.length !== 1 ? 'ies' : 'y'} · ${esc(label)}
+    </div>
+    ${sortedCats.map(([catKey, catItems]) => {
+      const catLabel = INNOVATION_CATEGORIES[catKey]?.label || catKey;
+      return `
+        <div style="margin-bottom:40px;">
+          <div style="font-family:var(--font-ui);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--maroon);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--maroon);">
+            ${esc(catLabel)} <span style="font-weight:400;color:var(--ink-faint);">(${catItems.length})</span>
+          </div>
+          ${catItems.map(a => {
+            const date = a.publishedAt
+              ? new Date(a.publishedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
+              : (a.addedAt ? new Date(a.addedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) : '');
+            const desc = (a.description || '').slice(0, 200);
+            return `
+              <div class="arch-item" style="cursor:default;">
+                ${a.url
+                  ? `<a href="${esc(a.url)}" target="_blank" rel="noopener" style="font-family:var(--font-headline);font-size:18px;font-weight:600;color:var(--ink);text-decoration:none;display:block;margin-bottom:10px;line-height:1.35;">${esc(a.title)}</a>`
+                  : `<div style="font-family:var(--font-headline);font-size:18px;font-weight:600;color:var(--ink);margin-bottom:10px;line-height:1.35;">${esc(a.title)}</div>`
+                }
+                ${desc ? `<div style="font-family:var(--font-body);font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:10px;">${esc(desc)}${desc.length >= 200 ? '…' : ''}</div>` : ''}
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.05em;display:flex;gap:16px;flex-wrap:wrap;">
+                  ${a.source ? `<span style="font-weight:700;color:var(--maroon);">${esc(a.source)}</span>` : ''}
+                  ${date ? `<span>${date}</span>` : ''}
+                </div>
+              </div>`;
+          }).join('')}
+        </div>`;
+    }).join('')}`;
+
+  if (append) el.innerHTML += html;
+  else el.innerHTML = html;
 }
 
 async function openBriefing(date) {
@@ -2418,7 +2481,7 @@ async function saveConfig() {
 }
 
 async function showReadonlyConfig() {
-  const RAW = 'https://raw.githubusercontent.com/Timilehin-Taiwo/News-Fetcher/main/src';
+  const RAW = 'https://raw.githubusercontent.com/Mixta-Africa/Commercial-Strategy-News-Analyst/main/src';
   async function rawJSON(file) {
     try { const r = await fetch(`${RAW}/${file}`); return r.ok ? r.json() : null; } catch { return null; }
   }
@@ -2445,7 +2508,7 @@ async function loadConfigState() {
     } catch (e) { }
   }
   if (!cfgWatch.length || !cfgRss.length) {
-    const RAW = 'https://raw.githubusercontent.com/Timilehin-Taiwo/News-Fetcher/main/src';
+    const RAW = 'https://raw.githubusercontent.com/Mixta-Africa/Commercial-Strategy-News-Analyst/main/src';
     async function rawJSON(file) {
       try { const r = await fetch(`${RAW}/${file}`); return r.ok ? r.json() : null; } catch { return null; }
     }
@@ -2491,24 +2554,37 @@ async function triggerPipelineRefresh() {
 
   try {
     const res = await fetch(REFRESH_WORKER_URL, { method: 'POST' });
-    const data = await res.json();
+
+    // 502 from Cloudflare Worker means the Worker is up but GitHub rejected it
+    // — almost always a rotated or expired GitHub token in the Worker env vars.
+    if (res.status === 502) {
+      showRefreshToast('Pipeline trigger failed: GitHub token in Cloudflare Worker is expired or invalid. Rotate GITHUB_TOKEN in the Worker environment variables.', true);
+      label.textContent = 'Refresh Data';
+      return;
+    }
+
+    let data = {};
+    try { data = await res.json(); } catch { /* non-JSON response */ }
 
     if (res.ok && data.success) {
-      showRefreshToast(data.message || 'Pipeline triggered successfully.', false);
-      label.textContent = 'Triggered';
+      showRefreshToast(data.message || 'Pipeline triggered — run will complete in ~3 minutes.', false);
+      label.textContent = 'Triggered ✓';
+    } else if (res.status === 401 || (data.message || '').toLowerCase().includes('credential') || (data.message || '').toLowerCase().includes('401')) {
+      showRefreshToast('GitHub returned 401 Bad Credentials — rotate GITHUB_TOKEN in the Cloudflare Worker env vars.', true);
+      label.textContent = 'Refresh Data';
     } else {
-      showRefreshToast(data.error || 'Failed to trigger pipeline.', true);
+      showRefreshToast(data.error || data.message || `Trigger failed (HTTP ${res.status}).`, true);
       label.textContent = 'Refresh Data';
     }
   } catch (err) {
-    showRefreshToast('Could not reach the trigger service: ' + err.message, true);
+    showRefreshToast('Could not reach trigger service — check Worker is deployed and CORS is enabled.', true);
     label.textContent = 'Refresh Data';
   } finally {
     btn.classList.remove('spinning');
     setTimeout(() => {
       btn.disabled = false;
-      if (label.textContent === 'Triggered') label.textContent = 'Refresh Data';
-    }, 5000);
+      if (label.textContent === 'Triggered ✓') label.textContent = 'Refresh Data';
+    }, 6000);
   }
 }
 
@@ -5460,11 +5536,11 @@ if (_focusModeActive) requestAnimationFrame(() => _applyFocusMode(true));
     return loadJSON('competitive-listings.json');
   }
 
-  const [briefing, memory, articles, health, history, bIndex, geo, competitive, trendHistory, crossSector, innovation] = await Promise.all([
+  const [briefing, memory, articles, health, history, bIndex, geo, competitive, trendHistory, crossSector, innovation, innovIndex] = await Promise.all([
     loadJSON('briefing.json'), loadJSON('themes.json'), loadJSON('articles.json'),
     loadJSON('health.json'), loadJSON('health-history.json'), loadJSON('briefings-index.json'),
     loadJSON('geoslicer.json'), loadCompetitiveData(), loadJSON('trend-history.json'),
-    loadJSON('cross-sector.json'), loadJSON('innovation.json')
+    loadJSON('cross-sector.json'), loadJSON('innovation.json'), loadJSON('innovation-index.json')
   ]);
   articlesCache = Array.isArray(articles) ? articles : [];
   geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;
@@ -5478,6 +5554,11 @@ if (_focusModeActive) requestAnimationFrame(() => _applyFocusMode(true));
     .filter(a => (a.title || '').trim()) // skip untitled
     .map(a => ({ ...a, _category: _classifyInnovation(a) }))
     .sort((a, b) => new Date(b.publishedAt || b.addedAt || 0) - new Date(a.publishedAt || a.addedAt || 0));
+
+  // Innovation index — growing permanent record from innovation-index.json.
+  // Falls back to treating innovationCache as a single synthetic entry so the
+  // archive tab always renders something even before the first indexed run.
+  innovationIndexEntries = Array.isArray(innovIndex?.entries) ? innovIndex.entries : [];
   
   // Plot geospatial maps hidden to prepopulate counts on the homepage
   plotGeospatialData(geoCache);

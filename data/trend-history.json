@@ -915,6 +915,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-21",
+      "articleCount": 13,
+      "sentimentBreakdown": {
+        "neutral": 3,
+        "bullish": 9,
+        "bearish": 1
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "infrastructure development",
+          "count": 4
+        },
+        {
+          "topic": "affordable housing",
+          "count": 4
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 3
+        },
+        {
+          "topic": "Lagos flooding",
+          "count": 2
+        },
+        {
+          "topic": "coastal highway",
+          "count": 2
+        }
+      ]
     }
   ]
 }

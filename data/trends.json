@@ -1,93 +1,93 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 13,
     "sentimentBreakdown": {
       "neutral": 3,
-      "bullish": 11,
+      "bullish": 9,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 5
+        "topic": "infrastructure development",
+        "count": 4
       },
       {
-        "topic": "estate management",
+        "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "Lagos real estate",
+        "count": 3
+      },
+      {
+        "topic": "Lagos flooding",
         "count": 2
       },
       {
-        "topic": "court-rulings",
-        "count": 1
-      },
-      {
-        "topic": "property-forfeiture",
-        "count": 1
-      },
-      {
-        "topic": "Lagos-real-estate",
-        "count": 1
+        "topic": "coastal highway",
+        "count": 2
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 13,
     "sentimentBreakdown": {
       "neutral": 3,
-      "bullish": 11,
+      "bullish": 9,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 5
+        "topic": "infrastructure development",
+        "count": 4
       },
       {
-        "topic": "estate management",
+        "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "Lagos real estate",
+        "count": 3
+      },
+      {
+        "topic": "Lagos flooding",
         "count": 2
       },
       {
-        "topic": "court-rulings",
-        "count": 1
-      },
-      {
-        "topic": "property-forfeiture",
-        "count": 1
-      },
-      {
-        "topic": "Lagos-real-estate",
-        "count": 1
+        "topic": "coastal highway",
+        "count": 2
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 13,
     "sentimentBreakdown": {
       "neutral": 3,
-      "bullish": 11,
+      "bullish": 9,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 5
+        "topic": "infrastructure development",
+        "count": 4
       },
       {
-        "topic": "estate management",
+        "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "Lagos real estate",
+        "count": 3
+      },
+      {
+        "topic": "Lagos flooding",
         "count": 2
       },
       {
-        "topic": "court-rulings",
-        "count": 1
-      },
-      {
-        "topic": "property-forfeiture",
-        "count": 1
-      },
-      {
-        "topic": "Lagos-real-estate",
-        "count": 1
+        "topic": "coastal highway",
+        "count": 2
       }
     ],
     "averageSentiment": "bullish"

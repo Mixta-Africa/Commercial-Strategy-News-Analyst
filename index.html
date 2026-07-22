@@ -389,7 +389,16 @@ button, select, input { font-family: inherit; }
 .outreach-entry-block { margin-top: 10px; padding: 10px 14px; background: rgba(122,31,43,0.04); border-radius: 4px; border-left: 3px solid var(--maroon); }
 .outreach-entry-label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--maroon); margin-bottom: 4px; }
 .outreach-entry-route { font-family: var(--font-body); font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
-.outreach-signal-companies { font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); margin-top: 10px; }
+.outreach-sources { margin: 12px 0; border-top: 1px solid var(--maroon-line); padding-top: 12px; }
+.outreach-sources-label { font-family: var(--font-mono); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-faint); margin-bottom: 10px; }
+.outreach-source-theme { margin-bottom: 12px; }
+.outreach-source-theme-label { font-family: var(--font-ui); font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+.outreach-source-theme-body { font-family: var(--font-body); font-size: 12px; color: var(--ink-soft); line-height: 1.5; margin-bottom: 5px; }
+.outreach-source-article { font-family: var(--font-ui); font-size: 11px; color: var(--ink-faint); margin-bottom: 3px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.outreach-source-article a { color: var(--maroon); text-decoration: none; }
+.outreach-source-article a:hover { text-decoration: underline; }
+.outreach-source-name { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); font-weight: 700; }
+.outreach-company-more { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); margin-top: 4px; }
 .outreach-co-name { font-weight: 700; color: var(--ink); }
 .outreach-co-staff { color: var(--ink-faint); font-size: 10px; }
 .outreach-co-sep { color: var(--rule-strong); }
@@ -3492,12 +3501,14 @@ function renderOutreachSignals(briefingData, trendHistory) {
 
     let detectedEvents = [];
     let highestWeight = 0;
+    let matchedThemes = []; // store for card rendering
 
     if (sectorMentioned) {
       // Filter to sector-relevant text chunks
-      const sectorChunks = themes
+      matchedThemes = themes
         .filter(t => sector.keywords.some(kw =>
-          ((t.label||'') + (t.what_happened||'')).toLowerCase().includes(kw.toLowerCase())))
+          ((t.label||'') + (t.what_happened||'')).toLowerCase().includes(kw.toLowerCase())));
+      const sectorChunks = matchedThemes
         .map(t => (t.label||'') + ' ' + (t.what_happened||''));
 
       for (const event of eventPatterns) {
@@ -3535,6 +3546,7 @@ function renderOutreachSignals(briefingData, trendHistory) {
     signals.push({
       sector, strength, triggerType, detectedEvents, highestWeight,
       calendarFires, bonusWindow, bonusLabel, macroClear, macroScore,
+      matchedThemes, // themes that matched this sector — used for source citations
     });
   }
 
@@ -3608,9 +3620,36 @@ function renderOutreachSignals(briefingData, trendHistory) {
             <div class="outreach-entry-route">${esc(entryPoint.route)}</div>
           </div>` : '';
 
-      const top3 = primaryCos.slice(0, 3).map(c =>
+      // Supporting news — themes that triggered this signal
+      const supportingThemes = (sig.matchedThemes || []).slice(0, 3);
+      const sourcesHtml = supportingThemes.length
+        ? `<div class="outreach-sources">
+            <div class="outreach-sources-label">Supporting intelligence</div>
+            ${supportingThemes.map(t => {
+              const sourceArticles = (t.sourceArticles || []).slice(0, 2);
+              return `<div class="outreach-source-theme">
+                <div class="outreach-source-theme-label">${esc(t.label)}</div>
+                <div class="outreach-source-theme-body">${esc(t.what_happened || '')}</div>
+                ${sourceArticles.map(a =>
+                  `<div class="outreach-source-article">
+                    ${a.url
+                      ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.title)}</a>`
+                      : esc(a.title)
+                    }
+                    ${a.source ? `<span class="outreach-source-name">${esc(a.source)}</span>` : ''}
+                  </div>`
+                ).join('')}
+              </div>`;
+            }).join('')}
+          </div>` : '';
+
+      // Company list — primary targets with staff counts
+      const top5 = primaryCos.slice(0, 5).map(c =>
         `<span class="outreach-co-name">${esc(c.name)}</span><span class="outreach-co-staff"> ~${c.estStaff15M.toLocaleString()} staff</span>`
       ).join('<span class="outreach-co-sep"> · </span>');
+
+      const allPrimary = primaryCos.length > 5
+        ? `<div class="outreach-company-more">+${primaryCos.length - 5} more primary targets</div>` : '';
 
       const secNote = secondaryCos.length
         ? `<div class="outreach-secondary-note">Secondary (₦500K–₦1.5M): ${secondaryCos.map(c=>esc(c.name)).join(' · ')}</div>` : '';
@@ -3621,7 +3660,8 @@ function renderOutreachSignals(briefingData, trendHistory) {
           <div class="outreach-signal-label">${esc(sig.strength)} Signal · ${esc(sig.sector.sector)} · ${totalReachable.toLocaleString()} reachable primary staff</div>
           <div class="outreach-signal-text">${triggerLine}</div>
           ${entryLine}
-          <div class="outreach-signal-companies">${top3}</div>
+          ${sourcesHtml}
+          <div class="outreach-signal-companies">${top5}${allPrimary}</div>
           ${secNote}
         </div>
       </div>`;
@@ -4056,64 +4096,83 @@ function renderCrossSectorIntel(articles) {
   _crossSectorArticles = []; // reset
   const impactOrder = { critical: 0, high: 1, moderate: 2 };
 
+  // Recency gate — only show articles from the last 7 days
+  const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+  const recentArticles = allArticles.filter(a => {
+    const ts = new Date(a.publishedAt || a.addedAt || 0).getTime();
+    return ts > sevenDaysAgo;
+  });
+  // Fall back to all articles if nothing recent (e.g. pipeline hasn't run this week)
+  const sourceArticles = recentArticles.length >= 3 ? recentArticles : allArticles;
+
   const sectorResults = CROSS_SECTOR_INTELLIGENCE.map(sector => {
-    // Match articles to this sector
-    const matched = allArticles.filter(a => {
+    const matched = sourceArticles.filter(a => {
       const text = ((a.title||'') + ' ' + (a.summary||'') + ' ' + (a.description||'')).toLowerCase();
       return sector.keywords.some(kw => text.includes(kw.toLowerCase()));
-    }).sort((a,b) => {
-      // Sort: most recent first
-      return new Date(b.publishedAt||b.addedAt||0) - new Date(a.publishedAt||a.addedAt||0);
-    });
-
+    }).sort((a, b) => new Date(b.publishedAt||b.addedAt||0) - new Date(a.publishedAt||a.addedAt||0));
     return { ...sector, matched };
-  }).sort((a,b) => (impactOrder[a.impact]||9) - (impactOrder[b.impact]||9));
+  }).sort((a, b) => {
+    // PRIMARY sort: article count today — most active sector rises to top
+    const countDiff = b.matched.length - a.matched.length;
+    if (countDiff !== 0) return countDiff;
+    // TIEBREAKER: structural impact level
+    return (impactOrder[a.impact]||9) - (impactOrder[b.impact]||9);
+  });
 
   // Collect high-priority articles for map plotting
   _crossSectorArticles = sectorResults
     .filter(s => s.impact === 'critical' || s.impact === 'high')
     .flatMap(s => s.matched.slice(0, 3))
-    .filter((a, i, arr) => arr.findIndex(b => b.url === a.url) === i); // dedupe
+    .filter((a, i, arr) => arr.findIndex(b => b.url === a.url) === i);
 
-  const html = sectorResults.map((sector, idx) => {
-    const count = sector.matched.length;
-    const impactClass = sector.impact;
-    const badgeClass = impactClass;
-    const rankLabel = String(idx + 1).padStart(2, '0');
-    const articles = sector.matched.slice(0, 4);
+  const dateLabel = recentArticles.length >= 3
+    ? `Last 7 days · ranked by today's signal volume`
+    : `All articles · ranked by signal volume`;
 
-    const articleRows = articles.map(a => {
-      const sent = (a.sentiment || 'neutral').toLowerCase();
-      const date = a.publishedAt ? new Date(a.publishedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short' }) : '';
-      return `<div class="csector-article-row">
-        <div class="csector-article-sent ${sent}"></div>
-        <div class="csector-article-title">
-          ${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.title)}</a>` : esc(a.title)}
+  const html = `
+    <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;">${dateLabel}</div>
+    ${sectorResults.map((sector, idx) => {
+      const count = sector.matched.length;
+      const impactClass = sector.impact;
+      const rankLabel = String(idx + 1).padStart(2, '0');
+      const sectorArticles = sector.matched.slice(0, 4);
+
+      const articleRows = sectorArticles.map(a => {
+        const sent = (a.sentiment || 'neutral').toLowerCase();
+        const date = a.publishedAt ? new Date(a.publishedAt).toLocaleDateString('en-GB', { day:'numeric', month:'short' }) : '';
+        return `<div class="csector-article-row">
+          <div class="csector-article-sent ${sent}"></div>
+          <div class="csector-article-title">
+            ${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.title)}</a>` : esc(a.title)}
+          </div>
+          <div class="csector-article-source">${esc(a.source||'')}${date ? ' · '+date : ''}</div>
+        </div>`;
+      }).join('');
+
+      const watchItems = sector.watchFor.slice(0,3).map(w =>
+        `<span style="display:inline-block;background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:2px 10px;font-family:var(--font-mono);font-size:10px;margin:2px;">${esc(w)}</span>`
+      ).join('');
+
+      return `<div class="csector-card impact-${impactClass}">
+        <div class="csector-rank">${rankLabel}</div>
+        <div class="csector-body">
+          <div class="csector-header">
+            <span class="csector-name">${esc(sector.sector)}</span>
+            <span class="csector-impact-badge ${impactClass}">${impactClass} impact</span>
+            <span class="csector-signal-count">${count} article${count !== 1 ? 's' : ''} this week</span>
+          </div>
+          <div class="csector-mechanism">${esc(sector.mechanism)}</div>
+          <div style="margin-bottom:8px;">${watchItems}</div>
+          ${sectorArticles.length
+            ? `<div class="csector-articles">${articleRows}</div>`
+            : `<div class="evo-empty" style="padding:8px 0;">No articles this week — sector is being tracked but no matching signals in the last 7 days.</div>`
+          }
         </div>
-        <div class="csector-article-source">${esc(a.source||'')}${date ? ' · '+date : ''}</div>
       </div>`;
-    }).join('');
-
-    const watchItems = sector.watchFor.slice(0,3).map(w => `<span style="display:inline-block;background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:2px 10px;font-family:var(--font-mono);font-size:10px;margin:2px;">${esc(w)}</span>`).join('');
-
-    return `<div class="csector-card impact-${impactClass}">
-      <div class="csector-rank">${rankLabel}</div>
-      <div class="csector-body">
-        <div class="csector-header">
-          <span class="csector-name">${esc(sector.sector)}</span>
-          <span class="csector-impact-badge ${badgeClass}">${impactClass} impact</span>
-          <span class="csector-signal-count">${count} article${count !== 1 ? 's' : ''} detected</span>
-        </div>
-        <div class="csector-mechanism">${esc(sector.mechanism)}</div>
-        <div style="margin-bottom:8px;">${watchItems}</div>
-        ${articles.length ? `<div class="csector-articles">${articleRows}</div>` : `<div class="evo-empty" style="padding:8px 0;">No articles in the current archive match this sector — pipeline will populate this as coverage grows.</div>`}
-      </div>
-    </div>`;
-  }).join('');
+    }).join('')}`;
 
   container.innerHTML = `<div class="csector-grid">${html}</div>`;
 
-  // Re-plot map markers to include cross-sector articles
   if (_crossSectorArticles.length) plotGeospatialData(geoCache);
 }
 
@@ -5783,19 +5842,27 @@ function _aggregateThemes(briefings, themesMemory) {
           occurrences: 0,
           dates: [],
           what_happened: [],
+          why_it_matters: [],
           recommendations: [],
-          sentiment: [],
+          confidence: [],
+          sourceArticles: [],
         };
       }
       themeMap[key].occurrences++;
       themeMap[key].dates.push(b.date);
-      if (t.what_happened) themeMap[key].what_happened.push(t.what_happened);
-      if (t.recommendation) themeMap[key].recommendations.push(t.recommendation);
-      if (t.confidence)     themeMap[key].sentiment.push(t.confidence);
+      if (t.what_happened)           themeMap[key].what_happened.push(t.what_happened);
+      if (t.why_it_matters_to_mixta) themeMap[key].why_it_matters.push(t.why_it_matters_to_mixta);
+      if (t.recommendation)          themeMap[key].recommendations.push(t.recommendation);
+      if (t.confidence)              themeMap[key].confidence.push(t.confidence);
+      // Collect named source articles as grounded evidence
+      (t.sourceArticles || []).forEach(a => {
+        if (a.title && !themeMap[key].sourceArticles.find(x => x.title === a.title)) {
+          themeMap[key].sourceArticles.push(a);
+        }
+      });
     });
   });
 
-  // Cross-reference with themes.json memory to determine status
   const norm = s => (s || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
   return Object.values(themeMap)
     .sort((a, b) => b.occurrences - a.occurrences)
@@ -5806,10 +5873,11 @@ function _aggregateThemes(briefings, themesMemory) {
         norm(t.label).includes(norm(m.label))
       );
       let status = 'new';
-      if (mem) {
-        status = mem.count >= 3 ? 'persists' : 'fading';
-      }
-      return { ...t, status, timesSeen: mem?.count || t.occurrences };
+      if (mem) status = mem.count >= 3 ? 'persists' : 'fading';
+      // Dominant confidence across briefings
+      const highCount = t.confidence.filter(c => c === 'high').length;
+      const dominantConfidence = highCount > t.occurrences / 2 ? 'high' : 'medium';
+      return { ...t, status, timesSeen: mem?.count || t.occurrences, dominantConfidence };
     });
 }
 
@@ -5821,68 +5889,141 @@ function _aggregateThemes(briefings, themesMemory) {
 // - No jargon without definition. No buzzwords.
 
 function _buildReportPrompt(type, period, aggregatedThemes, briefings, prevPeriodSummary) {
+  // Build a rich evidence block per theme — all available what_happened sentences,
+  // why_it_matters context, source article titles, and all recommendations.
   const themeBlock = aggregatedThemes.slice(0, 8).map((t, i) => {
-    const sample = t.what_happened.slice(0, 3).join(' ');
-    const rec    = t.recommendations.slice(0, 2).join(' ');
-    return `Theme ${i+1}: "${t.label}"
-Appearances: ${t.occurrences} of ${briefings.length} briefing days
-Status: ${t.status}
-Evidence: ${sample}
-Recommendations seen: ${rec || 'None recorded'}`;
-  }).join('\n\n');
+    const evidence    = t.what_happened.join('\n  - ');
+    const whyMatters  = t.why_it_matters.slice(0, 3).join('\n  - ');
+    const recs        = t.recommendations.join('\n  - ');
+    const sources     = t.sourceArticles.slice(0, 5).map(a => `"${a.title}"${a.source ? ` (${a.source})` : ''}`).join(', ');
+    const dateRange   = t.dates.length > 1 ? `${t.dates[0]} to ${t.dates[t.dates.length-1]}` : t.dates[0] || '';
+    return `THEME ${i+1}: "${t.label}"
+  Appearances: ${t.occurrences} of ${briefings.length} briefing days (${dateRange})
+  Status: ${t.status.toUpperCase()} | Confidence: ${t.dominantConfidence}
+  
+  WHAT HAPPENED (evidence from daily briefings):
+  - ${evidence || 'No what_happened data recorded'}
+  
+  WHY IT MATTERS TO THE BUSINESS:
+  - ${whyMatters || 'No internal context recorded'}
+  
+  RECOMMENDATIONS SEEN IN THIS PERIOD:
+  - ${recs || 'None recorded'}
+  
+  NAMED SOURCE ARTICLES (use these for specificity):
+  ${sources || 'No named sources available'}`;
+  }).join('\n\n' + '─'.repeat(60) + '\n\n');
 
+  // Full executive summaries — 800 chars, not 300. This is the primary signal.
   const execSummaries = briefings
     .filter(b => b.executive_summary)
+    .slice(0, 14)
+    .map(b => `[${b.date}]\n${b.executive_summary.slice(0, 800)}`)
+    .join('\n\n');
+
+  // Watch list hits collected across the period
+  const watchHits = briefings
+    .flatMap(b => b.watch_list_hits || [])
+    .filter(Boolean)
     .slice(0, 10)
-    .map(b => `[${b.date}] ${b.executive_summary.slice(0, 300)}`)
-    .join('\n');
+    .join('\n- ');
 
   const prevBlock = prevPeriodSummary
-    ? `\nPREVIOUS PERIOD CONTEXT:\n${prevPeriodSummary}\n`
-    : '';
+    ? `\nPREVIOUS PERIOD CONTEXT (for continuity analysis):\n${prevPeriodSummary}\n`
+    : '\nNo previous period report available — this is the baseline period.\n';
 
-  return `You are a Senior Strategy Manager at a Nigerian real estate development firm. You are writing an internal market intelligence report for the management team.
+  const typeInstructions = {
+    monthly:   'This is a MONTHLY report. Focus on events, data points, and named policy changes from this month. Identify which themes are new vs recurring.',
+    quarterly: 'This is a QUARTERLY report. Identify structural shifts across 3 months. State which monthly themes have become persistent structural trends. Quantify where possible.',
+    yearly:    'This is a YEARLY report. Identify the 3-5 defining structural changes in the market this year. State how conditions at year-end differ from year-start. Be direct about what changed.',
+  };
+
+  return `You are a Senior Strategy Manager at Mixta Africa — a Nigerian real estate developer with active projects in Lagos (Lakowe Crossings, Lakowe Annexe, Lagos New Town) and Port Harcourt (Garden City Golf Annexe, 494-unit M-REIF affordable housing off the Port Harcourt–Owerri Expressway). You are writing an internal market intelligence report for the management team and board.
 
 REPORT SPECIFICATION:
-- Type: ${type.toUpperCase()} REPORT
-- Period: ${period}
-- Briefing days covered: ${briefings.length}
+Type: ${type.toUpperCase()} REPORT
+Period: ${period}
+Briefing days analysed: ${briefings.length}
+${typeInstructions[type] || ''}
 
-LANGUAGE RULES (ADS-STE100 Simplified Technical English — mandatory):
-- Write short sentences. Each sentence must have a maximum of 20 words.
-- Use active voice only. Do not use passive voice.
-- Use simple words. Do not use "leverage", "utilise", "synergise", "optimise", "robust", "dynamic", "unlock", or similar buzzwords.
-- State one fact per sentence.
-- Use approved verbs: "identify", "state", "show", "find", "use", "build", "reduce", "increase", "cause", "affect".
-- Do not use phrases like "it is worth noting" or "it should be mentioned".
-- Numbers must appear as digits (e.g. 3, not "three").
+═══════════════════════════════════════════════════════════════
+MANDATORY QUALITY RULES — VIOLATIONS WILL MAKE THIS REPORT USELESS
+═══════════════════════════════════════════════════════════════
 
-REQUIRED OUTPUT STRUCTURE — respond with valid JSON only, no markdown:
-{
-  "period_label": "display label for this report period",
-  "executive_summary": "3 sentences maximum. State the dominant market condition. State the most important theme. State the direction of change.",
-  "market_conditions": "2-3 sentences. State observable market conditions only. Use data from the briefings.",
-  "themes": [
-    {
-      "label": "theme label",
-      "status": "new|persists|fading",
-      "occurrences": number,
-      "analysis": "2-3 sentences. Describe what happened. State why it matters to the market.",
-      "trajectory": "1 sentence. State whether this theme is growing, stable, or weakening."
-    }
-  ],
-  "theme_continuity": "2 sentences. State which themes are new this period. State which themes are persisting from prior periods.",
-  "implications_for_mixta": [
-    "One clear, specific implication per item. State the action or decision this creates for the business. Maximum 20 words per item."
-  ],
-  "watch_next_period": "1-2 sentences. State the 1-2 most important things to monitor in the next period."
-}
-${prevBlock}
-AGGREGATED THEMES FROM THIS PERIOD:
+RULE 1 — NO GENERIC SENTENCES:
+Every sentence must contain at least ONE of the following:
+  a) A named institution (CBN, FMBN, AMCON, Lagos State Government, NNPC, Shell, etc.)
+  b) A specific number or metric (₦45bn, 15%, 3,000 units, MPR at 27.5%, etc.)
+  c) A named policy, programme, or corridor (NHF, Green Line Metro, Lekki Deep Seaport, M-REIF, MOFI, Port Harcourt–Owerri Expressway, etc.)
+  d) A named market mechanism (mortgage rate, land tenure, exchange rate, diaspora remittance, etc.)
+
+If a sentence you are about to write contains NONE of these, DELETE it and replace it with a sentence that does.
+
+RULE 2 — SENTENCES LIKE THESE ARE FORBIDDEN:
+  ✗ "Nigeria's real estate market faces challenges."
+  ✗ "Government support is key."
+  ✗ "Market conditions are changing."
+  ✗ "This matters to the market."
+  ✗ "Partnerships are formed."
+  ✗ "The theme is growing."
+These sentences are useless because they could describe any market in any year.
+
+RULE 3 — USE THE EVIDENCE:
+The theme blocks below contain named source articles, specific what_happened sentences, and internal why_it_matters context. You MUST draw from this evidence. Do not summarise the theme name — analyse what actually happened.
+
+RULE 4 — IMPLICATIONS FOR MIXTA:
+Each implication must name a Mixta project (Lakowe Crossings, Lakowe Annexe, Lagos New Town, or Garden City Golf Annexe) AND state a specific action, number, or decision. Generic advice like "partner with government" is not acceptable.
+
+RULE 5 — LANGUAGE (ADS-STE100 Simplified Technical English):
+  - Short sentences. Maximum 25 words per sentence.
+  - Active voice only.
+  - No buzzwords: "leverage", "utilise", "synergise", "optimise", "robust", "dynamic", "unlock".
+  - Numbers as digits: ₦45bn, 3,000 units, 27.5%.
+
+═══════════════════════════════════════════════════════════════
+EVIDENCE BASE
+═══════════════════════════════════════════════════════════════
+
 ${themeBlock}
 
-SAMPLE EXECUTIVE SUMMARIES (context only — do not copy these):
-${execSummaries}`;
+─── DAILY EXECUTIVE SUMMARIES (primary signal — use specific facts from these) ───
+${execSummaries}
+
+─── WATCH LIST HITS THIS PERIOD ───
+${watchHits ? `- ${watchHits}` : 'None recorded.'}
+
+${prevBlock}
+
+═══════════════════════════════════════════════════════════════
+OUTPUT — RESPOND WITH VALID JSON ONLY. NO MARKDOWN. NO PREAMBLE.
+═══════════════════════════════════════════════════════════════
+
+{
+  "period_label": "Human-readable period label, e.g. 'June 2026' or 'Q2 2026'",
+  
+  "executive_summary": "4 sentences. Sentence 1: state the single most significant market development this period with a specific number or named policy. Sentence 2: state the theme that appeared most frequently, with its frequency count. Sentence 3: state the most important implication for property demand in the Lagos or Port Harcourt corridor specifically. Sentence 4: state what direction the market is moving and what is driving it.",
+
+  "market_conditions": "3-4 sentences. Cover: (1) financing/mortgage conditions with current rate or policy name, (2) land and regulatory environment with any named policy change, (3) infrastructure or corridor development with named project and status. Every sentence must contain a named institution, number, or policy.",
+
+  "themes": [
+    {
+      "label": "Exact theme label from evidence",
+      "status": "new|persists|fading",
+      "occurrences": 0,
+      "confidence": "high|medium|low",
+      "analysis": "3-4 sentences grounded in the evidence. Sentence 1: state what specifically happened — name the institution, policy, or event. Sentence 2: state the scale or magnitude using a number from the evidence. Sentence 3: state the mechanism by which this affects Lagos or Port Harcourt property demand. Sentence 4: state who in the market is most affected.",
+      "trajectory": "1 sentence. State whether frequency increased, decreased, or held steady across the period, and what is driving the direction."
+    }
+  ],
+
+  "theme_continuity": "2-3 sentences. Name the specific themes that are new this period. Name the specific themes persisting from prior periods and how many consecutive periods they have appeared. If no prior period exists, state this is the baseline.",
+
+  "implications_for_mixta": [
+    "Each item must name a Mixta project AND contain a specific action or number. Format: '[Project name]: [specific action] because [specific market evidence with number or named policy].'"
+  ],
+
+  "watch_next_period": "2-3 sentences. Name the 2-3 most important leading indicators to monitor. State specifically what threshold or event would change the assessment."
+}`;
 }
 
 // ── AI caller ─────────────────────────────────────────────────────────────────
@@ -5999,14 +6140,17 @@ function openReport(type, period) {
   const themeCards = (d.themes || []).map(t => `
     <div class="report-theme-card">
       <div class="report-theme-label">${esc(t.label)}</div>
-      <span class="report-theme-status ${t.status}">${t.status === 'persists' ? 'Persisting' : t.status === 'fading' ? 'Fading' : 'New'}</span>
-      ${t.occurrences ? `<span style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);margin-left:8px;">Appeared ${t.occurrences} day${t.occurrences !== 1 ? 's' : ''}</span>` : ''}
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+        <span class="report-theme-status ${t.status}">${t.status === 'persists' ? 'Persisting' : t.status === 'fading' ? 'Fading' : 'New'}</span>
+        ${t.occurrences ? `<span style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);">Appeared ${t.occurrences} day${t.occurrences !== 1 ? 's' : ''}</span>` : ''}
+        ${t.confidence ? `<span style="font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:${t.confidence === 'high' ? '#1E5E40' : 'var(--ink-faint)'};">${t.confidence} confidence</span>` : ''}
+      </div>
       <div class="report-theme-body">${esc(t.analysis || '')}</div>
-      ${t.trajectory ? `<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);margin-top:8px;font-style:italic;">${esc(t.trajectory)}</div>` : ''}
+      ${t.trajectory ? `<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);">${esc(t.trajectory)}</div>` : ''}
     </div>`).join('');
 
-  const mixtaItems = (d.implications_for_mixta || []).map(item =>
-    `<div class="report-mixta-item">${esc(item)}</div>`
+  const mixtaItems = (d.implications_for_mixta || []).map((item, i) =>
+    `<div class="report-mixta-item"><strong>${i+1}.</strong> ${esc(item)}</div>`
   ).join('');
 
   document.getElementById('reportViewerBody').innerHTML = `

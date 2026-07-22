@@ -524,6 +524,15 @@ class DataSource {
       /affordable housing.*nigeria|fmbn|nhf|lsdpc/i,
     ];
 
+    // Real estate presence gate — blocks consumer tech, geopolitics, and general AI
+    // articles that match innovation keywords but have no real estate relevance.
+    // An article must contain at least one real estate term in its title or description.
+    const realEstateGate = [
+      /real estate|property|housing|construction|development|proptech|mortgage/i,
+      /building|tenant|landlord|reit|mixed.use|urban|city planning|smart building/i,
+      /co.living|build.to.rent|fractional ownership|tokeniz.*real|property.*invest/i,
+    ];
+
     for (const q of queries) {
       try {
         const response = await axios.get('https://newsapi.org/v2/everything', {
@@ -541,6 +550,8 @@ class DataSource {
           const text = `${a.title || ''} ${a.description || ''}`;
           // Apply hard reject (briefing-lane content)
           if (rejectPatterns.some(re => re.test(text))) continue;
+          // Apply real estate presence gate — article must be about real estate
+          if (!realEstateGate.some(re => re.test(text))) continue;
           // Apply novelty gate
           const hasNovelty = noveltySignals.some(re => re.test(text));
           if (!hasNovelty) continue;

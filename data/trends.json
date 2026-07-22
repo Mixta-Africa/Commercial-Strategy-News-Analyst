@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 13,
+    "articleCount": 15,
     "sentimentBreakdown": {
+      "bullish": 10,
       "neutral": 3,
-      "bullish": 9,
-      "bearish": 1
+      "bearish": 2
     },
     "topTopics": [
-      {
-        "topic": "infrastructure development",
-        "count": 4
-      },
-      {
-        "topic": "affordable housing",
-        "count": 4
-      },
       {
         "topic": "Lagos real estate",
         "count": 3
       },
       {
-        "topic": "Lagos flooding",
+        "topic": "EFCC",
+        "count": 3
+      },
+      {
+        "topic": "Lagos-real-estate",
         "count": 2
       },
       {
-        "topic": "coastal highway",
+        "topic": "anti-corruption",
+        "count": 2
+      },
+      {
+        "topic": "Nigeria",
         "count": 2
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 13,
+    "articleCount": 15,
     "sentimentBreakdown": {
+      "bullish": 10,
       "neutral": 3,
-      "bullish": 9,
-      "bearish": 1
+      "bearish": 2
     },
     "topTopics": [
-      {
-        "topic": "infrastructure development",
-        "count": 4
-      },
-      {
-        "topic": "affordable housing",
-        "count": 4
-      },
       {
         "topic": "Lagos real estate",
         "count": 3
       },
       {
-        "topic": "Lagos flooding",
+        "topic": "EFCC",
+        "count": 3
+      },
+      {
+        "topic": "Lagos-real-estate",
         "count": 2
       },
       {
-        "topic": "coastal highway",
+        "topic": "anti-corruption",
+        "count": 2
+      },
+      {
+        "topic": "Nigeria",
         "count": 2
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 13,
+    "articleCount": 15,
     "sentimentBreakdown": {
+      "bullish": 10,
       "neutral": 3,
-      "bullish": 9,
-      "bearish": 1
+      "bearish": 2
     },
     "topTopics": [
-      {
-        "topic": "infrastructure development",
-        "count": 4
-      },
-      {
-        "topic": "affordable housing",
-        "count": 4
-      },
       {
         "topic": "Lagos real estate",
         "count": 3
       },
       {
-        "topic": "Lagos flooding",
+        "topic": "EFCC",
+        "count": 3
+      },
+      {
+        "topic": "Lagos-real-estate",
         "count": 2
       },
       {
-        "topic": "coastal highway",
+        "topic": "anti-corruption",
+        "count": 2
+      },
+      {
+        "topic": "Nigeria",
         "count": 2
       }
     ],

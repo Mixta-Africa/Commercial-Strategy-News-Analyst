@@ -947,6 +947,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-07-22",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bullish": 10,
+        "neutral": 3,
+        "bearish": 2
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 3
+        },
+        {
+          "topic": "EFCC",
+          "count": 3
+        },
+        {
+          "topic": "Lagos-real-estate",
+          "count": 2
+        },
+        {
+          "topic": "anti-corruption",
+          "count": 2
+        },
+        {
+          "topic": "Nigeria",
+          "count": 2
+        }
+      ]
     }
   ]
 }

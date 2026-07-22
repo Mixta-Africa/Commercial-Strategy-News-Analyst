@@ -857,6 +857,93 @@ class NewsPipeline {
           }, null, 2)
         );
         console.log(`[PHASE 8.5] innovation.json: ${innovationDeduped.length} articles written`);
+
+        // ── INNOVATION ARCHIVE ──────────────────────────────────────────────
+        // Two files preserve the full history beyond the rolling live view:
+        //
+        // 1. data/archive/innovation-YYYY-MM-DD.json
+        //    Full article payload for that day. Never overwritten — a new date
+        //    always means a new file. Same pattern as briefing-YYYY-MM-DD.json.
+        //
+        // 2. data/innovation-index.json
+        //    Lightweight growing index — one entry per run with date, count,
+        //    category breakdown, and archive file path. Never pruned.
+        //    Dashboard Library tab reads this to render the Innovation Archive.
+
+        if (innovationDeduped.length > 0) {
+          const dateStr = this.timestamp.slice(0, 10); // YYYY-MM-DD
+          const archiveDir = path.join(dataDir, 'archive');
+          if (!fs.existsSync(archiveDir)) fs.mkdirSync(archiveDir, { recursive: true });
+
+          // Per-day archive file — idempotent (re-running same day overwrites same file)
+          const archiveFile = `innovation-${dateStr}.json`;
+          fs.writeFileSync(
+            path.join(archiveDir, archiveFile),
+            JSON.stringify({
+              date: dateStr,
+              generatedAt: this.timestamp,
+              count: innovationDeduped.length,
+              articles: innovationDeduped,
+            }, null, 2)
+          );
+          console.log(`[PHASE 8.5] archive/${archiveFile}: ${innovationDeduped.length} articles archived`);
+
+          // Category breakdown — matches INNOVATION_CATEGORIES keys in the dashboard
+          const CATEGORY_KEYWORDS = {
+            proptech:     ['proptech', 'platform', 'app', 'digital', 'online', 'marketplace', 'software', 'saas'],
+            ai:           ['artificial intelligence', 'machine learning', ' ai ', 'data', 'algorithm', 'automation', 'digital twin'],
+            sustainable:  ['sustainable', 'green', 'net zero', 'carbon', 'passive house', 'energy efficient', 'solar', 'renewable'],
+            construction: ['modular', 'prefab', '3d print', 'factory-built', 'offsite', 'construction tech', 'material'],
+            finance:      ['tokeniz', 'fractional', 'reit', 'co-living', 'build-to-rent', 'crowdfund', 'fund', 'investment model'],
+            design:       ['mixed-use', 'transit-oriented', 'walkable', 'smart city', 'urban planning', 'masterplan', 'community'],
+            policy:       ['regulation', 'policy', 'zoning', 'reform', 'planning', 'government', 'law', 'act'],
+          };
+          const categorise = (a) => {
+            const text = `${a.title||''} ${a.description||''}`.toLowerCase();
+            for (const [key, kws] of Object.entries(CATEGORY_KEYWORDS)) {
+              if (kws.some(kw => text.includes(kw))) return key;
+            }
+            return 'proptech';
+          };
+          const categories = {};
+          innovationDeduped.forEach(a => {
+            const cat = categorise(a);
+            categories[cat] = (categories[cat] || 0) + 1;
+          });
+
+          // Read-merge-write innovation-index.json
+          const indexPath = path.join(dataDir, 'innovation-index.json');
+          let existingIndex = { entries: [] };
+          try {
+            if (fs.existsSync(indexPath)) {
+              existingIndex = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
+              if (!Array.isArray(existingIndex.entries)) existingIndex.entries = [];
+            }
+          } catch (e) {
+            console.warn('[PHASE 8.5] Could not read innovation-index.json, starting fresh:', e.message);
+          }
+
+          // Remove existing entry for today (idempotent re-runs) then prepend
+          existingIndex.entries = existingIndex.entries.filter(e => e.date !== dateStr);
+          existingIndex.entries.unshift({
+            date: dateStr,
+            generatedAt: this.timestamp,
+            count: innovationDeduped.length,
+            categories,
+            file: `archive/${archiveFile}`,
+          });
+
+          fs.writeFileSync(
+            indexPath,
+            JSON.stringify({
+              updatedAt: this.timestamp,
+              totalEntries: existingIndex.entries.length,
+              entries: existingIndex.entries,
+            }, null, 2)
+          );
+          console.log(`[PHASE 8.5] innovation-index.json: ${existingIndex.entries.length} entries total`);
+        }
+
         console.log('[PHASE 8.5] Secondary intelligence lanes complete.');
       } catch (e) {
         console.warn('[PHASE 8.5] Secondary lanes error (non-fatal):', e.message);

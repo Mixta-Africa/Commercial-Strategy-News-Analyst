@@ -1,92 +1,89 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 7,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "bullish": 10,
-      "neutral": 2
+      "bearish": 2,
+      "bullish": 5
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
+        "count": 2
       },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "housing demand",
+        "topic": "real estate investment",
         "count": 2
       },
       {
-        "topic": "real estate market",
-        "count": 2
+        "topic": "property disputes",
+        "count": 1
       },
       {
-        "topic": "building collapse",
+        "topic": "government actions",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 7,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "bullish": 10,
-      "neutral": 2
+      "bearish": 2,
+      "bullish": 5
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
+        "count": 2
       },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "housing demand",
+        "topic": "real estate investment",
         "count": 2
       },
       {
-        "topic": "real estate market",
-        "count": 2
+        "topic": "property disputes",
+        "count": 1
       },
       {
-        "topic": "building collapse",
+        "topic": "government actions",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 7,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "bullish": 10,
-      "neutral": 2
+      "bearish": 2,
+      "bullish": 5
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
+        "count": 2
       },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "housing demand",
+        "topic": "real estate investment",
         "count": 2
       },
       {
-        "topic": "real estate market",
-        "count": 2
+        "topic": "property disputes",
+        "count": 1
       },
       {
-        "topic": "building collapse",
+        "topic": "government actions",
         "count": 1
       }
     ],

@@ -979,6 +979,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-07-23",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bearish": 3,
+        "bullish": 10,
+        "neutral": 2
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 4
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "housing demand",
+          "count": 2
+        },
+        {
+          "topic": "real estate market",
+          "count": 2
+        },
+        {
+          "topic": "building collapse",
+          "count": 1
+        }
+      ]
     }
   ]
 }

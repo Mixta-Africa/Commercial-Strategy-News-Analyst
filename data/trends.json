@@ -2,30 +2,30 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
+      "bearish": 3,
       "bullish": 10,
-      "neutral": 3,
-      "bearish": 2
+      "neutral": 2
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 3
+        "count": 4
       },
       {
-        "topic": "EFCC",
-        "count": 3
-      },
-      {
-        "topic": "Lagos-real-estate",
+        "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "anti-corruption",
+        "topic": "housing demand",
         "count": 2
       },
       {
-        "topic": "Nigeria",
+        "topic": "real estate market",
         "count": 2
+      },
+      {
+        "topic": "building collapse",
+        "count": 1
       }
     ],
     "averageSentiment": "bullish"
@@ -33,30 +33,30 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
+      "bearish": 3,
       "bullish": 10,
-      "neutral": 3,
-      "bearish": 2
+      "neutral": 2
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 3
+        "count": 4
       },
       {
-        "topic": "EFCC",
-        "count": 3
-      },
-      {
-        "topic": "Lagos-real-estate",
+        "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "anti-corruption",
+        "topic": "housing demand",
         "count": 2
       },
       {
-        "topic": "Nigeria",
+        "topic": "real estate market",
         "count": 2
+      },
+      {
+        "topic": "building collapse",
+        "count": 1
       }
     ],
     "averageSentiment": "bullish"
@@ -64,30 +64,30 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
+      "bearish": 3,
       "bullish": 10,
-      "neutral": 3,
-      "bearish": 2
+      "neutral": 2
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 3
+        "count": 4
       },
       {
-        "topic": "EFCC",
-        "count": 3
-      },
-      {
-        "topic": "Lagos-real-estate",
+        "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "anti-corruption",
+        "topic": "housing demand",
         "count": 2
       },
       {
-        "topic": "Nigeria",
+        "topic": "real estate market",
         "count": 2
+      },
+      {
+        "topic": "building collapse",
+        "count": 1
       }
     ],
     "averageSentiment": "bullish"

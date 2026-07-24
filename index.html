@@ -580,16 +580,95 @@ button, select, input { font-family: inherit; }
 .tl-empty { padding: 32px 0; color: var(--ink-faint); font-family: var(--font-ui); font-size: 13px; font-style: italic; }
 
 /* ── Collapsible sections ────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════════
+   ACCORDION FRAMEWORK
+   Every .section-divider is an accordion header. Content in the immediately
+   following siblings collapses when the header is clicked. State persists
+   in sessionStorage so reopening a tab restores where you left off.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Header — the clickable row */
+.section-divider {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  margin: 40px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid var(--rule-strong);
+  cursor: pointer; user-select: none;
+  transition: border-color 0.15s;
+}
+.section-divider:first-child,
+.section-divider[style*="margin-top:0"] { margin-top: 0; }
+.section-divider:hover { border-color: var(--maroon); }
+.section-divider.acc-collapsed { border-color: var(--rule); }
+
+.section-divider h2 {
+  font-family: var(--font-headline);
+  font-size: 13px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--ink); margin: 0; flex: 1;
+  transition: color 0.15s;
+}
+.section-divider:hover h2,
+.section-divider.acc-collapsed:hover h2 { color: var(--maroon); }
+.section-divider.acc-collapsed h2 { color: var(--ink-soft); }
+
+/* Chevron icon on every accordion header */
+.acc-chevron {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; transition: transform 0.25s ease;
+  color: var(--ink-faint);
+}
+.section-divider.acc-collapsed .acc-chevron { transform: rotate(-90deg); }
+.section-divider:hover .acc-chevron { color: var(--maroon); }
+
+/* Collapsible body — attached to any accordion header */
+.collapsible-body {
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease;
+}
+.collapsible-body.collapsed {
+  max-height: 0 !important; opacity: 0; pointer-events: none;
+}
+
+/* Legacy toggle button — kept for inline sub-section collapses
+   (Price Trend chart, TL Rail within a tab) */
 .collapsible-toggle {
   display: flex; align-items: center; gap: 6px;
-  font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--ink-faint); background: none; border: none; cursor: pointer; padding: 0; transition: color 0.2s;
+  font-family: var(--font-ui); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-faint); background: none; border: none;
+  cursor: pointer; padding: 0; transition: color 0.2s; flex-shrink: 0;
 }
 .collapsible-toggle:hover { color: var(--maroon); }
 .collapsible-toggle .ct-arrow { font-size: 10px; transition: transform 0.2s; display: inline-block; }
 .collapsible-toggle.collapsed .ct-arrow { transform: rotate(-90deg); }
-.collapsible-body { overflow: hidden; transition: max-height 0.35s ease, opacity 0.25s ease; }
-.collapsible-body.collapsed { max-height: 0 !important; opacity: 0; pointer-events: none; }
+
+/* Accordion content wrapper — direct child of the view section,
+   wraps everything beneath a section-divider */
+.acc-body {
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease;
+}
+.acc-body.collapsed {
+  max-height: 0 !important; opacity: 0; pointer-events: none;
+}
+
+/* ── SVG LINE ICON SYSTEM ───────────────────────────────────────────────────
+   All icons are inline SVG at 16×16. Stroke-based, no fills, 1.5px stroke.
+   Colour inherits from parent (currentColor).
+   Referenced via .icon-* classes rendered by the JS icon() helper.
+   ──────────────────────────────────────────────────────────────────────── */
+.icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; flex-shrink: 0; vertical-align: middle;
+}
+.icon svg {
+  width: 100%; height: 100%;
+  stroke: currentColor; stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round;
+  fill: none;
+}
 
 /* ── Dateline condensed ──────────────────────────────────────────────────────── */
 .dateline-short {
@@ -773,15 +852,51 @@ button, select, input { font-family: inherit; }
   .report-body { max-width: 100%; }
 }
 
-/* ── Focus Mode — Morning Brief ─────────────────────────────────────────────
-   Two-state dashboard: Reference Mode (default, everything visible) and
-   Morning Brief Mode (only decision-relevant primary content).
-   Uses opacity+max-height transitions instead of display:none so layout
-   doesn't jump. Elements tagged data-focus="secondary" fade and collapse;
-   data-focus="primary" elements are never touched.
-   ────────────────────────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════════
+   FOCUS MODE — EXECUTIVE VIEW
+   A full-screen overlay. One question: what happened today, what do I act on?
+   No tabs, no navigation. Three sections: Today / Act on this / Posture.
+   ══════════════════════════════════════════════════════════════════════════ */
 
-/* Floating pill — fixed bottom-right, above the help button */
+#focusModeOverlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: var(--paper); overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+#focusModeOverlay.active { display: block; }
+.focus-shell { max-width: 760px; margin: 0 auto; padding: 48px 40px 80px; }
+.focus-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 52px; flex-wrap: wrap; gap: 12px; }
+.focus-wordmark { font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--ink-faint); }
+.focus-date-line { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); }
+.focus-exit { font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; display: flex; align-items: center; gap: 8px; color: var(--ink-soft); background: none; border: 1.5px solid var(--rule-strong); border-radius: var(--radius); padding: 8px 16px; cursor: pointer; transition: all 0.15s; }
+.focus-exit:hover { border-color: var(--maroon); color: var(--maroon); }
+.focus-section-label { font-family: var(--font-mono); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--maroon); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.focus-section-label::after { content: ''; flex: 1; height: 1px; background: var(--maroon-line); }
+.focus-bullets { margin-bottom: 52px; }
+.focus-bullet { display: flex; gap: 16px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+.focus-bullet:last-child { border-bottom: none; }
+.focus-bullet-num { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--maroon); min-width: 20px; padding-top: 3px; flex-shrink: 0; }
+.focus-bullet-text { font-family: var(--font-headline); font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.45; }
+.focus-actions { margin-bottom: 52px; }
+.focus-action-card { background: var(--paper-card); border: 1px solid var(--maroon-line); border-left: 3px solid var(--maroon); border-radius: 0 var(--radius) var(--radius) 0; padding: 20px 24px; margin-bottom: 12px; }
+.focus-action-project { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--maroon); margin-bottom: 8px; }
+.focus-action-text { font-family: var(--font-body); font-size: 15px; color: var(--ink); line-height: 1.65; }
+.focus-action-source { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); margin-top: 8px; }
+.focus-no-actions { font-family: var(--font-body); font-size: 14px; color: var(--ink-faint); font-style: italic; padding: 16px 0; }
+.focus-posture { background: var(--paper-card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 24px 28px; display: flex; align-items: flex-start; gap: 20px; }
+.focus-posture-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.focus-posture-dot.bullish { background: #1E5E40; }
+.focus-posture-dot.neutral { background: #A47D29; }
+.focus-posture-dot.bearish { background: var(--maroon); }
+.focus-posture-body { flex: 1; }
+.focus-posture-label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+.focus-posture-label.bullish { color: #1E5E40; }
+.focus-posture-label.neutral { color: #A47D29; }
+.focus-posture-label.bearish { color: var(--maroon); }
+.focus-posture-text { font-family: var(--font-body); font-size: 15px; color: var(--ink); line-height: 1.65; }
+.focus-footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--rule); font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.focus-view-full { font-family: var(--font-ui); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--maroon); background: none; border: none; cursor: pointer; text-decoration: underline; }
+
+/* Floating pill */
 #focusModePill {
   position: fixed; bottom: 88px; right: 28px; z-index: 250;
   display: flex; align-items: center; gap: 8px;
@@ -799,42 +914,14 @@ button, select, input { font-family: inherit; }
 #focusModePill.active .fmp-dot { background: rgba(255,255,255,0.7); }
 #focusModePill .fmp-label { white-space: nowrap; }
 
-/* Secondary elements: smooth collapse */
-[data-focus="secondary"] {
-  transition: opacity 0.3s ease, max-height 0.35s ease, margin 0.3s ease, padding 0.3s ease;
-  overflow: hidden;
-}
-body.focus-mode [data-focus="secondary"] {
-  opacity: 0;
-  max-height: 0 !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  pointer-events: none;
-}
-/* Library nav tab fades in focus mode — it's a reference tool, not a triage tool */
-body.focus-mode [data-focus="nav-library"] {
-  opacity: 0.3;
-  pointer-events: none;
-}
-/* Focus mode banner — thin maroon bar at top of each section to signal mode */
-body.focus-mode .view.active::before {
-  content: 'MORNING BRIEF · FOCUSED VIEW';
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: #fff;
-  background: var(--maroon);
-  padding: 5px 20px;
-  margin: -20px -40px 24px -40px;
-  text-align: center;
-}
+/* data-focus secondary elements — kept for compatibility */
+[data-focus="secondary"] { transition: opacity 0.3s ease, max-height 0.35s ease, margin 0.3s ease, padding 0.3s ease; overflow: hidden; }
+body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none; }
+
 @media (max-width: 600px) {
-  body.focus-mode .view.active::before { margin: -12px -16px 16px -16px; }
-  #focusModePill { bottom: 80px; right: 16px; padding: 8px 14px 8px 12px; }
+  .focus-shell { padding: 28px 20px 60px; }
+  #focusModePill { bottom: 80px; right: 16px; }
+  .focus-bullet-text { font-size: 15px; }
 }
 #trendTooltip { position: fixed; background: var(--ink); color: #fff; border-radius: 6px; padding: 8px 12px; font-family: var(--font-ui); font-size: 12px; pointer-events: none; z-index: 9999; opacity: 0; transition: opacity 0.12s; max-width: 220px; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
 #trendTooltip .tt-date { font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
@@ -1188,9 +1275,9 @@ body.focus-mode .view.active::before {
 
 <script>
   // Mobile-aware chart margins: the SVG-building functions read this at
-  // render time so charts on a small screen don't waste ~140px of a
+  // render time so charts on a small screen don\'t waste ~140px of a
   // ~340px-wide phone display on fixed axis margins sized for desktop.
-  // Declared here (before the main script block) so it's available to
+  // Declared here (before the main script block) so it\'s available to
   // renderPricingScatter/renderPricingBarChart regardless of load order.
   window._chartMarginScale = function() {
     const w = window.innerWidth;
@@ -1267,8 +1354,7 @@ body.focus-mode .view.active::before {
           <span class="mw-name">Lagos</span>
           <span class="mw-signals" id="count-lagos">Active Signals</span>
         </div>
-        <div class="market-watch-card" style="border: 2px solid rgba(255,255,255,0.35); position:relative;" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('port_harcourt');">
-          <span style="position:absolute;top:10px;right:12px;font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:0.08em;background:rgba(255,255,255,0.18);padding:2px 7px;border-radius:10px;text-transform:uppercase;color:rgba(255,255,255,0.85);">New</span>
+        <div class="market-watch-card" onclick="document.querySelector('[data-view=markets]').click(); executeGeoFocus('port_harcourt');">
           <span class="mw-name">Port Harcourt</span>
           <span class="mw-signals" id="count-port_harcourt">Active Signals</span>
         </div>
@@ -1794,6 +1880,7 @@ document.querySelectorAll('.nav button').forEach(b => {
       setTimeout(() => geoMap.invalidateSize(), 150);
     }
     if (b.dataset.view === 'reports') { _initReportsTab(); renderMacroDashboard(); }
+    setTimeout(_initAccordions, 80);
   };
 });
 
@@ -2499,7 +2586,7 @@ function renderTrendChart(allDays) {
   const _m = window._chartMarginScale ? window._chartMarginScale() : { left: 70, right: 24, bottom: 90 };
   const marginLeft = _m.left, marginRight = _m.right, marginTop = 20, marginBottom = _m.bottom;
 
-  // Scale bar width down when there are few weeks so the chart doesn't look
+  // Scale bar width down when there are few weeks so the chart doesn\'t look
   // disfigured. With 10+ weeks use full 12px; below that, scale proportionally
   // down to a minimum of 6px so bars stay readable.
   const maxBarW = 12, minBarW = 6;
@@ -2770,7 +2857,7 @@ async function openBriefing(date) {
   // never had a "file" field, even though this function requires one - that
   // missing field is what caused "Could not locate the file for this
   // briefing" on every archived entry. Fresh runs now always include it,
-  // but existing entries already in the index won't until they age out of
+  // but existing entries already in the index won\'t until they age out of
   // the 180-day retention window. Reconstruct the expected archive path
   // from the date itself as a fallback, so old entries self-heal instead
   // of staying broken indefinitely.
@@ -3152,7 +3239,7 @@ function plotGeospatialData(articles) {
 
   // ── Deterministic jitter seed ──────────────────────────────────────────────
   // Each article gets a stable position based on a hash of its url+title so
-  // dots don't jump around on every re-render. Without this, articles that
+  // dots don\'t jump around on every re-render. Without this, articles that
   // overlap on re-render appear to "disappear" between clicks.
   function hashStr(s) {
     let h = 0;
@@ -3226,7 +3313,7 @@ function plotGeospatialData(articles) {
       article.source ? `<strong style="color:${isCrossSector ? '#A47D29' : '#7A1F2B'};">${esc(article.source)}</strong>` : '',
       dateStr,
       !hasUrl ? '<em style="color:#c0392b;">No link available</em>' : '',
-      isCrossSector ? '⬦ Cross-sector' : esc(scope.replace(/_/g, ' ')),
+      isCrossSector ? `${icon('diamond')} Cross-sector` : esc(scope.replace(/_/g, ' ')),
     ].filter(Boolean).join(' &middot; ');
 
     marker.bindPopup(`
@@ -3283,7 +3370,7 @@ function renderPricing(data) {
   }
 
   // For scatter/groups/stats: use only the most recent scrape date's listings
-  // so the "today's market" view isn't polluted with historical data.
+  // so the "today's market" view isn\'t polluted with historical data.
   const mostRecentDate = listings.reduce((max, l) => {
     const d = (l.scrapedAt || '').slice(0, 10);
     return d > max ? d : max;
@@ -3863,7 +3950,7 @@ function renderOutreachSignals(briefingData, trendHistory) {
       (t.label||'') + ' ' + (t.what_happened||'') + ' ' + (t.recommendation||'')
     ).join(' ') + ' ' + recentTopics.join(' ')).toLowerCase();
 
-    // Only check if this sector's keywords appear at all
+    // Only check if this sector\'s keywords appear at all
     const sectorMentioned = sector.keywords.some(kw => sectorText.includes(kw.toLowerCase()));
     if (!sectorMentioned && !bonusWindow) continue;
 
@@ -3928,7 +4015,7 @@ function renderOutreachSignals(briefingData, trendHistory) {
     if (bonusWindow && macroClear) {
       container.innerHTML = `
         <div class="outreach-macro-strip outreach-macro-neutral">
-          <span class="outreach-macro-dot">📅</span>
+          <span class="outreach-macro-dot">${icon('calendar')}</span>
           <span><strong>Bonus Window Active</strong> — ${esc(bonusLabel)}. No specific corporate event has been detected to combine with this window. Consider proactive outreach to the highest-pool sectors (Banking, Energy) on calendar basis alone.</span>
         </div>`;
     } else {
@@ -3940,14 +4027,14 @@ function renderOutreachSignals(briefingData, trendHistory) {
   // ── Macro status strip (reads once, applies to all cards below) ───────────
   const macroStripClass = macroScore > 0.1 ? 'outreach-macro-bull' : macroScore < -0.05 ? 'outreach-macro-bear' : 'outreach-macro-neutral';
   const macroStripText = macroScore > 0.1
-    ? `✅ Macro: Bullish — favourable conversion environment. Outreach signals active.`
+    ? `${icon('circle-check')} Macro: Bullish — favourable conversion environment. Outreach signals active.`
     : macroScore < -0.05
-    ? `⚠ Macro: Slightly negative (${(macroScore*100).toFixed(0)}/100) — signals fire on event strength but conversion environment is below ideal. Focus on highest-intent prospects.`
-    : `◎ Macro: Neutral — conditions adequate for outreach. Prioritise event-triggered sectors over calendar-only.`;
+    ? `${icon('triangle-alert')} Macro: Slightly negative (${(macroScore*100).toFixed(0)}/100) — signals fire on event strength but conversion environment is below ideal. Focus on highest-intent prospects.`
+    : `${icon('neutral')} Macro: Neutral — conditions adequate for outreach. Prioritise event-triggered sectors over calendar-only.`;
 
-  let html = `<div class="outreach-macro-strip ${macroStripClass}">${esc(macroStripText)}</div>`;
+  let html = `<div class="outreach-macro-strip ${macroStripClass}">${macroStripText}</div>`;
   if (bonusWindow) {
-    html += `<div class="outreach-bonus-badge">📅 ${esc(bonusLabel)} — bonus window active across all qualifying sectors</div>`;
+    html += `<div class="outreach-bonus-badge">${icon('calendar')} ${esc(bonusLabel)} — bonus window active across all qualifying sectors</div>`;
   }
 
   // ── Split into event-triggered vs calendar-only ───────────────────────────
@@ -3971,7 +4058,7 @@ function renderOutreachSignals(briefingData, trendHistory) {
       const secondaryCos = (sig.sector.companies || []).filter(c => c.priority === 'secondary');
       const totalReachable = sig.sector.reachablePrimary || 0;
       const entryPoint = ENTRY_POINTS[sig.sector.sector];
-      const icon = sig.strength === 'Strong' ? '🔴' : '🟡';
+      const sigIcon = sig.strength === 'Strong' ? icon('signal-strong', 16) : sig.strength === 'Moderate' ? icon('signal-medium', 16) : icon('signal-weak', 16);
 
       let triggerLine = '';
       if (sig.triggerType === 'event+calendar') {
@@ -4031,7 +4118,7 @@ function renderOutreachSignals(briefingData, trendHistory) {
         ? `<div class="outreach-secondary-note">Secondary (₦500K–₦1.5M): ${secondaryCos.map(c=>esc(c.name)).join(' · ')}</div>` : '';
 
       return `<div class="outreach-signal-banner">
-        <div class="outreach-signal-icon">${icon}</div>
+        <div class="outreach-signal-icon">${sigIcon}</div>
         <div class="outreach-signal-body">
           <div class="outreach-signal-label">${esc(sig.strength)} Signal · ${esc(sig.sector.sector)} · ${totalReachable.toLocaleString()} reachable primary staff</div>
           <div class="outreach-signal-text">${triggerLine}</div>
@@ -4056,7 +4143,7 @@ function renderOutreachSignals(briefingData, trendHistory) {
         const state = getCompanyState(c.name);
         const cls = state === 'active' ? 'active-pipeline' : state === 'snoozed' ? 'snoozed' : '';
         const inBonus = c.bonusMonth?.includes(currentMonth) || c.bonusMonth?.includes(currentMonth - 1);
-        const bonusDot = inBonus ? ' 🟢' : '';
+        const bonusDot = inBonus ? ` ${icon('calendar', 12)}` : '';
         return `<button class="outreach-co-btn ${cls}" onclick="openCompanyBrief(${JSON.stringify(JSON.stringify(c))}, ${JSON.stringify(JSON.stringify(sig.sector))})">${esc(c.name)}${bonusDot}</button>`;
       }).join('');
       return `<tr>
@@ -4075,7 +4162,7 @@ function renderOutreachSignals(briefingData, trendHistory) {
       </div>
       <div class="outreach-calendar-card">
         <div class="outreach-calendar-desc">
-          ${esc(bonusLabel || 'Bonus window active')} — the 6 weeks following bonus payments are the highest discretionary-spend period in the property sales cycle. 🟢 = company-specific bonus window active this month. Click any company name to open its conversation brief.
+          ${esc(bonusLabel || 'Bonus window active')} — the 6 weeks following bonus payments are the highest discretionary-spend period in the property sales cycle. ${icon('calendar', 12)} = company-specific bonus window active this month. Click any company name to open its conversation brief.
         </div>
         <table class="outreach-cal-table">
           <thead>
@@ -4137,11 +4224,11 @@ function renderSentimentCalendar(trendHistory) {
   let signalClass, signalText, advice;
   if (score7 > 0.25) {
     signalClass = 'bullish';
-    signalText = '🟢 Sustained Bullish — Confidence Window';
+    signalText = `${icon('bullish')} Sustained Bullish — Confidence Window`;
     advice = 'Market sentiment is running consistently positive. This is the window to hold or raise prices, launch new phases, and let qualified prospects self-select. Urgency messaging ("prices increasing") will land well in this environment.';
   } else if (score7 > 0.05) {
     signalClass = 'bullish';
-    signalText = '🟡 Mildly Bullish — Active Market';
+    signalText = `${icon('trending-up')} Mildly Bullish — Active Market`;
     advice = 'Positive but not emphatic. Proceed normally — close pipeline deals at current pricing. Watch for shifts. If 3 consecutive bearish days appear, accelerate closings.';
   } else if (score7 > -0.1) {
     signalClass = 'neutral';
@@ -4149,7 +4236,7 @@ function renderSentimentCalendar(trendHistory) {
     advice = 'Market sentiment is ambiguous. Prioritise closing deals already in advanced stages rather than generating new leads. Avoid price increases. Watch for the signal to resolve in either direction.';
   } else {
     signalClass = 'bearish';
-    signalText = '🔴 Bearish Signal — Activate Closings';
+    signalText = `${icon('bearish')} Bearish Signal — Activate Closings`;
     advice = 'Negative sentiment is persisting. Accelerate existing pipeline — follow up with qualified leads, offer flexible payment plans on current stock. Defer new price increases. This is not a sales pause; it is a conversion window for deals already in motion.';
   }
 
@@ -4175,7 +4262,7 @@ function renderSentimentCalendar(trendHistory) {
   container.innerHTML = `
     <div class="sentiment-cal-strip">${strip}</div>
     <div style="display:flex;gap:16px;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);margin-bottom:16px;flex-wrap:wrap;">
-      <span>🟢 Bullish day</span><span>🔴 Bearish day</span><span style="color:#9E9E9E">■ Neutral</span><span style="color:#E0E0E0;text-shadow:0 0 0 #999">■ No data</span>
+      <span>${icon('bullish', 12)} Bullish day</span><span>${icon('bearish', 12)} Bearish day</span><span style="color:#9E9E9E">&#9632; Neutral</span><span style="color:#E0E0E0;text-shadow:0 0 0 #999">&#9632; No data</span>
       <span style="margin-left:auto">${recent.length} days shown · hover for detail</span>
     </div>
     <div class="sentiment-signal-box">
@@ -4570,71 +4657,85 @@ const HELP_CONTENT = {
       { h: 'Today\'s Signal', p: 'The lead story selected by the AI synthesizer — the article or theme with the highest market impact severity today. The opening sentence always contains a hard metric. The "Executive Takeaway (So What?)" box is Mixta-specific: it connects the story to Lakowe Crossings, Lakowe Annexe, Lagos New Town, or Garden City Golf Annexe (Port Harcourt).' },
       { h: 'Strategic Signals', p: 'Four market-facing buckets (Market Creation, Financing, Regulatory, Competition), each mapped to the most relevant theme from today\'s briefing. If fewer than 4 distinct themes exist, unfilled buckets show "No distinct signal today" — they are never filled with a recycled theme.' },
       { h: 'Theme Cards', p: 'Each theme card shows what happened, why it matters to Mixta, and a recommendation. Click any theme card to open the Theme Evolution Panel — a full timeline of every article that contributed to that narrative, how it developed over time, and an AI-written evolution analysis.' },
+      { h: 'Intelligence Feed', p: 'Every article that passed the 48-hour recency filter and real estate relevance gate, shown with AI-generated summaries, sentiment tags, and market impact scores. The feed is searchable and filterable by theme. This is the evidence layer beneath the synthesized briefing above.' },
       { h: 'Sentiment Pills', p: '<span class="help-tag">Bullish</span> = positive market implications. <span class="help-tag">Bearish</span> = headwinds or risk signals. <span class="help-tag">Neutral</span> = informational with no clear direction. Assigned by AI based on market implications, not article tone.' },
-      { h: 'Market Impact Severity', p: '<span class="help-tag">Critical</span> → <span class="help-tag">High</span> → <span class="help-tag">Medium</span> → <span class="help-tag">Low</span>. How directly and urgently the event affects the Lagos residential real estate market. Critical means act now; Low means file for context.' },
+      { h: 'Market Impact Severity', p: '<span class="help-tag">Critical</span> — act now. <span class="help-tag">High</span> — review this week. <span class="help-tag">Medium</span> — file for context. <span class="help-tag">Low</span> — background awareness.' },
+      { h: 'Accordion Sections', p: 'Every section header is clickable — click to collapse or expand that section. Your collapsed/expanded preferences are remembered for the session so the dashboard opens in the same state you left it.' },
     ]
   },
   markets: {
     title: 'Markets — How to read this',
     sections: [
-      { h: 'Geospatial Map', p: 'Each dot is a news article placed at the region it covers. <span class="help-tag" style="background:rgba(30,94,64,0.15);color:#1E5E40">Green</span> = bullish, <span class="help-tag" style="background:rgba(143,42,42,0.15);color:#8F2A2A">Red</span> = bearish, <span class="help-tag">Grey</span> = neutral. <span class="help-tag" style="background:rgba(164,125,41,0.15);color:#7a5a10">Amber diamonds ◆</span> = cross-sector signals (non-real-estate articles whose sector impacts property demand). Click any dot to read the headline and link.' },
-      { h: 'Geo Scope Filters', p: 'Lagos focuses on hyperlocal corridor news. Nigeria broadens to national policy. Africa and Global capture regional trends that indirectly affect the Nigerian market. Changing scope re-filters the dots immediately.' },
-      { h: 'Cross-Sector Market Intelligence', p: 'Seven non-real-estate sectors ranked by their proven impact on Ibeju-Lekki corridor demand. Each card explains the transmission mechanism — exactly how that sector moves real estate prices or buyer behaviour. High-impact sector articles also appear on the map as amber diamond markers. Sectors: Macro Economy, Infrastructure, Energy/Power, FX & Diaspora, Financial Markets, Urban Policy, Corporate Expansion.' },
-      { h: 'Reading the Cross-Sector Cards', p: 'Each card shows the sector\'s impact tier (Critical / High / Moderate), the mechanism in plain English, the specific signals to watch for, and matched articles from the current archive. Cards are ranked 01–07 by impact — scroll through to understand the full demand picture beyond just real estate news.' },
+      { h: 'Geospatial Map', p: 'Each dot is a news article placed at the region it covers. Green = bullish, Red = bearish, Grey = neutral. Amber diamond markers = cross-sector signals. Hollow dashed circles = listings on the market 45+ days without clearing — stale asking prices, not live market signal. Click any dot to read the headline and link.' },
+      { h: 'Map Scope Filters', p: 'Lagos focuses on hyperlocal corridor news. Nigeria broadens to national policy. The city dropdown covers 20 African cities across 5 regions — each flies to street level.' },
+      { h: 'Cross-Sector Market Intelligence', p: 'Non-real-estate sectors ranked daily by article volume — the sector with the most news this week rises to the top. Each card explains the transmission mechanism, the specific signals to watch, and matched articles from the last 7 days only.' },
+      { h: 'Port Harcourt on the Map', p: 'Articles mentioning Port Harcourt, Rivers State, Garden City Golf Annexe, NLNG, Omagwa, or Greater Port Harcourt are plotted at the Port Harcourt anchor. The Oil & Gas (Port Harcourt) cross-sector panel tracks NNPC restructuring, oil price movements, and NLNG expansion — the primary demand drivers for Garden City Golf Annexe buyers.' },
     ]
   },
   themes: {
     title: 'Themes & Trends — How to read this',
     sections: [
       { h: 'Narrative Momentum', p: 'Themes the AI synthesizer has tracked across multiple briefing days, ranked by consecutive appearances. A theme appearing 5+ consecutive days is a confirmed market narrative, not noise. <span class="help-tag">New</span> means first appearance today. Click any theme to open the Theme Evolution Panel.' },
-      { h: 'Theme Evolution Panel', p: 'Opens when you click a theme. Shows: (1) today\'s briefing analysis for that theme, (2) an AI-generated 3-paragraph narrative of how the theme developed — where it started, how it evolved, and where it stands now with a Mixta implication, (3) a full article timeline grouped by day with sentiment bars.' },
-      { h: 'Topic Volume Over Time', p: 'Raw keyword frequency across all analyzed articles, bucketed by week. Distinct from AI-synthesized themes — this counts mentions, not narrative coherence. Useful for spotting rising topics before they crystallise into themes.' },
-      { h: 'Market Sentiment Signal', p: 'A 30-day colour-coded strip showing daily sentiment (green = bullish day, red = bearish, grey = neutral). The 7-day signal box beneath it gives a commercial action recommendation: Confidence Window (hold/raise prices), Active Market (close normally), Monitor (focus on pipeline), or Activate Closings (accelerate conversions). This is a decision tool, not just a chart.' },
-      { h: 'Period Filters', p: '30D is the default. All Time shows the complete forever-retained history. The archive never prunes — multi-year topic momentum will become visible as the system accumulates data.' },
+      { h: 'Theme Evolution Panel', p: 'Opens when you click a theme. Shows: (1) today\'s briefing analysis, (2) an AI-generated narrative of how the theme developed with a Mixta implication, (3) a full article timeline grouped by day with sentiment bars.' },
+      { h: 'Topic Volume Over Time', p: 'Raw keyword frequency across all analyzed articles, bucketed by week. Useful for spotting rising topics before they crystallise into themes.' },
+      { h: 'Market Sentiment Signal', p: 'A 30-day colour-coded strip showing daily sentiment. The 7-day signal box gives a commercial action recommendation: Confidence Window (hold/raise prices), Active Market (close normally), Monitor (focus on pipeline), or Activate Closings (accelerate conversions). This feeds the Outreach tab\'s macro base condition (Signal C).' },
     ]
   },
   competition: {
     title: 'Competition — How to read this',
     sections: [
-      { h: 'Stats Strip', p: 'Residential Median and Land/Plot Median from today\'s scrape. Median is used — not mean — to resist distortion from extreme outliers. Statistical outliers (e.g. listings priced in wrong currency units) are automatically removed before calculation using IQR filtering.' },
-      { h: 'Mixta vs Market — Competitive Position', p: 'Compares every Mixta price you have entered against today\'s market median for the same bedroom × location cluster. <span class="help-tag" style="background:rgba(244,67,54,0.1);color:#c62828">▲ Above market</span> means you are priced above the median for that spec. <span class="help-tag" style="background:rgba(46,125,50,0.1);color:#1b5e20">▼ Below market</span> means room to raise. <span class="help-tag" style="background:rgba(245,127,23,0.1);color:#e65100">≈ At market</span> means within ±5%. Updates automatically when you add or remove Mixta prices below.' },
-      { h: 'Pricing Matrix — Scatter Plot', p: 'Each dot is one individual listing. X-axis groups are Location × Bedroom combinations. Colour = source portal. Star markers (★) are your manually added Mixta prices — they appear in every group matching their bedroom count.' },
-      { h: 'Pricing Matrix — Bar Chart', p: 'Same grouping as scatter, bars sorted left-to-right by price. Mixta bars appear alongside competitor bars at their actual price position.' },
-      { h: 'Price Trend Over Time', p: 'Default view groups by bedroom count (1BR, 2BR, 3BR etc.) across the full corridor — 5 clean lines. Selecting a Location filter switches to property-type lines within that location. Selecting a Type filter switches to location lines for that type. Period buttons (7D, 30D etc.) filter the date range. Hover over any point on a line to see the exact date, series, and price in a tooltip.' },
+      { h: 'Stats Strip', p: 'Residential Median and Land/Plot Median from today\'s scrape. Median is used — not mean — to resist distortion from extreme outliers. Statistical outliers are removed using IQR filtering before calculation.' },
+      { h: 'Competitive Positioning Card', p: 'Compares every Mixta price you have entered against today\'s market median for the same bedroom × location cluster. Red = above market, Green = below market (room to raise), Amber = within ±5% of market.' },
+      { h: 'Scatter Plot — Solid vs Hollow Dots', p: 'Solid dots = active market listings. Hollow dashed circles = stale listings present 45+ days without clearing. Stale listings are asking prices the market has already rejected. Use solid dots only when making pricing recommendations to management.' },
+      { h: 'Absorption Rate Panel', p: 'Shows the percentage of listings that cleared in the last 30 days, by location. High absorption = the market is liquid. Low absorption = inventory accumulating, buyers not transacting at asking price. The clearance type column shows whether cleared listings went at ask or at a discount.' },
+      { h: 'Two-Gate Absorption Validation', p: 'A listing only counts as absorbed if it was present for at least 7 consecutive scrape days before disappearing (Gate 1) and cross-referenced against its price history (Gate 2). This filters out lapsed agent subscriptions and one-off posting errors.' },
+      { h: 'Price Trend Over Time', p: 'Default view groups by bedroom count across the full corridor. Selecting a Location filter switches to property-type lines within that location. Hover over any point to see the exact date, series, and price.' },
       { h: 'Add Mixta Price', p: 'Prices saved here persist to Firebase across sessions and appear in the competitive positioning card and all pricing charts. Set property type correctly — it affects which comparison group you appear in.' },
     ]
   },
   outreach: {
     title: 'Outreach Intelligence — How to read this',
     sections: [
-      { h: 'Three-Signal Model', p: 'A signal only fires when three conditions align: (1) Signal C — macro base: market sentiment must not be in a sustained bearish period, (2) Signal A — calendar: bonus payment windows (Jan–Feb year-end, Jul–Aug H1) or (3) Signal B — event: a specific corporate lifecycle event detected in the news. News volume alone never triggers a recommendation.' },
-      { h: 'Event Triggers (ranked by conversion weight)', p: '<span class="help-tag">Contract win</span> — strongest signal, act within 3 weeks of announcement. <span class="help-tag">Salary review</span> — 4–6 week conversion window post-announcement. <span class="help-tag">IPO / ESOP</span> — 60-day window after vesting. <span class="help-tag">Welfare / cooperative</span> — company already in buying mode. <span class="help-tag">Sector growth</span> — weakest, only fires during bonus window.' },
-      { h: 'Event Cards vs Calendar Table', p: 'When a sector has a detected corporate event, it gets its own card with a specific rationale and named entry point. When the only trigger is the bonus window (same for all sectors), they collapse into one ranked table — avoids six identical cards saying the same thing.' },
-      { h: 'Entry Points', p: 'Each sector card specifies the channel (HR director, cooperative chairman, professional association, LinkedIn direct) and a specific approach note. The entry point is the difference between a cold call that gets forwarded to voicemail and a warm meeting that leads to a bulk presentation.' },
-      { h: 'Reachable Staff Count', p: 'Estimated Lagos-based staff earning ₦1.5M+/month — the minimum monthly income band for a Mixta product to be accessible on a 10-year payment plan. Lower-priority companies (₦500K–₦1.5M band) appear in a secondary row — they are not ignored, just ranked lower.' },
-      { h: 'Macro Status Strip', p: 'The coloured bar at the top of the page shows the current macro environment. Outreach into a bearish environment produces low conversion regardless of trigger. When the strip shows bearish, focus on closing existing pipeline rather than new outreach.' },
+      { h: 'Pipeline Counter', p: 'The strip at the top shows how many active corporate conversations are tracked against a target of 3–4. Open any company brief and click "Mark as Active Pipeline" to fill a slot. When you have fewer than 3 active conversations, the counter shows in amber.' },
+      { h: 'Three-Signal Model', p: 'A signal fires when: (1) macro sentiment is not in a sustained bearish period, AND either (2) a company-specific bonus window is active, OR (3) a corporate lifecycle event is detected in the news. News volume alone never triggers a signal.' },
+      { h: 'Company Conversation Brief', p: 'Click any company name to open its Conversation Brief. Shows: the specific contact to approach (named role), the recommended approach route, the recommended Mixta product, that company\'s specific bonus calendar month, this week\'s relevant market signal, and a constructed conversation opener.' },
+      { h: 'Company-Specific Bonus Calendar', p: 'Each company has its own bonus payment month based on its parent company\'s fiscal year. A calendar icon in the company name means that company\'s specific bonus window is active this month. PwC pays in July (UK fiscal year), KPMG in October, Zenith Bank in April (post-AGM).' },
+      { h: 'Snooze System', p: 'Inside the Company Brief, snooze a company for 30 or 90 days. Snoozed companies are greyed out in signal cards and will not re-appear until the snooze expires. Prevents signal fatigue from companies you\'ve already contacted.' },
+      { h: 'Macro Status Strip', p: 'The coloured bar at the top shows the current macro environment. When the strip shows bearish, focus on closing existing pipeline rather than new outreach.' },
     ]
   },
   innovation: {
     title: 'Innovation Hub — How to read this',
     sections: [
-      { h: 'What this section covers', p: 'Global intelligence on technologies, design concepts, business models, and regulatory frameworks redefining real estate worldwide. Deliberately not localised to Nigeria — this is worldwide signal curated for relevance to a developer building the future of Lagos. Nigerian market reports belong in the Briefing section.' },
-      { h: 'Selection criteria', p: 'Every article must pass three gates: (1) Novelty — launched, announced, or described as emerging (not a retrospective), (2) Application — directly applicable to residential/commercial development, construction, transaction, or financing, (3) Non-local — not a Nigerian market report or price analysis.' },
-      { h: 'Category filters', p: '<span class="help-tag">Proptech</span> — digital platforms and apps. <span class="help-tag">AI & Data</span> — machine learning, digital twins, algorithmic tools. <span class="help-tag">Sustainability</span> — green building, net zero, passive house. <span class="help-tag">Construction Tech</span> — modular, prefab, 3D printing. <span class="help-tag">New Financing</span> — tokenisation, fractional ownership, co-living models. <span class="help-tag">Urban Design</span> — mixed-use, transit-oriented, smart cities. <span class="help-tag">Policy</span> — regulatory innovations from other markets.' },
-      { h: 'Mixta Lens', p: 'The amber box on each card translates the global innovation into a specific strategic implication for Mixta — not generic commentary, but a named connection to Lakowe Crossings, Lakowe Annexe, or Lagos New Town where relevant. The lens is fixed per category; it updates as the category definitions evolve.' },
-      { h: 'How to use this section', p: 'Read weekly, not daily. Look for 2–3 ideas per session that are worth a deeper discussion with the commercial or development team. This is your forward scanning — a Mixta partner watching what the global industry is doing 3–5 years ahead of the Nigerian market.' },
+      { h: 'Real Estate Gate', p: 'Every article must contain at least one real estate term in its title or description. This blocks consumer technology, geopolitics, and general AI articles that match innovation keywords but have no real estate relevance.' },
+      { h: 'Category Filters', p: '<span class="help-tag">Proptech</span> — digital platforms. <span class="help-tag">AI & Data</span> — machine learning, digital twins. <span class="help-tag">Sustainability</span> — green building, net zero. <span class="help-tag">Construction Tech</span> — modular, prefab, 3D printing. <span class="help-tag">New Financing</span> — tokenisation, fractional ownership. <span class="help-tag">Urban Design</span> — mixed-use, smart cities. <span class="help-tag">Policy</span> — regulatory innovations from other markets.' },
+      { h: 'Mixta Lens', p: 'The callout on each card translates the global innovation into a specific strategic implication for Mixta — named connection to Lakowe Crossings, Lakowe Annexe, Lagos New Town, or Garden City Golf Annexe where relevant.' },
+      { h: 'How to use this section', p: 'Read weekly, not daily. Look for 2–3 ideas per session worth a deeper discussion with the commercial or development team.' },
     ]
   },
   library: {
     title: 'Library — How to read this',
     sections: [
-      { h: 'Executive Briefings', p: 'Full AI-generated briefings from every pipeline run, stored permanently. Each briefing contains the strategic synthesis, themes, why-it-matters commentary, and recommendations generated that day. Use this to track how specific narratives evolved over weeks.' },
-      { h: 'Source Articles', p: 'Every article that passed the 48-hour recency filter and real estate relevance gate, with AI-generated summaries, sentiment tags, and market impact scores. Retained for 365 days. Use as evidence when preparing market presentations.' },
-      { h: 'Innovation Archive', p: 'All global proptech, sustainability, AI, construction tech, and financing model articles fetched by the Phase 8.5 innovation lane. Grouped by category and searchable by title, source, or keyword. This is a permanent reference library of disruption signals — separate from the Nigerian real estate briefing feed.' },
-      { h: 'Search', p: 'Searches across titles, dates, and AI summaries simultaneously. Use keywords like "Ibeju-Lekki", "mortgage", "affordable housing", or "interest rate" to pull relevant historic coverage. Combine keywords with date navigation for precise research.' },
+      { h: 'Executive Briefings', p: 'Full AI-generated briefings from every pipeline run, stored permanently. Click any entry to read the full briefing including themes, why-it-matters commentary, and recommendations.' },
+      { h: 'Source Articles', p: 'Every article that passed the 48-hour recency filter and real estate relevance gate. Retained for 365 days. Use as evidence when preparing market presentations.' },
+      { h: 'Innovation Archive', p: 'All innovation articles organised by pipeline run date. Click any entry to expand the full article list for that day, grouped by category. A permanent record separate from the rolling Innovation Hub view.' },
+      { h: 'Search', p: 'Searches across titles, dates, and AI summaries simultaneously. Use keywords like "Ibeju-Lekki", "mortgage", "affordable housing", or "CBN" to pull relevant historic coverage.' },
+    ]
+  },
+  reports: {
+    title: 'Reports — How to read this',
+    sections: [
+      { h: 'Live Macro Indicators', p: 'The panel at the top shows live macro figures from the World Bank API (GDP, inflation, remittances — fetched every Monday), the CBN exchange rate page (weekly scrape), and NBS figures entered in the Config tab. Every figure shows its source and fetch date. These are injected into every AI report prompt.' },
+      { h: 'Four-Phase Report Generation', p: 'Each report is generated in four sequential AI calls. Phase 1: market conditions integrating macro data. Phase 2: theme analysis with evidence from daily briefings. Phase 3: Mixta-specific implications per project. Phase 4: executive summary written last from all generated content. If one phase fails, the report completes with a placeholder for that section.' },
+      { h: 'Monthly vs Quarterly vs Yearly', p: 'Monthly reports analyse individual briefing days. Quarterly reports identify which monthly themes became persistent structural trends. Yearly reports identify the 3–5 defining structural changes in the market, comparing year-start to year-end.' },
+      { h: 'Theme Continuity', p: '<span class="help-tag">New</span> = first appearance this period. <span class="help-tag">Persisting</span> = appeared in 3+ prior briefing runs. <span class="help-tag">Fading</span> = appeared in memory but declining. A sourced quantitative anchor appears below each theme analysis.' },
+      { h: 'Implications for Mixta', p: 'Every implication names a specific Mixta project and states a specific action or decision. Generic advice is explicitly rejected by the AI prompt.' },
+      { h: 'Downloading Reports', p: 'PDF opens a print-ready page and triggers the browser print dialog. TXT downloads immediately as a plain-text file. Both formats are available from the saved report cards without opening the report first.' },
+      { h: 'Updating NBS Data', p: 'Go to Config (URL + ?admin=true) and scroll to "Update NBS / CBN Data". Paste the latest CPI, food inflation, core inflation, real estate GDP growth, and CBN MPR from nigerianstat.gov.ng. Click Save & Apply — the macro panel updates immediately.' },
     ]
   },
 };
+
 
 // Opens the help panel pre-loaded with a specific section's content
 function openHelpFor(key) {
@@ -5014,7 +5115,7 @@ function buildPricingGroupsFromListings(listings) {
     if (!l.priceValue) continue;
     const loc  = l.location      || 'Unspecified';
     const type = l.propertyType  || 'Residential';
-    // FIX: Land/Plot listings don't have a bedroom count by nature (not a
+    // FIX: Land/Plot listings don\'t have a bedroom count by nature (not a
     // data-quality failure), but previously fell through to the same
     // 'Unspecified' label used when bedroom extraction genuinely failed on
     // a residential listing - the two got merged into one indistinguishable
@@ -5114,7 +5215,7 @@ function setPricingBedroom(val, el) {
   el.classList.add('active'); applyPricingFilters();
 }
 function _getTodayListings() {
-  // Returns today's listings from competitiveCache regardless of schema version.
+  // Returns today\'s listings from competitiveCache regardless of schema version.
   if (!competitiveCache) return [];
   if (Array.isArray(competitiveCache.dailySnapshots) && competitiveCache.dailySnapshots.length) {
     const latest = competitiveCache.dailySnapshots[competitiveCache.dailySnapshots.length - 1];
@@ -5264,7 +5365,7 @@ function renderPricingScatter(allListings) {
   });
 
   // Plot Mixta's own entered prices as a distinct star marker on the same
-  // group/scale system, so it's immediately visible where Mixta sits
+  // group/scale system, so it\'s immediately visible where Mixta sits
   // relative to the scraped competitive landscape. Only plots entries
   // whose price falls within the current Y range and whose group exists
   // in the current filtered view - entries outside both are skipped
@@ -5362,7 +5463,7 @@ function showScatterTooltip(evt, idx) {
     : `<div class="tt-meta">${esc(l.source || 'Unknown source')} &middot; ${esc(l.realtorName || 'Realtor not listed')}</div>`;
   const dom = _domByKey ? _domByKey[_listingIdentKey(l)] : 0;
   const staleNote = dom >= 45
-    ? `<div class="tt-meta" style="color:var(--maroon);font-weight:700;">⚠ ${dom} days on market — stale</div>`
+    ? `<div class="tt-meta" style="color:var(--maroon);font-weight:700;">${icon('triangle-alert')} ${dom} days on market — stale</div>`
     : (dom > 0 ? `<div class="tt-meta">${dom} days on market</div>` : '');
   tt.innerHTML = `
     <span class="tt-title">${esc(l.title || 'Untitled listing')}</span>
@@ -5466,7 +5567,7 @@ function starPath(cx, cy, outerR, innerR) {
 // Stored at db.ref('mixtaPricing'), same Firebase Realtime Database already
 // used for the Config tab's watchlist/sources - cross-device, no separate
 // backend needed. Falls back to an in-memory-only list (with a clear
-// warning) if Firebase isn't configured, so the feature still works for a
+// warning) if Firebase isn\'t configured, so the feature still works for a
 // single session even without the database connection.
 
 async function loadMixtaPrices() {
@@ -5493,7 +5594,7 @@ function populateMixtaLocationOptions() {
 
 // SQM bands for Land/Plot - used when property type is Land/Plot.
 // These are the options shown in the bedroom dropdown replacement.
-// Competitor listings don't yet carry sqm data (scraper doesn't extract it),
+// Competitor listings don\'t yet carry sqm data (scraper doesn\'t extract it),
 // so bands only apply to manually entered Mixta land entries for now.
 // bedroomLabel is reused as the grouping field - Land/Plot entries get a
 // band label instead of a bedroom count, which sorts after residential counts
@@ -5623,7 +5724,7 @@ function refreshAllPricingViews() {
  * Bar chart: one bar per (location + bedroom) group, showing the AVERAGE
  * price for that group, plus a distinct Mixta star marker overlaid at
  * Mixta's actual entered price for any group where Mixta has an entry -
- * so it's visually obvious whether Mixta sits above, below, or in line
+ * so it\'s visually obvious whether Mixta sits above, below, or in line
  * with the competitive average for that exact location/bedroom combo.
  */
 /**
@@ -5696,7 +5797,7 @@ function renderPricingBarChart(allListings) {
       // tooltip, and click-detail all correctly identify it as Mixta's own
       // entry rather than a scraped competitor listing. mixtaId is reused
       // across the multiple group copies of the same entry (intentional -
-      // it's the same underlying entry shown in several places).
+      // it\'s the same underlying entry shown in several places).
       groupMap[k].push({
         title: m.label, priceValue: m.priceValue, priceFormatted: formatNaira(m.priceValue),
         source: 'Mixta Africa', location: m.location, bedroomLabel: m.bedroomLabel,
@@ -6109,28 +6210,200 @@ function toggleCollapsible(bodyId, toggleEl) {
   }
 }
 
-// ── FOCUS MODE — Morning Brief ─────────────────────────────────────────────
-// Switches the dashboard between Reference Mode (everything visible) and
-// Morning Brief Mode (only primary decision content, secondary collapses).
-// State is persisted in sessionStorage so it survives tab navigation.
-let _focusModeActive = sessionStorage.getItem('focusMode') === 'true';
+// ── FOCUS MODE — EXECUTIVE VIEW ──────────────────────────────────────────────
+// A full-screen overlay that answers one question in under 60 seconds:
+// what happened in the market today and what do I need to act on?
+//
+// Three sections only:
+// 1. Today in 30 seconds — 3 declarative bullets from the executive summary
+//    and top themes. Each bullet names a number, policy, or named entity.
+// 2. Act on this — up to 3 actions extracted from why_it_matters_to_mixta
+//    and recommendation fields, ordered by market_impact_severity.
+//    Each action names a Mixta project and a specific decision.
+// 3. Market posture — one sentence: macro environment + implication for
+//    pricing and outreach. Derived from the 7-day sentiment score.
+//
+// ESC or the Exit button dismisses. The pill stays visible always.
 
-function _applyFocusMode(active) {
-  const pill = document.getElementById('focusModePill');
-  const label = document.getElementById('focusPillLabel');
-  document.body.classList.toggle('focus-mode', active);
-  if (pill) pill.classList.toggle('active', active);
-  if (label) label.textContent = active ? 'Exit Brief' : 'Morning Brief';
-  sessionStorage.setItem('focusMode', active);
-}
+let _focusModeActive = false;
 
 function toggleFocusMode() {
   _focusModeActive = !_focusModeActive;
-  _applyFocusMode(_focusModeActive);
+  const pill   = document.getElementById('focusModePill');
+  const label  = document.getElementById('focusPillLabel');
+  const overlay = document.getElementById('focusModeOverlay');
+
+  if (_focusModeActive) {
+    pill?.classList.add('active');
+    if (label) label.textContent = 'Exit Brief';
+    _renderFocusOverlay();
+    overlay?.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    overlay?.scrollTo(0, 0);
+  } else {
+    pill?.classList.remove('active');
+    if (label) label.textContent = 'Executive Brief';
+    overlay?.classList.remove('active');
+    document.body.style.overflow = '';
+    // Clean up ESC listener
+    if (overlay?._escHandler) {
+      document.removeEventListener('keydown', overlay._escHandler);
+      delete overlay._escHandler;
+    }
+  }
 }
 
-// Restore state on load (after a brief tick so DOM is ready)
-if (_focusModeActive) requestAnimationFrame(() => _applyFocusMode(true));
+function _renderFocusOverlay() {
+  const overlay = document.getElementById('focusModeOverlay');
+  if (!overlay) return;
+
+  const b = window._lastBriefingData || loadedBriefingCache;
+  const trendHistory = window._lastTrendHistory;
+  const today = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  if (!b || !b.themes?.length) {
+    overlay.innerHTML = `
+      <div class="focus-shell">
+        <div class="focus-header">
+          <div class="focus-wordmark">Mixta Africa · Executive Brief</div>
+          <button class="focus-exit" onclick="toggleFocusMode()">${icon('close', 14)} Exit</button>
+        </div>
+        <div style="font-family:var(--font-body);font-size:16px;color:var(--ink-soft);padding:48px 0;">
+          No briefing data available yet. The pipeline runs daily at 08:00 WAT.
+        </div>
+      </div>`;
+    return;
+  }
+
+  // ── Section 1: Today in 30 seconds ───────────────────────────────────────
+  // Extract 3 bullets from executive_summary (paragraph split) and top theme
+  // what_happened fields. Each bullet must be declarative and specific.
+  const bullets = [];
+  const summaryParagraphs = (b.executive_summary || '')
+    .split(/\n\n|\. (?=[A-Z])/)
+    .map(s => s.trim())
+    .filter(s => s.length > 30 && s.length < 300);
+
+  // Take first 2 paragraphs from executive summary
+  summaryParagraphs.slice(0, 2).forEach(p => bullets.push(p.replace(/\.$/, '') + '.'));
+
+  // Take what_happened from the highest-severity theme not already covered
+  const topTheme = b.themes.find(t =>
+    t.what_happened &&
+    !bullets.some(bl => bl.toLowerCase().includes((t.label || '').toLowerCase().slice(0, 10)))
+  );
+  if (topTheme?.what_happened) bullets.push(topTheme.what_happened.replace(/\.$/, '') + '.');
+
+  // Ensure exactly 3 bullets
+  while (bullets.length < 3 && b.themes[bullets.length]) {
+    const t = b.themes[bullets.length];
+    if (t.what_happened) bullets.push(t.what_happened.replace(/\.$/, '') + '.');
+  }
+
+  const bulletsHtml = bullets.slice(0, 3).map((text, i) => `
+    <div class="focus-bullet">
+      <span class="focus-bullet-num">${String(i + 1).padStart(2, '0')}</span>
+      <span class="focus-bullet-text">${esc(text)}</span>
+    </div>`).join('');
+
+  // ── Section 2: Act on this ───────────────────────────────────────────────
+  // Extract actions from recommendation + why_it_matters_to_mixta.
+  // Priority order: critical → high → medium. Cap at 3.
+  // Each must name a Mixta project. Skip generic ones.
+  const MIXTA_PROJECTS = ['Lakowe Crossings', 'Lakowe Annexe', 'Lagos New Town', 'Garden City Golf Annexe', 'LNT'];
+  const severityOrder = { 'critical': 0, 'high': 1, 'medium': 2, 'low': 3 };
+
+  const actionThemes = [...b.themes]
+    .sort((a, b) => (severityOrder[a.market_impact_severity] ?? 9) - (severityOrder[b.market_impact_severity] ?? 9))
+    .filter(t => t.recommendation || t.why_it_matters_to_mixta);
+
+  const actions = [];
+  for (const t of actionThemes) {
+    if (actions.length >= 3) break;
+    const rec = t.recommendation || t.why_it_matters_to_mixta || '';
+    if (!rec || rec.length < 20) continue;
+    const namedProject = MIXTA_PROJECTS.find(p => rec.includes(p) || (t.why_it_matters_to_mixta || '').includes(p));
+    actions.push({
+      project: namedProject || 'Mixta Portfolio',
+      text: rec.slice(0, 280) + (rec.length > 280 ? '…' : ''),
+      theme: t.label,
+      severity: t.market_impact_severity || 'medium',
+    });
+  }
+
+  const actionsHtml = actions.length
+    ? actions.map(a => `
+      <div class="focus-action-card">
+        <div class="focus-action-project">${esc(a.project)} · ${esc(a.severity)} priority</div>
+        <div class="focus-action-text">${esc(a.text)}</div>
+        <div class="focus-action-source">From: ${esc(a.theme)}</div>
+      </div>`).join('')
+    : `<div class="focus-no-actions">No specific actions flagged today — review the full briefing for strategic context.</div>`;
+
+  // ── Section 3: Market posture ────────────────────────────────────────────
+  // Single sentence derived from the 7-day sentiment score.
+  const days = trendHistory?.days || [];
+  const last7 = days.slice(-7);
+  let macroScore = 0;
+  for (const d of last7) {
+    const bk = d.sentimentBreakdown || {};
+    const total = (bk.bullish||0) + (bk.bearish||0) + (bk.neutral||0);
+    if (total > 0) macroScore += ((bk.bullish||0) - (bk.bearish||0)) / total;
+  }
+  macroScore = last7.length ? macroScore / last7.length : 0;
+
+  let postureClass, postureLabel, postureText;
+  if (macroScore > 0.15) {
+    postureClass = 'bullish';
+    postureLabel = 'Bullish';
+    postureText = 'The 7-day sentiment trend is positive. Hold or test upward pricing adjustments on active listings. This is the right environment for outreach to corporate targets — conversion rates are higher when buyers feel confident about the market.';
+  } else if (macroScore > -0.1) {
+    postureClass = 'neutral';
+    postureLabel = 'Neutral';
+    postureText = 'The market sentiment is balanced this week. Maintain current pricing positions and focus outreach on companies with event-triggered signals rather than calendar-only windows. Pipeline management is the priority, not new outreach.';
+  } else {
+    postureClass = 'bearish';
+    postureLabel = 'Bearish';
+    postureText = 'Sentiment has turned negative over the last 7 days. Pause new outreach. Focus on closing existing conversations before they go cold. Review whether active listings need to be adjusted to match where deals are actually clearing.';
+  }
+
+  const articleCount = (b.themes || []).reduce((n, t) => n + (t.sourceArticles?.length || 0), 0);
+
+  overlay.innerHTML = `
+    <div class="focus-shell">
+      <div class="focus-header">
+        <div>
+          <div class="focus-wordmark">Mixta Africa · Executive Brief</div>
+          <div class="focus-date-line">${today}</div>
+        </div>
+        <button class="focus-exit" onclick="toggleFocusMode()">${icon('close', 14)} Exit Brief</button>
+      </div>
+
+      <div class="focus-section-label">Today in 30 seconds</div>
+      <div class="focus-bullets">${bulletsHtml}</div>
+
+      <div class="focus-section-label">Act on this</div>
+      <div class="focus-actions">${actionsHtml}</div>
+
+      <div class="focus-section-label">Market posture</div>
+      <div class="focus-posture">
+        <div class="focus-posture-dot ${postureClass}"></div>
+        <div class="focus-posture-body">
+          <div class="focus-posture-label ${postureClass}">${postureLabel}</div>
+          <div class="focus-posture-text">${postureText}</div>
+        </div>
+      </div>
+
+      <div class="focus-footer">
+        <span>${b.themes?.length || 0} themes · ${articleCount} articles analysed</span>
+        <button class="focus-view-full" onclick="toggleFocusMode()">View full dashboard →</button>
+      </div>
+    </div>`;
+
+  // ESC to dismiss
+  overlay._escHandler = (e) => { if (e.key === 'Escape') toggleFocusMode(); };
+  document.addEventListener('keydown', overlay._escHandler);
+}
 
 // ── MACRO INDICATORS ─────────────────────────────────────────────────────────
 // Authoritative quantitative context injected into every report prompt.
@@ -6868,7 +7141,7 @@ function openReport(type, period) {
       <div class="report-theme-body">${esc(t.analysis || '')}</div>
       ${t.quantitative_anchor && !t.quantitative_anchor.includes('No direct') ? `
         <div style="background:rgba(122,31,43,0.04);border:1px solid var(--maroon-line);border-radius:var(--radius);padding:8px 14px;margin-top:10px;font-family:var(--font-mono);font-size:11px;color:var(--maroon);">
-          ◎ ${esc(t.quantitative_anchor)}
+          ${icon('bar-chart', 12)} ${esc(t.quantitative_anchor)}
         </div>` : ''}
       ${t.trajectory ? `<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);">${esc(t.trajectory)}</div>` : ''}
     </div>`).join('');
@@ -7070,7 +7343,7 @@ function _initReportsTab() {
 // ── OUTREACH PIPELINE + SNOOZE SYSTEM ────────────────────────────────────────
 // Firebase-backed per-company state: 'active' | 'snoozed:YYYY-MM-DD' | null
 // Active = company is in a live conversation (counts toward pipeline target)
-// Snoozed = signal suppressed until date (won't appear in signal cards)
+// Snoozed = signal suppressed until date (won\'t appear in signal cards)
 // Both are written to Firebase ref: outreach/companies/{companyKey}
 
 const _PIPELINE_TARGET = 4;
@@ -7261,12 +7534,192 @@ const ENTRY_POINTS_MAP = {
   'International Organisations & NGOs': { route: 'World Bank and UNDP staff are high-quality individual buyers. Direct LinkedIn outreach to senior programme officers and operations managers. Avoid HR channels — expat and senior local staff make personal decisions independently.' },
 };
 
+// ══════════════════════════════════════════════════════════════════════════
+// SVG LINE ICON LIBRARY
+// All icons are 16×16 viewBox, stroke-based (no fill), 1.5px stroke-width.
+// Use: icon('chevron-down') → '<span class="icon">...</span>'
+// ══════════════════════════════════════════════════════════════════════════
+const ICONS = {
+  // Navigation / UI
+  'chevron-down':    '<polyline points="4,6 8,10 12,6"/>',
+  'chevron-right':   '<polyline points="6,4 10,8 6,12"/>',
+  'chevron-left':    '<polyline points="10,4 6,8 10,12"/>',
+  'chevron-up':      '<polyline points="4,10 8,6 12,10"/>',
+  'arrow-right':     '<line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>',
+  'arrow-left':      '<line x1="13" y1="8" x2="3" y2="8"/><polyline points="7,4 3,8 7,12"/>',
+  'arrow-up':        '<line x1="8" y1="13" x2="8" y2="3"/><polyline points="4,7 8,3 12,7"/>',
+  'arrow-down':      '<line x1="8" y1="3" x2="8" y2="13"/><polyline points="4,9 8,13 12,9"/>',
+  'close':           '<line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/>',
+  'menu':            '<line x1="3" y1="5" x2="13" y2="5"/><line x1="3" y1="8" x2="13" y2="8"/><line x1="3" y1="11" x2="13" y2="11"/>',
+  'external-link':   '<path d="M7 3H3v10h10V9"/><polyline points="10,3 13,3 13,6"/><line x1="7" y1="9" x2="13" y2="3"/>',
+
+  // Status / Signals
+  'circle-check':    '<circle cx="8" cy="8" r="5"/><polyline points="5.5,8 7,9.5 10.5,6"/>',
+  'circle-dot':      '<circle cx="8" cy="8" r="5"/><circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none"/>',
+  'circle-alert':    '<circle cx="8" cy="8" r="5"/><line x1="8" y1="5.5" x2="8" y2="8.5"/><circle cx="8" cy="10.5" r="0.75" fill="currentColor" stroke="none"/>',
+  'triangle-alert':  '<path d="M8 3L14 13H2L8 3z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="11.5" r="0.75" fill="currentColor" stroke="none"/>',
+  'signal-strong':   '<line x1="3" y1="13" x2="3" y2="9"/><line x1="6.5" y1="13" x2="6.5" y2="6"/><line x1="10" y1="13" x2="10" y2="3"/><line x1="13.5" y1="13" x2="13.5" y2="1"/>',
+  'signal-medium':   '<line x1="3" y1="13" x2="3" y2="9"/><line x1="6.5" y1="13" x2="6.5" y2="6"/><line x1="10" y1="13" x2="10" y2="3" stroke-opacity="0.3"/><line x1="13.5" y1="13" x2="13.5" y2="1" stroke-opacity="0.3"/>',
+  'signal-weak':     '<line x1="3" y1="13" x2="3" y2="9"/><line x1="6.5" y1="13" x2="6.5" y2="6" stroke-opacity="0.3"/><line x1="10" y1="13" x2="10" y2="3" stroke-opacity="0.3"/><line x1="13.5" y1="13" x2="13.5" y2="1" stroke-opacity="0.3"/>',
+
+  // Market / Finance
+  'trending-up':     '<polyline points="3,11 7,7 10,9.5 14,4"/><polyline points="11,4 14,4 14,7"/>',
+  'trending-down':   '<polyline points="3,5 7,9 10,6.5 14,12"/><polyline points="11,12 14,12 14,9"/>',
+  'trending-flat':   '<line x1="3" y1="8" x2="13" y2="8"/><circle cx="3" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="13" cy="8" r="1" fill="currentColor" stroke="none"/>',
+  'bar-chart':       '<rect x="3" y="9" width="2.5" height="4"/><rect x="6.75" y="6" width="2.5" height="7"/><rect x="10.5" y="3" width="2.5" height="10"/>',
+  'dollar':          '<line x1="8" y1="2" x2="8" y2="14"/><path d="M10.5 4.5H6.75a2.25 2.25 0 000 4.5h2.5a2.25 2.25 0 010 4.5H5.5"/>',
+  'building':        '<rect x="3" y="4" width="10" height="9"/><rect x="5.5" y="7" width="2" height="2"/><rect x="8.5" y="7" width="2" height="2"/><rect x="6" y="9" width="4" height="4"/>',
+  'map-pin':         '<circle cx="8" cy="7" r="2.5"/><path d="M8 2a5 5 0 015 5c0 3.5-5 7-5 7S3 10.5 3 7a5 5 0 015-5z"/>',
+  'calendar':        '<rect x="3" y="4" width="10" height="9" rx="1"/><line x1="3" y1="7" x2="13" y2="7"/><line x1="6" y1="2" x2="6" y2="5"/><line x1="10" y1="2" x2="10" y2="5"/>',
+  'clock':           '<circle cx="8" cy="8" r="5"/><polyline points="8,5 8,8 10.5,9.5"/>',
+
+  // Actions / Tools
+  'download':        '<path d="M8 3v7"/><polyline points="5,7 8,10 11,7"/><line x1="3" y1="13" x2="13" y2="13"/>',
+  'upload':          '<path d="M8 10V3"/><polyline points="5,6 8,3 11,6"/><line x1="3" y1="13" x2="13" y2="13"/>',
+  'search':          '<circle cx="7" cy="7" r="4"/><line x1="10.5" y1="10.5" x2="13" y2="13"/>',
+  'filter':          '<line x1="3" y1="5" x2="13" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="7" y1="11" x2="9" y2="11"/>',
+  'settings':        '<circle cx="8" cy="8" r="2.5"/><path d="M8 2v1.5M8 12.5V14M2 8h1.5M12.5 8H14M3.5 3.5l1 1M11.5 11.5l1 1M12.5 3.5l-1 1M4.5 11.5l-1 1"/>',
+  'refresh':         '<path d="M13 8A5 5 0 113.5 5.5"/><polyline points="3,3 3.5,5.5 6,5"/>',
+  'eye':             '<path d="M1.5 8S4 4 8 4s6.5 4 6.5 4S14 12 8 12 1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/>',
+  'info':            '<circle cx="8" cy="8" r="5.5"/><line x1="8" y1="7" x2="8" y2="11"/><circle cx="8" cy="5.5" r="0.75" fill="currentColor" stroke="none"/>',
+  'edit':            '<path d="M11 3l2 2-7 7H4v-2l7-7z"/><line x1="9" y1="5" x2="11" y2="7"/>',
+  'trash':           '<line x1="4" y1="5" x2="12" y2="5"/><path d="M6 5V4h4v1"/><path d="M5 5l.75 8h4.5L11 5"/>',
+  'plus':            '<line x1="8" y1="4" x2="8" y2="12"/><line x1="4" y1="8" x2="12" y2="8"/>',
+  'minus':           '<line x1="4" y1="8" x2="12" y2="8"/>',
+  'check':           '<polyline points="3,8 6.5,11.5 13,5"/>',
+  'snooze':          '<circle cx="8" cy="9" r="4.5"/><line x1="8" y1="2" x2="8" y2="4.5"/><line x1="5.5" y1="2.5" x2="10.5" y2="2.5"/><polyline points="6,7 10,7 6,11 10,11"/>',
+  'pipeline':        '<circle cx="4" cy="8" r="2"/><circle cx="8" cy="8" r="2"/><circle cx="12" cy="8" r="2"/><line x1="6" y1="8" x2="6" y2="8"/><line x1="10" y1="8" x2="10" y2="8"/>',
+  'briefcase':       '<rect x="3" y="6" width="10" height="7" rx="1"/><path d="M6 6V4.5a2 2 0 014 0V6"/><line x1="3" y1="9" x2="13" y2="9"/>',
+
+  // Sentiment
+  'bullish':         '<polyline points="3,11 7,6 10,8.5 14,3"/><polyline points="10,3 14,3 14,7"/>',
+  'bearish':         '<polyline points="3,5 7,10 10,7.5 14,13"/><polyline points="10,13 14,13 14,9"/>',
+  'neutral':         '<line x1="3" y1="8" x2="13" y2="8"/><line x1="5" y1="6" x2="5" y2="10"/><line x1="11" y1="6" x2="11" y2="10"/>',
+
+  // Cross-sector / map
+  'diamond':         '<polygon points="8,3 13,8 8,13 3,8"/>',
+  'compass':         '<circle cx="8" cy="8" r="5.5"/><polygon points="8,4.5 9.5,8 8,11.5 6.5,8" fill="none"/><line x1="8" y1="3" x2="8" y2="2"/><line x1="8" y1="13" x2="8" y2="14"/><line x1="3" y1="8" x2="2" y2="8"/><line x1="13" y1="8" x2="14" y2="8"/>',
+  'layers':          '<polygon points="8,2 14,5.5 8,9 2,5.5"/><polyline points="2,8.5 8,12 14,8.5"/><polyline points="2,11.5 8,15 14,11.5"/>',
+};
+
+function icon(name, size = 16, extraClass = '') {
+  const paths = ICONS[name] || ICONS['circle-dot'];
+  return `<span class="icon${extraClass ? ' ' + extraClass : ''}" style="${size !== 16 ? `width:${size}px;height:${size}px;` : ''}"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">${paths}</svg></span>`;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// ACCORDION ENGINE
+// Converts every .section-divider into an accordion header automatically.
+// State persists in sessionStorage keyed by a stable section ID.
+// Sections can be excluded from accordion behaviour by adding
+// data-no-accordion="true" to the .section-divider element.
+// ══════════════════════════════════════════════════════════════════════════
+function _initAccordions() {
+  const dividers = document.querySelectorAll('.section-divider:not([data-no-accordion])');
+
+  dividers.forEach((divider, idx) => {
+    // Give the divider a stable key for sessionStorage
+    const view = divider.closest('.view');
+    const viewId = view ? view.id : 'global';
+    const headingText = (divider.querySelector('h2')?.textContent || '').replace(/\s+/g, '_').toLowerCase().slice(0, 40);
+    const accKey = `acc__${viewId}__${headingText || idx}`;
+    divider.dataset.accKey = accKey;
+
+    // Inject chevron if not already present
+    if (!divider.querySelector('.acc-chevron')) {
+      const chevron = document.createElement('span');
+      chevron.className = 'acc-chevron';
+      chevron.innerHTML = icon('chevron-down', 14);
+      divider.appendChild(chevron);
+    }
+
+    // Collect the accordion body — everything between this divider and the
+    // next .section-divider (or end of view), excluding other controls
+    // already embedded in the divider itself.
+    const body = _getAccordionBody(divider);
+
+    if (!body) return; // nothing to collapse
+
+    // Restore persisted state
+    const savedCollapsed = sessionStorage.getItem(accKey) === 'collapsed';
+    if (savedCollapsed) {
+      divider.classList.add('acc-collapsed');
+      body.classList.add('collapsed');
+      body.style.maxHeight = '0';
+    }
+
+    // Click handler
+    divider.addEventListener('click', (e) => {
+      // Don't collapse if clicking a button/select inside the divider
+      if (e.target.closest('button, select, a, input')) return;
+      _toggleAccordion(divider, body, accKey);
+    });
+  });
+}
+
+function _getAccordionBody(divider) {
+  // Wrap the siblings between this divider and the next into an acc-body div
+  // if not already wrapped.
+  if (divider.nextElementSibling?.classList.contains('acc-body')) {
+    return divider.nextElementSibling;
+  }
+
+  const siblings = [];
+  let el = divider.nextElementSibling;
+  while (el && !el.classList.contains('section-divider')) {
+    siblings.push(el);
+    el = el.nextElementSibling;
+  }
+
+  if (!siblings.length) return null;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'acc-body';
+  divider.parentNode.insertBefore(wrapper, siblings[0]);
+  siblings.forEach(s => wrapper.appendChild(s));
+  return wrapper;
+}
+
+function _toggleAccordion(divider, body, accKey) {
+  const isCollapsed = body.classList.contains('collapsed');
+  if (isCollapsed) {
+    body.classList.remove('collapsed');
+    body.style.maxHeight = body.scrollHeight + 'px';
+    setTimeout(() => { if (body.style.maxHeight !== '0px') body.style.maxHeight = ''; }, 360);
+    divider.classList.remove('acc-collapsed');
+    sessionStorage.setItem(accKey, 'open');
+  } else {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    requestAnimationFrame(() => {
+      body.classList.add('collapsed');
+      body.style.maxHeight = '0';
+    });
+    divider.classList.add('acc-collapsed');
+    sessionStorage.setItem(accKey, 'collapsed');
+  }
+}
+
+// Expand a specific section programmatically (e.g. when navigating to a tab)
+function expandSection(sectionId, headingText) {
+  const view = document.getElementById(sectionId);
+  if (!view) return;
+  const dividers = view.querySelectorAll('.section-divider[data-acc-key]');
+  dividers.forEach(d => {
+    if (!headingText || (d.querySelector('h2')?.textContent || '').toLowerCase().includes(headingText.toLowerCase())) {
+      const body = d.nextElementSibling;
+      if (body?.classList.contains('acc-body') && body.classList.contains('collapsed')) {
+        _toggleAccordion(d, body, d.dataset.accKey);
+      }
+    }
+  });
+}
+
 // ── BOOTSTRAP ─────────────────────────────────────────────────────────
 (async function boot() {
   initFirebase();
 
   // Load competitive data: prefer competitive-prices.json (daily snapshot archive)
-  // but fall back to competitive-listings.json if the archive doesn't exist yet.
+  // but fall back to competitive-listings.json if the archive doesn\'t exist yet.
   // Once the pipeline has run with the new competitive-pipeline.js, prices.json
   // will exist and this function will use it automatically on every subsequent load.
   async function loadCompetitiveData() {
@@ -7359,6 +7812,10 @@ const ENTRY_POINTS_MAP = {
 
   await loadConfigState();
   renderConfig();
+
+  // ── Initialise accordion framework after all sections are rendered ─────────
+  // Small defer so DOM is fully settled from async renders above
+  setTimeout(_initAccordions, 120);
 })();
 </script>
   <!-- TREND CHART TOOLTIP -->
@@ -7369,10 +7826,13 @@ const ENTRY_POINTS_MAP = {
     <div class="tt-count"></div>
   </div>
 
+  <!-- FOCUS MODE OVERLAY — full screen executive view -->
+  <div id="focusModeOverlay" role="dialog" aria-modal="true" aria-label="Executive Focus View"></div>
+
   <!-- FOCUS MODE PILL — floating, always accessible, above help button -->
-  <div id="focusModePill" onclick="toggleFocusMode()" title="Switch to Morning Brief — shows only decision-relevant content">
+  <div id="focusModePill" onclick="toggleFocusMode()" title="Open Executive Brief — what happened today and what to act on">
     <span class="fmp-dot"></span>
-    <span class="fmp-label" id="focusPillLabel">Morning Brief</span>
+    <span class="fmp-label" id="focusPillLabel">Executive Brief</span>
   </div>
 
   <!-- HELP WIDGET — floating context-aware explainer -->

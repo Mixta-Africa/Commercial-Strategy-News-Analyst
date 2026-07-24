@@ -1,89 +1,92 @@
 {
   "7day": {
-    "articleCount": 7,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 2,
-      "bullish": 5
+      "bullish": 8,
+      "neutral": 5,
+      "bearish": 2
     },
     "topTopics": [
+      {
+        "topic": "affordable housing",
+        "count": 3
+      },
       {
         "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "affordable housing",
+        "topic": "regulatory framework",
         "count": 2
       },
       {
-        "topic": "real estate investment",
+        "topic": "housing sector reform",
         "count": 2
       },
       {
-        "topic": "property disputes",
-        "count": 1
-      },
-      {
-        "topic": "government actions",
+        "topic": "court-ordered land recovery",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 7,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 2,
-      "bullish": 5
+      "bullish": 8,
+      "neutral": 5,
+      "bearish": 2
     },
     "topTopics": [
+      {
+        "topic": "affordable housing",
+        "count": 3
+      },
       {
         "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "affordable housing",
+        "topic": "regulatory framework",
         "count": 2
       },
       {
-        "topic": "real estate investment",
+        "topic": "housing sector reform",
         "count": 2
       },
       {
-        "topic": "property disputes",
-        "count": 1
-      },
-      {
-        "topic": "government actions",
+        "topic": "court-ordered land recovery",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 7,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 2,
-      "bullish": 5
+      "bullish": 8,
+      "neutral": 5,
+      "bearish": 2
     },
     "topTopics": [
+      {
+        "topic": "affordable housing",
+        "count": 3
+      },
       {
         "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "affordable housing",
+        "topic": "regulatory framework",
         "count": 2
       },
       {
-        "topic": "real estate investment",
+        "topic": "housing sector reform",
         "count": 2
       },
       {
-        "topic": "property disputes",
-        "count": 1
-      },
-      {
-        "topic": "government actions",
+        "topic": "court-ordered land recovery",
         "count": 1
       }
     ],

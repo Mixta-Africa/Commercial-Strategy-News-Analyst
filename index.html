@@ -7683,9 +7683,14 @@ function _getAccordionBody(divider) {
 function _toggleAccordion(divider, body, accKey) {
   const isCollapsed = body.classList.contains('collapsed');
   if (isCollapsed) {
+    // Remove collapsed FIRST so the !important on max-height: 0 is gone,
+    // then measure scrollHeight (now readable) and animate from 0 → full height.
     body.classList.remove('collapsed');
-    body.style.maxHeight = body.scrollHeight + 'px';
-    setTimeout(() => { if (body.style.maxHeight !== '0px') body.style.maxHeight = ''; }, 360);
+    body.style.maxHeight = '0px'; // start from 0 so the transition plays
+    requestAnimationFrame(() => {
+      body.style.maxHeight = body.scrollHeight + 'px';
+      setTimeout(() => { body.style.maxHeight = ''; }, 360);
+    });
     divider.classList.remove('acc-collapsed');
     sessionStorage.setItem(accKey, 'open');
   } else {

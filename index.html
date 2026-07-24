@@ -353,7 +353,75 @@ button, select, input { font-family: inherit; }
 .pos-market-price { color: var(--ink-soft); font-size: 12px; }
 .pos-empty { padding: 32px 24px; color: var(--ink-faint); font-family: var(--font-ui); font-size: 13px; font-style: italic; }
 
-/* ── Outreach Section ─────────────────────────────────────────────────────── */
+/* ── Outreach Pipeline Counter ───────────────────────────────────────────── */
+.pipeline-counter {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  background: var(--paper-card); border: 1px solid var(--maroon-line);
+  border-radius: var(--radius); padding: 18px 24px; margin-bottom: 28px;
+}
+.pipeline-counter-label { font-family: var(--font-ui); font-size: 13px; color: var(--ink-soft); }
+.pipeline-counter-track { display: flex; gap: 6px; align-items: center; }
+.pipeline-dot {
+  width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--rule-strong);
+  background: transparent; cursor: default; transition: all 0.2s;
+}
+.pipeline-dot.filled { background: var(--maroon); border-color: var(--maroon); }
+.pipeline-count-text { font-family: var(--font-headline); font-size: 20px; font-weight: 800; color: var(--maroon); }
+.pipeline-count-text.warn { color: #A47D29; }
+.pipeline-count-text.alert { color: var(--maroon); }
+.pipeline-target-text { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; }
+/* Company brief modal */
+.brief-modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 400;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.brief-modal {
+  background: var(--paper-card); border-radius: var(--radius);
+  max-width: 640px; width: 100%; max-height: 85vh; overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  padding: 32px 36px; position: relative;
+}
+.brief-modal-close {
+  position: absolute; top: 20px; right: 24px; font-size: 20px; cursor: pointer;
+  background: none; border: none; color: var(--ink-faint); line-height: 1;
+}
+.brief-modal-close:hover { color: var(--maroon); }
+.brief-company-name { font-family: var(--font-headline); font-size: 22px; font-weight: 800; color: var(--ink); margin-bottom: 4px; }
+.brief-sector-tag { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--maroon); margin-bottom: 20px; display: block; }
+.brief-section { margin-bottom: 20px; }
+.brief-section-label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-faint); margin-bottom: 8px; }
+.brief-section-body { font-family: var(--font-body); font-size: 14px; color: var(--ink); line-height: 1.65; }
+.brief-opener-box { background: rgba(122,31,43,0.05); border-left: 3px solid var(--maroon); padding: 14px 18px; border-radius: 0 var(--radius) var(--radius) 0; font-family: var(--font-body); font-size: 14px; color: var(--ink); line-height: 1.7; font-style: italic; }
+.brief-bonus-badge {
+  display: inline-block; font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 10px;
+  border-radius: 12px; background: rgba(30,94,64,0.1); color: #1E5E40; margin-bottom: 12px;
+}
+.brief-bonus-badge.upcoming { background: rgba(164,125,41,0.1); color: #A47D29; }
+.brief-modal-actions { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+.brief-snooze-btn {
+  font-family: var(--font-ui); font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; padding: 9px 18px; border-radius: var(--radius);
+  cursor: pointer; border: 1.5px solid var(--rule-strong); background: transparent; color: var(--ink-soft);
+  transition: all 0.15s;
+}
+.brief-snooze-btn:hover { border-color: var(--maroon); color: var(--maroon); }
+.brief-active-btn {
+  font-family: var(--font-ui); font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; padding: 9px 18px; border-radius: var(--radius);
+  cursor: pointer; background: var(--maroon); color: #fff; border: none; transition: all 0.15s;
+}
+/* Outreach card company button */
+.outreach-co-btn {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  background: none; border: 1px solid var(--maroon-line); border-radius: 10px;
+  padding: 2px 10px; cursor: pointer; color: var(--maroon); margin: 2px;
+  transition: all 0.15s;
+}
+.outreach-co-btn:hover { background: var(--maroon); color: #fff; }
+.outreach-co-btn.snoozed { opacity: 0.35; text-decoration: line-through; cursor: default; }
+.outreach-co-btn.active-pipeline { background: rgba(30,94,64,0.1); border-color: #1E5E40; color: #1E5E40; }
 /* Macro status strip */
 .outreach-macro-strip {
   display: flex; align-items: center; gap: 10px;
@@ -529,7 +597,97 @@ button, select, input { font-family: inherit; }
   margin-bottom: 20px; line-height: 1.5;
 }
 
-/* ── Reports ──────────────────────────────────────────────────────────────── */
+/* ── Macro Dashboard ─────────────────────────────────────────────────────── */
+.macro-dashboard { background: var(--paper-card); border: 1px solid var(--maroon-line); border-radius: var(--radius); overflow: hidden; margin-bottom: 32px; }
+.macro-dashboard-header { background: var(--maroon); padding: 18px 24px; }
+.macro-dashboard-title { font-family: var(--font-headline); font-size: 16px; font-weight: 700; color: #fff; }
+.macro-dashboard-meta { font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+.macro-group { border-bottom: 1px solid var(--rule); padding: 16px 0; }
+.macro-group:last-child { border-bottom: none; }
+.macro-group-label { font-family: var(--font-mono); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--maroon); padding: 0 24px 10px; }
+.macro-row { display: grid; grid-template-columns: 200px 1fr 160px; gap: 12px; padding: 7px 24px; align-items: center; }
+.macro-row-highlight { background: rgba(122,31,43,0.04); }
+.macro-row-label { font-family: var(--font-ui); font-size: 12px; color: var(--ink-soft); }
+.macro-row-value { font-family: var(--font-ui); font-size: 13px; font-weight: 600; color: var(--ink); }
+.macro-row-source { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); text-align: right; }
+.nbs-form { background: var(--paper-card); border: 1px solid var(--maroon-line); border-left: 4px solid var(--maroon); border-radius: var(--radius); padding: 24px 28px; margin-top: 24px; }
+.nbs-form-title { font-family: var(--font-headline); font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.nbs-form-desc { font-family: var(--font-body); font-size: 13px; color: var(--ink-soft); margin-bottom: 20px; line-height: 1.6; }
+.nbs-form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px; }
+.nbs-form-field label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); display: block; margin-bottom: 6px; }
+.nbs-form-field input { width: 100%; box-sizing: border-box; }
+@media (max-width: 600px) { .macro-row { grid-template-columns: 1fr; gap: 2px; } .macro-row-source { text-align: left; } }
+
+/* ── Absorption Rate Panel ──────────────────────────────────────────────────── */
+.absorption-panel {
+  background: var(--paper-card); border: 1px solid var(--maroon-line);
+  border-radius: var(--radius); padding: 28px 32px; margin-top: 32px;
+}
+.absorption-panel-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
+}
+.absorption-panel-title {
+  font-family: var(--font-headline); font-size: 17px; font-weight: 700; color: var(--ink);
+}
+.absorption-panel-meta {
+  font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.absorption-kpi-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px; margin-bottom: 28px;
+}
+.absorption-kpi {
+  background: var(--paper); border: 1px solid var(--rule);
+  border-radius: var(--radius); padding: 16px 20px;
+}
+.absorption-kpi-value {
+  font-family: var(--font-headline); font-size: 28px; font-weight: 800;
+  color: var(--maroon); line-height: 1;
+}
+.absorption-kpi-label {
+  font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-top: 6px;
+}
+.absorption-kpi.good  .absorption-kpi-value { color: #1E5E40; }
+.absorption-kpi.warn  .absorption-kpi-value { color: #A47D29; }
+.absorption-kpi.alert .absorption-kpi-value { color: var(--maroon); }
+.absorption-location-table { width: 100%; border-collapse: collapse; font-family: var(--font-ui); font-size: 13px; }
+.absorption-location-table th {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint);
+  text-align: left; padding: 0 12px 10px 0; border-bottom: 2px solid var(--rule-strong);
+}
+.absorption-location-table td {
+  padding: 10px 12px 10px 0; border-bottom: 1px solid var(--rule);
+  color: var(--ink); vertical-align: middle;
+}
+.absorption-location-table tr:last-child td { border-bottom: none; }
+.absorption-bar-cell { min-width: 120px; }
+.absorption-bar-track {
+  background: var(--rule); border-radius: 4px; height: 6px; overflow: hidden;
+}
+.absorption-bar-fill {
+  height: 100%; border-radius: 4px; background: var(--maroon); transition: width 0.4s ease;
+}
+.absorption-bar-fill.good  { background: #1E5E40; }
+.absorption-bar-fill.warn  { background: #A47D29; }
+.absorption-clearance-pill {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 2px 7px; border-radius: 10px; display: inline-block;
+}
+.clearance-ask      { background: rgba(30,94,64,0.1);  color: #1E5E40; }
+.clearance-discount { background: rgba(122,31,43,0.1); color: var(--maroon); }
+/* Stale listing marker — hollow dot in scatter chart */
+.scatter-dot-stale { opacity: 0.5; }
+/* Stale legend item */
+.stale-legend-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid var(--ink-faint); display: inline-block;
+  margin-right: 4px; vertical-align: middle; background: transparent;
+}
 .report-generate-panel {
   background: var(--paper-card); border: 1px solid var(--maroon-line);
   border-left: 4px solid var(--maroon); border-radius: var(--radius);
@@ -1361,15 +1519,59 @@ body.focus-mode .view.active::before {
           <div class="loading">Calculating price trend&hellip;</div>
         </div>
       </div>
+
+      <!-- ABSORPTION RATE PANEL -->
+      <div id="absorptionPanel" class="absorption-panel" data-focus="secondary" style="display:none;">
+        <div class="absorption-panel-header">
+          <div>
+            <div class="absorption-panel-title">Market Absorption Rate</div>
+            <div class="absorption-panel-meta" id="absorptionMeta"></div>
+          </div>
+          <div class="absorption-panel-meta">
+            Hollow dots on chart = listings present 45+ days without clearing
+          </div>
+        </div>
+        <div class="absorption-kpi-row" id="absorptionKPIs"></div>
+        <table class="absorption-location-table">
+          <thead>
+            <tr>
+              <th>Location</th>
+              <th>Active</th>
+              <th>Cleared (30d)</th>
+              <th>Rate</th>
+              <th>Avg Days</th>
+              <th>Clearance</th>
+              <th class="absorption-bar-cell"></th>
+            </tr>
+          </thead>
+          <tbody id="absorptionTableBody"></tbody>
+        </table>
+      </div>
     </section>
 
     <!-- OUTREACH INTELLIGENCE -->
     <section id="outreach" class="view">
       <div class="section-divider" style="margin-top:0;"><h2>Outreach Intelligence</h2></div>
-      <div class="dateline" style="font-family:var(--font-ui);font-size:13.5px;color:var(--ink-soft);margin-bottom:28px;">
+      <div class="dateline-short">
         Corporate outreach recommendations triggered by the three-signal model: macro base (Signal C), calendar window (Signal A), and event detection (Signal B). A signal only fires when macro conditions are neutral-to-positive and at least one additional trigger is active.
       </div>
+      <!-- PIPELINE COUNTER -->
+      <div class="pipeline-counter" id="pipelineCounter">
+        <div>
+          <div class="pipeline-counter-label">Active corporate conversations</div>
+          <div class="pipeline-target-text">Target: 3–4 concurrent</div>
+        </div>
+        <div class="pipeline-counter-track" id="pipelineDots"></div>
+        <div>
+          <span class="pipeline-count-text" id="pipelineCountText">—</span>
+          <span class="pipeline-target-text"> / 4 target</span>
+        </div>
+        <div style="flex:1;"></div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);">Click any company to open its conversation brief</div>
+      </div>
       <div id="outreachSignalContainer"></div>
+      <!-- COMPANY BRIEF MODAL (hidden until triggered) -->
+      <div id="companyBriefModal" style="display:none;"></div>
     </section>
 
     <!-- INNOVATION HUB — global real estate disruption and innovation -->
@@ -1420,6 +1622,9 @@ body.focus-mode .view.active::before {
       <div class="dateline-short">
         Structured analysis of emerging themes and market trends. Monthly, quarterly, and yearly cadence. Each report tracks whether themes from prior periods persist, intensify, or fade — giving management a noise-free view of market direction.
       </div>
+
+      <!-- LIVE MACRO INDICATORS PANEL -->
+      <div id="macroDashboardPanel" style="margin-bottom:32px;"></div>
 
       <!-- GENERATE PANEL -->
       <div class="report-generate-panel">
@@ -1478,6 +1683,39 @@ body.focus-mode .view.active::before {
       <div class="section-divider" style="margin-top:0;"><h2>Pipeline Configuration</h2></div>
       <div id="cfgReadonly"></div>
       <div id="configBody"></div>
+
+      <!-- NBS MANUAL DATA UPDATE -->
+      <div class="section-divider" style="margin-top:40px;"><h2>Update NBS / CBN Data</h2></div>
+      <div class="nbs-form">
+        <div class="nbs-form-title">Monthly NBS &amp; CBN Manual Update</div>
+        <div class="nbs-form-desc">
+          Enter figures from the latest NBS CPI report and CBN MPC decision. Published monthly — update within 24 hours of each release. These figures are saved to Firebase and immediately injected into all AI report prompts, replacing stale estimates. Source: <strong>nigerianstat.gov.ng</strong> (CPI release, ~15th of following month).
+        </div>
+        <div class="nbs-form-grid">
+          <div class="nbs-form-field">
+            <label>Headline CPI YoY (%)</label>
+            <input id="nbs_headline_cpi_yoy" class="mixta-input" type="text" placeholder="e.g. 31.70" />
+          </div>
+          <div class="nbs-form-field">
+            <label>Food Inflation YoY (%)</label>
+            <input id="nbs_food_inflation" class="mixta-input" type="text" placeholder="e.g. 37.18" />
+          </div>
+          <div class="nbs-form-field">
+            <label>Core Inflation YoY (%)</label>
+            <input id="nbs_core_inflation" class="mixta-input" type="text" placeholder="e.g. 24.43" />
+          </div>
+          <div class="nbs-form-field">
+            <label>Real Estate GDP Growth (%)</label>
+            <input id="nbs_real_estate_gdp_growth" class="mixta-input" type="text" placeholder="e.g. 5.40" />
+          </div>
+          <div class="nbs-form-field">
+            <label>CBN MPR (%)</label>
+            <input id="nbs_mpr" class="mixta-input" type="text" placeholder="e.g. 27.50" />
+          </div>
+        </div>
+        <button class="btn-primary" onclick="saveNBSManualData()" style="padding:10px 28px;">Save &amp; Apply</button>
+        <span id="nbsSaveStatus" style="font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);margin-left:16px;"></span>
+      </div>
     </section>
 
   </div>
@@ -1555,7 +1793,7 @@ document.querySelectorAll('.nav button').forEach(b => {
       }
       setTimeout(() => geoMap.invalidateSize(), 150);
     }
-    if (b.dataset.view === 'reports') _initReportsTab();
+    if (b.dataset.view === 'reports') { _initReportsTab(); renderMacroDashboard(); }
   };
 });
 
@@ -1567,14 +1805,25 @@ function renderStatus(health) {
   const map = { healthy: 'Pipeline Active', degraded: 'Running Degraded', failed: 'Run Failed', unknown: 'Syncing' };
   text.textContent = map[s] || s;
 
-  // Always set briefingDate from the health timestamp so that on gate-halt days
-  // (where no new briefing.json is written) the date still reflects today's run,
-  // not yesterday's briefing. renderBriefing() will override this if a real
-  // briefing with generatedAt exists.
+  // Always show today's calendar date — the reader knows what day it is.
+  // If the pipeline ran today, health.timestamp will match. If it hasn't run
+  // yet (or the token was expired), we still show today rather than showing
+  // yesterday's date and implying the briefing is stale.
   const dateEl = document.getElementById('briefingDate');
-  if (dateEl && health?.timestamp) {
-    const d = new Date(health.timestamp);
-    dateEl.textContent = d.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  if (dateEl) {
+    const today = new Date();
+    dateEl.textContent = today.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+    // If health.timestamp is from a prior day, append a subtle note
+    if (health?.timestamp) {
+      const runDate = new Date(health.timestamp);
+      const todayStr = today.toISOString().slice(0,10);
+      const runStr   = runDate.toISOString().slice(0,10);
+      if (runStr < todayStr) {
+        const runLabel = runDate.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+        dateEl.textContent += ` — Intelligence last updated ${runLabel}`;
+      }
+    }
   }
 }
 
@@ -1642,8 +1891,8 @@ function renderBriefing(b) {
   }
 
   if (b.generatedAt) {
-    const d = new Date(b.generatedAt);
-    dateEl.textContent = d.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    // Do not overwrite the date — renderStatus already set today's calendar date.
+    // The briefing generatedAt is surfaced in the hero metadata, not the masthead date.
   }
 
   // Split summary for Editorial layout
@@ -3079,6 +3328,86 @@ function renderPricing(data) {
   renderPriceTrendChart(listings);
   renderPricingGroups(groups);
   renderPricingScatter(todayListings);
+  renderAbsorptionPanel(window._absorptionData);
+}
+
+// Module-scope absorption lookup — populated by renderPricingScatter,
+// read by showScatterTooltip for days-on-market display.
+let _domByKey = {};
+const _listingIdentKey = (l) => {
+  const title    = (l.title    || '').toLowerCase().replace(/\s+/g, ' ').trim().slice(0, 80);
+  const location = (l.location || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  const bedrooms = (l.bedroomLabel || '').toString().toLowerCase().trim();
+  const price    = Math.round((l.priceValue || 0) / 1_000_000);
+  return `${title}|${location}|${bedrooms}|${price}`;
+};
+
+// ════════════════════════════════════════════════════════════════════════
+// ABSORPTION RATE PANEL
+// Reads absorption.json (written by local-scraper-absorption.js) and
+// renders: KPI strip, location breakdown table, stale count.
+// Called after renderPricingScatter() so the hollow dots are already drawn
+// when the panel appears below the chart.
+// ════════════════════════════════════════════════════════════════════════
+function renderAbsorptionPanel(data) {
+  const panel = document.getElementById('absorptionPanel');
+  if (!panel) return;
+  if (!data || !data.summary) { panel.style.display = 'none'; return; }
+  panel.style.display = 'block';
+
+  const s = data.summary;
+  const updatedAt = data.updatedAt || 'unknown';
+
+  // Meta line
+  const metaEl = document.getElementById('absorptionMeta');
+  if (metaEl) metaEl.textContent = `Data as of ${updatedAt} · ${s.note ? 'Gate: ' + data.summary.staleThreshold + '+ days to qualify' : ''}`;
+
+  // KPI strip
+  const rateClass = s.overallAbsorptionRate >= 30 ? 'good' : s.overallAbsorptionRate >= 15 ? 'warn' : 'alert';
+  const staleClass = s.staleListings > 20 ? 'alert' : s.staleListings > 10 ? 'warn' : 'good';
+  const kpiData = [
+    { value: `${s.overallAbsorptionRate}%`, label: 'Absorption Rate (30d)', cls: rateClass },
+    { value: s.absorbed30d, label: 'Units Cleared (30d)', cls: 'good' },
+    { value: s.medianDaysOnMarket ? `${s.medianDaysOnMarket}d` : '—', label: 'Median Days on Market', cls: s.medianDaysOnMarket > 90 ? 'alert' : s.medianDaysOnMarket > 60 ? 'warn' : 'good' },
+    { value: s.staleListings, label: `Stale Listings (45+ days)`, cls: staleClass },
+  ];
+  const kpiEl = document.getElementById('absorptionKPIs');
+  if (kpiEl) kpiEl.innerHTML = kpiData.map(k => `
+    <div class="absorption-kpi ${k.cls}">
+      <div class="absorption-kpi-value">${esc(String(k.value))}</div>
+      <div class="absorption-kpi-label">${esc(k.label)}</div>
+    </div>`).join('');
+
+  // Location table
+  const tbody = document.getElementById('absorptionTableBody');
+  if (!tbody) return;
+  const rows = (data.byLocation || []).slice(0, 12);
+  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" style="color:var(--ink-faint);font-style:italic;padding:16px 0;">No location breakdown available yet — run the local scraper for 7+ days.</td></tr>'; return; }
+
+  tbody.innerHTML = rows.map(loc => {
+    const rate = loc.absorptionRate30d;
+    const barClass = rate >= 30 ? 'good' : rate >= 15 ? 'warn' : '';
+    const clearHtml = loc.atAsk || loc.atDiscount
+      ? [
+          loc.atAsk      > 0 ? `<span class="absorption-clearance-pill clearance-ask">${loc.atAsk} at ask</span>` : '',
+          loc.atDiscount > 0 ? `<span class="absorption-clearance-pill clearance-discount">${loc.atDiscount} discounted</span>` : '',
+        ].filter(Boolean).join(' ')
+      : '<span style="color:var(--ink-faint);font-size:11px;">—</span>';
+
+    return `<tr>
+      <td style="font-weight:600;">${esc(loc.location)}</td>
+      <td>${loc.activeListings}</td>
+      <td>${loc.absorbed30d}</td>
+      <td style="font-weight:700;color:${rate >= 30 ? '#1E5E40' : rate >= 15 ? '#A47D29' : 'var(--maroon)'};">${rate}%</td>
+      <td>${loc.avgDaysOnMarket != null ? `${loc.avgDaysOnMarket}d` : '—'}</td>
+      <td>${clearHtml}</td>
+      <td class="absorption-bar-cell">
+        <div class="absorption-bar-track">
+          <div class="absorption-bar-fill ${barClass}" style="width:${Math.min(rate, 100)}%;"></div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
 }
 
 // ════════════════════════════════════════════════════════════════════════
@@ -3207,16 +3536,28 @@ function renderCompetitivePositioningCard() {
 const SECTOR_THEME_MAP = [
   {
     sector: 'Energy (Oil & Gas)',
-    // Primary: Confirmed ₦1.5M+/month median for professional staff
     companies: [
-      { name: 'Seplat Energy',         estStaff15M: 1380, note: 'ENGAGED', priority: 'primary' },
-      { name: 'TotalEnergies Nigeria', estStaff15M: 500,  note: 'IOC pay scale',  priority: 'primary' },
-      { name: 'ExxonMobil Nigeria',    estStaff15M: 300,  note: 'reduced headcount', priority: 'primary' },
-      { name: 'Renaissance Africa Energy (Shell Nigeria)', estStaff15M: 450, note: 'SNEPCo staff', priority: 'primary' },
-      { name: 'Oando',                 estStaff15M: 900,  note: 'grown via NAOC',  priority: 'primary' },
-      { name: 'Nestoil',               estStaff15M: 360,  note: 'EPCC engineers',  priority: 'primary' },
-      { name: 'Savannah Energy',       estStaff15M: 120,  note: 'Lagos HQ',        priority: 'primary' },
-      { name: 'Dangote Refinery',      estStaff15M: 400,  note: 'operational staff growing', priority: 'primary' },
+      { name: 'Seplat Energy',         estStaff15M: 1380, note: 'ENGAGED', priority: 'primary',
+        bonusMonth: [3,9], bonusNote: 'Q1 (Mar) and Q3 (Sep) performance bonuses; annual in April',
+        contact: 'HR Director / Cooperative Chairman', linkedin: 'seplat-energy', product: 'Lakowe Crossings 3-bed' },
+      { name: 'TotalEnergies Nigeria', estStaff15M: 500,  note: 'IOC pay scale', priority: 'primary',
+        bonusMonth: [4,12], bonusNote: 'April (Q1 close) and December (year-end); French fiscal cycle',
+        contact: 'HR Manager', linkedin: 'totalenergies', product: 'Lakowe Annexe / Lakowe Crossings' },
+      { name: 'ExxonMobil Nigeria',    estStaff15M: 300,  note: 'reduced headcount', priority: 'primary',
+        bonusMonth: [3,12], bonusNote: 'March and December; US parent fiscal year alignment',
+        contact: 'Welfare & Benefits Manager', linkedin: 'exxonmobil', product: 'Lakowe Annexe' },
+      { name: 'Renaissance Africa Energy (Shell Nigeria)', estStaff15M: 450, note: 'SNEPCo staff', priority: 'primary',
+        bonusMonth: [2,8], bonusNote: 'February (year-end close) and August (H1 performance)',
+        contact: 'Staff Cooperative Chairman', linkedin: 'shell', product: 'Lakowe Crossings / Garden City Golf Annexe (PH)' },
+      { name: 'Oando',                 estStaff15M: 900,  note: 'grown via NAOC', priority: 'primary',
+        bonusMonth: [4], bonusNote: 'April annual bonus post-AGM results',
+        contact: 'Group HR Director', linkedin: 'oando-plc', product: 'Lakowe Crossings 3-bed' },
+      { name: 'Nestoil',               estStaff15M: 360,  note: 'EPCC engineers', priority: 'primary',
+        bonusMonth: [3,9], bonusNote: 'Project milestone bonuses — March and September typical',
+        contact: 'HR / Admin Manager', linkedin: 'nestoil-limited', product: 'Lakowe Crossings' },
+      { name: 'Dangote Refinery',      estStaff15M: 400,  note: 'operational staff growing', priority: 'primary',
+        bonusMonth: [12], bonusNote: 'Year-end December; new operational staff receiving first full-year bonuses from 2025',
+        contact: 'HR Director', linkedin: 'dangote-group', product: 'Lakowe Crossings / Lagos New Town plots' },
     ],
     secondary: [
       { name: 'Nest Oil Nigeria',      estStaff15M: 200,  note: 'mid-tier operator', priority: 'secondary' },
@@ -3229,23 +3570,31 @@ const SECTOR_THEME_MAP = [
   {
     sector: 'Financial Services & Banking',
     companies: [
-      { name: 'Stanbic IBTC',          estStaff15M: 600,  note: 'investment banking tier', priority: 'primary' },
-      { name: 'Zenith Bank',           estStaff15M: 1200, note: 'large Lagos base', priority: 'primary' },
-      { name: 'GTBank',                estStaff15M: 900,  note: 'VI HQ concentration', priority: 'primary' },
-      { name: 'Access Bank',           estStaff15M: 1100, note: 'post-merger growth', priority: 'primary' },
-      { name: 'UBA',                   estStaff15M: 800,  note: 'pan-Africa HQ Lagos', priority: 'primary' },
-      { name: 'First Bank',            estStaff15M: 950,  note: 'legacy senior cohort', priority: 'primary' },
-      { name: 'Citibank Nigeria',      estStaff15M: 180,  note: 'all-senior staff', priority: 'primary' },
-      { name: 'Standard Chartered Nigeria', estStaff15M: 150, note: 'Lagos only', priority: 'primary' },
-      { name: 'HSBC Nigeria',          estStaff15M: 80,   note: 'representative office', priority: 'primary' },
-      { name: 'Coronation Merchant Bank', estStaff15M: 120, note: 'senior-heavy', priority: 'primary' },
-      { name: 'CardinalStone',         estStaff15M: 90,   note: 'asset management', priority: 'primary' },
+      { name: 'Stanbic IBTC',          estStaff15M: 600,  note: 'investment banking tier', priority: 'primary',
+        bonusMonth: [3,9], bonusNote: 'March (full year) and September (H1); Standard Bank group cycle',
+        contact: 'Head of Human Resources', linkedin: 'stanbic-ibtc', product: 'Lakowe Crossings / Lakowe Annexe' },
+      { name: 'Zenith Bank',           estStaff15M: 1200, note: 'large Lagos base', priority: 'primary',
+        bonusMonth: [4], bonusNote: 'April post-AGM; Zenith has an active staff housing welfare scheme',
+        contact: 'Group Head, Human Resources', linkedin: 'zenith-bank', product: 'Lakowe Crossings 2&3-bed' },
+      { name: 'GTBank',                estStaff15M: 900,  note: 'VI HQ concentration', priority: 'primary',
+        bonusMonth: [4], bonusNote: 'April post-results; GTCO staff cooperative is active',
+        contact: 'Chief People Officer', linkedin: 'guaranty-trust-bank', product: 'Lakowe Crossings 3-bed' },
+      { name: 'Access Bank',           estStaff15M: 1100, note: 'post-merger growth', priority: 'primary',
+        bonusMonth: [4,10], bonusNote: 'April and October; Access has a documented staff mortgage programme via its own retail arm',
+        contact: 'Group HR Director', linkedin: 'access-bank-plc', product: 'Lakowe Crossings / LNT commercial' },
+      { name: 'UBA',                   estStaff15M: 800,  note: 'pan-Africa HQ Lagos', priority: 'primary',
+        bonusMonth: [4], bonusNote: 'April post-AGM; UBA staff cooperative society is well-organised',
+        contact: 'Chief People Officer', linkedin: 'uba-group', product: 'Lakowe Crossings 2&3-bed' },
+      { name: 'First Bank',            estStaff15M: 950,  note: 'legacy senior cohort', priority: 'primary',
+        bonusMonth: [3], bonusNote: 'March year-end close; senior cohort (DMDs, EDs) are top individual buyers',
+        contact: 'Group Executive, Human Capital', linkedin: 'firstbank-nigeria', product: 'Lakowe Annexe / Lakowe Crossings' },
+      { name: 'Citibank Nigeria',      estStaff15M: 180,  note: 'all-senior staff', priority: 'primary',
+        bonusMonth: [2], bonusNote: 'February; US parent year-end cycle; individual LinkedIn outreach most effective',
+        contact: 'Country HR Manager', linkedin: 'citi', product: 'Lakowe Annexe' },
     ],
     secondary: [
       { name: 'FCMB',                  estStaff15M: 400,  note: 'mid-band dominant', priority: 'secondary' },
       { name: 'Fidelity Bank',         estStaff15M: 350,  note: 'growing retail', priority: 'secondary' },
-      { name: 'Union Bank',            estStaff15M: 300,  note: 'post-Titan acquisition', priority: 'secondary' },
-      { name: 'Polaris Bank',          estStaff15M: 200,  note: 'recovering portfolio', priority: 'secondary' },
     ],
     keywords: ['banking', 'financial', 'mortgage', 'FMBN', 'NHF', 'interest rate', 'CBN', 'credit', 'investment banking', 'capital market', 'asset management'],
     reachablePrimary: 6170,
@@ -3253,15 +3602,18 @@ const SECTOR_THEME_MAP = [
   {
     sector: 'Telecoms',
     companies: [
-      { name: 'MTN Nigeria',           estStaff15M: 1600, note: 'Lagos commercial HQ', priority: 'primary' },
-      { name: 'Airtel Nigeria',        estStaff15M: 700,  note: 'V/I HQ', priority: 'primary' },
-      { name: 'IHS Towers',            estStaff15M: 300,  note: 'infrastructure play', priority: 'primary' },
-      { name: 'ATC Nigeria (American Tower)', estStaff15M: 150, note: 'Lagos-concentrated', priority: 'primary' },
-      { name: 'Ericsson Nigeria',      estStaff15M: 120,  note: 'vendor staff', priority: 'primary' },
-      { name: 'Nokia Nigeria',         estStaff15M: 80,   note: 'Lagos office', priority: 'primary' },
+      { name: 'MTN Nigeria',           estStaff15M: 1600, note: 'Lagos commercial HQ', priority: 'primary',
+        bonusMonth: [3,9], bonusNote: 'March (full year) and September (H1); MTN staff cooperative is one of the most active in Lagos',
+        contact: 'Cooperative Chairman / HR Director', linkedin: 'mtn-nigeria', product: 'Lakowe Crossings 3-bed bulk' },
+      { name: 'Airtel Nigeria',        estStaff15M: 700,  note: 'V/I HQ', priority: 'primary',
+        bonusMonth: [4,10], bonusNote: 'April and October; Bharti Airtel group cycle',
+        contact: 'HR Business Partner', linkedin: 'airtel-nigeria', product: 'Lakowe Crossings 2&3-bed' },
+      { name: 'IHS Towers',            estStaff15M: 300,  note: 'infrastructure play', priority: 'primary',
+        bonusMonth: [3], bonusNote: 'March post-year-end results; NYSE-listed so US fiscal alignment',
+        contact: 'VP Human Resources', linkedin: 'ihs-towers', product: 'Lakowe Crossings' },
     ],
     secondary: [
-      { name: 'Glo (Globacom)',        estStaff15M: 500,  note: 'Lagos HQ, salary verification needed', priority: 'secondary' },
+      { name: 'Glo (Globacom)',        estStaff15M: 500,  note: 'salary verification needed', priority: 'secondary' },
       { name: '9mobile',               estStaff15M: 200,  note: 'reduced post-acquisition', priority: 'secondary' },
     ],
     keywords: ['telecom', 'broadband', '5G', 'connectivity', 'digital', 'spectrum', 'MTN', 'Airtel', 'network rollout'],
@@ -3270,18 +3622,19 @@ const SECTOR_THEME_MAP = [
   {
     sector: 'FMCG & Consumer Goods',
     companies: [
-      { name: 'Nigerian Breweries',    estStaff15M: 800,  note: 'confirmed ₦4.2M avg salary (2024)', priority: 'primary' },
-      { name: 'Unilever Nigeria',      estStaff15M: 400,  note: 'Lagos HQ, FMCG premium pay', priority: 'primary' },
-      { name: 'Nestlé Nigeria',        estStaff15M: 350,  note: 'Ilupeju HQ', priority: 'primary' },
-      { name: 'PZ Cussons Nigeria',    estStaff15M: 250,  note: 'Ilupeju', priority: 'primary' },
-      { name: 'Coca-Cola HBC Nigeria', estStaff15M: 300,  note: 'Lagos + Abuja', priority: 'primary' },
-      { name: 'Procter & Gamble Nigeria', estStaff15M: 180, note: 'Lagos office', priority: 'primary' },
-      { name: 'British American Tobacco Nigeria', estStaff15M: 120, note: 'Ibadan + Lagos', priority: 'primary' },
+      { name: 'Nigerian Breweries',    estStaff15M: 800,  note: 'confirmed ₦4.2M avg salary (2024)', priority: 'primary',
+        bonusMonth: [4,12], bonusNote: 'April (full year post-AGM) and December (year-end); Heineken parent cycle',
+        contact: 'HR Manager / Welfare Coordinator', linkedin: 'nigerian-breweries', product: 'Lakowe Crossings 2&3-bed' },
+      { name: 'Nestlé Nigeria',        estStaff15M: 350,  note: 'Ilupeju HQ', priority: 'primary',
+        bonusMonth: [4], bonusNote: 'April post-AGM; Swiss parent year-end alignment',
+        contact: 'HR Business Partner', linkedin: 'nestle-nigeria', product: 'Lakowe Crossings' },
+      { name: 'Unilever Nigeria',      estStaff15M: 400,  note: 'Lagos HQ', priority: 'primary',
+        bonusMonth: [3], bonusNote: 'March; UK fiscal year; transitioning workforce after consumer goods split',
+        contact: 'HR Director', linkedin: 'unilever-nigeria', product: 'Lakowe Crossings' },
     ],
     secondary: [
-      { name: 'Dangote Group (Consumer)',  estStaff15M: 300, note: 'sugar, flour, pasta — Lagos HQ', priority: 'secondary' },
+      { name: 'Dangote Group (Consumer)', estStaff15M: 300, note: 'Lagos HQ', priority: 'secondary' },
       { name: 'Honeywell Group',       estStaff15M: 150,  note: 'flour + diversified', priority: 'secondary' },
-      { name: 'Chi Limited',           estStaff15M: 100,  note: 'Ikeja', priority: 'secondary' },
     ],
     keywords: ['consumer', 'FMCG', 'manufacturing', 'brewery', 'food', 'retail', 'Nestlé', 'Unilever', 'consumer goods'],
     reachablePrimary: 2400,
@@ -3289,12 +3642,15 @@ const SECTOR_THEME_MAP = [
   {
     sector: 'Industrials & Construction',
     companies: [
-      { name: 'Julius Berger Nigeria', estStaff15M: 360,  note: 'Lekki-Epe corridor positioning', priority: 'primary' },
-      { name: 'BUA Cement',            estStaff15M: 200,  note: 'Lagos operations', priority: 'primary' },
-      { name: 'Lafarge Africa',        estStaff15M: 250,  note: 'Sagamu + Lagos HQ', priority: 'primary' },
-      { name: 'Flour Mills of Nigeria', estStaff15M: 180, note: 'Apapa — industrial belt', priority: 'primary' },
-      { name: 'Dangote Cement',        estStaff15M: 200,  note: 'Obajana + Lagos HQ', priority: 'primary' },
-      { name: 'Coscharis Group',       estStaff15M: 120,  note: 'auto + industrial Lagos', priority: 'primary' },
+      { name: 'Julius Berger Nigeria', estStaff15M: 360,  note: 'Lekki-Epe corridor positioning', priority: 'primary',
+        bonusMonth: [12,3], bonusNote: 'December (German parent year-end) and March (project completion bonuses)',
+        contact: 'HR Manager / NSE chapter network', linkedin: 'julius-berger', product: 'Lakowe Crossings — corridor alignment is a strong narrative' },
+      { name: 'BUA Cement',            estStaff15M: 200,  note: 'Lagos operations', priority: 'primary',
+        bonusMonth: [4], bonusNote: 'April post-AGM; BUA Group senior staff',
+        contact: 'Group HR Director', linkedin: 'bua-group', product: 'Lakowe Crossings / LNT commercial' },
+      { name: 'Dangote Cement',        estStaff15M: 200,  note: 'Lagos HQ', priority: 'primary',
+        bonusMonth: [4], bonusNote: 'April post-AGM; senior Dangote Cement staff are typically high earners',
+        contact: 'Group HR Director', linkedin: 'dangote-group', product: 'Lagos New Town plots / Lakowe Crossings' },
     ],
     secondary: [
       { name: 'Arbico',                estStaff15M: 80,   note: 'construction services', priority: 'secondary' },
@@ -3306,15 +3662,18 @@ const SECTOR_THEME_MAP = [
   {
     sector: 'Tech & Fintech',
     companies: [
-      { name: 'Flutterwave',           estStaff15M: 500,  note: 'all staff above ₦1.5M band', priority: 'primary' },
-      { name: 'Paystack (Stripe)',     estStaff15M: 300,  note: 'Lagos HQ, competitive pay', priority: 'primary' },
-      { name: 'Interswitch',           estStaff15M: 400,  note: 'V/I HQ', priority: 'primary' },
-      { name: 'Andela',                estStaff15M: 250,  note: 'remote-first but Lagos base', priority: 'primary' },
-      { name: 'Konga / Yudala',        estStaff15M: 120,  note: 'e-commerce, mixed band', priority: 'primary' },
-      { name: 'SeamlessHR',            estStaff15M: 100,  note: 'HRtech, Lagos', priority: 'primary' },
-      { name: 'Mono Technologies',     estStaff15M: 80,   note: 'fintech infrastructure', priority: 'primary' },
-      { name: 'TeamApt / Moniepoint',  estStaff15M: 350,  note: 'fast-growing, Lagos HQ', priority: 'primary' },
-      { name: 'PiggyVest / PiggyTech', estStaff15M: 80,   note: 'Lagos-based', priority: 'primary' },
+      { name: 'Flutterwave',           estStaff15M: 500,  note: 'all staff above ₦1.5M band', priority: 'primary',
+        bonusMonth: [1,7], bonusNote: 'January and July; equity vest cycles also create liquidity windows',
+        contact: 'Direct LinkedIn to senior engineers / product leads', linkedin: 'flutterwave', product: 'Lakowe Crossings 2-bed or 3-bed — individual buyer focus' },
+      { name: 'Paystack (Stripe)',     estStaff15M: 300,  note: 'Lagos HQ, competitive pay', priority: 'primary',
+        bonusMonth: [1,7], bonusNote: 'January and July; Stripe parent cycle; equity-heavy compensation',
+        contact: 'Direct LinkedIn — avoid HR channel', linkedin: 'paystack', product: 'Lakowe Crossings 2-bed' },
+      { name: 'Interswitch',           estStaff15M: 400,  note: 'V/I HQ', priority: 'primary',
+        bonusMonth: [4], bonusNote: 'April post-year-end; Interswitch has an active staff cooperative',
+        contact: 'Staff Cooperative / HR Director', linkedin: 'interswitch-group', product: 'Lakowe Crossings 3-bed' },
+      { name: 'TeamApt / Moniepoint',  estStaff15M: 350,  note: 'fast-growing, Lagos HQ', priority: 'primary',
+        bonusMonth: [1,7], bonusNote: 'January and July; equity vesting events create additional liquidity',
+        contact: 'Direct LinkedIn to senior engineers', linkedin: 'moniepoint', product: 'Lakowe Crossings 2-bed' },
     ],
     secondary: [
       { name: 'Jumia Nigeria',         estStaff15M: 200,  note: 'mixed salary band', priority: 'secondary' },
@@ -3326,13 +3685,21 @@ const SECTOR_THEME_MAP = [
   {
     sector: 'Professional Services & Consulting',
     companies: [
-      { name: 'PwC Nigeria',           estStaff15M: 600,  note: 'all senior/manager above band', priority: 'primary' },
-      { name: 'Deloitte Nigeria',      estStaff15M: 500,  note: 'V/I HQ', priority: 'primary' },
-      { name: 'KPMG Nigeria',          estStaff15M: 450,  note: 'Lagos Harbour dominant', priority: 'primary' },
-      { name: 'EY Nigeria',            estStaff15M: 400,  note: 'Lagos office', priority: 'primary' },
-      { name: 'McKinsey Nigeria',      estStaff15M: 80,   note: 'all-senior, small office', priority: 'primary' },
-      { name: 'BCG Nigeria',           estStaff15M: 60,   note: 'all-senior', priority: 'primary' },
-      { name: 'Accenture Nigeria',     estStaff15M: 300,  note: 'Lagos + VI', priority: 'primary' },
+      { name: 'PwC Nigeria',           estStaff15M: 600,  note: 'all senior/manager above band', priority: 'primary',
+        bonusMonth: [7], bonusNote: 'July — UK fiscal year end (April 5 → July payment); Big 4 promotion/bonus cycle',
+        contact: 'HR Director / People & Culture Manager', linkedin: 'pwc-nigeria', product: 'Lakowe Crossings 3-bed / Lakowe Annexe' },
+      { name: 'Deloitte Nigeria',      estStaff15M: 500,  note: 'V/I HQ', priority: 'primary',
+        bonusMonth: [9], bonusNote: 'September — US fiscal year end; Deloitte Global cycle',
+        contact: 'HR Business Partner', linkedin: 'deloitte-nigeria', product: 'Lakowe Crossings / Lakowe Annexe' },
+      { name: 'KPMG Nigeria',          estStaff15M: 450,  note: 'Lagos Harbour dominant', priority: 'primary',
+        bonusMonth: [10], bonusNote: 'October — global KPMG fiscal year end (Sept 30 → Oct payment)',
+        contact: 'People & Change Manager', linkedin: 'kpmg-nigeria', product: 'Lakowe Annexe / Lakowe Crossings 3-bed' },
+      { name: 'EY Nigeria',            estStaff15M: 400,  note: 'Lagos office', priority: 'primary',
+        bonusMonth: [7], bonusNote: 'July — UK fiscal year alignment',
+        contact: 'HR Manager', linkedin: 'ey-nigeria', product: 'Lakowe Crossings 3-bed' },
+      { name: 'Accenture Nigeria',     estStaff15M: 300,  note: 'Lagos + VI', priority: 'primary',
+        bonusMonth: [9], bonusNote: 'September — Accenture August fiscal year end',
+        contact: 'HR Lead Nigeria', linkedin: 'accenture-nigeria', product: 'Lakowe Crossings' },
     ],
     secondary: [
       { name: 'BDO Nigeria',           estStaff15M: 150,  note: 'mid-tier advisory', priority: 'secondary' },
@@ -3344,11 +3711,12 @@ const SECTOR_THEME_MAP = [
   {
     sector: 'International Organisations & NGOs',
     companies: [
-      { name: 'World Bank (Lagos office)', estStaff15M: 120, note: 'expat + senior local', priority: 'primary' },
-      { name: 'UNDP Nigeria',          estStaff15M: 80,   note: 'Abuja + Lagos', priority: 'primary' },
-      { name: 'British High Commission / FCDO', estStaff15M: 60, note: 'Lagos consular staff', priority: 'primary' },
-      { name: 'US Consulate Lagos',    estStaff15M: 80,   note: 'diplomatic + LE staff', priority: 'primary' },
-      { name: 'Gates Foundation Nigeria', estStaff15M: 50, note: 'programme staff', priority: 'primary' },
+      { name: 'World Bank (Lagos office)', estStaff15M: 120, note: 'expat + senior local', priority: 'primary',
+        bonusMonth: [7], bonusNote: 'July — World Bank fiscal year end (June 30)',
+        contact: 'Country Operations Officer / HR', linkedin: 'world-bank', product: 'Lakowe Annexe' },
+      { name: 'UNDP Nigeria',          estStaff15M: 80,   note: 'Abuja + Lagos', priority: 'primary',
+        bonusMonth: [12], bonusNote: 'December — UN calendar year end',
+        contact: 'Operations Manager', linkedin: 'undp', product: 'Lakowe Crossings' },
     ],
     secondary: [
       { name: 'USAID Nigeria',         estStaff15M: 60,   note: 'Lagos + Abuja', priority: 'secondary' },
@@ -3522,8 +3890,14 @@ function renderOutreachSignals(briefingData, trendHistory) {
       }
     }
 
-    // Signal A: bonus window alone is sufficient for sectors with large reachable pools
-    const calendarFires = bonusWindow && (sector.reachablePrimary || 0) >= 500;
+    // Signal A: bonus window — use company-specific calendars where available
+    // Sector-level generic window fires for large pools, but company-specific
+    // windows are more precise and fire independently of the generic window.
+    const currentMonth = now.getMonth() + 1;
+    const companySpecificBonus = (sector.companies || []).some(c =>
+      c.bonusMonth?.includes(currentMonth) || c.bonusMonth?.includes(currentMonth - 1)
+    );
+    const calendarFires = (bonusWindow || companySpecificBonus) && (sector.reachablePrimary || 0) >= 500;
     // Signal B: event detected
     const eventFires = detectedEvents.length > 0 && highestWeight >= 2;
 
@@ -3644,12 +4018,14 @@ function renderOutreachSignals(briefingData, trendHistory) {
           </div>` : '';
 
       // Company list — primary targets with staff counts
-      const top5 = primaryCos.slice(0, 5).map(c =>
-        `<span class="outreach-co-name">${esc(c.name)}</span><span class="outreach-co-staff"> ~${c.estStaff15M.toLocaleString()} staff</span>`
-      ).join('<span class="outreach-co-sep"> · </span>');
+      const top5 = primaryCos.slice(0, 5).map(c => {
+        const state = getCompanyState(c.name);
+        const cls = state === 'active' ? 'active-pipeline' : state === 'snoozed' ? 'snoozed' : '';
+        return `<button class="outreach-co-btn ${cls}" onclick="openCompanyBrief(${JSON.stringify(JSON.stringify(c))}, ${JSON.stringify(JSON.stringify(sig.sector))})">${esc(c.name)} ~${c.estStaff15M.toLocaleString()}</button>`;
+      }).join('');
 
       const allPrimary = primaryCos.length > 5
-        ? `<div class="outreach-company-more">+${primaryCos.length - 5} more primary targets</div>` : '';
+        ? `<div class="outreach-company-more">+${primaryCos.length - 5} more — click any name to generate conversation brief</div>` : '';
 
       const secNote = secondaryCos.length
         ? `<div class="outreach-secondary-note">Secondary (₦500K–₦1.5M): ${secondaryCos.map(c=>esc(c.name)).join(' · ')}</div>` : '';
@@ -3673,13 +4049,22 @@ function renderOutreachSignals(briefingData, trendHistory) {
     const totalReachable = calendarSignals.reduce((sum, s) => sum + (s.sector.reachablePrimary||0), 0);
     const tableRows = calendarSignals.map((sig, i) => {
       const ep = ENTRY_POINTS[sig.sector.sector];
-      const top3Names = (sig.sector.companies||[]).filter(c=>c.priority==='primary').slice(0,3).map(c=>c.name).join(', ');
+      const primaryCos = (sig.sector.companies||[]).filter(c=>c.priority==='primary').slice(0,3);
+      // Check which companies in this sector have specific bonus windows this month
+      const currentMonth = now.getMonth() + 1;
+      const companyButtons = primaryCos.map(c => {
+        const state = getCompanyState(c.name);
+        const cls = state === 'active' ? 'active-pipeline' : state === 'snoozed' ? 'snoozed' : '';
+        const inBonus = c.bonusMonth?.includes(currentMonth) || c.bonusMonth?.includes(currentMonth - 1);
+        const bonusDot = inBonus ? ' 🟢' : '';
+        return `<button class="outreach-co-btn ${cls}" onclick="openCompanyBrief(${JSON.stringify(JSON.stringify(c))}, ${JSON.stringify(JSON.stringify(sig.sector))})">${esc(c.name)}${bonusDot}</button>`;
+      }).join('');
       return `<tr>
         <td class="cal-rank">${i+1}</td>
         <td class="cal-sector">${esc(sig.sector.sector)}</td>
         <td class="cal-reachable">${(sig.sector.reachablePrimary||0).toLocaleString()}</td>
         <td class="cal-entry">${ep ? esc(ep.primary) : '—'}</td>
-        <td class="cal-cos">${esc(top3Names)}</td>
+        <td class="cal-cos">${companyButtons}</td>
       </tr>`;
     }).join('');
 
@@ -3690,7 +4075,7 @@ function renderOutreachSignals(briefingData, trendHistory) {
       </div>
       <div class="outreach-calendar-card">
         <div class="outreach-calendar-desc">
-          ${esc(bonusLabel || 'Bonus window')} — the 6 weeks following bonus payments are the highest discretionary-spend period in the property sales cycle. No event trigger has been detected for these sectors, but the calendar window alone justifies outreach to the highest-pool targets below.
+          ${esc(bonusLabel || 'Bonus window active')} — the 6 weeks following bonus payments are the highest discretionary-spend period in the property sales cycle. 🟢 = company-specific bonus window active this month. Click any company name to open its conversation brief.
         </div>
         <table class="outreach-cal-table">
           <thead>
@@ -3699,7 +4084,7 @@ function renderOutreachSignals(briefingData, trendHistory) {
               <th>Sector</th>
               <th>Reachable Staff</th>
               <th>Entry Channel</th>
-              <th>Priority Companies</th>
+              <th>Priority Companies (click to brief)</th>
             </tr>
           </thead>
           <tbody>${tableRows}</tbody>
@@ -4838,6 +5223,15 @@ function renderPricingScatter(allListings) {
     svg += `<text class="scatter-axis-label" x="${xCenter}" y="${marginTop + plotH + 36}" text-anchor="middle">${esc(bed)}</text>`;
   });
 
+  // Build absorption lookup by listing key for stale detection
+  const absorptionActive = (window._absorptionData?.active || []);
+  const staleDOMThreshold = 45;
+  _domByKey = {};
+  for (const a of absorptionActive) {
+    _domByKey[a.key] = a.daysOnMarket || 0;
+  }
+
+  let staleCount = 0;
   listings.forEach((l, idx) => {
     const key = groupKey(l);
     const groupIdx = groupSet.indexOf(key);
@@ -4849,9 +5243,24 @@ function renderPricingScatter(allListings) {
     const y = yScale(l.priceValue);
     const color = colorFor(l.source);
 
-    svg += `<circle class="scatter-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="${color}" fill-opacity="0.78" stroke="${color}" stroke-width="1"
-      onmouseenter="showScatterTooltip(event, ${idx})" onmouseleave="hideScatterTooltip()"
-      onmousemove="moveScatterTooltip(event)" onclick="openListingDetail(${idx})" data-listing-idx="${idx}" style="cursor:pointer;" />`;
+    // Check if this listing is stale (45+ days on market without clearing)
+    const dom = _domByKey[_listingIdentKey(l)] || 0;
+    const isStale = dom >= staleDOMThreshold;
+    if (isStale) staleCount++;
+
+    if (isStale) {
+      // Hollow marker — filled with paper background, coloured stroke
+      // Visually distinct: stale listings are price-setting noise, not market signal
+      svg += `<circle class="scatter-dot scatter-dot-stale" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5"
+        fill="var(--paper-card)" stroke="${color}" stroke-width="1.8" stroke-dasharray="3,2"
+        onmouseenter="showScatterTooltip(event, ${idx})" onmouseleave="hideScatterTooltip()"
+        onmousemove="moveScatterTooltip(event)" onclick="openListingDetail(${idx})" data-listing-idx="${idx}"
+        style="cursor:pointer;" />`;
+    } else {
+      svg += `<circle class="scatter-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="${color}" fill-opacity="0.78" stroke="${color}" stroke-width="1"
+        onmouseenter="showScatterTooltip(event, ${idx})" onmouseleave="hideScatterTooltip()"
+        onmousemove="moveScatterTooltip(event)" onclick="openListingDetail(${idx})" data-listing-idx="${idx}" style="cursor:pointer;" />`;
+    }
   });
 
   // Plot Mixta's own entered prices as a distinct star marker on the same
@@ -4924,7 +5333,10 @@ function renderPricingScatter(allListings) {
   // existing DOM (including the just-rendered SVG), which is wasteful and
   // a known source of subtle event-handler bugs. Build the complete
   // string once and assign innerHTML exactly one time instead.
-  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}${mixtaLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>${unmatchedWarning}`;
+  const staleLegend = staleCount > 0
+    ? `<span class="scatter-legend-item"><span class="stale-legend-dot"></span>${staleCount} stale (45+ days, dashed)</span>`
+    : '';
+  container.innerHTML = svg + `<div class="scatter-legend">${legendHtml}${mixtaLegend}${staleLegend}<span class="scatter-legend-item">${esc(String(listings.length))} units plotted</span></div>${unmatchedWarning}`;
 
   if (!document.getElementById('scatterTooltip')) {
     const tt = document.createElement('div');
@@ -4948,11 +5360,16 @@ function showScatterTooltip(evt, idx) {
   const sourceLine = l.isMixta
     ? `<div class="tt-meta" style="color:var(--maroon-line);">MIXTA AFRICA</div>`
     : `<div class="tt-meta">${esc(l.source || 'Unknown source')} &middot; ${esc(l.realtorName || 'Realtor not listed')}</div>`;
+  const dom = _domByKey ? _domByKey[_listingIdentKey(l)] : 0;
+  const staleNote = dom >= 45
+    ? `<div class="tt-meta" style="color:var(--maroon);font-weight:700;">⚠ ${dom} days on market — stale</div>`
+    : (dom > 0 ? `<div class="tt-meta">${dom} days on market</div>` : '');
   tt.innerHTML = `
     <span class="tt-title">${esc(l.title || 'Untitled listing')}</span>
     <span class="tt-price">${esc(l.priceFormatted || formatNaira(l.priceValue))}</span>
     ${sourceLine}
-    <div class="tt-meta">${esc(l.location || '')} &middot; ${esc(l.bedroomLabel || '')}</div>`;
+    <div class="tt-meta">${esc(l.location || '')} &middot; ${esc(l.bedroomLabel || '')}</div>
+    ${staleNote}`;
   tt.classList.add('show');
   moveScatterTooltip(evt);
 }
@@ -5715,16 +6132,263 @@ function toggleFocusMode() {
 // Restore state on load (after a brief tick so DOM is ready)
 if (_focusModeActive) requestAnimationFrame(() => _applyFocusMode(true));
 
+// ── MACRO INDICATORS ─────────────────────────────────────────────────────────
+// Authoritative quantitative context injected into every report prompt.
+// Update this object quarterly from NBS, CBN, World Bank, and FMBN releases.
+// The model connects qualitative signals to these known figures rather than
+// inventing numbers. Last updated: Q2 2026.
+// ── LIVE MACRO DATA LAYER ────────────────────────────────────────────────────
+// _mergeMacroIndicators() is called at boot once macro-indicators.json loads.
+// It overlays live fetched figures onto the hardcoded MACRO_INDICATORS object
+// so every report prompt and every _macroBlock() call uses the freshest data.
+// Fields that could not be fetched (API failure, lag) fall back to the
+// hardcoded strings — the hardcoded object is always the safety net.
+function _mergeMacroIndicators(live) {
+  if (!live) return;
+
+  const wb = live.world_bank || {};
+  const cbn = live.cbn_exchange_rate || {};
+  const imf = live.imf_gdp_forecast || {};
+  const nbs = live.nbs_manual || {};
+
+  // World Bank automated fields
+  if (wb.gdp_growth?.value != null)
+    MACRO_INDICATORS.macroeconomic.gdp_growth_2025 =
+      `${wb.gdp_growth.value}% real GDP growth (${wb.gdp_growth.source}, ${wb.gdp_growth.year})`;
+
+  if (wb.inflation_cpi?.value != null)
+    MACRO_INDICATORS.macroeconomic.headline_inflation =
+      `${wb.inflation_cpi.value}% year-on-year (${wb.inflation_cpi.source}, ${wb.inflation_cpi.year})`;
+
+  if (wb.unemployment?.value != null)
+    MACRO_INDICATORS.macroeconomic.unemployment =
+      `${wb.unemployment.value}% (${wb.unemployment.source}, ${wb.unemployment.year})`;
+
+  if (wb.remittances_pct?.value != null)
+    MACRO_INDICATORS.world_bank_outlook.remittances_2025 =
+      `${wb.remittances_pct.value}% of GDP (${wb.remittances_pct.source}, ${wb.remittances_pct.year})`;
+
+  // IMF forecast
+  if (imf.value != null)
+    MACRO_INDICATORS.macroeconomic.gdp_growth_2026_fcst =
+      `${imf.value}% forecast (${imf.source}, ${imf.year})`;
+
+  // CBN exchange rate (weekly scrape)
+  if (cbn.usd_ngn)
+    MACRO_INDICATORS.monetary_policy.naira_usd_official =
+      `₦${Number(cbn.usd_ngn).toLocaleString()}/$ (${cbn.source}, ${(cbn.fetchedAt||'').slice(0,10)})`;
+
+  // NBS manual fields (entered via Config UI after each monthly CPI release)
+  if (nbs.headline_cpi_yoy)
+    MACRO_INDICATORS.macroeconomic.headline_inflation =
+      `${nbs.headline_cpi_yoy}% year-on-year (NBS CPI, ${nbs.updatedAt || 'manual update'})`;
+  if (nbs.food_inflation)
+    MACRO_INDICATORS.macroeconomic.food_inflation =
+      `${nbs.food_inflation}% year-on-year (NBS, ${nbs.updatedAt || 'manual update'})`;
+  if (nbs.core_inflation)
+    MACRO_INDICATORS.macroeconomic.core_inflation =
+      `${nbs.core_inflation}% year-on-year (NBS, ${nbs.updatedAt || 'manual update'})`;
+  if (nbs.real_estate_gdp_growth)
+    MACRO_INDICATORS.macroeconomic.real_estate_gdp_pct =
+      `${nbs.real_estate_gdp_growth}% real estate sector GDP growth (NBS, ${nbs.updatedAt || 'manual update'})`;
+  if (nbs.mpr)
+    MACRO_INDICATORS.monetary_policy.cbn_mpr =
+      `${nbs.mpr}% (CBN MPC, ${nbs.updatedAt || 'manual update'})`;
+
+  // Update the _updated timestamp to reflect freshness
+  MACRO_INDICATORS._updated = `Live — World Bank ${wb.gdp_growth?.year || ''}${cbn.fetchedAt ? ` · CBN ${cbn.fetchedAt.slice(0,10)}` : ''}${nbs.updatedAt ? ` · NBS ${nbs.updatedAt}` : ''}`;
+
+  // Cache live data for the macro dashboard panel
+  window._liveMacroData = live;
+  console.log('[Macro] MACRO_INDICATORS updated from live data');
+}
+
+// ── MACRO DASHBOARD PANEL ────────────────────────────────────────────────────
+// Renders the live macro indicator panel inside the Reports tab.
+// Shows World Bank, IMF, CBN, and NBS figures with source attribution.
+// If macro-indicators.json hasn't been written yet, shows the hardcoded fallback.
+function renderMacroDashboard() {
+  const el = document.getElementById('macroDashboardPanel');
+  if (!el) return;
+
+  const live = window._liveMacroData;
+  const wb = live?.world_bank || {};
+  const cbn = live?.cbn_exchange_rate || {};
+  const imf = live?.imf_gdp_forecast || {};
+  const nbs = live?.nbs_manual || {};
+  const m = MACRO_INDICATORS;
+
+  const fetched = live?.fetchedAt
+    ? `World Bank & IMF last fetched ${live.fetchedAt.slice(0,10)}`
+    : 'Using hardcoded baseline — pipeline will update Monday';
+  const cbnNote = cbn.fetchedAt
+    ? `CBN rate fetched ${cbn.fetchedAt.slice(0,10)}`
+    : 'CBN rate not yet fetched';
+  const nbsNote = nbs.updatedAt
+    ? `NBS figures manually updated ${nbs.updatedAt}`
+    : 'NBS figures not yet entered — use Update NBS Data below';
+
+  const row = (label, value, source, highlight = false) => `
+    <div class="macro-row${highlight ? ' macro-row-highlight' : ''}">
+      <div class="macro-row-label">${esc(label)}</div>
+      <div class="macro-row-value">${esc(value)}</div>
+      <div class="macro-row-source">${esc(source)}</div>
+    </div>`;
+
+  el.innerHTML = `
+    <div class="macro-dashboard">
+      <div class="macro-dashboard-header">
+        <div class="macro-dashboard-title">Live Macro Indicators</div>
+        <div class="macro-dashboard-meta">${esc(fetched)} · ${esc(cbnNote)} · ${esc(nbsNote)}</div>
+      </div>
+
+      <div class="macro-group">
+        <div class="macro-group-label">Monetary Policy</div>
+        ${row('CBN MPR', m.monetary_policy.cbn_mpr, 'CBN MPC', true)}
+        ${row('Naira / USD (Official)', m.monetary_policy.naira_usd_official, 'CBN EFEM')}
+        ${row('Prime Lending Rate', m.monetary_policy.prime_lending_rate, 'Commercial banks')}
+        ${row('Mortgage Rate', m.monetary_policy.mortgage_rate, 'Lenders / FMBN')}
+      </div>
+
+      <div class="macro-group">
+        <div class="macro-group-label">Macroeconomic</div>
+        ${row('Real GDP Growth', m.macroeconomic.gdp_growth_2025, 'NBS / World Bank', true)}
+        ${row('GDP Growth Forecast', m.macroeconomic.gdp_growth_2026_fcst, 'IMF / World Bank')}
+        ${row('Headline Inflation (CPI)', m.macroeconomic.headline_inflation, 'NBS', true)}
+        ${row('Food Inflation', m.macroeconomic.food_inflation, 'NBS')}
+        ${row('Core Inflation', m.macroeconomic.core_inflation, 'NBS')}
+        ${row('Unemployment', m.macroeconomic.unemployment, 'NBS Labour Force')}
+        ${row('Brent Oil Price', m.macroeconomic.oil_price_brent, 'ICE Brent')}
+        ${row('Nigeria Oil Output', m.macroeconomic.nigeria_oil_output, 'NNPC / OPEC')}
+        ${m.macroeconomic.real_estate_gdp_pct ? row('Real Estate GDP Growth', m.macroeconomic.real_estate_gdp_pct, 'NBS', true) : ''}
+      </div>
+
+      <div class="macro-group">
+        <div class="macro-group-label">Housing Finance</div>
+        ${row('FMBN / NHF Rate', m.housing_finance.fmbn_nhf_rate, 'FMBN')}
+        ${row('FMBN Max Loan', m.housing_finance.fmbn_max_loan, 'FMBN')}
+        ${row('M-REIF / MOFI', m.housing_finance.mreif_scheme, 'MOFI / Federal Government')}
+        ${row('Housing Deficit', m.housing_finance.housing_deficit, 'Federal Government est.')}
+      </div>
+
+      <div class="macro-group">
+        <div class="macro-group-label">External / Global</div>
+        ${row('Diaspora Remittances', m.world_bank_outlook.remittances_2025, 'World Bank')}
+        ${row('FX Reform Note', m.world_bank_outlook.subsidy_reform_note, 'World Bank')}
+        ${row('Poverty Headcount', m.world_bank_outlook.poverty_headcount, 'World Bank')}
+      </div>
+    </div>`;
+}
+
+// ── NBS MANUAL UPDATE — Firebase write ───────────────────────────────────────
+// Called from the NBS update form in the Config tab.
+async function saveNBSManualData() {
+  const fields = ['headline_cpi_yoy','food_inflation','core_inflation',
+                  'real_estate_gdp_growth','mpr'];
+  const data = { updatedAt: new Date().toISOString().slice(0,10), updatedBy: 'Config UI' };
+  let anyFilled = false;
+  for (const f of fields) {
+    const el = document.getElementById(`nbs_${f}`);
+    if (el && el.value.trim()) { data[f] = el.value.trim(); anyFilled = true; }
+  }
+  if (!anyFilled) { alert('Enter at least one NBS figure before saving.'); return; }
+
+  const statusEl = document.getElementById('nbsSaveStatus');
+  if (!firebaseReady || !db) {
+    statusEl.textContent = 'Firebase not connected — check configuration.';
+    return;
+  }
+  try {
+    statusEl.textContent = 'Saving…';
+    await db.ref('macro/nbs_manual').set(data);
+    statusEl.textContent = `Saved ${data.updatedAt} — pipeline will pick up changes next Monday.`;
+    // Merge immediately into live MACRO_INDICATORS
+    if (window._liveMacroData) {
+      window._liveMacroData.nbs_manual = data;
+    } else {
+      window._liveMacroData = { nbs_manual: data };
+    }
+    _mergeMacroIndicators(window._liveMacroData);
+    renderMacroDashboard();
+  } catch (e) {
+    statusEl.textContent = `Save failed: ${e.message}`;
+  }
+}
+
+async function loadNBSManualFromFirebase() {
+  if (!firebaseReady || !db) return;
+  try {
+    const snap = await db.ref('macro/nbs_manual').once('value');
+    const data = snap.val();
+    if (data) {
+      if (!window._liveMacroData) window._liveMacroData = {};
+      window._liveMacroData.nbs_manual = data;
+      _mergeMacroIndicators(window._liveMacroData);
+      // Pre-fill the form fields if Config is open
+      for (const [k, v] of Object.entries(data)) {
+        const el = document.getElementById(`nbs_${k}`);
+        if (el && v) el.value = v;
+      }
+    }
+  } catch (e) { console.warn('[Macro] Firebase NBS load failed:', e.message); }
+}
+
+const MACRO_INDICATORS = {
+  _updated: 'Q2 2026 — update from NBS/CBN releases each quarter',
+  monetary_policy: {
+    cbn_mpr:              '27.50% (CBN MPC, May 2026)',
+    cbn_cash_reserve:     '45.00% (CBN MPC, May 2026)',
+    prime_lending_rate:   '~32–36% (commercial bank range, Q1 2026)',
+    mortgage_rate:        '~28–35% (commercial lenders); 6–9% (FMBN/NHF concessionary)',
+    naira_usd_parallel:   '~₦1,580–₦1,620/$ (parallel market, Q2 2026)',
+    naira_usd_official:   '~₦1,530/$ (EFEM rate, Q2 2026)',
+  },
+  macroeconomic: {
+    gdp_growth_2025:      '3.84% real GDP growth (NBS, full year 2025)',
+    gdp_growth_2026_fcst: '3.4% forecast (World Bank, June 2026 Nigeria Economic Update)',
+    headline_inflation:   '31.70% year-on-year (NBS CPI Report, April 2026)',
+    food_inflation:       '37.18% year-on-year (NBS, April 2026)',
+    core_inflation:       '24.43% year-on-year (NBS, April 2026)',
+    unemployment:         '4.3% (NBS Q3 2025 Labour Force Survey)',
+    oil_price_brent:      '~$72–78/bbl (ICE Brent, Q2 2026 average)',
+    nigeria_oil_output:   '~1.55m bpd (NNPC/OPEC, Q1 2026)',
+  },
+  housing_finance: {
+    fmbn_nhf_rate:        '6% per annum (NHF concessionary mortgage rate)',
+    fmbn_max_loan:        '₦15m (FMBN individual NHF loan ceiling, 2025)',
+    mreif_scheme:         'M-REIF/MOFI: ₦150bn fund, pilot phase targeting 7,552 units across Lagos and Port Harcourt',
+    housing_deficit:      '~17–28 million units estimated deficit (Federal Government, various)',
+    mofi_nhf_contribution:'2.5% of salary for formal sector workers',
+  },
+  infrastructure: {
+    lekki_deep_seaport:   'Operationally live since 2023; handling containerised cargo; Ibeju-Lekki corridor catalyst',
+    green_line_metro:     '68km, 177 stations including Lakowe; construction ongoing; target completion phased through 2028',
+    dangote_refinery:     '650,000 bpd nameplate capacity; partial operations from 2024; 135,000+ estimated jobs at maturity',
+    lekki_coastal_road:   'Commissioned May 2025; travel time to LNT corridor reduced to ~20 minutes from VI',
+    ph_owerri_expressway: 'Garden City Golf Annexe access road: 0.77km from Port Harcourt–Owerri Expressway (Omagwa)',
+  },
+  world_bank_outlook: {
+    nigeria_2026_gdp:     '3.4% real GDP growth forecast (World Bank, June 2026)',
+    subsidy_reform_note:  'Fuel subsidy removal and FX unification assessed as structurally positive; short-term inflation cost acknowledged',
+    poverty_headcount:    '~40.1% below $2.15/day (World Bank 2024 Poverty Assessment)',
+    remittances_2025:     '$20.9bn (World Bank migration data, 2025 estimate)',
+  },
+};
+
 // ── REPORTS ENGINE ────────────────────────────────────────────────────────────
-// Architecture: progressive pre-aggregation — daily briefing summaries are the
-// input, never raw articles. Monthly ≈ 22 days × ~100 tokens = ~2,200 token
-// input. Quarterly synthesises 3 monthly summaries. Yearly synthesises 4
-// quarterly summaries. All AI calls go through the existing Cloudflare Worker.
-// Reports are stored in sessionStorage (per-session cache) and downloadable as
-// PDF or TXT — no server write required.
+// Multi-phase generation architecture:
+// Phase 1 — Data aggregation (client-side, no AI)
+// Phase 2 — Market conditions + macro framing (SambaNova 70b, 3,500 tokens)
+// Phase 3 — Theme analysis with evidence (Groq 70b, 1,500 tokens per batch)
+// Phase 4 — Implications for Mixta (SambaNova 70b, 2,000 tokens)
+// Phase 5 — Executive summary written LAST from all generated content (SambaNova, 1,500 tokens)
+//
+// Each call is focused on one job. Partial failure recovery: if one call fails,
+// the report still completes with a placeholder for that section.
+// Total Groq spend per report: ~3,000–4,500 output tokens — well within daily budget.
 
 let _reportType = 'monthly';
-let _reportData = null; // currently displayed report object
+let _reportData = null;
 let _savedReports = JSON.parse(localStorage.getItem('mxReports') || '[]');
 
 function setReportType(type) {
@@ -5739,32 +6403,25 @@ function _populateReportPeriods() {
   const sel = document.getElementById('reportPeriodSelect');
   if (!sel) return;
   sel.innerHTML = '';
-
   const now = new Date();
   const addOpt = (value, label) => {
     const o = document.createElement('option');
     o.value = value; o.textContent = label;
     sel.appendChild(o);
   };
-
   if (_reportType === 'monthly') {
-    // Last 12 months
     for (let i = 1; i <= 12; i++) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const value = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-      const label = d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
-      addOpt(value, label);
+      addOpt(value, d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }));
     }
   } else if (_reportType === 'quarterly') {
-    // Last 8 quarters
     for (let i = 1; i <= 8; i++) {
       const d = new Date(now.getFullYear(), now.getMonth() - (i * 3), 1);
       const q = Math.floor(d.getMonth() / 3) + 1;
-      const value = `${d.getFullYear()}-Q${q}`;
-      addOpt(value, `Q${q} ${d.getFullYear()}`);
+      addOpt(`${d.getFullYear()}-Q${q}`, `Q${q} ${d.getFullYear()}`);
     }
   } else {
-    // Last 5 years
     for (let i = 1; i <= 5; i++) {
       const y = now.getFullYear() - i;
       addOpt(`${y}`, `${y}`);
@@ -5773,19 +6430,13 @@ function _populateReportPeriods() {
 }
 
 // ── Data aggregation ──────────────────────────────────────────────────────────
-// Reads briefings-index.json entries matching the selected period, loads their
-// archive files, and extracts the pre-computed summaries and themes.
-// Nothing raw — only AI-generated summaries are sent to Groq.
-
 async function _loadBriefingsForPeriod(period) {
   const status = document.getElementById('reportStatusLine');
-
-  // Parse period into date range
   let startDate, endDate;
   if (_reportType === 'monthly') {
     const [y, m] = period.split('-').map(Number);
     startDate = new Date(y, m - 1, 1);
-    endDate   = new Date(y, m, 0); // last day of month
+    endDate   = new Date(y, m, 0);
   } else if (_reportType === 'quarterly') {
     const [y, q] = period.split('-Q').map(Number);
     startDate = new Date(y, (q - 1) * 3, 1);
@@ -5795,57 +6446,33 @@ async function _loadBriefingsForPeriod(period) {
     startDate = new Date(y, 0, 1);
     endDate   = new Date(y, 11, 31);
   }
-
   const startStr = startDate.toISOString().slice(0, 10);
   const endStr   = endDate.toISOString().slice(0, 10);
-
-  // Filter briefings-index entries that fall within the period
   const matching = briefingsIndex.filter(b => b.date >= startStr && b.date <= endStr);
+  if (!matching.length) return { error: `No briefings found for ${period}.` };
 
-  if (!matching.length) {
-    return { error: `No briefings found for ${period}. The pipeline must have run at least once within this period.` };
-  }
-
-  status.textContent = `Loading ${matching.length} briefing${matching.length !== 1 ? 's' : ''} for ${period}…`;
-
-  // Load archive files — cap at 31 days for monthly, use index summaries for quarterly/yearly
+  status.textContent = `Loading ${matching.length} briefings…`;
   const briefings = [];
   for (const entry of matching.slice(0, 31)) {
     const filePath = entry.file || `archive/briefing-${entry.date}.json`;
     const data = await loadJSON(filePath);
     if (data) briefings.push({ date: entry.date, ...data });
   }
-
-  if (!briefings.length) {
-    return { error: 'Could not load briefing archive files. Check that data/archive/ exists in the repo.' };
-  }
-
-  status.textContent = `Loaded ${briefings.length} briefings. Aggregating themes…`;
+  if (!briefings.length) return { error: 'Could not load archive files.' };
   return { briefings, startStr, endStr, period };
 }
 
-// ── Theme aggregation ─────────────────────────────────────────────────────────
-// Groups themes across all briefings in the period. Counts occurrences,
-// tracks first/last seen, and determines status (new / persists / fading)
-// by cross-referencing with themes.json memory entries.
-
 function _aggregateThemes(briefings, themesMemory) {
   const themeMap = {};
-
   briefings.forEach(b => {
     (b.themes || []).forEach(t => {
       const key = (t.label || '').toLowerCase().trim();
       if (!key) return;
       if (!themeMap[key]) {
         themeMap[key] = {
-          label: t.label,
-          occurrences: 0,
-          dates: [],
-          what_happened: [],
-          why_it_matters: [],
-          recommendations: [],
-          confidence: [],
-          sourceArticles: [],
+          label: t.label, occurrences: 0, dates: [],
+          what_happened: [], why_it_matters: [],
+          recommendations: [], confidence: [], sourceArticles: [],
         };
       }
       themeMap[key].occurrences++;
@@ -5854,15 +6481,12 @@ function _aggregateThemes(briefings, themesMemory) {
       if (t.why_it_matters_to_mixta) themeMap[key].why_it_matters.push(t.why_it_matters_to_mixta);
       if (t.recommendation)          themeMap[key].recommendations.push(t.recommendation);
       if (t.confidence)              themeMap[key].confidence.push(t.confidence);
-      // Collect named source articles as grounded evidence
       (t.sourceArticles || []).forEach(a => {
-        if (a.title && !themeMap[key].sourceArticles.find(x => x.title === a.title)) {
+        if (a.title && !themeMap[key].sourceArticles.find(x => x.title === a.title))
           themeMap[key].sourceArticles.push(a);
-        }
       });
     });
   });
-
   const norm = s => (s || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
   return Object.values(themeMap)
     .sort((a, b) => b.occurrences - a.occurrences)
@@ -5872,194 +6496,258 @@ function _aggregateThemes(briefings, themesMemory) {
         norm(m.label).includes(norm(t.label)) ||
         norm(t.label).includes(norm(m.label))
       );
-      let status = 'new';
-      if (mem) status = mem.count >= 3 ? 'persists' : 'fading';
-      // Dominant confidence across briefings
+      const status = mem ? (mem.count >= 3 ? 'persists' : 'fading') : 'new';
       const highCount = t.confidence.filter(c => c === 'high').length;
       const dominantConfidence = highCount > t.occurrences / 2 ? 'high' : 'medium';
       return { ...t, status, timesSeen: mem?.count || t.occurrences, dominantConfidence };
     });
 }
 
-// ── Prompt builder ────────────────────────────────────────────────────────────
-// ADS-STE100 Simplified Technical English rules enforced via prompt:
-// - Short sentences (max 20 words). One instruction per sentence.
-// - Active voice only. No ambiguous words.
-// - Approved verb forms — "identify", "state", "use", not "utilise", "leverage".
-// - No jargon without definition. No buzzwords.
-
-function _buildReportPrompt(type, period, aggregatedThemes, briefings, prevPeriodSummary) {
-  // Build a rich evidence block per theme — all available what_happened sentences,
-  // why_it_matters context, source article titles, and all recommendations.
-  const themeBlock = aggregatedThemes.slice(0, 8).map((t, i) => {
-    const evidence    = t.what_happened.join('\n  - ');
-    const whyMatters  = t.why_it_matters.slice(0, 3).join('\n  - ');
-    const recs        = t.recommendations.join('\n  - ');
-    const sources     = t.sourceArticles.slice(0, 5).map(a => `"${a.title}"${a.source ? ` (${a.source})` : ''}`).join(', ');
-    const dateRange   = t.dates.length > 1 ? `${t.dates[0]} to ${t.dates[t.dates.length-1]}` : t.dates[0] || '';
-    return `THEME ${i+1}: "${t.label}"
-  Appearances: ${t.occurrences} of ${briefings.length} briefing days (${dateRange})
-  Status: ${t.status.toUpperCase()} | Confidence: ${t.dominantConfidence}
+// ── Macro context block — injected into every prompt ─────────────────────────
+function _macroBlock() {
+  const m = MACRO_INDICATORS;
+  return `AUTHORITATIVE MACRO CONTEXT (cite these figures by source — do not invent alternatives):
   
-  WHAT HAPPENED (evidence from daily briefings):
-  - ${evidence || 'No what_happened data recorded'}
-  
-  WHY IT MATTERS TO THE BUSINESS:
-  - ${whyMatters || 'No internal context recorded'}
-  
-  RECOMMENDATIONS SEEN IN THIS PERIOD:
-  - ${recs || 'None recorded'}
-  
-  NAMED SOURCE ARTICLES (use these for specificity):
-  ${sources || 'No named sources available'}`;
-  }).join('\n\n' + '─'.repeat(60) + '\n\n');
+MONETARY POLICY:
+- CBN Monetary Policy Rate (MPR): ${m.monetary_policy.cbn_mpr}
+- Cash Reserve Ratio: ${m.monetary_policy.cbn_cash_reserve}  
+- Prime lending rate range: ${m.monetary_policy.prime_lending_rate}
+- Commercial mortgage rate range: ${m.monetary_policy.mortgage_rate}
+- Exchange rate (official EFEM): ${m.monetary_policy.naira_usd_official}
+- Exchange rate (parallel): ${m.monetary_policy.naira_usd_parallel}
 
-  // Full executive summaries — 800 chars, not 300. This is the primary signal.
-  const execSummaries = briefings
-    .filter(b => b.executive_summary)
-    .slice(0, 14)
-    .map(b => `[${b.date}]\n${b.executive_summary.slice(0, 800)}`)
-    .join('\n\n');
+MACROECONOMIC:
+- Nigeria real GDP growth 2025: ${m.macroeconomic.gdp_growth_2025}
+- Nigeria real GDP growth 2026 forecast: ${m.macroeconomic.gdp_growth_2026_fcst}
+- Headline CPI inflation: ${m.macroeconomic.headline_inflation}
+- Food inflation: ${m.macroeconomic.food_inflation}
+- Oil price (Brent): ${m.macroeconomic.oil_price_brent}
+- Nigeria crude output: ${m.macroeconomic.nigeria_oil_output}
+- Diaspora remittances 2025: ${m.world_bank_outlook.remittances_2025}
 
-  // Watch list hits collected across the period
-  const watchHits = briefings
-    .flatMap(b => b.watch_list_hits || [])
-    .filter(Boolean)
-    .slice(0, 10)
-    .join('\n- ');
+HOUSING FINANCE:
+- FMBN/NHF mortgage rate: ${m.housing_finance.fmbn_nhf_rate}
+- FMBN maximum individual loan: ${m.housing_finance.fmbn_max_loan}
+- M-REIF/MOFI scheme: ${m.housing_finance.mreif_scheme}
+- Estimated national housing deficit: ${m.housing_finance.housing_deficit}
 
-  const prevBlock = prevPeriodSummary
-    ? `\nPREVIOUS PERIOD CONTEXT (for continuity analysis):\n${prevPeriodSummary}\n`
-    : '\nNo previous period report available — this is the baseline period.\n';
-
-  const typeInstructions = {
-    monthly:   'This is a MONTHLY report. Focus on events, data points, and named policy changes from this month. Identify which themes are new vs recurring.',
-    quarterly: 'This is a QUARTERLY report. Identify structural shifts across 3 months. State which monthly themes have become persistent structural trends. Quantify where possible.',
-    yearly:    'This is a YEARLY report. Identify the 3-5 defining structural changes in the market this year. State how conditions at year-end differ from year-start. Be direct about what changed.',
-  };
-
-  return `You are a Senior Strategy Manager at Mixta Africa — a Nigerian real estate developer with active projects in Lagos (Lakowe Crossings, Lakowe Annexe, Lagos New Town) and Port Harcourt (Garden City Golf Annexe, 494-unit M-REIF affordable housing off the Port Harcourt–Owerri Expressway). You are writing an internal market intelligence report for the management team and board.
-
-REPORT SPECIFICATION:
-Type: ${type.toUpperCase()} REPORT
-Period: ${period}
-Briefing days analysed: ${briefings.length}
-${typeInstructions[type] || ''}
-
-═══════════════════════════════════════════════════════════════
-MANDATORY QUALITY RULES — VIOLATIONS WILL MAKE THIS REPORT USELESS
-═══════════════════════════════════════════════════════════════
-
-RULE 1 — NO GENERIC SENTENCES:
-Every sentence must contain at least ONE of the following:
-  a) A named institution (CBN, FMBN, AMCON, Lagos State Government, NNPC, Shell, etc.)
-  b) A specific number or metric (₦45bn, 15%, 3,000 units, MPR at 27.5%, etc.)
-  c) A named policy, programme, or corridor (NHF, Green Line Metro, Lekki Deep Seaport, M-REIF, MOFI, Port Harcourt–Owerri Expressway, etc.)
-  d) A named market mechanism (mortgage rate, land tenure, exchange rate, diaspora remittance, etc.)
-
-If a sentence you are about to write contains NONE of these, DELETE it and replace it with a sentence that does.
-
-RULE 2 — SENTENCES LIKE THESE ARE FORBIDDEN:
-  ✗ "Nigeria's real estate market faces challenges."
-  ✗ "Government support is key."
-  ✗ "Market conditions are changing."
-  ✗ "This matters to the market."
-  ✗ "Partnerships are formed."
-  ✗ "The theme is growing."
-These sentences are useless because they could describe any market in any year.
-
-RULE 3 — USE THE EVIDENCE:
-The theme blocks below contain named source articles, specific what_happened sentences, and internal why_it_matters context. You MUST draw from this evidence. Do not summarise the theme name — analyse what actually happened.
-
-RULE 4 — IMPLICATIONS FOR MIXTA:
-Each implication must name a Mixta project (Lakowe Crossings, Lakowe Annexe, Lagos New Town, or Garden City Golf Annexe) AND state a specific action, number, or decision. Generic advice like "partner with government" is not acceptable.
-
-RULE 5 — LANGUAGE (ADS-STE100 Simplified Technical English):
-  - Short sentences. Maximum 25 words per sentence.
-  - Active voice only.
-  - No buzzwords: "leverage", "utilise", "synergise", "optimise", "robust", "dynamic", "unlock".
-  - Numbers as digits: ₦45bn, 3,000 units, 27.5%.
-
-═══════════════════════════════════════════════════════════════
-EVIDENCE BASE
-═══════════════════════════════════════════════════════════════
-
-${themeBlock}
-
-─── DAILY EXECUTIVE SUMMARIES (primary signal — use specific facts from these) ───
-${execSummaries}
-
-─── WATCH LIST HITS THIS PERIOD ───
-${watchHits ? `- ${watchHits}` : 'None recorded.'}
-
-${prevBlock}
-
-═══════════════════════════════════════════════════════════════
-OUTPUT — RESPOND WITH VALID JSON ONLY. NO MARKDOWN. NO PREAMBLE.
-═══════════════════════════════════════════════════════════════
-
-{
-  "period_label": "Human-readable period label, e.g. 'June 2026' or 'Q2 2026'",
-  
-  "executive_summary": "4 sentences. Sentence 1: state the single most significant market development this period with a specific number or named policy. Sentence 2: state the theme that appeared most frequently, with its frequency count. Sentence 3: state the most important implication for property demand in the Lagos or Port Harcourt corridor specifically. Sentence 4: state what direction the market is moving and what is driving it.",
-
-  "market_conditions": "3-4 sentences. Cover: (1) financing/mortgage conditions with current rate or policy name, (2) land and regulatory environment with any named policy change, (3) infrastructure or corridor development with named project and status. Every sentence must contain a named institution, number, or policy.",
-
-  "themes": [
-    {
-      "label": "Exact theme label from evidence",
-      "status": "new|persists|fading",
-      "occurrences": 0,
-      "confidence": "high|medium|low",
-      "analysis": "3-4 sentences grounded in the evidence. Sentence 1: state what specifically happened — name the institution, policy, or event. Sentence 2: state the scale or magnitude using a number from the evidence. Sentence 3: state the mechanism by which this affects Lagos or Port Harcourt property demand. Sentence 4: state who in the market is most affected.",
-      "trajectory": "1 sentence. State whether frequency increased, decreased, or held steady across the period, and what is driving the direction."
-    }
-  ],
-
-  "theme_continuity": "2-3 sentences. Name the specific themes that are new this period. Name the specific themes persisting from prior periods and how many consecutive periods they have appeared. If no prior period exists, state this is the baseline.",
-
-  "implications_for_mixta": [
-    "Each item must name a Mixta project AND contain a specific action or number. Format: '[Project name]: [specific action] because [specific market evidence with number or named policy].'"
-  ],
-
-  "watch_next_period": "2-3 sentences. Name the 2-3 most important leading indicators to monitor. State specifically what threshold or event would change the assessment."
-}`;
+INFRASTRUCTURE (corridor-level):
+- Lekki Deep Seaport: ${m.infrastructure.lekki_deep_seaport}
+- Green Line Metro: ${m.infrastructure.green_line_metro}
+- Dangote Refinery: ${m.infrastructure.dangote_refinery}
+- Lekki Coastal Road: ${m.infrastructure.lekki_coastal_road}`;
 }
 
-// ── AI caller ─────────────────────────────────────────────────────────────────
-async function _callReportAI(prompt) {
+// ── AI caller — provider-aware with separate budgets ─────────────────────────
+// SambaNova for complex reasoning (no Groq RPD impact)
+// Groq 70b as fallback only — preserves daily synthesis budget
+async function _aiCall(prompt, maxTokens, preferGroq = false) {
   const WORKER = 'https://mixta-ai-proxy.olasunkanmitimilehintaiwo.workers.dev';
-  // Use 70b model (SambaNova) for report quality — same tier as daily synthesis
-  const PROVIDERS = [
-    { name: 'SambaNova', provider: 'sambanova', model: 'Meta-Llama-3.3-70B-Instruct' },
-    { name: 'Groq 70b',  provider: 'groq',      model: 'llama-3.3-70b-versatile'     },
-    { name: 'Mistral',   provider: 'mistral',    model: 'mistral-small-latest'         },
-  ];
-  const status = document.getElementById('reportStatusLine');
+  const PROVIDERS = preferGroq
+    ? [
+        { name: 'Groq 70b',  provider: 'groq',      model: 'llama-3.3-70b-versatile'          },
+        { name: 'SambaNova', provider: 'sambanova', model: 'Meta-Llama-3.3-70B-Instruct'      },
+        { name: 'Mistral',   provider: 'mistral',    model: 'mistral-small-latest'              },
+      ]
+    : [
+        { name: 'SambaNova', provider: 'sambanova', model: 'Meta-Llama-3.3-70B-Instruct'      },
+        { name: 'Groq 70b',  provider: 'groq',      model: 'llama-3.3-70b-versatile'          },
+        { name: 'Mistral',   provider: 'mistral',    model: 'mistral-small-latest'              },
+      ];
 
   for (const { name, provider, model } of PROVIDERS) {
     try {
-      status.textContent = `Generating via ${name}…`;
+      const status = document.getElementById('reportStatusLine');
+      if (status) status.textContent = `Calling ${name}…`;
       const res = await fetch(WORKER, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           provider,
-          payload: { model, max_tokens: 2000, messages: [{ role: 'user', content: prompt }] }
+          payload: {
+            model,
+            max_tokens: maxTokens,
+            temperature: 0.3, // low temperature = more consistent, fact-grounded output
+            messages: [{ role: 'user', content: prompt }],
+          }
         })
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       const text = data?.choices?.[0]?.message?.content?.trim();
       if (!text) throw new Error('Empty response');
-      // Strip markdown fences if present
-      const clean = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
-      return JSON.parse(clean);
+      return text.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
     } catch (e) {
       console.warn(`[Report] ${name} failed:`, e.message);
     }
   }
-  throw new Error('All AI providers failed. Try again in a few minutes.');
+  throw new Error('All providers failed');
+}
+
+async function _aiJSON(prompt, maxTokens, preferGroq = false) {
+  const text = await _aiCall(prompt, maxTokens, preferGroq);
+  try { return JSON.parse(text); }
+  catch (e) {
+    // Try to extract JSON from a response that has surrounding prose
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) return JSON.parse(match[0]);
+    throw new Error('Could not parse JSON: ' + e.message);
+  }
+}
+
+// ── PHASE 2: Market Conditions ───────────────────────────────────────────────
+async function _generateMarketConditions(period, periodLabel, type, briefings, aggregatedThemes) {
+  const execSummaries = briefings
+    .filter(b => b.executive_summary)
+    .slice(0, 12)
+    .map(b => `[${b.date}] ${b.executive_summary.slice(0, 600)}`)
+    .join('\n\n');
+
+  const watchHits = briefings
+    .flatMap(b => b.watch_list_hits || [])
+    .filter(Boolean).slice(0, 8).join('; ');
+
+  const prompt = `You are a Senior Strategy Manager writing a ${type} market intelligence report for Mixta Africa's executive team. The period is ${periodLabel}.
+
+TASK: Write the Market Conditions section of this report. This section has two parts:
+
+PART A — MACRO ENVIRONMENT (3-4 sentences):
+Integrate the authoritative macro data below with the qualitative signals from the briefings. Every sentence must cite a specific figure, institution, or named policy. State how macro conditions affect real estate affordability, demand, and development economics in Nigeria specifically.
+
+PART B — CORRIDOR CONDITIONS (2-3 sentences):
+State the specific conditions in the Lagos/Ibeju-Lekki corridor and the Greater Port Harcourt market. Reference named infrastructure, named policy programmes, or named market events observed this period.
+
+${_macroBlock()}
+
+QUALITATIVE SIGNALS FROM THIS PERIOD (${briefings.length} briefing days):
+${execSummaries}
+
+WATCH LIST ACTIVITY: ${watchHits || 'None recorded'}
+
+LANGUAGE RULES:
+- Every sentence must name an institution, number, policy, or corridor. No generic sentences.
+- Active voice. Maximum 25 words per sentence.
+- Forbidden: "faces challenges", "is key", "conditions are changing", "partnerships are formed"
+
+RESPOND WITH JSON ONLY:
+{"macro_environment": "3-4 sentences citing CBN/NBS/World Bank figures.", "corridor_conditions": "2-3 sentences on Lagos and Port Harcourt specifically."}`;
+
+  return await _aiJSON(prompt, 800);
+}
+
+// ── PHASE 3: Theme Analysis ───────────────────────────────────────────────────
+async function _generateThemes(period, periodLabel, type, aggregatedThemes, briefings) {
+  const topThemes = aggregatedThemes.slice(0, 6);
+
+  const themeEvidence = topThemes.map((t, i) => {
+    const evidence   = t.what_happened.slice(0, 5).join(' | ');
+    const whyMatters = t.why_it_matters.slice(0, 3).join(' | ');
+    const sources    = t.sourceArticles.slice(0, 4).map(a => `"${a.title}"${a.source ? ` (${a.source})` : ''}`).join('; ');
+    return `THEME ${i+1}: "${t.label}"
+Status: ${t.status.toUpperCase()} | Appeared: ${t.occurrences}/${briefings.length} days | Confidence: ${t.dominantConfidence}
+Evidence (what_happened): ${evidence || 'No evidence recorded'}
+Internal context: ${whyMatters || 'None'}
+Source articles: ${sources || 'None named'}`;
+  }).join('\n\n');
+
+  const prompt = `You are a Senior Strategy Manager writing a ${type} market intelligence report for Mixta Africa's executive team. Period: ${periodLabel}.
+
+TASK: Analyse each theme below and produce a structured theme analysis section.
+
+For each theme, write:
+- "analysis": 3-4 sentences. Sentence 1: name the specific policy, institution, or event that drove this theme. Sentence 2: state the scale or magnitude using a number — draw from the macro data below or the evidence provided. Sentence 3: state the mechanism linking this theme to property demand in Lagos or Port Harcourt. Sentence 4: state who in the market is most affected (buyers, developers, lenders, government).
+- "trajectory": 1 sentence. State whether frequency increased, held, or decreased and what evidence supports this direction.
+- "quantitative_anchor": The single most relevant number from the macro data that contextualises this theme. Format: "figure (source)".
+
+${_macroBlock()}
+
+THEME EVIDENCE:
+${themeEvidence}
+
+LANGUAGE RULES:
+- No generic sentences. Every sentence must name an entity, number, or policy.
+- Maximum 25 words per sentence. Active voice only.
+- If a theme has no good quantitative anchor in the macro data, state "No direct quantitative anchor available for this period."
+
+RESPOND WITH JSON ONLY — array matching the exact theme order above:
+[{"label":"exact theme label","status":"new|persists|fading","occurrences":0,"confidence":"high|medium|low","analysis":"...","trajectory":"...","quantitative_anchor":"..."}]`;
+
+  return await _aiJSON(prompt, 2000, true); // Groq — structured extraction suits it well
+}
+
+// ── PHASE 4: Implications for Mixta ──────────────────────────────────────────
+async function _generateImplications(period, periodLabel, type, aggregatedThemes, conditions) {
+  const themeDigest = aggregatedThemes.slice(0, 6).map(t =>
+    `- ${t.label} (${t.status}, ${t.occurrences} days): ${t.what_happened[0] || ''} ${t.why_it_matters[0] || ''}`
+  ).join('\n');
+
+  const prompt = `You are a Senior Strategy Manager at Mixta Africa. You are writing the "Implications for Mixta" section of a ${type} market intelligence report for the executive team. Period: ${periodLabel}.
+
+MIXTA'S ACTIVE PROJECTS:
+- Lakowe Crossings (Lagos, Ibeju-Lekki corridor): affordable-mid residential, targeting diaspora and professional buyers
+- Lakowe Annexe (Lagos, adjacent to Lakowe Lakes Golf & Country Estate): golf-adjacency premium residential
+- Lagos New Town (LNT): 1,561-hectare mixed-use city, 30% developed, 35,000+ residents, targeting 200,000 at completion
+- Garden City Golf Annexe (Port Harcourt, Greater Port Harcourt): 494-unit M-REIF/MOFI affordable housing, off Port Harcourt–Owerri Expressway (Omagwa), targeting oil & gas workers, civil servants, NLNG cooperative members. Phase 1: 39 units, in execution.
+
+MARKET CONDITIONS THIS PERIOD:
+${conditions?.macro_environment || ''}
+${conditions?.corridor_conditions || ''}
+
+THEME DIGEST:
+${themeDigest}
+
+${_macroBlock()}
+
+TASK: Write 5-7 specific, actionable implications. Each implication must:
+1. Name a specific Mixta project (not "Mixta" generically)
+2. State a specific action, timing, or decision threshold
+3. Connect to a specific market signal or quantitative figure from this period
+4. Be actionable by the executive team — not descriptive
+
+FORMAT: Each implication as a complete sentence in the format:
+"[Project name]: [specific action] — [because/given/since] [specific market evidence with figure or named policy]."
+
+FORBIDDEN: Vague advice like "partner with government", "explore options", "monitor the market", "consider opportunities". Replace any such phrase with the specific action it implies.
+
+RESPOND WITH JSON ONLY:
+{"implications_for_mixta": ["implication 1", "implication 2", ...], "watch_next_period": "2 sentences naming 2-3 specific leading indicators and the threshold that would change the assessment."}`;
+
+  return await _aiJSON(prompt, 1500);
+}
+
+// ── PHASE 5: Executive Summary (written LAST from all generated content) ──────
+async function _generateExecutiveSummary(period, periodLabel, type, conditions, themes, implications) {
+  const themeLabels = (themes || []).map(t => `${t.label} (${t.status})`).join(', ');
+  const implDigest  = (implications?.implications_for_mixta || []).slice(0, 3).join(' ');
+
+  const prompt = `You are a Senior Strategy Manager at Mixta Africa. You are writing the Executive Summary for a ${type} market intelligence report. Period: ${periodLabel}. This is the final section — it is written after all other sections are complete.
+
+GENERATED REPORT CONTENT (summarise this — do not repeat verbatim):
+
+Market Conditions:
+${conditions?.macro_environment || ''}
+${conditions?.corridor_conditions || ''}
+
+Themes identified: ${themeLabels}
+
+Key implication digest: ${implDigest}
+
+${_macroBlock()}
+
+TASK: Write a 4-sentence executive summary. 
+- Sentence 1: State the single most significant market development or structural condition in this period. Include a specific number from the macro data or the conditions section.
+- Sentence 2: State which theme dominated the period (most days appeared) and what drove it.
+- Sentence 3: State the most important implication for Mixta's portfolio — name a project and a specific action or risk.
+- Sentence 4: State the outlook — what the macro trajectory implies for the next period.
+
+LANGUAGE: Maximum 30 words per sentence. Active voice. Every sentence names an institution, number, policy, or project.
+FORBIDDEN: "Nigeria's real estate market faces challenges", "Government support is key", or any sentence that could describe any market in any year.
+
+RESPOND WITH JSON ONLY:
+{"executive_summary": "Sentence 1. Sentence 2. Sentence 3. Sentence 4."}`;
+
+  const result = await _aiJSON(prompt, 600);
+  return result?.executive_summary || '';
 }
 
 // ── Main generate function ────────────────────────────────────────────────────
@@ -6075,43 +6763,75 @@ async function generateReport() {
   btn.textContent = 'Generating…';
 
   try {
-    // 1. Load briefings for the selected period
+    // Phase 1 — Load and aggregate data
+    status.textContent = 'Loading briefings…';
     const loaded = await _loadBriefingsForPeriod(period);
     if (loaded.error) { status.textContent = loaded.error; return; }
-
     const { briefings } = loaded;
     const themesMemory = window._loadedThemesMemory || [];
+    const aggregated   = _aggregateThemes(briefings, themesMemory);
 
-    // 2. Aggregate themes
-    status.textContent = 'Aggregating themes…';
-    const aggregated = _aggregateThemes(briefings, themesMemory);
+    const periodLabel = document.getElementById('reportPeriodSelect')?.options[
+      document.getElementById('reportPeriodSelect').selectedIndex
+    ]?.text || period;
 
-    // 3. Find previous period's report for continuity context
-    const prevReport = _savedReports.find(r => r.type === _reportType && r.period !== period);
+    const prevReport  = _savedReports.find(r => r.type === _reportType && r.period !== period);
     const prevSummary = prevReport
-      ? `Period: ${prevReport.period}. Summary: ${prevReport.data.executive_summary}. Key themes: ${(prevReport.data.themes || []).slice(0, 3).map(t => t.label).join(', ')}.`
+      ? `Period: ${prevReport.period}. Summary: ${prevReport.data.executive_summary}. Themes: ${(prevReport.data.themes||[]).slice(0,3).map(t=>t.label).join(', ')}.`
       : null;
 
-    // 4. Build prompt and call AI
-    status.textContent = 'Sending to AI…';
-    const prompt = _buildReportPrompt(_reportType, period, aggregated, briefings, prevSummary);
-    const reportData = await _callReportAI(prompt);
+    // Phase 2 — Market conditions
+    status.textContent = 'Phase 1/4: Analysing market conditions…';
+    let conditions = {};
+    try { conditions = await _generateMarketConditions(period, periodLabel, _reportType, briefings, aggregated); }
+    catch (e) { console.warn('[Report] Conditions failed:', e.message); conditions = { macro_environment: 'Section unavailable — provider failed.', corridor_conditions: '' }; }
 
-    // 5. Attach metadata
-    reportData._meta = {
-      type: _reportType, period,
-      generatedAt: new Date().toISOString(),
-      briefingCount: briefings.length,
-      themeCount: aggregated.length,
+    // Phase 3 — Theme analysis
+    status.textContent = 'Phase 2/4: Analysing themes…';
+    let themes = [];
+    try { themes = await _generateThemes(period, periodLabel, _reportType, aggregated, briefings); }
+    catch (e) { console.warn('[Report] Themes failed:', e.message); themes = aggregated.slice(0,5).map(t => ({ label: t.label, status: t.status, occurrences: t.occurrences, confidence: t.dominantConfidence, analysis: 'Section unavailable.', trajectory: '', quantitative_anchor: '' })); }
+
+    // Phase 4 — Implications
+    status.textContent = 'Phase 3/4: Deriving Mixta implications…';
+    let implResult = {};
+    try { implResult = await _generateImplications(period, periodLabel, _reportType, aggregated, conditions); }
+    catch (e) { console.warn('[Report] Implications failed:', e.message); implResult = { implications_for_mixta: ['Section unavailable — provider failed.'], watch_next_period: '' }; }
+
+    // Phase 5 — Executive summary (written last, from all content)
+    status.textContent = 'Phase 4/4: Writing executive summary…';
+    let execSummary = '';
+    try { execSummary = await _generateExecutiveSummary(period, periodLabel, _reportType, conditions, themes, implResult); }
+    catch (e) { console.warn('[Report] Exec summary failed:', e.message); execSummary = `${periodLabel} market intelligence report. ${themes.length} themes identified across ${briefings.length} briefing days.`; }
+
+    // Assemble report object
+    const reportData = {
+      period_label:            periodLabel,
+      executive_summary:       execSummary,
+      market_conditions:       `${conditions.macro_environment || ''} ${conditions.corridor_conditions || ''}`.trim(),
+      market_conditions_parts: conditions,
+      themes:                  themes,
+      theme_continuity:        prevSummary
+        ? `${themes.filter(t=>t.status==='new').map(t=>t.label).join(', ') || 'No new themes'} are new this period. ${themes.filter(t=>t.status==='persists').map(t=>t.label).join(', ') || 'No themes'} persist from prior periods.`
+        : 'This is the baseline period. No prior period report exists for continuity comparison.',
+      implications_for_mixta:  implResult.implications_for_mixta || [],
+      watch_next_period:       implResult.watch_next_period || '',
+      _meta: {
+        type: _reportType, period,
+        generatedAt: new Date().toISOString(),
+        briefingCount: briefings.length,
+        themeCount: themes.length,
+        macroUpdated: MACRO_INDICATORS._updated,
+        phases: 4,
+      },
     };
 
-    // 6. Save to localStorage
+    // Save and render
     _savedReports = _savedReports.filter(r => !(r.type === _reportType && r.period === period));
     _savedReports.unshift({ type: _reportType, period, generatedAt: reportData._meta.generatedAt, data: reportData });
     localStorage.setItem('mxReports', JSON.stringify(_savedReports.slice(0, 50)));
 
-    // 7. Render
-    status.textContent = `Report generated — ${briefings.length} briefings analysed.`;
+    status.textContent = `Report complete — ${briefings.length} briefings, ${themes.length} themes, 4 AI phases.`;
     _renderSavedReports();
     openReport(_reportType, period);
 
@@ -6146,6 +6866,10 @@ function openReport(type, period) {
         ${t.confidence ? `<span style="font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:${t.confidence === 'high' ? '#1E5E40' : 'var(--ink-faint)'};">${t.confidence} confidence</span>` : ''}
       </div>
       <div class="report-theme-body">${esc(t.analysis || '')}</div>
+      ${t.quantitative_anchor && !t.quantitative_anchor.includes('No direct') ? `
+        <div style="background:rgba(122,31,43,0.04);border:1px solid var(--maroon-line);border-radius:var(--radius);padding:8px 14px;margin-top:10px;font-family:var(--font-mono);font-size:11px;color:var(--maroon);">
+          ◎ ${esc(t.quantitative_anchor)}
+        </div>` : ''}
       ${t.trajectory ? `<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);">${esc(t.trajectory)}</div>` : ''}
     </div>`).join('');
 
@@ -6155,7 +6879,8 @@ function openReport(type, period) {
 
   document.getElementById('reportViewerBody').innerHTML = `
     <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:32px;">
-      ${typeLabel} · ${esc(d.period_label || period)} · ${meta.briefingCount || '?'} briefing days · Generated ${meta.generatedAt ? new Date(meta.generatedAt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : 'now'}
+      ${typeLabel} · ${esc(d.period_label || period)} · ${meta.briefingCount || '?'} briefing days · ${meta.phases || 1} AI phases · Generated ${meta.generatedAt ? new Date(meta.generatedAt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : 'now'}
+      ${meta.macroUpdated ? `<br><span style="color:var(--ink-faint);">Macro data: ${esc(meta.macroUpdated)} — CBN · NBS · World Bank · FMBN</span>` : ''}
     </div>
 
     <div class="report-section">
@@ -6342,6 +7067,200 @@ function _initReportsTab() {
   _renderSavedReports();
 }
 
+// ── OUTREACH PIPELINE + SNOOZE SYSTEM ────────────────────────────────────────
+// Firebase-backed per-company state: 'active' | 'snoozed:YYYY-MM-DD' | null
+// Active = company is in a live conversation (counts toward pipeline target)
+// Snoozed = signal suppressed until date (won't appear in signal cards)
+// Both are written to Firebase ref: outreach/companies/{companyKey}
+
+const _PIPELINE_TARGET = 4;
+let _companyStates = {}; // { companyKey: { status, snoozeUntil, updatedAt } }
+
+function _coKey(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 40);
+}
+
+function getCompanyState(name) {
+  const s = _companyStates[_coKey(name)];
+  if (!s) return 'none';
+  if (s.status === 'active') return 'active';
+  if (s.status === 'snoozed') {
+    if (s.snoozeUntil && new Date(s.snoozeUntil) > new Date()) return 'snoozed';
+    return 'none'; // snooze expired
+  }
+  return 'none';
+}
+
+async function _loadCompanyStates() {
+  if (!firebaseReady || !db) return;
+  try {
+    const snap = await db.ref('outreach/companies').once('value');
+    _companyStates = snap.val() || {};
+    _renderPipelineCounter();
+  } catch (e) { console.warn('[Outreach] State load failed:', e.message); }
+}
+
+async function _setCompanyState(name, status, snoozeUntil = null) {
+  const key = _coKey(name);
+  const data = { status, snoozeUntil, updatedAt: new Date().toISOString().slice(0, 10) };
+  _companyStates[key] = data;
+  _renderPipelineCounter();
+  if (firebaseReady && db) {
+    try { await db.ref(`outreach/companies/${key}`).set(data); }
+    catch (e) { console.warn('[Outreach] State save failed:', e.message); }
+  }
+}
+
+function _renderPipelineCounter() {
+  const activeCount = Object.values(_companyStates).filter(s => s.status === 'active').length;
+  const dotsEl = document.getElementById('pipelineDots');
+  const countEl = document.getElementById('pipelineCountText');
+  if (!dotsEl || !countEl) return;
+
+  // 4 dots — filled for each active conversation
+  dotsEl.innerHTML = Array.from({ length: _PIPELINE_TARGET }, (_, i) =>
+    `<div class="pipeline-dot${i < activeCount ? ' filled' : ''}"></div>`
+  ).join('');
+
+  countEl.textContent = activeCount;
+  countEl.className = 'pipeline-count-text ' + (
+    activeCount === 0 ? 'alert' : activeCount < 3 ? 'warn' : 'good'
+  );
+}
+
+// ── COMPANY BRIEF ─────────────────────────────────────────────────────────────
+function openCompanyBrief(companyJSON, sectorJSON) {
+  const c = JSON.parse(companyJSON);
+  const sector = JSON.parse(sectorJSON);
+  const state = getCompanyState(c.name);
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1;
+
+  // Bonus window logic — company-specific
+  const bonusMonths = c.bonusMonth || [];
+  const inBonusWindow = bonusMonths.includes(currentMonth) ||
+    bonusMonths.includes(currentMonth - 1); // within month after bonus
+  const nextBonus = bonusMonths.find(m => m > currentMonth) || bonusMonths[0];
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const nextBonusLabel = nextBonus ? monthNames[nextBonus - 1] : null;
+  const bonusBadgeHtml = inBonusWindow
+    ? `<span class="brief-bonus-badge">● Bonus window active now</span>`
+    : nextBonusLabel
+      ? `<span class="brief-bonus-badge upcoming">↑ Next bonus window: ${nextBonusLabel}</span>`
+      : '';
+
+  // Recommended product
+  const product = c.product || 'Lakowe Crossings';
+
+  // Conversation opener — constructed from sector intelligence
+  const themes = window._lastBriefingData?.themes || [];
+  const sectorTheme = themes.find(t =>
+    sector.keywords?.some(kw => ((t.label||'') + (t.what_happened||'')).toLowerCase().includes(kw.toLowerCase()))
+  );
+  const marketSignal = sectorTheme
+    ? `Recent intelligence shows: ${sectorTheme.what_happened || sectorTheme.label}.`
+    : `Current market conditions in the ${sector.sector} sector are favourable for property investment conversations.`;
+
+  const openerText = inBonusWindow
+    ? `"Good morning [Name], I wanted to reach out at this time of year when many of your colleagues are thinking about long-term investments. We have a specific offering for ${sector.sector} professionals at ${product} — ${c.bonusNote || 'priced to suit your current income profile'}. Would you have 15 minutes this week for a brief introduction?"`
+    : `"Good morning [Name], I'm reaching out from Mixta Africa. ${marketSignal} Given this, we thought it would be a good time to introduce our offering at ${product} to professionals in the ${sector.sector} sector. Would you be available for a brief call?"`;
+
+  const stateLabel = state === 'active' ? 'In Pipeline' : state === 'snoozed' ? 'Snoozed' : 'Not contacted';
+  const stateColor = state === 'active' ? '#1E5E40' : state === 'snoozed' ? '#A47D29' : 'var(--ink-faint)';
+
+  const modal = document.getElementById('companyBriefModal');
+  if (!modal) return;
+  modal.style.display = 'block';
+  modal.innerHTML = `
+    <div class="brief-modal-backdrop" onclick="if(event.target===this)closeCompanyBrief()">
+      <div class="brief-modal">
+        <button class="brief-modal-close" onclick="closeCompanyBrief()">✕</button>
+        <div class="brief-company-name">${esc(c.name)}</div>
+        <span class="brief-sector-tag">${esc(sector.sector)} · ~${(c.estStaff15M||0).toLocaleString()} qualifying staff · <span style="color:${stateColor};font-weight:700;">${stateLabel}</span></span>
+        ${bonusBadgeHtml}
+
+        <div class="brief-section">
+          <div class="brief-section-label">Entry Point</div>
+          <div class="brief-section-body"><strong>${esc(c.contact || 'HR Director')}</strong></div>
+        </div>
+
+        <div class="brief-section">
+          <div class="brief-section-label">Approach Route</div>
+          <div class="brief-section-body">${esc(
+            (sector.sector === c.sector ? '' : '') +
+            (ENTRY_POINTS_MAP[sector.sector]?.route || 'Direct contact through HR or cooperative society.')
+          )}</div>
+        </div>
+
+        <div class="brief-section">
+          <div class="brief-section-label">Recommended Product</div>
+          <div class="brief-section-body">${esc(product)}</div>
+        </div>
+
+        <div class="brief-section">
+          <div class="brief-section-label">Bonus Calendar</div>
+          <div class="brief-section-body">${esc(c.bonusNote || 'Bonus timing not confirmed — use sector-level H1/H2 calendar.')}</div>
+        </div>
+
+        <div class="brief-section">
+          <div class="brief-section-label">Market Context (This Week)</div>
+          <div class="brief-section-body">${esc(marketSignal)}</div>
+        </div>
+
+        <div class="brief-section">
+          <div class="brief-section-label">Suggested Conversation Opener</div>
+          <div class="brief-opener-box">${esc(openerText)}</div>
+        </div>
+
+        <div class="brief-modal-actions">
+          ${state !== 'active'
+            ? `<button class="brief-active-btn" onclick="markActive(${JSON.stringify(JSON.stringify(c.name))})">Mark as Active Pipeline</button>`
+            : `<button class="brief-snooze-btn" style="color:#1E5E40;border-color:#1E5E40;" onclick="markActive(${JSON.stringify(JSON.stringify(c.name))})">✓ In Pipeline</button>`
+          }
+          <button class="brief-snooze-btn" onclick="snoozeCompany(${JSON.stringify(JSON.stringify(c.name))}, 30)">Snooze 30 days</button>
+          <button class="brief-snooze-btn" onclick="snoozeCompany(${JSON.stringify(JSON.stringify(c.name))}, 90)">Snooze 90 days</button>
+          ${c.linkedin ? `<a href="https://www.linkedin.com/company/${esc(c.linkedin)}" target="_blank" rel="noopener" class="brief-snooze-btn" style="text-decoration:none;text-align:center;">LinkedIn →</a>` : ''}
+        </div>
+      </div>
+    </div>`;
+}
+
+function closeCompanyBrief() {
+  const modal = document.getElementById('companyBriefModal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function markActive(nameJSON) {
+  const name = JSON.parse(nameJSON);
+  await _setCompanyState(name, 'active');
+  closeCompanyBrief();
+  // Re-render signals to reflect new state
+  if (window._lastBriefingData && window._lastTrendHistory)
+    renderOutreachSignals(window._lastBriefingData, window._lastTrendHistory);
+}
+
+async function snoozeCompany(nameJSON, days) {
+  const name = JSON.parse(nameJSON);
+  const until = new Date();
+  until.setDate(until.getDate() + days);
+  await _setCompanyState(name, 'snoozed', until.toISOString().slice(0, 10));
+  closeCompanyBrief();
+  if (window._lastBriefingData && window._lastTrendHistory)
+    renderOutreachSignals(window._lastBriefingData, window._lastTrendHistory);
+}
+
+// ENTRY_POINTS_MAP — keyed by sector name for brief generation
+const ENTRY_POINTS_MAP = {
+  'Energy (Oil & Gas)': { route: 'Request a 20-minute slot to present a group bulk-purchase offer. Approach the cooperative chairman directly for a faster route to a group presentation. Seplat, Oando, and TotalEnergies all have established staff cooperative societies.' },
+  'Financial Services & Banking': { route: 'Banks respond best to a formal letter of intent addressed to the HR Director, followed by a bulk-discount term sheet. Zenith, GTBank, and Access all have documented staff housing programmes. Citibank and Standard Chartered staff are individually reachable through LinkedIn for personal purchases.' },
+  'Telecoms': { route: 'MTN Nigeria has an active staff cooperative with real estate as a primary investment class. Approach the cooperative chairman. Airtel responds well to a direct HR approach with a group payment plan proposal.' },
+  'FMCG & Consumer Goods': { route: 'Nigerian Breweries and Nestlé have strong welfare cultures. The most effective entry is a referral through a staff member who has already purchased, then escalate to a formal HR presentation. Offer a payment plan tied to the salary cycle.' },
+  'Industrials & Construction': { route: 'Julius Berger senior engineers are reachable through the NSE and COREN events. A presentation at an NSE Lagos chapter event reaches 200+ senior engineers simultaneously. BUA and Lafarge respond to direct HR outreach.' },
+  'Tech & Fintech': { route: 'Tech staff respond poorly to formal HR channels. Target senior engineers and product managers directly on LinkedIn with a specific unit offering. Flutterwave and Paystack staff are active on social media — a company-tagged post from a credible account generates direct enquiries.' },
+  'Professional Services & Consulting': { route: 'Big 4 staff are best reached after their fiscal year-end bonus. A formal letter to the HR Director offering a staff-exclusive discount and flexible payment plan is most effective. McKinsey and BCG staff prefer individual LinkedIn contact.' },
+  'International Organisations & NGOs': { route: 'World Bank and UNDP staff are high-quality individual buyers. Direct LinkedIn outreach to senior programme officers and operations managers. Avoid HR channels — expat and senior local staff make personal decisions independently.' },
+};
+
 // ── BOOTSTRAP ─────────────────────────────────────────────────────────
 (async function boot() {
   initFirebase();
@@ -6365,12 +7284,22 @@ function _initReportsTab() {
     return loadJSON('competitive-listings.json');
   }
 
-  const [briefing, memory, articles, health, history, bIndex, geo, competitive, trendHistory, crossSector, innovation, innovIndex] = await Promise.all([
+  const [briefing, memory, articles, health, history, bIndex, geo, competitive, trendHistory, crossSector, innovation, innovIndex, absorptionData, macroIndicatorsFile] = await Promise.all([
     loadJSON('briefing.json'), loadJSON('themes.json'), loadJSON('articles.json'),
     loadJSON('health.json'), loadJSON('health-history.json'), loadJSON('briefings-index.json'),
     loadJSON('geoslicer.json'), loadCompetitiveData(), loadJSON('trend-history.json'),
-    loadJSON('cross-sector.json'), loadJSON('innovation.json'), loadJSON('innovation-index.json')
+    loadJSON('cross-sector.json'), loadJSON('innovation.json'), loadJSON('innovation-index.json'),
+    loadJSON('absorption.json'), loadJSON('macro-indicators.json'),
   ]);
+  window._absorptionData = absorptionData || null;
+  // Merge live macro-indicators.json into MACRO_INDICATORS so prompts always
+  // use the freshest available data. NBS manual fields from Firebase are also
+  // merged in by loadNBSManualFromFirebase() which runs after Firebase init.
+  if (macroIndicatorsFile) _mergeMacroIndicators(macroIndicatorsFile);
+  // Render macro dashboard in Reports tab (uses merged MACRO_INDICATORS)
+  renderMacroDashboard();
+  // Load NBS manual figures from Firebase and re-merge (may override the file values)
+  loadNBSManualFromFirebase();
   articlesCache = Array.isArray(articles) ? articles : [];
   geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;
   competitiveCache = competitive || null;
@@ -6408,7 +7337,12 @@ function _initReportsTab() {
   renderCompetitivePositioningCard();
 
   // ── Use Case 2: Outreach Signal Banner ───────────────────────────────────
+  // Store refs so brief generator and re-renders can access them
+  window._lastBriefingData = briefing;
+  window._lastTrendHistory = trendHistory;
   renderOutreachSignals(briefing, trendHistory);
+  // Load company pipeline states from Firebase (pipeline counter + snooze)
+  _loadCompanyStates();
 
   // ── Use Case 3: Sentiment Sales Calendar ─────────────────────────────────
   renderSentimentCalendar(trendHistory);

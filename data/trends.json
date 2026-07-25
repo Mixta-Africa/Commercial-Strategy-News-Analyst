@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 13,
     "sentimentBreakdown": {
+      "bearish": 1,
       "bullish": 8,
-      "neutral": 5,
-      "bearish": 2
+      "neutral": 4
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 3
-      },
-      {
         "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
+        "topic": "Nigeria",
         "count": 2
       },
       {
-        "topic": "regulatory framework",
-        "count": 2
+        "topic": "US tariffs",
+        "count": 1
       },
       {
-        "topic": "housing sector reform",
-        "count": 2
+        "topic": "property investment",
+        "count": 1
       },
       {
-        "topic": "court-ordered land recovery",
+        "topic": "construction sector",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 13,
     "sentimentBreakdown": {
+      "bearish": 1,
       "bullish": 8,
-      "neutral": 5,
-      "bearish": 2
+      "neutral": 4
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 3
-      },
-      {
         "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
+        "topic": "Nigeria",
         "count": 2
       },
       {
-        "topic": "regulatory framework",
-        "count": 2
+        "topic": "US tariffs",
+        "count": 1
       },
       {
-        "topic": "housing sector reform",
-        "count": 2
+        "topic": "property investment",
+        "count": 1
       },
       {
-        "topic": "court-ordered land recovery",
+        "topic": "construction sector",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 13,
     "sentimentBreakdown": {
+      "bearish": 1,
       "bullish": 8,
-      "neutral": 5,
-      "bearish": 2
+      "neutral": 4
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 3
-      },
-      {
         "topic": "Lagos real estate",
+        "count": 5
+      },
+      {
+        "topic": "Nigeria",
         "count": 2
       },
       {
-        "topic": "regulatory framework",
-        "count": 2
+        "topic": "US tariffs",
+        "count": 1
       },
       {
-        "topic": "housing sector reform",
-        "count": 2
+        "topic": "property investment",
+        "count": 1
       },
       {
-        "topic": "court-ordered land recovery",
+        "topic": "construction sector",
         "count": 1
       }
     ],

@@ -1042,6 +1042,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-25",
+      "articleCount": 13,
+      "sentimentBreakdown": {
+        "bearish": 1,
+        "bullish": 8,
+        "neutral": 4
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 5
+        },
+        {
+          "topic": "Nigeria",
+          "count": 2
+        },
+        {
+          "topic": "US tariffs",
+          "count": 1
+        },
+        {
+          "topic": "property investment",
+          "count": 1
+        },
+        {
+          "topic": "construction sector",
+          "count": 1
+        }
+      ]
     }
   ]
 }

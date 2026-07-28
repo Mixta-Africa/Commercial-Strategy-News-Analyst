@@ -1,7 +1,18 @@
 {
-  "updatedAt": "2026-07-27T10:32:15.820Z",
-  "totalEntries": 5,
+  "updatedAt": "2026-07-28T09:30:30.159Z",
+  "totalEntries": 6,
   "entries": [
+    {
+      "date": "2026-07-28",
+      "generatedAt": "2026-07-28T09:30:30.159Z",
+      "count": 6,
+      "categories": {
+        "proptech": 3,
+        "finance": 2,
+        "design": 1
+      },
+      "file": "archive/innovation-2026-07-28.json"
+    },
     {
       "date": "2026-07-27",
       "generatedAt": "2026-07-27T10:32:15.820Z",

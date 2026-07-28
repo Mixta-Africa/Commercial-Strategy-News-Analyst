@@ -1138,6 +1138,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-07-28",
+      "articleCount": 5,
+      "sentimentBreakdown": {
+        "neutral": 2,
+        "bullish": 2,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "inclusive history",
+          "count": 1
+        },
+        {
+          "topic": "real estate market",
+          "count": 1
+        },
+        {
+          "topic": "Lagos",
+          "count": 1
+        },
+        {
+          "topic": "coup plot",
+          "count": 1
+        },
+        {
+          "topic": "President Tinubu administration",
+          "count": 1
+        }
+      ]
     }
   ]
 }

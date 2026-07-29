@@ -6426,7 +6426,7 @@ function toggleFocusMode() {
   }
 }
 
-function _renderFocusOverlay() {
+async function _renderFocusOverlay() {
   const overlay = document.getElementById('focusModeOverlay');
   if (!overlay) return;
 
@@ -6448,73 +6448,34 @@ function _renderFocusOverlay() {
     return;
   }
 
-  // ── Section 1: Today in 30 seconds ───────────────────────────────────────
-  // Extract 3 bullets from executive_summary (paragraph split) and top theme
-  // what_happened fields. Each bullet must be declarative and specific.
-  const bullets = [];
-  const summaryParagraphs = (b.executive_summary || '')
-    .split(/\n\n|\. (?=[A-Z])/)
-    .map(s => s.trim())
-    .filter(s => s.length > 30 && s.length < 300);
+  // Show loading state immediately so the overlay feels responsive
+  overlay.innerHTML = `
+    <div class="focus-shell">
+      <div class="focus-header">
+        <div>
+          <div class="focus-wordmark">Mixta Africa · Executive Brief</div>
+          <div class="focus-date-line">${today}</div>
+        </div>
+        <button class="focus-exit" onclick="toggleFocusMode()">${icon('close', 14)} Exit Brief</button>
+      </div>
+      <div style="padding:60px 0;text-align:center;font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.1em;">
+        Synthesising market intelligence…
+      </div>
+    </div>`;
 
-  // Take first 2 paragraphs from executive summary
-  summaryParagraphs.slice(0, 2).forEach(p => bullets.push(p.replace(/\.$/, '') + '.'));
+  // ── Build the AI prompt ──────────────────────────────────────────────────
+  // Feed: executive summary, all theme what_happened fields, sentiment score,
+  // watch list hits, and theme recurrence counts (for "building for N days").
+  // The model writes the brief — not us. Pure market analysis, no Mixta content.
 
-  // Take what_happened from the highest-severity theme not already covered
-  const topTheme = b.themes.find(t =>
-    t.what_happened &&
-    !bullets.some(bl => bl.toLowerCase().includes((t.label || '').toLowerCase().slice(0, 10)))
-  );
-  if (topTheme?.what_happened) bullets.push(topTheme.what_happened.replace(/\.$/, '') + '.');
+  const themeSummaries = (b.themes || []).slice(0, 6).map((t, i) =>
+    `Theme ${i+1}: "${t.label}" — appeared ${t.timesSeen || 1} day(s), ${t.novelty || 'established'}
+Evidence: ${t.what_happened || 'No detail recorded'}
+Sentiment: ${t.sentiment || 'neutral'}, Severity: ${t.market_impact_severity || 'medium'}`
+  ).join('\n\n');
 
-  // Ensure exactly 3 bullets
-  while (bullets.length < 3 && b.themes[bullets.length]) {
-    const t = b.themes[bullets.length];
-    if (t.what_happened) bullets.push(t.what_happened.replace(/\.$/, '') + '.');
-  }
+  const watchHits = (b.watch_list_hits || []).filter(Boolean).slice(0, 5).join('; ');
 
-  const bulletsHtml = bullets.slice(0, 3).map((text, i) => `
-    <div class="focus-bullet">
-      <span class="focus-bullet-num">${String(i + 1).padStart(2, '0')}</span>
-      <span class="focus-bullet-text">${esc(text)}</span>
-    </div>`).join('');
-
-  // ── Section 2: Act on this ───────────────────────────────────────────────
-  // Extract actions from recommendation + why_it_matters_to_mixta.
-  // Priority order: critical → high → medium. Cap at 3.
-  // Each must name a Mixta project. Skip generic ones.
-  const MIXTA_PROJECTS = ['Lakowe Crossings', 'Lakowe Annexe', 'Lagos New Town', 'Garden City Golf Annexe', 'LNT'];
-  const severityOrder = { 'critical': 0, 'high': 1, 'medium': 2, 'low': 3 };
-
-  const actionThemes = [...b.themes]
-    .sort((a, b) => (severityOrder[a.market_impact_severity] ?? 9) - (severityOrder[b.market_impact_severity] ?? 9))
-    .filter(t => t.recommendation || t.why_it_matters_to_mixta);
-
-  const actions = [];
-  for (const t of actionThemes) {
-    if (actions.length >= 3) break;
-    const rec = t.recommendation || t.why_it_matters_to_mixta || '';
-    if (!rec || rec.length < 20) continue;
-    const namedProject = MIXTA_PROJECTS.find(p => rec.includes(p) || (t.why_it_matters_to_mixta || '').includes(p));
-    actions.push({
-      project: namedProject || 'Mixta Portfolio',
-      text: rec.slice(0, 280) + (rec.length > 280 ? '…' : ''),
-      theme: t.label,
-      severity: t.market_impact_severity || 'medium',
-    });
-  }
-
-  const actionsHtml = actions.length
-    ? actions.map(a => `
-      <div class="focus-action-card">
-        <div class="focus-action-project">${esc(a.project)} · ${esc(a.severity)} priority</div>
-        <div class="focus-action-text">${esc(a.text)}</div>
-        <div class="focus-action-source">From: ${esc(a.theme)}</div>
-      </div>`).join('')
-    : `<div class="focus-no-actions">No specific actions flagged today — review the full briefing for strategic context.</div>`;
-
-  // ── Section 3: Market posture ────────────────────────────────────────────
-  // Single sentence derived from the 7-day sentiment score.
   const days = trendHistory?.days || [];
   const last7 = days.slice(-7);
   let macroScore = 0;
@@ -6524,23 +6485,101 @@ function _renderFocusOverlay() {
     if (total > 0) macroScore += ((bk.bullish||0) - (bk.bearish||0)) / total;
   }
   macroScore = last7.length ? macroScore / last7.length : 0;
+  const sentimentLabel = macroScore > 0.15 ? 'bullish' : macroScore > -0.1 ? 'neutral' : 'bearish';
+  const sentimentScore = `${(macroScore * 100).toFixed(0)}/100 (${sentimentLabel})`;
 
-  let postureClass, postureLabel, postureText;
-  if (macroScore > 0.15) {
-    postureClass = 'bullish';
-    postureLabel = 'Bullish';
-    postureText = 'The 7-day sentiment trend is positive. Hold or test upward pricing adjustments on active listings. This is the right environment for outreach to corporate targets — conversion rates are higher when buyers feel confident about the market.';
-  } else if (macroScore > -0.1) {
-    postureClass = 'neutral';
-    postureLabel = 'Neutral';
-    postureText = 'The market sentiment is balanced this week. Maintain current pricing positions and focus outreach on companies with event-triggered signals rather than calendar-only windows. Pipeline management is the priority, not new outreach.';
-  } else {
-    postureClass = 'bearish';
-    postureLabel = 'Bearish';
-    postureText = 'Sentiment has turned negative over the last 7 days. Pause new outreach. Focus on closing existing conversations before they go cold. Review whether active listings need to be adjusted to match where deals are actually clearing.';
+  const prompt = `You are a senior real estate market analyst writing an executive intelligence brief for the leadership of a Nigerian real estate developer. Today is ${today}.
+
+Your brief has three sections. Write each with analytical authority — you are synthesising what the market is doing, not summarising headlines. Connect the themes. Show what is building, what is new, and what the week's pattern means. Do not mention any specific developer, company, or property project by name. This is pure market intelligence.
+
+MARKET DATA FOR TODAY:
+
+Executive Summary from AI pipeline:
+${(b.executive_summary || '').slice(0, 800)}
+
+Themes detected this period:
+${themeSummaries}
+
+7-day market sentiment score: ${sentimentScore}
+Watch list activity: ${watchHits || 'None flagged'}
+
+WRITE THE FOLLOWING THREE SECTIONS:
+
+SECTION 1 — "What the market is doing" (3 declarative bullets, each 20-35 words):
+- Bullet 1: The single most significant market development this week, stated with a specific number, policy name, or institution. Not a headline — the implication.
+- Bullet 2: The structural theme that has been building across multiple days this week and what direction it is moving.
+- Bullet 3: What these signals mean for the market environment — is it opening up, tightening, or shifting sector?
+Do not repeat the same fact across bullets. Each bullet must add a new dimension.
+
+SECTION 2 — "The week's pattern" (2-3 sentences, flowing prose):
+Step back from the individual stories and write what the week as a whole tells you. What is the overarching narrative? Are multiple themes pointing in the same direction? Is there tension between signals? Write as a senior analyst who has read everything and is telling a board member what they actually need to understand about this week, not what happened.
+
+SECTION 3 — "Market posture" (1 sentence):
+Based on the 7-day sentiment score of ${sentimentScore} and the themes above, state the market's direction and what it implies for commercial activity — specifically for pricing decisions and buyer demand. One sentence. Specific. No generic observations.
+
+RESPOND WITH JSON ONLY — no markdown, no preamble:
+{
+  "bullets": ["bullet 1", "bullet 2", "bullet 3"],
+  "pattern": "2-3 sentence prose paragraph",
+  "posture_label": "Bullish|Neutral|Bearish",
+  "posture_text": "one specific sentence about market direction and its commercial implication"
+}`;
+
+  // ── Call the AI ──────────────────────────────────────────────────────────
+  let brief = null;
+  try {
+    const WORKER = 'https://mixta-ai-proxy.olasunkanmitimilehintaiwo.workers.dev';
+    const providers = [
+      { name: 'SambaNova', provider: 'sambanova', model: 'Meta-Llama-3.3-70B-Instruct' },
+      { name: 'Groq 70b',  provider: 'groq',      model: 'llama-3.3-70b-versatile' },
+    ];
+    for (const { provider, model } of providers) {
+      try {
+        const res = await fetch(WORKER, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            provider,
+            payload: { model, max_tokens: 700, temperature: 0.25, messages: [{ role: 'user', content: prompt }] }
+          })
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const text = (data?.choices?.[0]?.message?.content || '').trim()
+          .replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
+        brief = JSON.parse(text);
+        break;
+      } catch (e) { console.warn('[Focus Brief] Provider failed:', e.message); }
+    }
+  } catch (e) { console.warn('[Focus Brief] AI call failed:', e.message); }
+
+  // ── Fallback: extract from existing data if AI fails ────────────────────
+  if (!brief) {
+    const summaryParagraphs = (b.executive_summary || '')
+      .split(/\n\n/)
+      .map(s => s.trim())
+      .filter(s => s.length > 40);
+    brief = {
+      bullets: [
+        summaryParagraphs[0] || 'No briefing data for today.',
+        (b.themes?.[0]?.what_happened) || 'No theme data recorded.',
+        (b.themes?.[1]?.what_happened) || 'Review the full briefing for additional context.',
+      ],
+      pattern: summaryParagraphs.slice(1, 3).join(' ') || 'Insufficient data for pattern analysis today.',
+      posture_label: sentimentLabel === 'bullish' ? 'Bullish' : sentimentLabel === 'bearish' ? 'Bearish' : 'Neutral',
+      posture_text: `7-day sentiment is ${sentimentLabel} — review the Themes tab for the full trajectory.`,
+    };
   }
 
+  // ── Render ───────────────────────────────────────────────────────────────
+  const postureClass = (brief.posture_label || 'Neutral').toLowerCase();
   const articleCount = (b.themes || []).reduce((n, t) => n + (t.sourceArticles?.length || 0), 0);
+
+  const bulletsHtml = (brief.bullets || []).slice(0, 3).map((text, i) => `
+    <div class="focus-bullet">
+      <span class="focus-bullet-num">${String(i + 1).padStart(2, '0')}</span>
+      <span class="focus-bullet-text">${esc(text)}</span>
+    </div>`).join('');
 
   overlay.innerHTML = `
     <div class="focus-shell">
@@ -6552,23 +6591,23 @@ function _renderFocusOverlay() {
         <button class="focus-exit" onclick="toggleFocusMode()">${icon('close', 14)} Exit Brief</button>
       </div>
 
-      <div class="focus-section-label">Today in 30 seconds</div>
+      <div class="focus-section-label">What the market is doing</div>
       <div class="focus-bullets">${bulletsHtml}</div>
 
-      <div class="focus-section-label">Act on this</div>
-      <div class="focus-actions">${actionsHtml}</div>
+      <div class="focus-section-label">The week's pattern</div>
+      <div style="font-family:var(--font-body);font-size:16px;line-height:1.75;color:var(--ink);margin-bottom:52px;max-width:680px;">${esc(brief.pattern || '')}</div>
 
       <div class="focus-section-label">Market posture</div>
       <div class="focus-posture">
         <div class="focus-posture-dot ${postureClass}"></div>
         <div class="focus-posture-body">
-          <div class="focus-posture-label ${postureClass}">${postureLabel}</div>
-          <div class="focus-posture-text">${postureText}</div>
+          <div class="focus-posture-label ${postureClass}">${esc(brief.posture_label || 'Neutral')}</div>
+          <div class="focus-posture-text">${esc(brief.posture_text || '')}</div>
         </div>
       </div>
 
       <div class="focus-footer">
-        <span>${b.themes?.length || 0} themes · ${articleCount} articles analysed</span>
+        <span>${b.themes?.length || 0} themes · ${articleCount} articles analysed · AI synthesis</span>
         <button class="focus-view-full" onclick="toggleFocusMode()">View full dashboard →</button>
       </div>
     </div>`;

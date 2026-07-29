@@ -1643,16 +1643,18 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
       <div class="section-divider" data-focus="secondary"><h2>Pricing Matrix</h2></div>
       <div class="pricing-controls" data-focus="secondary">
         <div class="pricing-filter-group">
-          <label class="pricing-filter-label">Property</label>
+          <label class="pricing-filter-label">Property Type</label>
           <div id="pricingTypeFilters" class="pricing-chip-row"></div>
         </div>
-        <div class="pricing-filter-group">
-          <label class="pricing-filter-label">Location</label>
+        <div class="pricing-filter-group" style="flex:1;">
+          <label class="pricing-filter-label">Location — X-axis grouping</label>
           <div id="pricingLocationFilters" class="pricing-chip-row"></div>
         </div>
         <div class="pricing-filter-group">
           <label class="pricing-filter-label">Bedrooms</label>
-          <div id="pricingBedroomFilters" class="pricing-chip-row"></div>
+          <select id="pricingBedroomSelect" class="mixta-input" style="font-size:12px;padding:7px 12px;" onchange="setPricingFilter('bedroom', this.value)">
+            <option value="all">All sizes</option>
+          </select>
         </div>
       </div>
 
@@ -4352,11 +4354,62 @@ function renderOutreachSignals(briefingData, trendHistory) {
       </div>`;
   }
 
+  // ── Decision-type context ──────────────────────────────────────────────────
+  // Each decision mode surfaces a different view of the same signal data.
+  // Targeting (default): full signal cards + company buttons + pipeline counter
+  // Pricing: macro environment only — outreach is not the pricing decision
+  // Monitoring: active sector summary only — no company-level detail
+
+  const pipelineCounter = document.getElementById('pipelineCounter');
+
+  if (_decisionType === 'pricing') {
+    if (pipelineCounter) pipelineCounter.style.display = 'none';
+    const totalReachable = [...eventSignals, ...calendarSignals]
+      .reduce((n, s) => n + (s.sector.reachablePrimary || 0), 0);
+    container.innerHTML = `
+      ${html.split('</div>')[0]}</div>
+      <div style="background:var(--paper-card);border:1px solid var(--rule);border-radius:var(--radius);padding:24px 28px;margin-top:16px;">
+        <div style="font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--maroon);margin-bottom:12px;">Pricing decision selected</div>
+        <div style="font-family:var(--font-body);font-size:14px;color:var(--ink-soft);line-height:1.65;">
+          Corporate outreach signals are not the primary input for a pricing decision. Switch to the <strong>Competition tab</strong> to review the current market median, absorption rate, and stale listing breakdown — the three indicators that directly inform whether to raise or hold prices.
+        </div>
+        <div style="margin-top:16px;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);">
+          ${[...eventSignals, ...calendarSignals].length} active signal${[...eventSignals, ...calendarSignals].length !== 1 ? 's' : ''} across ${totalReachable.toLocaleString()} reachable staff — switch to "Which corporates to approach?" to view them.
+        </div>
+      </div>`;
+    return;
+  }
+
+  if (_decisionType === 'monitoring') {
+    if (pipelineCounter) pipelineCounter.style.display = 'none';
+    const allSignals = [...eventSignals, ...calendarSignals];
+    const sectorSummary = allSignals.length
+      ? allSignals.map(s =>
+          `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--rule);">
+            <div>
+              <div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--ink);">${esc(s.sector.sector)}</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);margin-top:2px;">${s.strength} signal · ${(s.sector.reachablePrimary||0).toLocaleString()} qualifying staff</div>
+            </div>
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:${s.strength==='Strong'?'var(--maroon)':'var(--ink-soft)'};">${s.triggerType === 'event+calendar' ? 'Event + Calendar' : s.triggerType === 'event' ? 'Event' : 'Calendar'}</div>
+          </div>`
+        ).join('')
+      : '<div style="color:var(--ink-faint);font-style:italic;padding:16px 0;">No active outreach signals this week.</div>';
+
+    container.innerHTML = `
+      ${html.split('</div>')[0]}</div>
+      <div style="background:var(--paper-card);border:1px solid var(--rule);border-radius:var(--radius);padding:24px 28px;margin-top:16px;">
+        <div style="font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--maroon);margin-bottom:16px;">Active sectors this week</div>
+        ${sectorSummary}
+        <div style="margin-top:16px;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);">Switch to "Which corporates to approach?" for company-level detail and intelligence panels.</div>
+      </div>`;
+    return;
+  }
+
+  // Targeting mode (default) — show pipeline counter and full signal cards
+  if (pipelineCounter) pipelineCounter.style.display = '';
+
   container.innerHTML = html;
 }
-
-// ════════════════════════════════════════════════════════════════════════
-// USE CASE 3: SENTIMENT SALES CALENDAR
 // Renders a colour-coded strip of daily sentiment readings with an
 // interpreted signal and commercial action recommendation.
 // ════════════════════════════════════════════════════════════════════════
@@ -5353,22 +5406,41 @@ function formatNaira(num) {
 }
 
 function buildPricingFilters(listings, groups) {
+  // Property type — chips
   const types = ['all', ...new Set(groups.map(g => g.propertyType).filter(Boolean))];
   document.getElementById('pricingTypeFilters').innerHTML = types.map((t, i) =>
     `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingType('${esc(t)}',this)">${esc(t === 'all' ? 'All Types' : t)}</button>`
   ).join('');
 
-  const beds = ['all', ...new Set(groups.map(g => g.bedroomLabel).filter(Boolean).sort((a, b) => (parseInt(a) || 99) - (parseInt(b) || 99)))];
-  document.getElementById('pricingBedroomFilters').innerHTML = beds.map((b, i) =>
-    `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingBedroom('${esc(b)}',this)">${esc(b === 'all' ? 'All Beds' : b)}</button>`
-  ).join('');
-
+  // Location — chips (primary X-axis grouper)
   const locations = ['all', ...new Set(groups.map(g => g.location).filter(Boolean).sort())];
   const locFilterEl = document.getElementById('pricingLocationFilters');
   if (locFilterEl) {
     locFilterEl.innerHTML = locations.map((loc, i) =>
       `<button class="pricing-chip${i === 0 ? ' active' : ''}" onclick="setPricingLocation('${esc(loc)}',this)">${esc(loc === 'all' ? 'All Locations' : loc)}</button>`
     ).join('');
+  }
+
+  // Bedrooms — dropdown (secondary filter, not X-axis)
+  const beds = ['all', ...new Set(listings.map(l => l.bedroomLabel || 'Unspecified').filter(Boolean)
+    .sort((a, b) => (parseInt(a) || 99) - (parseInt(b) || 99)))];
+  const bedSel = document.getElementById('pricingBedroomSelect');
+  if (bedSel) {
+    const current = bedSel.value || 'all';
+    bedSel.innerHTML = `<option value="all">All sizes</option>` +
+      beds.filter(b => b !== 'all').map(b =>
+        `<option value="${esc(b)}"${b === current ? ' selected' : ''}>${esc(b)}</option>`
+      ).join('');
+    // Reset to all on new data load
+    bedSel.value = pricingBedroomFilter;
+  }
+}
+
+// Unified filter setter — called by the bedroom dropdown
+function setPricingFilter(type, val) {
+  if (type === 'bedroom') {
+    pricingBedroomFilter = val;
+    applyPricingFilters();
   }
 }
 
@@ -5383,9 +5455,9 @@ function setPricingLocation(val, el) {
   el.classList.add('active'); applyPricingFilters();
 }
 function setPricingBedroom(val, el) {
+  // Legacy — now handled by dropdown, but kept for compatibility
   pricingBedroomFilter = val;
-  el.closest('.pricing-chip-row').querySelectorAll('.pricing-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active'); applyPricingFilters();
+  applyPricingFilters();
 }
 function _getTodayListings() {
   // Returns today\'s listings from competitiveCache regardless of schema version.
@@ -5450,13 +5522,11 @@ function renderPricingScatter(allListings) {
     return;
   }
 
-  const groupKey = (l) => `${l.location || 'Unspecified'} / ${l.bedroomLabel || 'Unspecified'}`;
-  const groupSet = [...new Set(listings.map(groupKey))].sort((a, b) => {
-    const [locA, bedA] = a.split(' / ');
-    const [locB, bedB] = b.split(' / ');
-    if (locA !== locB) return locA.localeCompare(locB);
-    return (parseInt(bedA) || 99) - (parseInt(bedB) || 99);
-  });
+  // X-axis groups by LOCATION only. Bedroom count is a secondary filter
+  // applied above — it is never an axis dimension. This prevents the
+  // "Awoyaya 1 Bed / Awoyaya 2 Bed / Awoyaya 3 Bed" column explosion.
+  const groupKey = (l) => l.location || 'Unspecified';
+  const groupSet = [...new Set(listings.map(groupKey))].sort((a, b) => a.localeCompare(b));
 
   const prices = listings.map(l => l.priceValue);
   const minPrice = Math.min(...prices);
@@ -5492,9 +5562,8 @@ function renderPricingScatter(allListings) {
 
   groupSet.forEach((g, i) => {
     const xCenter = marginLeft + xStep * i + xStep / 2;
-    const [loc, bed] = g.split(' / ');
-    svg += `<text class="scatter-group-label" x="${xCenter}" y="${marginTop + plotH + 22}" text-anchor="middle">${esc(loc)}</text>`;
-    svg += `<text class="scatter-axis-label" x="${xCenter}" y="${marginTop + plotH + 36}" text-anchor="middle">${esc(bed)}</text>`;
+    // g is now location only — no bedroom split needed
+    svg += `<text class="scatter-group-label" x="${xCenter}" y="${marginTop + plotH + 22}" text-anchor="middle">${esc(g)}</text>`;
   });
 
   // Build absorption lookup by listing key for stale detection
@@ -5979,12 +6048,7 @@ function renderPricingBarChart(allListings) {
     });
   });
 
-  const groupKeys = Object.keys(groupMap).sort((a, b) => {
-    const [locA, bedA] = a.split(' / ');
-    const [locB, bedB] = b.split(' / ');
-    if (locA !== locB) return locA.localeCompare(locB);
-    return (parseInt(bedA) || 99) - (parseInt(bedB) || 99);
-  });
+  const groupKeys = Object.keys(groupMap).sort((a, b) => a.localeCompare(b));
   // Sort listings WITHIN each group by price (Mixta entries included, sorted
   // alongside competitors by their actual price) - so bars read left-to-right
   // ascending and Mixta's bar lands exactly where its price ranks, not
@@ -6078,7 +6142,7 @@ function renderPricingBarChart(allListings) {
 
   groupKeys.forEach((k, gi) => {
     const groupListings = groupMap[k];
-    const [loc, bed] = k.split(' / ');
+    const loc = k; // key is now location-only
     const groupW = groupWidths[gi];
     const groupCenterX = cursorX + groupW / 2;
 
@@ -6116,7 +6180,6 @@ function renderPricingBarChart(allListings) {
     });
 
     svg += `<text class="bar-group-label" x="${groupCenterX}" y="${marginTop + plotH + 22}" text-anchor="middle">${esc(loc)}</text>`;
-    svg += `<text class="bar-axis-label" x="${groupCenterX}" y="${marginTop + plotH + 36}" text-anchor="middle">${esc(bed)}</text>`;
     svg += `<text class="bar-axis-label" x="${groupCenterX}" y="${marginTop + plotH + 50}" text-anchor="middle">${esc(String(groupListings.length))} units</text>`;
 
     cursorX += groupW + 28 + extraGapPerGroup;
@@ -6743,6 +6806,10 @@ function setDecisionType(type) {
   });
   // Update macro tile panel
   renderMacroDashboard();
+  // Re-render outreach signals — the decision type affects what intelligence is surfaced
+  if (window._lastBriefingData && window._lastTrendHistory) {
+    renderOutreachSignals(window._lastBriefingData, window._lastTrendHistory);
+  }
   // Update report decision context line
   const ctx = document.getElementById('reportDecisionContext');
   if (ctx) {

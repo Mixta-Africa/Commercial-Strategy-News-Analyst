@@ -1170,6 +1170,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-29",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bullish": 11,
+        "neutral": 4
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Nigeria",
+          "count": 2
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 2
+        },
+        {
+          "topic": "housing sector",
+          "count": 2
+        },
+        {
+          "topic": "tech ecosystem",
+          "count": 1
+        },
+        {
+          "topic": "Lagos economic growth",
+          "count": 1
+        }
+      ]
     }
   ]
 }

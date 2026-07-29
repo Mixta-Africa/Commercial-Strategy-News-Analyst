@@ -1,95 +1,92 @@
 {
   "7day": {
-    "articleCount": 5,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 2,
-      "bullish": 2,
-      "bearish": 1
+      "bullish": 11,
+      "neutral": 4
     },
     "topTopics": [
       {
-        "topic": "inclusive history",
+        "topic": "Nigeria",
+        "count": 2
+      },
+      {
+        "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "housing sector",
+        "count": 2
+      },
+      {
+        "topic": "tech ecosystem",
         "count": 1
       },
       {
-        "topic": "real estate market",
-        "count": 1
-      },
-      {
-        "topic": "Lagos",
-        "count": 1
-      },
-      {
-        "topic": "coup plot",
-        "count": 1
-      },
-      {
-        "topic": "President Tinubu administration",
+        "topic": "Lagos economic growth",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 5,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 2,
-      "bullish": 2,
-      "bearish": 1
+      "bullish": 11,
+      "neutral": 4
     },
     "topTopics": [
       {
-        "topic": "inclusive history",
+        "topic": "Nigeria",
+        "count": 2
+      },
+      {
+        "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "housing sector",
+        "count": 2
+      },
+      {
+        "topic": "tech ecosystem",
         "count": 1
       },
       {
-        "topic": "real estate market",
-        "count": 1
-      },
-      {
-        "topic": "Lagos",
-        "count": 1
-      },
-      {
-        "topic": "coup plot",
-        "count": 1
-      },
-      {
-        "topic": "President Tinubu administration",
+        "topic": "Lagos economic growth",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 5,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 2,
-      "bullish": 2,
-      "bearish": 1
+      "bullish": 11,
+      "neutral": 4
     },
     "topTopics": [
       {
-        "topic": "inclusive history",
+        "topic": "Nigeria",
+        "count": 2
+      },
+      {
+        "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "housing sector",
+        "count": 2
+      },
+      {
+        "topic": "tech ecosystem",
         "count": 1
       },
       {
-        "topic": "real estate market",
-        "count": 1
-      },
-      {
-        "topic": "Lagos",
-        "count": 1
-      },
-      {
-        "topic": "coup plot",
-        "count": 1
-      },
-      {
-        "topic": "President Tinubu administration",
+        "topic": "Lagos economic growth",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   }
 }

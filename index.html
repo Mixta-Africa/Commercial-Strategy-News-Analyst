@@ -1366,6 +1366,13 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
           <span class="mw-name">Dakar</span>
           <span class="mw-signals" id="count-senegal">Active Signals</span>
         </div>
+        <!-- Competitive pricing freshness — visible from home view without navigating -->
+        <div class="market-watch-card" onclick="document.querySelector('[data-view=competition]').click();"
+             style="flex-basis:auto;min-width:160px;cursor:pointer;" title="Go to Competition tab">
+          <span class="mw-name" style="font-size:11px;">Competitive Pricing</span>
+          <span class="mw-signals" id="competitiveStaleness" style="display:none;"></span>
+          <span class="mw-signals" id="competitiveStalenessFallback" style="font-size:10px;color:rgba(255,255,255,0.5);">Loading…</span>
+        </div>
       </div>
 
       <!-- INTELLIGENCE FEED -->
@@ -3404,11 +3411,45 @@ function renderPricing(data) {
     { v: [...new Set(todayListings.map(l => l.location).filter(Boolean))].length, l: 'Locations Covered' },
   ];
 
+  // ── Data freshness indicator ─────────────────────────────────────────────
+  // mostRecentDate is already computed — surface it visually so stale data
+  // is immediately visible without navigating to the price trend chart.
+  let freshnessHtml = '';
+  if (mostRecentDate) {
+    const scrapeMs  = new Date(mostRecentDate).getTime();
+    const todayMs   = Date.now();
+    const daysAgo   = Math.floor((todayMs - scrapeMs) / 86400000);
+    const label     = daysAgo === 0 ? 'Today'
+                    : daysAgo === 1 ? 'Yesterday'
+                    : `${daysAgo} days ago`;
+    const color     = daysAgo <= 2 ? '#1E5E40'
+                    : daysAgo <= 7 ? '#A47D29'
+                    : 'var(--maroon)';
+    const alertNote = daysAgo >= 8
+      ? ` — scraper may be offline`
+      : daysAgo >= 4 ? ` — check scraper` : '';
+    freshnessHtml = `
+      <div class="pricing-stat-inline" style="border-left: 3px solid ${color}; padding-left: 14px;">
+        <div class="pricing-stat-inline-value" style="color:${color};">${esc(label)}</div>
+        <div class="pricing-stat-inline-label">Last scrape${esc(alertNote)}</div>
+      </div>`;
+    // Also write to a global so the briefing tab market cards can read it
+    window._lastScrapeDate = mostRecentDate;
+    window._lastScrapeDaysAgo = daysAgo;
+    // Update the briefing tab staleness indicator if visible
+    const briStalenessEl = document.getElementById('competitiveStaleness');
+    if (briStalenessEl) {
+      briStalenessEl.textContent = `Pricing: ${label}`;
+      briStalenessEl.style.color = color;
+      briStalenessEl.style.display = 'inline';
+    }
+  }
+
   statsBar.innerHTML = statsItems.map(x => `
     <div class="pricing-stat-inline">
       <div class="pricing-stat-inline-value">${esc(String(x.v))}</div>
       <div class="pricing-stat-inline-label">${esc(x.l)}</div>
-    </div>`).join('');
+    </div>`).join('') + freshnessHtml;
 
   // Trend chart gets the FULL historical listing array (all snapshots)
   // so it can plot a proper multi-day line. Scatter + groups use today only.
@@ -7683,14 +7724,9 @@ function _getAccordionBody(divider) {
 function _toggleAccordion(divider, body, accKey) {
   const isCollapsed = body.classList.contains('collapsed');
   if (isCollapsed) {
-    // Remove collapsed FIRST so the !important on max-height: 0 is gone,
-    // then measure scrollHeight (now readable) and animate from 0 → full height.
     body.classList.remove('collapsed');
-    body.style.maxHeight = '0px'; // start from 0 so the transition plays
-    requestAnimationFrame(() => {
-      body.style.maxHeight = body.scrollHeight + 'px';
-      setTimeout(() => { body.style.maxHeight = ''; }, 360);
-    });
+    body.style.maxHeight = body.scrollHeight + 'px';
+    setTimeout(() => { if (body.style.maxHeight !== '0px') body.style.maxHeight = ''; }, 360);
     divider.classList.remove('acc-collapsed');
     sessionStorage.setItem(accKey, 'open');
   } else {
@@ -7762,6 +7798,39 @@ function expandSection(sectionId, headingText) {
   geoCache = Array.isArray(geo?.articles) ? geo.articles : articlesCache;
   competitiveCache = competitive || null;
   briefingsIndex = bIndex?.briefings || [];
+
+  // ── Competitive data freshness — shown on Briefing tab without visiting Competition ──
+  // Computes mostRecentDate from competitive-prices.json at boot so the
+  // staleness card is visible immediately when the dashboard opens.
+  if (competitive) {
+    const bootListings = [];
+    if (Array.isArray(competitive.dailySnapshots)) {
+      competitive.dailySnapshots.forEach(snap => {
+        const d = snap.date || (snap.scrapedAt || '').slice(0,10);
+        (snap.listings || []).forEach(l => bootListings.push({ ...l, scrapedAt: l.scrapedAt || d }));
+      });
+    }
+    (competitive.rawListings || competitive.listings || []).forEach(l => {
+      if (l.scrapedAt) bootListings.push(l);
+    });
+    if (bootListings.length) {
+      const mostRecent = bootListings.reduce((max, l) => {
+        const d = (l.scrapedAt || '').slice(0,10);
+        return d > max ? d : max;
+      }, '');
+      if (mostRecent) {
+        const daysAgo = Math.floor((Date.now() - new Date(mostRecent).getTime()) / 86400000);
+        window._lastScrapeDate = mostRecent;
+        window._lastScrapeDaysAgo = daysAgo;
+        const label = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : `${daysAgo}d ago`;
+        const color = daysAgo <= 2 ? '#1E5E40' : daysAgo <= 7 ? '#A47D29' : 'var(--maroon)';
+        const el = document.getElementById('competitiveStaleness');
+        const fb = document.getElementById('competitiveStalenessFallback');
+        if (el) { el.textContent = `Pricing: ${label}`; el.style.color = color; el.style.display = 'inline'; }
+        if (fb) fb.style.display = 'none';
+      }
+    }
+  }
   // Expose themes memory so the report aggregator can determine theme continuity status
   window._loadedThemesMemory = Array.isArray(memory?.themes) ? memory.themes : [];
 

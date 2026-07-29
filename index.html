@@ -6464,17 +6464,48 @@ async function _renderFocusOverlay() {
     </div>`;
 
   // ── Build the AI prompt ──────────────────────────────────────────────────
-  // Feed: executive summary, all theme what_happened fields, sentiment score,
-  // watch list hits, and theme recurrence counts (for "building for N days").
-  // The model writes the brief — not us. Pure market analysis, no Mixta content.
+  // Pass actual article summaries from the intelligence feed (not compressed
+  // theme fields) so the model writes from primary material, not a summary
+  // of a summary. This eliminates the hallucination pressure that comes from
+  // asking the model to "be specific" when its input has no specifics in it.
+
+  // Today's articles — the actual intelligence feed, most recent first
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const recentArticles = (articlesCache || [])
+    .filter(a => {
+      const d = (a.publishedAt || a.addedAt || '').slice(0, 10);
+      return d === todayStr || d === new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    })
+    .slice(0, 12);
+
+  const articleEvidence = recentArticles.length
+    ? recentArticles.map(a =>
+        `SOURCE: ${a.source || 'Unknown'} · ${(a.publishedAt || a.addedAt || '').slice(0, 10)}
+HEADLINE: ${a.title || ''}
+SUMMARY: ${(a.summary || a.description || '').slice(0, 300)}`
+      ).join('\n\n')
+    : (b.themes || []).slice(0, 6).map(t =>
+        `THEME: ${t.label}
+EVIDENCE: ${t.what_happened || ''}`
+      ).join('\n\n');
+
+  // Last 7 days of executive summaries for pattern detection
+  const priorSummaries = (articlesCache || []).length === 0
+    ? '' // no history
+    : (() => {
+        // Use trendHistory days if available — each day has a summary
+        const historyDays = trendHistory?.days?.slice(-7) || [];
+        return historyDays.length
+          ? historyDays.map(d => `[${d.date || ''}] ${d.executiveSummary || d.topTheme || ''}`)
+              .filter(s => s.length > 20).join('\n')
+          : '';
+      })();
 
   const themeSummaries = (b.themes || []).slice(0, 6).map((t, i) =>
-    `Theme ${i+1}: "${t.label}" — appeared ${t.timesSeen || 1} day(s), ${t.novelty || 'established'}
-Evidence: ${t.what_happened || 'No detail recorded'}
-Sentiment: ${t.sentiment || 'neutral'}, Severity: ${t.market_impact_severity || 'medium'}`
+    `Theme ${i+1}: "${t.label}" — appeared ${t.timesSeen || 1} day(s)
+Severity: ${t.market_impact_severity || 'medium'} | Sentiment: ${t.sentiment || 'neutral'}
+${t.what_happened || ''}`
   ).join('\n\n');
-
-  const watchHits = (b.watch_list_hits || []).filter(Boolean).slice(0, 5).join('; ');
 
   const days = trendHistory?.days || [];
   const last7 = days.slice(-7);
@@ -6486,43 +6517,45 @@ Sentiment: ${t.sentiment || 'neutral'}, Severity: ${t.market_impact_severity || 
   }
   macroScore = last7.length ? macroScore / last7.length : 0;
   const sentimentLabel = macroScore > 0.15 ? 'bullish' : macroScore > -0.1 ? 'neutral' : 'bearish';
-  const sentimentScore = `${(macroScore * 100).toFixed(0)}/100 (${sentimentLabel})`;
 
-  const prompt = `You are a senior real estate market analyst writing an executive intelligence brief for the leadership of a Nigerian real estate developer. Today is ${today}.
+  const prompt = `You are a senior real estate market analyst. You have read every article below. Write an executive intelligence brief for the leadership of a Nigerian real estate developer. Today is ${today}.
 
-Your brief has three sections. Write each with analytical authority — you are synthesising what the market is doing, not summarising headlines. Connect the themes. Show what is building, what is new, and what the week's pattern means. Do not mention any specific developer, company, or property project by name. This is pure market intelligence.
+CRITICAL RULES — THESE ARE ABSOLUTE:
+1. NEVER invent a number, percentage, or statistic. If the source material contains a specific figure (e.g. "N77 trillion", "13.4% of GDP", "N5,000 monthly"), use it. If no figure exists in the source material, state the finding without a number. A hallucinated "15% increase" is worse than no number.
+2. Do not mention any specific developer or property project by name. This is market intelligence only.
+3. Each bullet must report a different story or dimension. If today has only one dominant story, bullet 2 should cover the second most significant development, and bullet 3 should identify what the combined signals imply for the market — not repeat the first story.
+4. Write as if you personally read every article. No generalisations that could apply to any market in any year.
 
-MARKET DATA FOR TODAY:
+TODAY'S ARTICLES (your primary source — write from these):
+${articleEvidence}
 
-Executive Summary from AI pipeline:
-${(b.executive_summary || '').slice(0, 800)}
-
-Themes detected this period:
+SYNTHESIZED THEMES:
 ${themeSummaries}
 
-7-day market sentiment score: ${sentimentScore}
-Watch list activity: ${watchHits || 'None flagged'}
+${priorSummaries ? `PRIOR WEEK CONTEXT (for identifying what is building vs what is new today):
+${priorSummaries}` : ''}
 
-WRITE THE FOLLOWING THREE SECTIONS:
+7-day sentiment score: ${(macroScore * 100).toFixed(0)}/100 (${sentimentLabel})
 
-SECTION 1 — "What the market is doing" (3 declarative bullets, each 20-35 words):
-- Bullet 1: The single most significant market development this week, stated with a specific number, policy name, or institution. Not a headline — the implication.
-- Bullet 2: The structural theme that has been building across multiple days this week and what direction it is moving.
-- Bullet 3: What these signals mean for the market environment — is it opening up, tightening, or shifting sector?
-Do not repeat the same fact across bullets. Each bullet must add a new dimension.
+WRITE THREE SECTIONS:
 
-SECTION 2 — "The week's pattern" (2-3 sentences, flowing prose):
-Step back from the individual stories and write what the week as a whole tells you. What is the overarching narrative? Are multiple themes pointing in the same direction? Is there tension between signals? Write as a senior analyst who has read everything and is telling a board member what they actually need to understand about this week, not what happened.
+SECTION 1 — "What the market is doing" — exactly 3 bullets:
+Bullet 1 (20-35 words): The single most significant development today. Name the specific policy, institution, or finding. Use a figure from the source material only if one exists — do not invent one.
+Bullet 2 (20-35 words): The second distinct story. Must be genuinely different from bullet 1 — not a restatement or elaboration.
+Bullet 3 (20-35 words): What the combination of today's signals implies for the direction of the market. Not a third story — a synthesis of what the first two mean together.
 
-SECTION 3 — "Market posture" (1 sentence):
-Based on the 7-day sentiment score of ${sentimentScore} and the themes above, state the market's direction and what it implies for commercial activity — specifically for pricing decisions and buyer demand. One sentence. Specific. No generic observations.
+SECTION 2 — "The week's pattern" (2-3 sentences of analytical prose):
+Step back from today. What is the overarching market narrative this week? If this is the first briefing of the week, state what today's signals suggest about the week ahead. Write from the evidence — specific findings, named policies, concrete dynamics. No filler phrases like "complex interplay" or "multifaceted challenges".
 
-RESPOND WITH JSON ONLY — no markdown, no preamble:
+SECTION 3 — "Market posture" (exactly 1 sentence):
+Given the ${sentimentLabel} sentiment and today's dominant themes, state what this implies for commercial real estate activity — specifically for pricing and buyer demand. Must be specific to the Nigerian market and today's themes. Do not write a generic bull/bear statement.
+
+RESPOND WITH JSON ONLY:
 {
-  "bullets": ["bullet 1", "bullet 2", "bullet 3"],
+  "bullets": ["bullet 1 text", "bullet 2 text", "bullet 3 text"],
   "pattern": "2-3 sentence prose paragraph",
   "posture_label": "Bullish|Neutral|Bearish",
-  "posture_text": "one specific sentence about market direction and its commercial implication"
+  "posture_text": "one specific sentence"
 }`;
 
   // ── Call the AI ──────────────────────────────────────────────────────────

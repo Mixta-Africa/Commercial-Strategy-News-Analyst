@@ -6604,15 +6604,86 @@ RESPOND WITH JSON ONLY:
     };
   }
 
+  // ── Post-process: deduplicate and detect single-story days ───────────────
+  // If two bullets share more than 60% of their significant words, the model
+  // rephrased the same story twice. Replace the duplicate with a direct
+  // what_happened extract from the next unused theme.
+  if (brief?.bullets?.length >= 2) {
+    const sig = s => new Set(
+      s.toLowerCase().replace(/[^a-z0-9 ]/g, '').split(/\s+/).filter(w => w.length > 4)
+    );
+    const overlap = (a, b) => {
+      const sa = sig(a), sb = sig(b);
+      if (!sa.size) return 0;
+      let shared = 0;
+      sa.forEach(w => { if (sb.has(w)) shared++; });
+      return shared / Math.max(sa.size, sb.size);
+    };
+
+    // Check if bullets 1 and 2 are the same story
+    if (overlap(brief.bullets[0], brief.bullets[1]) > 0.55) {
+      // Replace bullet 2 with what_happened from an unused theme
+      const usedText = brief.bullets[0].toLowerCase();
+      const replacement = (b.themes || []).slice(1).find(t =>
+        t.what_happened && !usedText.includes((t.label || '').toLowerCase().slice(0, 12))
+      );
+      brief.bullets[1] = replacement?.what_happened || brief.bullets[1];
+    }
+
+    // Check if bullets 2 and 3 are the same story
+    if (brief.bullets[2] && overlap(brief.bullets[1], brief.bullets[2]) > 0.55) {
+      const usedText = (brief.bullets[0] + ' ' + brief.bullets[1]).toLowerCase();
+      const replacement = (b.themes || []).slice(2).find(t =>
+        t.what_happened && !usedText.includes((t.label || '').toLowerCase().slice(0, 12))
+      );
+      brief.bullets[2] = replacement?.what_happened || brief.bullets[2];
+    }
+
+    // Detect single-story day: if all themes share the same root topic,
+    // set a flag so the renderer shows one dominant story instead of 3 thin bullets.
+    const uniqueThemes = (b.themes || []).length;
+    const dominantTheme = b.themes?.[0];
+    const isSingleStory = uniqueThemes <= 2 ||
+      (b.themes || []).slice(0, 3).every(t =>
+        overlap(t.label + ' ' + (t.what_happened || ''), dominantTheme?.label + ' ' + (dominantTheme?.what_happened || '')) > 0.45
+      );
+
+    brief._singleStory = isSingleStory;
+    brief._dominantThemeLabel = dominantTheme?.label || '';
+  }
+
   // ── Render ───────────────────────────────────────────────────────────────
   const postureClass = (brief.posture_label || 'Neutral').toLowerCase();
   const articleCount = (b.themes || []).reduce((n, t) => n + (t.sourceArticles?.length || 0), 0);
 
-  const bulletsHtml = (brief.bullets || []).slice(0, 3).map((text, i) => `
-    <div class="focus-bullet">
-      <span class="focus-bullet-num">${String(i + 1).padStart(2, '0')}</span>
-      <span class="focus-bullet-text">${esc(text)}</span>
-    </div>`).join('');
+  // Single-story layout: one large statement instead of three thin bullets
+  let topSectionHtml;
+  if (brief._singleStory) {
+    const dominantText = brief.bullets?.[0] || '';
+    const supportingText = brief.bullets?.slice(1).filter(bl =>
+      bl && bl.length > 20 &&
+      new Set(bl.toLowerCase().split(/\s+/).filter(w => w.length > 4))
+        .size > 3
+    ).join(' ') || '';
+
+    topSectionHtml = `
+      <div class="focus-section-label">Today's dominant story</div>
+      <div style="margin-bottom:12px;">
+        <div style="font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--maroon);margin-bottom:14px;">${esc(brief._dominantThemeLabel)}</div>
+        <div style="font-family:var(--font-headline);font-size:21px;font-weight:700;color:var(--ink);line-height:1.4;max-width:660px;margin-bottom:${supportingText ? '20px' : '0'};">${esc(dominantText)}</div>
+        ${supportingText ? `<div style="font-family:var(--font-body);font-size:15px;color:var(--ink-soft);line-height:1.7;max-width:640px;">${esc(supportingText)}</div>` : ''}
+      </div>
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:52px;">One story dominated the feed today — the week's pattern below gives broader context</div>`;
+  } else {
+    const bulletsHtml = (brief.bullets || []).slice(0, 3).map((text, i) => `
+      <div class="focus-bullet">
+        <span class="focus-bullet-num">${String(i + 1).padStart(2, '0')}</span>
+        <span class="focus-bullet-text">${esc(text)}</span>
+      </div>`).join('');
+    topSectionHtml = `
+      <div class="focus-section-label">What the market is doing</div>
+      <div class="focus-bullets">${bulletsHtml}</div>`;
+  }
 
   overlay.innerHTML = `
     <div class="focus-shell">
@@ -6624,8 +6695,7 @@ RESPOND WITH JSON ONLY:
         <button class="focus-exit" onclick="toggleFocusMode()">${icon('close', 14)} Exit Brief</button>
       </div>
 
-      <div class="focus-section-label">What the market is doing</div>
-      <div class="focus-bullets">${bulletsHtml}</div>
+      ${topSectionHtml}
 
       <div class="focus-section-label">The week's pattern</div>
       <div style="font-family:var(--font-body);font-size:16px;line-height:1.75;color:var(--ink);margin-bottom:52px;max-width:680px;">${esc(brief.pattern || '')}</div>
@@ -6640,7 +6710,7 @@ RESPOND WITH JSON ONLY:
       </div>
 
       <div class="focus-footer">
-        <span>${b.themes?.length || 0} themes · ${articleCount} articles analysed · AI synthesis</span>
+        <span>${b.themes?.length || 0} theme${b.themes?.length !== 1 ? 's' : ''} · ${articleCount} articles · AI synthesis</span>
         <button class="focus-view-full" onclick="toggleFocusMode()">View full dashboard →</button>
       </div>
     </div>`;

@@ -676,7 +676,124 @@ button, select, input { font-family: inherit; }
   margin-bottom: 20px; line-height: 1.5;
 }
 
-/* ── Macro Dashboard ─────────────────────────────────────────────────────── */
+/* ── Decision Type Selector ───────────────────────────────────────────────── */
+.decision-selector {
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+.decision-selector-label {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-faint);
+  white-space: nowrap;
+}
+.decision-select {
+  font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+  color: var(--ink); background: var(--paper-card);
+  border: 1.5px solid var(--maroon); border-radius: var(--radius);
+  padding: 7px 28px 7px 12px; cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpolyline points='1,1 6,7 11,1' fill='none' stroke='%237A1F2B' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+  transition: border-color 0.15s;
+}
+.decision-select:focus { outline: none; border-color: var(--maroon); }
+
+/* ── Macro Indicator Tiles ────────────────────────────────────────────────── */
+.macro-tile-grid {
+  display: grid; gap: 12px; margin-bottom: 12px;
+}
+.macro-tile-grid.hero   { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.macro-tile-grid.support { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+
+.macro-tile {
+  background: var(--paper-card); border: 1px solid var(--rule);
+  border-radius: var(--radius); padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 6px;
+  transition: box-shadow 0.15s;
+}
+.macro-tile:hover { box-shadow: 0 4px 16px rgba(122,31,43,0.08); }
+.macro-tile.primary {
+  border-color: var(--maroon-line); border-left: 3px solid var(--maroon);
+}
+.macro-tile.alert { border-left: 3px solid #A47D29; }
+.macro-tile.positive { border-left: 3px solid #1E5E40; }
+
+.macro-tile-category {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-faint);
+}
+.macro-tile-value {
+  font-family: var(--font-headline); font-size: 22px; font-weight: 800;
+  color: var(--ink); line-height: 1.1;
+}
+.macro-tile.primary .macro-tile-value { font-size: 28px; color: var(--maroon); }
+.macro-tile-label {
+  font-family: var(--font-ui); font-size: 12px; color: var(--ink-soft); line-height: 1.3;
+}
+.macro-tile-source {
+  font-family: var(--font-mono); font-size: 9px; color: var(--ink-faint);
+  margin-top: 4px;
+}
+.macro-decision-note {
+  font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.macro-decision-note::before {
+  content: ''; display: inline-block; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--maroon); flex-shrink: 0;
+}
+
+/* ── Sector Intelligence Panel ────────────────────────────────────────────── */
+.sector-intel-panel {
+  background: var(--paper-card); border: 1px solid var(--maroon-line);
+  border-radius: var(--radius); padding: 24px 28px; margin-top: 8px;
+}
+.sector-intel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+}
+.sector-intel-name {
+  font-family: var(--font-headline); font-size: 17px; font-weight: 700; color: var(--ink);
+}
+.sector-intel-close {
+  font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint);
+  background: none; border: none; cursor: pointer; text-transform: uppercase;
+  letter-spacing: 0.08em; padding: 4px 8px;
+}
+.sector-intel-close:hover { color: var(--maroon); }
+.sector-intel-articles { display: flex; flex-direction: column; gap: 12px; }
+.sector-intel-article {
+  border-left: 2px solid var(--rule-strong); padding: 8px 14px;
+  transition: border-color 0.15s;
+}
+.sector-intel-article:hover { border-color: var(--maroon); }
+.sector-intel-article-title {
+  font-family: var(--font-ui); font-size: 13px; font-weight: 600;
+  color: var(--ink); text-decoration: none; display: block; margin-bottom: 4px;
+  line-height: 1.4;
+}
+.sector-intel-article-title:hover { color: var(--maroon); }
+.sector-intel-article-meta {
+  font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint);
+  display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+}
+.sector-intel-sentiment {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50; flex-shrink: 0;
+}
+.sector-intel-sentiment.bullish { background: #1E5E40; }
+.sector-intel-sentiment.bearish { background: var(--maroon); }
+.sector-intel-sentiment.neutral { background: #888; }
+.sector-intel-empty {
+  font-family: var(--font-body); font-size: 13px; color: var(--ink-faint);
+  font-style: italic; padding: 12px 0;
+}
+
+@media (max-width: 600px) {
+  .decision-select { font-size: 11px; }
+  .macro-tile-value { font-size: 18px; }
+  .macro-tile.primary .macro-tile-value { font-size: 22px; }
+}
+
+/* ── Decision Type Selector ───────────────────────────────────────────────── */
 .macro-dashboard { background: var(--paper-card); border: 1px solid var(--maroon-line); border-radius: var(--radius); overflow: hidden; margin-bottom: 32px; }
 .macro-dashboard-header { background: var(--maroon); padding: 18px 24px; }
 .macro-dashboard-title { font-family: var(--font-headline); font-size: 16px; font-weight: 700; color: #fff; }
@@ -1644,9 +1761,16 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
 
     <!-- OUTREACH INTELLIGENCE -->
     <section id="outreach" class="view">
-      <div class="section-divider" style="margin-top:0;"><h2>Outreach Intelligence</h2></div>
-      <div class="dateline-short">
-        Corporate outreach recommendations triggered by the three-signal model: macro base (Signal C), calendar window (Signal A), and event detection (Signal B). A signal only fires when macro conditions are neutral-to-positive and at least one additional trigger is active.
+      <div class="section-divider" style="margin-top:0;" data-no-accordion="true">
+        <h2>Outreach Intelligence</h2>
+        <div class="decision-selector">
+          <span class="decision-selector-label">Decision</span>
+          <select id="outreachDecisionType" class="decision-select" onchange="setDecisionType(this.value)">
+            <option value="pricing">Should we raise or hold prices?</option>
+            <option value="targeting">Which corporates to approach?</option>
+            <option value="monitoring">What is the market doing?</option>
+          </select>
+        </div>
       </div>
       <!-- PIPELINE COUNTER -->
       <div class="pipeline-counter" id="pipelineCounter">
@@ -1659,11 +1783,11 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
           <span class="pipeline-count-text" id="pipelineCountText">—</span>
           <span class="pipeline-target-text"> / 4 target</span>
         </div>
-        <div style="flex:1;"></div>
-        <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);">Click any company to open its conversation brief</div>
       </div>
       <div id="outreachSignalContainer"></div>
-      <!-- COMPANY BRIEF MODAL (hidden until triggered) -->
+      <!-- SECTOR INTELLIGENCE PANEL — opens inline when company is clicked -->
+      <div id="sectorIntelPanel" style="display:none;"></div>
+      <!-- COMPANY BRIEF MODAL — kept for pipeline state management only, no script/coaching -->
       <div id="companyBriefModal" style="display:none;"></div>
     </section>
 
@@ -1709,21 +1833,27 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
 
     <!-- REPORTS -->
     <section id="reports" class="view">
-      <div class="section-divider" style="margin-top:0;">
+      <div class="section-divider" style="margin-top:0;" data-no-accordion="true">
         <h2>Market Intelligence Reports</h2>
-      </div>
-      <div class="dateline-short">
-        Structured analysis of emerging themes and market trends. Monthly, quarterly, and yearly cadence. Each report tracks whether themes from prior periods persist, intensify, or fade — giving management a noise-free view of market direction.
+        <!-- Decision-type selector — persists across Reports and Outreach tabs -->
+        <div class="decision-selector">
+          <span class="decision-selector-label">Decision</span>
+          <select id="globalDecisionType" class="decision-select" onchange="setDecisionType(this.value)">
+            <option value="pricing">Should we raise or hold prices?</option>
+            <option value="targeting">Which corporates to approach?</option>
+            <option value="monitoring">What is the market doing?</option>
+          </select>
+        </div>
       </div>
 
-      <!-- LIVE MACRO INDICATORS PANEL -->
-      <div id="macroDashboardPanel" style="margin-bottom:32px;"></div>
+      <!-- MACRO TILE PANEL — reconfigures based on decision type -->
+      <div id="macroDashboardPanel" style="margin-bottom:36px;"></div>
 
-      <!-- GENERATE PANEL -->
+      <!-- REPORT GENERATE PANEL -->
       <div class="report-generate-panel">
         <div class="report-generate-row">
           <div class="report-type-group">
-            <label class="report-type-label">Report Type</label>
+            <label class="report-type-label">Cadence</label>
             <div class="report-chip-row">
               <button class="report-chip active" id="rchip-monthly"   onclick="setReportType('monthly')">Monthly</button>
               <button class="report-chip"         id="rchip-quarterly" onclick="setReportType('quarterly')">Quarterly</button>
@@ -1738,7 +1868,9 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
             Generate Report
           </button>
         </div>
-        <div id="reportStatusLine" style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);margin-top:12px;min-height:16px;"></div>
+        <!-- Decision-type context line -->
+        <div id="reportDecisionContext" style="font-family:var(--font-mono);font-size:10px;color:var(--maroon);margin-top:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;"></div>
+        <div id="reportStatusLine" style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);margin-top:6px;min-height:16px;"></div>
       </div>
 
       <!-- SAVED REPORTS INDEX -->
@@ -1753,7 +1885,7 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
 
       <!-- REPORT VIEWER -->
       <div id="reportViewer" style="display:none; margin-top:40px;">
-        <div class="section-divider">
+        <div class="section-divider" data-no-accordion="true">
           <h2 id="reportViewerTitle">Report</h2>
           <div style="display:flex;gap:10px;align-items:center;">
             <button onclick="downloadReport('pdf')" class="report-dl-btn" title="Download as PDF">↓ PDF</button>
@@ -6451,71 +6583,40 @@ function _renderFocusOverlay() {
 // Update this object quarterly from NBS, CBN, World Bank, and FMBN releases.
 // The model connects qualitative signals to these known figures rather than
 // inventing numbers. Last updated: Q2 2026.
-// ── LIVE MACRO DATA LAYER ────────────────────────────────────────────────────
-// _mergeMacroIndicators() is called at boot once macro-indicators.json loads.
-// It overlays live fetched figures onto the hardcoded MACRO_INDICATORS object
-// so every report prompt and every _macroBlock() call uses the freshest data.
-// Fields that could not be fetched (API failure, lag) fall back to the
-// hardcoded strings — the hardcoded object is always the safety net.
-function _mergeMacroIndicators(live) {
-  if (!live) return;
+// ── DECISION TYPE SYSTEM ──────────────────────────────────────────────────────
+// Three decisions this dashboard supports. Each changes:
+// 1. Which macro indicators are hero tiles vs supporting tiles
+// 2. The report prompt structure (Pricing / Targeting / Monitoring)
+// 3. Outreach context shown when clicking a sector company
 
-  const wb = live.world_bank || {};
-  const cbn = live.cbn_exchange_rate || {};
-  const imf = live.imf_gdp_forecast || {};
-  const nbs = live.nbs_manual || {};
+let _decisionType = 'pricing'; // default
 
-  // World Bank automated fields
-  if (wb.gdp_growth?.value != null)
-    MACRO_INDICATORS.macroeconomic.gdp_growth_2025 =
-      `${wb.gdp_growth.value}% real GDP growth (${wb.gdp_growth.source}, ${wb.gdp_growth.year})`;
-
-  if (wb.inflation_cpi?.value != null)
-    MACRO_INDICATORS.macroeconomic.headline_inflation =
-      `${wb.inflation_cpi.value}% year-on-year (${wb.inflation_cpi.source}, ${wb.inflation_cpi.year})`;
-
-  if (wb.unemployment?.value != null)
-    MACRO_INDICATORS.macroeconomic.unemployment =
-      `${wb.unemployment.value}% (${wb.unemployment.source}, ${wb.unemployment.year})`;
-
-  if (wb.remittances_pct?.value != null)
-    MACRO_INDICATORS.world_bank_outlook.remittances_2025 =
-      `${wb.remittances_pct.value}% of GDP (${wb.remittances_pct.source}, ${wb.remittances_pct.year})`;
-
-  // IMF forecast
-  if (imf.value != null)
-    MACRO_INDICATORS.macroeconomic.gdp_growth_2026_fcst =
-      `${imf.value}% forecast (${imf.source}, ${imf.year})`;
-
-  // CBN exchange rate (weekly scrape)
-  if (cbn.usd_ngn)
-    MACRO_INDICATORS.monetary_policy.naira_usd_official =
-      `₦${Number(cbn.usd_ngn).toLocaleString()}/$ (${cbn.source}, ${(cbn.fetchedAt||'').slice(0,10)})`;
-
-  // NBS manual fields (entered via Config UI after each monthly CPI release)
-  if (nbs.headline_cpi_yoy)
-    MACRO_INDICATORS.macroeconomic.headline_inflation =
-      `${nbs.headline_cpi_yoy}% year-on-year (NBS CPI, ${nbs.updatedAt || 'manual update'})`;
-  if (nbs.food_inflation)
-    MACRO_INDICATORS.macroeconomic.food_inflation =
-      `${nbs.food_inflation}% year-on-year (NBS, ${nbs.updatedAt || 'manual update'})`;
-  if (nbs.core_inflation)
-    MACRO_INDICATORS.macroeconomic.core_inflation =
-      `${nbs.core_inflation}% year-on-year (NBS, ${nbs.updatedAt || 'manual update'})`;
-  if (nbs.real_estate_gdp_growth)
-    MACRO_INDICATORS.macroeconomic.real_estate_gdp_pct =
-      `${nbs.real_estate_gdp_growth}% real estate sector GDP growth (NBS, ${nbs.updatedAt || 'manual update'})`;
-  if (nbs.mpr)
-    MACRO_INDICATORS.monetary_policy.cbn_mpr =
-      `${nbs.mpr}% (CBN MPC, ${nbs.updatedAt || 'manual update'})`;
-
-  // Update the _updated timestamp to reflect freshness
-  MACRO_INDICATORS._updated = `Live — World Bank ${wb.gdp_growth?.year || ''}${cbn.fetchedAt ? ` · CBN ${cbn.fetchedAt.slice(0,10)}` : ''}${nbs.updatedAt ? ` · NBS ${nbs.updatedAt}` : ''}`;
-
-  // Cache live data for the macro dashboard panel
-  window._liveMacroData = live;
-  console.log('[Macro] MACRO_INDICATORS updated from live data');
+function setDecisionType(type) {
+  _decisionType = type;
+  // Sync both selectors
+  const els = ['globalDecisionType', 'outreachDecisionType'];
+  els.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.value !== type) el.value = type;
+  });
+  // Update macro tile panel
+  renderMacroDashboard();
+  // Update report decision context line
+  const ctx = document.getElementById('reportDecisionContext');
+  if (ctx) {
+    const labels = {
+      pricing:    'Generating: Pricing Decision Report — focused on market rates, absorption, and competitive positioning',
+      targeting:  'Generating: Corporate Targeting Report — focused on sector performance, buyer demand, and outreach timing',
+      monitoring: 'Generating: Market Monitoring Report — focused on macro conditions, sentiment trajectory, and structural trends',
+    };
+    ctx.textContent = labels[type] || '';
+  }
 }
+
+// ── MACRO TILE PANEL ──────────────────────────────────────────────────────────
+// Reconfigures based on _decisionType. Hero tiles are large (3-col grid),
+// supporting tiles are smaller (4-5-col grid). Each decision surfaces the
+// indicators most relevant to that specific question.
 
 // ── MACRO DASHBOARD PANEL ────────────────────────────────────────────────────
 // Renders the live macro indicator panel inside the Reports tab.
@@ -6921,30 +7022,37 @@ async function _generateMarketConditions(period, periodLabel, type, briefings, a
     .flatMap(b => b.watch_list_hits || [])
     .filter(Boolean).slice(0, 8).join('; ');
 
+  const decisionFocus = {
+    pricing: `DECISION FOCUS — PRICING:
+This report answers: should Mixta raise, hold, or reduce asking prices this period?
+Emphasise: mortgage rate trajectory, absorption rates, competitor pricing movement, inflation's effect on construction costs, and buyer affordability. State specifically whether macro conditions support a price increase or argue for holding.`,
+    targeting: `DECISION FOCUS — CORPORATE TARGETING:
+This report answers: which corporate sectors should Mixta approach for bulk sales this quarter?
+Emphasise: employer health by sector, oil sector activity for Port Harcourt, formal employment trends, remittance flows as a proxy for diaspora demand, and which sectors are experiencing growth that creates new buyer pools.`,
+    monitoring: `DECISION FOCUS — MARKET MONITORING:
+This report answers: what structural shifts in the market should management be aware of?
+Emphasise: macro trajectory (is inflation rising or falling?), sentiment direction, infrastructure milestones, and policy changes that will affect demand over the next 1-2 quarters.`,
+  }[_decisionType] || '';
+
   const prompt = `You are a Senior Strategy Manager writing a ${type} market intelligence report for Mixta Africa's executive team. The period is ${periodLabel}.
 
-TASK: Write the Market Conditions section of this report. This section has two parts:
+${decisionFocus}
 
-PART A — MACRO ENVIRONMENT (3-4 sentences):
-Integrate the authoritative macro data below with the qualitative signals from the briefings. Every sentence must cite a specific figure, institution, or named policy. State how macro conditions affect real estate affordability, demand, and development economics in Nigeria specifically.
-
-PART B — CORRIDOR CONDITIONS (2-3 sentences):
-State the specific conditions in the Lagos/Ibeju-Lekki corridor and the Greater Port Harcourt market. Reference named infrastructure, named policy programmes, or named market events observed this period.
+TASK: Write the Market Conditions section. Two parts:
+PART A — MACRO ENVIRONMENT (3-4 sentences): Integrate the macro data below with qualitative signals. Every sentence must cite a figure, institution, or named policy. State how conditions affect the specific decision focus above.
+PART B — CORRIDOR CONDITIONS (2-3 sentences): Lagos/Ibeju-Lekki and Greater Port Harcourt specifically. Named infrastructure, named policy programmes, or named market events.
 
 ${_macroBlock()}
 
-QUALITATIVE SIGNALS FROM THIS PERIOD (${briefings.length} briefing days):
+QUALITATIVE SIGNALS (${briefings.length} briefing days):
 ${execSummaries}
 
-WATCH LIST ACTIVITY: ${watchHits || 'None recorded'}
+WATCH LIST: ${watchHits || 'None recorded'}
 
-LANGUAGE RULES:
-- Every sentence must name an institution, number, policy, or corridor. No generic sentences.
-- Active voice. Maximum 25 words per sentence.
-- Forbidden: "faces challenges", "is key", "conditions are changing", "partnerships are formed"
+RULES: Every sentence names an institution, number, or policy. Active voice. Max 25 words per sentence. No generic sentences.
 
 RESPOND WITH JSON ONLY:
-{"macro_environment": "3-4 sentences citing CBN/NBS/World Bank figures.", "corridor_conditions": "2-3 sentences on Lagos and Port Harcourt specifically."}`;
+{"macro_environment": "3-4 sentences.", "corridor_conditions": "2-3 sentences."}`; 
 
   return await _aiJSON(prompt, 800);
 }
@@ -6995,15 +7103,26 @@ async function _generateImplications(period, periodLabel, type, aggregatedThemes
     `- ${t.label} (${t.status}, ${t.occurrences} days): ${t.what_happened[0] || ''} ${t.why_it_matters[0] || ''}`
   ).join('\n');
 
-  const prompt = `You are a Senior Strategy Manager at Mixta Africa. You are writing the "Implications for Mixta" section of a ${type} market intelligence report for the executive team. Period: ${periodLabel}.
+  const decisionTask = {
+    pricing: `DECISION: Should Mixta raise, hold, or reduce asking prices this period?
+Your implications must each answer this directly for a named project. For each project state: (1) whether market evidence supports holding, raising, or reducing the current ask, (2) by what margin or within what range, and (3) what specific market condition justifies that position. Do not give general market commentary — give a pricing recommendation per project with a stated rationale.`,
+    targeting: `DECISION: Which corporate sectors should Mixta approach for bulk sales this quarter, and in what priority order?
+Your implications must each identify: (1) a specific sector and which Mixta project it matches, (2) why this quarter specifically — what event, cycle, or signal makes now the right time, and (3) the entry channel (cooperative, HR director, professional association). Rank the implications from highest to lowest urgency.`,
+    monitoring: `DECISION: What structural shifts should management track this quarter that will affect Mixta's portfolio in the next 6–12 months?
+Your implications must each identify: (1) a named trend or structural shift, (2) which Mixta project is most exposed or most positioned to benefit, and (3) a specific threshold or event that would confirm the trend and require a management decision.`,
+  }[_decisionType] || '';
+
+  const prompt = `You are a Senior Strategy Manager at Mixta Africa. You are writing the "Implications for Mixta" section of a ${type} market intelligence report. Period: ${periodLabel}.
 
 MIXTA'S ACTIVE PROJECTS:
-- Lakowe Crossings (Lagos, Ibeju-Lekki corridor): affordable-mid residential, targeting diaspora and professional buyers
-- Lakowe Annexe (Lagos, adjacent to Lakowe Lakes Golf & Country Estate): golf-adjacency premium residential
-- Lagos New Town (LNT): 1,561-hectare mixed-use city, 30% developed, 35,000+ residents, targeting 200,000 at completion
-- Garden City Golf Annexe (Port Harcourt, Greater Port Harcourt): 494-unit M-REIF/MOFI affordable housing, off Port Harcourt–Owerri Expressway (Omagwa), targeting oil & gas workers, civil servants, NLNG cooperative members. Phase 1: 39 units, in execution.
+- Lakowe Crossings (Lagos, Ibeju-Lekki): affordable-mid residential, targeting diaspora and professional buyers
+- Lakowe Annexe (Lagos, golf-adjacency): premium residential
+- Lagos New Town (LNT): 1,561Ha mixed-use, 35,000+ residents
+- Garden City Golf Annexe (Port Harcourt, Omagwa): 494-unit M-REIF/MOFI, Phase 1 39 units, targeting oil & gas workers, civil servants, NLNG cooperative members
 
-MARKET CONDITIONS THIS PERIOD:
+${decisionTask}
+
+MARKET CONDITIONS:
 ${conditions?.macro_environment || ''}
 ${conditions?.corridor_conditions || ''}
 
@@ -7012,16 +7131,8 @@ ${themeDigest}
 
 ${_macroBlock()}
 
-TASK: Write 5-7 specific, actionable implications. Each implication must:
-1. Name a specific Mixta project (not "Mixta" generically)
-2. State a specific action, timing, or decision threshold
-3. Connect to a specific market signal or quantitative figure from this period
-4. Be actionable by the executive team — not descriptive
-
-FORMAT: Each implication as a complete sentence in the format:
-"[Project name]: [specific action] — [because/given/since] [specific market evidence with figure or named policy]."
-
-FORBIDDEN: Vague advice like "partner with government", "explore options", "monitor the market", "consider opportunities". Replace any such phrase with the specific action it implies.
+RULES: Name a specific project in every implication. Include a figure or named policy in every implication. No generic advice. Active voice. Max 25 words per implication sentence.
+FORBIDDEN: "partner with government", "explore options", "monitor the market", "consider opportunities"
 
 RESPOND WITH JSON ONLY:
 {"implications_for_mixta": ["implication 1", "implication 2", ...], "watch_next_period": "2 sentences naming 2-3 specific leading indicators and the threshold that would change the assessment."}`;
@@ -7132,6 +7243,7 @@ async function generateReport() {
       watch_next_period:       implResult.watch_next_period || '',
       _meta: {
         type: _reportType, period,
+        decisionType: _decisionType,
         generatedAt: new Date().toISOString(),
         briefingCount: briefings.length,
         themeCount: themes.length,
@@ -7142,7 +7254,7 @@ async function generateReport() {
 
     // Save and render
     _savedReports = _savedReports.filter(r => !(r.type === _reportType && r.period === period));
-    _savedReports.unshift({ type: _reportType, period, generatedAt: reportData._meta.generatedAt, data: reportData });
+    _savedReports.unshift({ type: _reportType, period, decisionType: _decisionType, generatedAt: reportData._meta.generatedAt, data: reportData });
     localStorage.setItem('mxReports', JSON.stringify(_savedReports.slice(0, 50)));
 
     status.textContent = `Report complete — ${briefings.length} briefings, ${themes.length} themes, 4 AI phases.`;
@@ -7248,13 +7360,14 @@ function _renderSavedReports() {
   }
   el.innerHTML = _savedReports.map(r => {
     const typeLabel = { monthly: 'Monthly', quarterly: 'Quarterly', yearly: 'Annual' }[r.type] || r.type;
+    const decisionLabel = { pricing: 'Pricing Decision', targeting: 'Corporate Targeting', monitoring: 'Market Monitoring' }[r.decisionType || 'monitoring'] || '';
     const genDate = r.generatedAt ? new Date(r.generatedAt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '';
     const themeCount = (r.data?.themes || []).length;
     return `
       <div class="report-saved-card">
         <div class="report-saved-meta" onclick="openReport('${esc(r.type)}','${esc(r.period)}')" style="cursor:pointer;flex:1;">
           <div class="report-saved-title">${esc(typeLabel)} — ${esc(r.data?.period_label || r.period)}</div>
-          <div class="report-saved-sub">${themeCount} theme${themeCount !== 1 ? 's' : ''} · Generated ${genDate}</div>
+          <div class="report-saved-sub">${decisionLabel ? esc(decisionLabel) + ' · ' : ''}${themeCount} theme${themeCount !== 1 ? 's' : ''} · Generated ${genDate}</div>
         </div>
         <div class="report-saved-actions">
           <button class="report-dl-btn" onclick="event.stopPropagation(); _quickDownload('${esc(r.type)}','${esc(r.period)}','pdf')">↓ PDF</button>
@@ -7379,6 +7492,8 @@ function _triggerDownload(blob, filename) {
 function _initReportsTab() {
   _populateReportPeriods();
   _renderSavedReports();
+  // Sync decision selector and render macro tiles
+  setDecisionType(_decisionType);
 }
 
 // ── OUTREACH PIPELINE + SNOOZE SYSTEM ────────────────────────────────────────

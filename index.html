@@ -1768,9 +1768,8 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
         <div class="decision-selector">
           <span class="decision-selector-label">Decision</span>
           <select id="outreachDecisionType" class="decision-select" onchange="setDecisionType(this.value)">
-            <option value="pricing">Should we raise or hold prices?</option>
             <option value="targeting">Which corporates to approach?</option>
-            <option value="monitoring">What is the market doing?</option>
+            <option value="pricing">Should we raise or hold prices?</option>
           </select>
         </div>
       </div>
@@ -6798,11 +6797,13 @@ let _decisionType = 'pricing'; // default
 
 function setDecisionType(type) {
   _decisionType = type;
-  // Sync both selectors
+  // Sync selectors — outreach tab only has targeting/pricing options
   const els = ['globalDecisionType', 'outreachDecisionType'];
   els.forEach(id => {
     const el = document.getElementById(id);
-    if (el && el.value !== type) el.value = type;
+    if (!el) return;
+    // Only set value if the option exists in this selector
+    if ([...el.options].some(o => o.value === type)) el.value = type;
   });
   // Update macro tile panel
   renderMacroDashboard();

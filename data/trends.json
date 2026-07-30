@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 14,
+    "articleCount": 15,
     "sentimentBreakdown": {
       "bullish": 10,
       "bearish": 2,
-      "neutral": 2
+      "neutral": 3
     },
     "topTopics": [
+      {
+        "topic": "housing deficit",
+        "count": 4
+      },
       {
         "topic": "affordable housing",
         "count": 4
       },
       {
-        "topic": "housing crisis",
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "investment",
+        "topic": "foreign investment",
         "count": 2
       },
       {
-        "topic": "REITs",
-        "count": 1
-      },
-      {
-        "topic": "property-investment",
+        "topic": "office-market-recovery",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 14,
+    "articleCount": 15,
     "sentimentBreakdown": {
       "bullish": 10,
       "bearish": 2,
-      "neutral": 2
+      "neutral": 3
     },
     "topTopics": [
+      {
+        "topic": "housing deficit",
+        "count": 4
+      },
       {
         "topic": "affordable housing",
         "count": 4
       },
       {
-        "topic": "housing crisis",
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "investment",
+        "topic": "foreign investment",
         "count": 2
       },
       {
-        "topic": "REITs",
-        "count": 1
-      },
-      {
-        "topic": "property-investment",
+        "topic": "office-market-recovery",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 14,
+    "articleCount": 15,
     "sentimentBreakdown": {
       "bullish": 10,
       "bearish": 2,
-      "neutral": 2
+      "neutral": 3
     },
     "topTopics": [
+      {
+        "topic": "housing deficit",
+        "count": 4
+      },
       {
         "topic": "affordable housing",
         "count": 4
       },
       {
-        "topic": "housing crisis",
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "investment",
+        "topic": "foreign investment",
         "count": 2
       },
       {
-        "topic": "REITs",
-        "count": 1
-      },
-      {
-        "topic": "property-investment",
+        "topic": "office-market-recovery",
         "count": 1
       }
     ],

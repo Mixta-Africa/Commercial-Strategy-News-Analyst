@@ -1205,32 +1205,31 @@
     },
     {
       "date": "2026-07-30",
-      "articleCount": 15,
+      "articleCount": 4,
       "sentimentBreakdown": {
-        "bullish": 10,
-        "bearish": 2,
-        "neutral": 3
+        "neutral": 1,
+        "bullish": 3
       },
       "averageSentiment": "bullish",
       "topTopics": [
         {
-          "topic": "housing deficit",
-          "count": 4
-        },
-        {
           "topic": "affordable housing",
-          "count": 4
-        },
-        {
-          "topic": "Lagos real estate",
           "count": 2
         },
         {
-          "topic": "foreign investment",
-          "count": 2
+          "topic": "South Africa",
+          "count": 1
         },
         {
-          "topic": "office-market-recovery",
+          "topic": "Nigeria",
+          "count": 1
+        },
+        {
+          "topic": "real estate",
+          "count": 1
+        },
+        {
+          "topic": "compensation claims",
           "count": 1
         }
       ]

@@ -1,89 +1,92 @@
 {
   "7day": {
-    "articleCount": 4,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 1,
-      "bullish": 3
+      "bearish": 2,
+      "bullish": 10,
+      "neutral": 3
     },
     "topTopics": [
+      {
+        "topic": "Lagos real estate",
+        "count": 5
+      },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "South Africa",
+        "topic": "Lagos elections",
         "count": 1
       },
       {
-        "topic": "Nigeria",
+        "topic": "ADC party",
         "count": 1
       },
       {
-        "topic": "real estate",
-        "count": 1
-      },
-      {
-        "topic": "compensation claims",
+        "topic": "INEC",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 4,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 1,
-      "bullish": 3
+      "bearish": 2,
+      "bullish": 10,
+      "neutral": 3
     },
     "topTopics": [
+      {
+        "topic": "Lagos real estate",
+        "count": 5
+      },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "South Africa",
+        "topic": "Lagos elections",
         "count": 1
       },
       {
-        "topic": "Nigeria",
+        "topic": "ADC party",
         "count": 1
       },
       {
-        "topic": "real estate",
-        "count": 1
-      },
-      {
-        "topic": "compensation claims",
+        "topic": "INEC",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 4,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 1,
-      "bullish": 3
+      "bearish": 2,
+      "bullish": 10,
+      "neutral": 3
     },
     "topTopics": [
+      {
+        "topic": "Lagos real estate",
+        "count": 5
+      },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "South Africa",
+        "topic": "Lagos elections",
         "count": 1
       },
       {
-        "topic": "Nigeria",
+        "topic": "ADC party",
         "count": 1
       },
       {
-        "topic": "real estate",
-        "count": 1
-      },
-      {
-        "topic": "compensation claims",
+        "topic": "INEC",
         "count": 1
       }
     ],

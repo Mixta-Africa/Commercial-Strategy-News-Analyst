@@ -1233,6 +1233,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-07-31",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bearish": 2,
+        "bullish": 10,
+        "neutral": 3
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 5
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "Lagos elections",
+          "count": 1
+        },
+        {
+          "topic": "ADC party",
+          "count": 1
+        },
+        {
+          "topic": "INEC",
+          "count": 1
+        }
+      ]
     }
   ]
 }

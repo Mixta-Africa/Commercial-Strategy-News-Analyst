@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-07-31T09:36:58.839Z",
-  "status": "healthy",
+  "timestamp": "2026-08-01T09:00:01.836Z",
+  "status": "failed",
   "sources": {
     "gnews": {
       "ok": false,
@@ -13,21 +13,21 @@
       "error": null
     },
     "googlenews": {
-      "ok": true,
-      "count": 128,
-      "error": null
+      "ok": false,
+      "count": 0,
+      "error": "HTTP 503"
     },
     "rss": {
-      "total": 43,
+      "total": 33,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 6,
+          "count": 3,
           "error": null
         },
         "Premium Times": {
           "ok": true,
-          "count": 1,
+          "count": 0,
           "error": null
         },
         "BusinessDay": {
@@ -37,12 +37,12 @@
         },
         "Nairametrics": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 3,
+          "count": 6,
           "error": null
         },
         "The Punch (Business)": {
@@ -61,9 +61,9 @@
           "error": null
         },
         "Guardian Nigeria (Property)": {
-          "ok": true,
-          "count": 10,
-          "error": null
+          "ok": false,
+          "count": 0,
+          "error": "HTTP 403"
         },
         "Vanguard (Homes & Property)": {
           "ok": true,
@@ -79,21 +79,22 @@
     }
   },
   "counts": {
-    "raw": 272,
-    "filtered": 15,
-    "analyzed": 15,
+    "raw": 104,
+    "filtered": 4,
+    "analyzed": 4,
     "aiFallbacks": 0
   },
   "synthesis": {
     "ok": true,
-    "themes": 3
+    "themes": 2
   },
   "email": {
-    "sent": true
+    "sent": false
   },
   "pipelineGate": false,
   "warnings": [
-    "Sources down: RSS Estate Intel (HTTP 403)",
-    "Note: GNews (0 articles) — known issue, excluded from down-count"
+    "Sources down: RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403)",
+    "Note: GNews (0 articles) — known issue, excluded from down-count",
+    "Digest email was NOT sent."
   ]
 }

@@ -1,92 +1,86 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 4,
     "sentimentBreakdown": {
-      "bearish": 2,
-      "bullish": 10,
-      "neutral": 3
+      "bullish": 4
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 5
-      },
-      {
-        "topic": "affordable housing",
-        "count": 2
-      },
-      {
-        "topic": "Lagos elections",
+        "topic": "public-private partnerships",
         "count": 1
       },
       {
-        "topic": "ADC party",
+        "topic": "housing crisis",
         "count": 1
       },
       {
-        "topic": "INEC",
+        "topic": "infrastructure development",
+        "count": 1
+      },
+      {
+        "topic": "smart city development",
+        "count": 1
+      },
+      {
+        "topic": "property-market",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 4,
     "sentimentBreakdown": {
-      "bearish": 2,
-      "bullish": 10,
-      "neutral": 3
+      "bullish": 4
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 5
-      },
-      {
-        "topic": "affordable housing",
-        "count": 2
-      },
-      {
-        "topic": "Lagos elections",
+        "topic": "public-private partnerships",
         "count": 1
       },
       {
-        "topic": "ADC party",
+        "topic": "housing crisis",
         "count": 1
       },
       {
-        "topic": "INEC",
+        "topic": "infrastructure development",
+        "count": 1
+      },
+      {
+        "topic": "smart city development",
+        "count": 1
+      },
+      {
+        "topic": "property-market",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 4,
     "sentimentBreakdown": {
-      "bearish": 2,
-      "bullish": 10,
-      "neutral": 3
+      "bullish": 4
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 5
-      },
-      {
-        "topic": "affordable housing",
-        "count": 2
-      },
-      {
-        "topic": "Lagos elections",
+        "topic": "public-private partnerships",
         "count": 1
       },
       {
-        "topic": "ADC party",
+        "topic": "housing crisis",
         "count": 1
       },
       {
-        "topic": "INEC",
+        "topic": "infrastructure development",
+        "count": 1
+      },
+      {
+        "topic": "smart city development",
+        "count": 1
+      },
+      {
+        "topic": "property-market",
         "count": 1
       }
     ],

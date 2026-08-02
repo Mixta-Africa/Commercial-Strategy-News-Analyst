@@ -1295,6 +1295,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-02",
+      "articleCount": 12,
+      "sentimentBreakdown": {
+        "neutral": 5,
+        "bullish": 6,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 6
+        },
+        {
+          "topic": "Fannie Mae",
+          "count": 2
+        },
+        {
+          "topic": "Freddie Mac",
+          "count": 2
+        },
+        {
+          "topic": "family disputes",
+          "count": 1
+        },
+        {
+          "topic": "property transactions",
+          "count": 1
+        }
+      ]
     }
   ]
 }

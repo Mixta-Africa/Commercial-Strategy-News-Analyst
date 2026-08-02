@@ -1,89 +1,95 @@
 {
   "7day": {
-    "articleCount": 4,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "bullish": 4
+      "neutral": 5,
+      "bullish": 6,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "public-private partnerships",
+        "topic": "Lagos real estate",
+        "count": 6
+      },
+      {
+        "topic": "Fannie Mae",
+        "count": 2
+      },
+      {
+        "topic": "Freddie Mac",
+        "count": 2
+      },
+      {
+        "topic": "family disputes",
         "count": 1
       },
       {
-        "topic": "housing crisis",
-        "count": 1
-      },
-      {
-        "topic": "infrastructure development",
-        "count": 1
-      },
-      {
-        "topic": "smart city development",
-        "count": 1
-      },
-      {
-        "topic": "property-market",
+        "topic": "property transactions",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 4,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "bullish": 4
+      "neutral": 5,
+      "bullish": 6,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "public-private partnerships",
+        "topic": "Lagos real estate",
+        "count": 6
+      },
+      {
+        "topic": "Fannie Mae",
+        "count": 2
+      },
+      {
+        "topic": "Freddie Mac",
+        "count": 2
+      },
+      {
+        "topic": "family disputes",
         "count": 1
       },
       {
-        "topic": "housing crisis",
-        "count": 1
-      },
-      {
-        "topic": "infrastructure development",
-        "count": 1
-      },
-      {
-        "topic": "smart city development",
-        "count": 1
-      },
-      {
-        "topic": "property-market",
+        "topic": "property transactions",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 4,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "bullish": 4
+      "neutral": 5,
+      "bullish": 6,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "public-private partnerships",
+        "topic": "Lagos real estate",
+        "count": 6
+      },
+      {
+        "topic": "Fannie Mae",
+        "count": 2
+      },
+      {
+        "topic": "Freddie Mac",
+        "count": 2
+      },
+      {
+        "topic": "family disputes",
         "count": 1
       },
       {
-        "topic": "housing crisis",
-        "count": 1
-      },
-      {
-        "topic": "infrastructure development",
-        "count": 1
-      },
-      {
-        "topic": "smart city development",
-        "count": 1
-      },
-      {
-        "topic": "property-market",
+        "topic": "property transactions",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   }
 }

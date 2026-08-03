@@ -1,95 +1,95 @@
 {
   "7day": {
-    "articleCount": 12,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 6,
-      "bearish": 1
+      "bearish": 5,
+      "bullish": 9,
+      "neutral": 1
     },
     "topTopics": [
       {
+        "topic": "affordable housing",
+        "count": 4
+      },
+      {
         "topic": "Lagos real estate",
-        "count": 6
+        "count": 4
       },
       {
-        "topic": "Fannie Mae",
+        "topic": "infrastructure development",
+        "count": 3
+      },
+      {
+        "topic": "mid-market",
         "count": 2
       },
       {
-        "topic": "Freddie Mac",
+        "topic": "building collapses",
         "count": 2
-      },
-      {
-        "topic": "family disputes",
-        "count": 1
-      },
-      {
-        "topic": "property transactions",
-        "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 12,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 6,
-      "bearish": 1
+      "bearish": 5,
+      "bullish": 9,
+      "neutral": 1
     },
     "topTopics": [
       {
+        "topic": "affordable housing",
+        "count": 4
+      },
+      {
         "topic": "Lagos real estate",
-        "count": 6
+        "count": 4
       },
       {
-        "topic": "Fannie Mae",
+        "topic": "infrastructure development",
+        "count": 3
+      },
+      {
+        "topic": "mid-market",
         "count": 2
       },
       {
-        "topic": "Freddie Mac",
+        "topic": "building collapses",
         "count": 2
-      },
-      {
-        "topic": "family disputes",
-        "count": 1
-      },
-      {
-        "topic": "property transactions",
-        "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 12,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 6,
-      "bearish": 1
+      "bearish": 5,
+      "bullish": 9,
+      "neutral": 1
     },
     "topTopics": [
       {
+        "topic": "affordable housing",
+        "count": 4
+      },
+      {
         "topic": "Lagos real estate",
-        "count": 6
+        "count": 4
       },
       {
-        "topic": "Fannie Mae",
+        "topic": "infrastructure development",
+        "count": 3
+      },
+      {
+        "topic": "mid-market",
         "count": 2
       },
       {
-        "topic": "Freddie Mac",
+        "topic": "building collapses",
         "count": 2
-      },
-      {
-        "topic": "family disputes",
-        "count": 1
-      },
-      {
-        "topic": "property transactions",
-        "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   }
 }

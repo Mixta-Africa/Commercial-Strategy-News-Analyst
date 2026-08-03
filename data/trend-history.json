@@ -1327,6 +1327,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-03",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bearish": 5,
+        "bullish": 9,
+        "neutral": 1
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 4
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 4
+        },
+        {
+          "topic": "infrastructure development",
+          "count": 3
+        },
+        {
+          "topic": "mid-market",
+          "count": 2
+        },
+        {
+          "topic": "building collapses",
+          "count": 2
+        }
+      ]
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-07-31T06:51:54.805Z",
-  "totalSnapshots": 16,
+  "lastUpdated": "2026-08-03T07:05:32.796Z",
+  "totalSnapshots": 17,
   "dailySnapshots": [
     {
       "date": "2026-07-01",
@@ -18463,6 +18463,622 @@
           "realtorName": "Not listed",
           "listingUrl": "https://jiji.ng/login.html",
           "scrapedAt": "2026-07-31T06:51:53.156Z"
+        }
+      ]
+    },
+    {
+      "date": "2026-08-03",
+      "scrapedAt": "2026-08-03T07:05:32.796Z",
+      "listingCount": 32,
+      "rawListings": [
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Residential",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Unspecified",
+          "corridorBucket": "Other Lagos",
+          "rawLocationText": "",
+          "title": "Nigeria Property Search",
+          "priceValue": null,
+          "priceFormatted": "N/A",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/2-bedroom-terraced-duplex-for-sale-ajah-lekki-phase-2-lagos-6PDGXZ",
+          "scrapedAt": "2026-08-03T06:57:12.513Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Residential",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Of The Elites",
+          "title": "For sale: Home Of The Elites",
+          "priceValue": 3000000,
+          "priceFormatted": "NGN 3.0M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/residential-land-for-sale-nmmaduka-university-enugu-suburb-enugu-area-2PDNVV",
+          "scrapedAt": "2026-08-03T06:57:19.443Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Duplex",
+          "bedrooms": 3,
+          "bedroomLabel": "3 Bedrooms",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Bedroom Terrace Duplex",
+          "title": "For sale: Exquisite 3 Bedroom Terrace Duplex",
+          "priceValue": 195000000,
+          "priceFormatted": "NGN 195.0M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/3-bedroom-terraced-duplex-for-sale-ikate-lekki-phase-1-lagos-2PDGGV",
+          "scrapedAt": "2026-08-03T06:57:25.092Z"
+        },
+        {
+          "source": "PropertyPro",
+          "propertyType": "Apartment / Flat",
+          "bedrooms": 1,
+          "bedroomLabel": "1 Bedroom",
+          "location": "Sangotedo",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Sangotedo, Ajah Lagos",
+          "title": "Well Built 1 Bedroom Apartment",
+          "priceValue": 30000000,
+          "priceFormatted": "NGN 30.0M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://propertypro.ng/property/1-bedroom-house-for-sale-sangotedo-ajah-lagos-1PDLV",
+          "scrapedAt": "2026-08-03T06:57:29.464Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Residential",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Unspecified",
+          "corridorBucket": "Other Lagos",
+          "rawLocationText": "",
+          "title": "For sale: *free Fencing For The First 60buyers The Aviara Residence – Aiyetoro*",
+          "priceValue": 35000000,
+          "priceFormatted": "NGN 35.0M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/residential-land-for-sale-aiyetoro-ibejulekki-ibeju-lekki-lagos-7PDGRY",
+          "scrapedAt": "2026-08-03T06:57:41.555Z"
+        },
+        {
+          "source": "PropertyPro",
+          "propertyType": "Apartment / Flat",
+          "bedrooms": 1,
+          "bedroomLabel": "1 Bedroom",
+          "location": "Sangotedo",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Sangotedo, Ajah Lagos",
+          "title": "Mini Flat Available For Sale",
+          "priceValue": 27000000,
+          "priceFormatted": "NGN 27.0M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://propertypro.ng/property/1-bedroom-flat-apartment-for-sale-sangotedo-sangotedo-ajah-lagos-7PXXB",
+          "scrapedAt": "2026-08-03T06:57:46.538Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Residential",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Layout",
+          "title": "For sale: Glory Layout",
+          "priceValue": 1500000,
+          "priceFormatted": "NGN 1.5M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/residential-land-for-sale-agbogazi-enugu-suburb-enugu-area-5PDNVT",
+          "scrapedAt": "2026-08-03T06:58:00.354Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Duplex",
+          "bedrooms": 4,
+          "bedroomLabel": "4 Bedrooms",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Bedroom Semi Detached Duplex With Bq",
+          "title": "For sale: Tastefully 4 Bedroom Semi Detached Duplex With Bq",
+          "priceValue": 350000000,
+          "priceFormatted": "NGN 350.0M",
+          "amenities": [
+            "Estate",
+            "Boys' Quarters"
+          ],
+          "amenitiesText": "Estate, Boys' Quarters",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/4-bedroom-semi-detached-duplex-for-sale-osapa-london-lekki-lagos-6PDHKC",
+          "scrapedAt": "2026-08-03T06:58:03.003Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Residential",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Estate Enugu",
+          "title": "For sale: Maranatha Estate Enugu",
+          "priceValue": 2200000,
+          "priceFormatted": "NGN 2.2M",
+          "amenities": [
+            "Good Roads",
+            "Estate"
+          ],
+          "amenitiesText": "Good Roads, Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/residential-land-for-sale-along-enugu-onitsha-express-way-enugu-suburb-enugu-area-3PDNWD",
+          "scrapedAt": "2026-08-03T06:58:05.506Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Residential",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Of Light Estate",
+          "title": "For sale: City Of Light Estate",
+          "priceValue": 3500000,
+          "priceFormatted": "NGN 3.5M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/residential-land-for-sale-emene-enugu-suburb-enugu-area-7PDNTU",
+          "scrapedAt": "2026-08-03T06:58:08.541Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Land / Plot",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Plots Of Land",
+          "title": "For sale: Affordable Plots Of Land",
+          "priceValue": 3500000,
+          "priceFormatted": "NGN 3.5M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/residential-land-for-sale-treasure-park-estate-close-to-location-akanu-ibiam-airport-caritas-university-nnpc-depot-enugu-suburb-enugu-area-8PCXJT",
+          "scrapedAt": "2026-08-03T06:58:10.933Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Residential",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Estate Phase Ii",
+          "title": "For sale: Transit Estate Phase Ii",
+          "priceValue": 4000000,
+          "priceFormatted": "NGN 4.0M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/mixed-use-land-for-sale-9th-mile-enugu-suburb-enugu-area-7PDNVU",
+          "scrapedAt": "2026-08-03T06:58:13.371Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Land / Plot",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Mile Genuine Land",
+          "title": "For sale: Enugu 9th Mile Genuine Land",
+          "priceValue": 4500000,
+          "priceFormatted": "NGN 4.5M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/residential-land-for-sale-enugu-area-2PDCQB",
+          "scrapedAt": "2026-08-03T06:58:15.717Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Land / Plot",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "For Sale In Enugu Obinze Enugu",
+          "title": "For sale: Land For Sale In Enugu Obinze Enugu",
+          "priceValue": 3500000,
+          "priceFormatted": "NGN 3.5M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/residential-land-for-sale-obinze-estate-ngwogo-nike-enugu-enugu-area-9PDDWJ",
+          "scrapedAt": "2026-08-03T06:58:18.616Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Duplex",
+          "bedrooms": 4,
+          "bedroomLabel": "4 Bedrooms",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Bedroom Terrace Duplex",
+          "title": "For sale: Exquisite 4 Bedroom Terrace Duplex",
+          "priceValue": 260000000,
+          "priceFormatted": "NGN 260.0M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/4-bedroom-terraced-duplex-for-sale-ikate-lekki-phase-1-lagos-0PDFRH",
+          "scrapedAt": "2026-08-03T06:58:43.026Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Duplex",
+          "bedrooms": 3,
+          "bedroomLabel": "3 Bedrooms",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Bedroom Duplex",
+          "title": "For sale: Furnished 3 Bedroom Duplex",
+          "priceValue": 250000000,
+          "priceFormatted": "NGN 250.0M",
+          "amenities": [
+            "Estate",
+            "Furnished"
+          ],
+          "amenitiesText": "Estate, Furnished",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/3-bedroom-terraced-duplex-for-sale-salem-ikate-ikate-elegushi-lekki-lagos-2PDLWE",
+          "scrapedAt": "2026-08-03T06:58:48.817Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Duplex",
+          "bedrooms": 3,
+          "bedroomLabel": "3 Bedrooms",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Bedroom Terrace Duplex In Ikate",
+          "title": "For sale: 3 Bedroom Terrace Duplex In Ikate",
+          "priceValue": 250000000,
+          "priceFormatted": "NGN 250.0M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/3-bedroom-terraced-duplex-for-sale-ikate-elegushi-lekki-lagos-4PDHNA",
+          "scrapedAt": "2026-08-03T06:58:51.150Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Duplex",
+          "bedrooms": 4,
+          "bedroomLabel": "4 Bedrooms",
+          "location": "Unspecified",
+          "corridorBucket": "Other Lagos",
+          "rawLocationText": "",
+          "title": "For sale: A Tastefully Designed 3& 4 Bedroom Terraced Duplex.",
+          "priceValue": 220000000,
+          "priceFormatted": "NGN 220.0M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/3-bedroom-terraced-duplex-for-sale-ikate-lekki-lagos-7PDCNX",
+          "scrapedAt": "2026-08-03T06:58:54.822Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Duplex",
+          "bedrooms": 4,
+          "bedroomLabel": "4 Bedrooms",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Bedroom Terrace Duplex With Bq",
+          "title": "For sale: 4 Bedroom Terrace Duplex With Bq",
+          "priceValue": 250000000,
+          "priceFormatted": "NGN 250.0M",
+          "amenities": [
+            "Estate",
+            "Boys' Quarters"
+          ],
+          "amenitiesText": "Estate, Boys' Quarters",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/4-bedroom-terraced-duplex-for-sale-ikate-lekki-lagos-lekki-phase-1-lagos-5PCVEN",
+          "scrapedAt": "2026-08-03T06:58:58.037Z"
+        },
+        {
+          "source": "PrivateProperty",
+          "propertyType": "Duplex",
+          "bedrooms": 3,
+          "bedroomLabel": "3 Bedrooms",
+          "location": "Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Bedroom Duplex",
+          "title": "For sale: Luxury 3 Bedroom Duplex",
+          "priceValue": 200000000,
+          "priceFormatted": "NGN 200.0M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://privateproperty.ng/listings/3-bedroom-terraced-duplex-for-sale-ikate-elegushi-lekki-lagos-2PDMJE",
+          "scrapedAt": "2026-08-03T06:59:01.414Z"
+        },
+        {
+          "source": "PropertyPro",
+          "propertyType": "Apartment / Flat",
+          "bedrooms": 1,
+          "bedroomLabel": "1 Bedroom",
+          "location": "Ajah",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Abraham adesanya estate, Ajah Lagos",
+          "title": "1 Bedroom Apartment Available For Sale At Urban Prime 4 Lavadia",
+          "priceValue": 18000000,
+          "priceFormatted": "NGN 18.0M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://propertypro.ng/property/1-bedroom-house-for-sale-abraham-adesanya-estate-ajah-lagos-0DUGW",
+          "scrapedAt": "2026-08-03T06:59:39.654Z"
+        },
+        {
+          "source": "Jiji",
+          "propertyType": "Apartment / Flat",
+          "bedrooms": 1,
+          "bedroomLabel": "1 Bedroom",
+          "location": "Ibeju-Lekki",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "1bdrm Apartment in Ajah, Off Lekki-Epe Expressway for sale",
+          "title": "1bdrm Apartment in Ajah, Off Lekki-Epe Expressway for sale",
+          "priceValue": 45000000,
+          "priceFormatted": "NGN 45.0M",
+          "amenities": [
+            "Good Roads",
+            "Parking",
+            "Smart Home",
+            "Fitted Kitchen"
+          ],
+          "amenitiesText": "Good Roads, Parking, Smart Home, Fitted Kitchen",
+          "realtorName": "Not listed",
+          "listingUrl": "https://jiji.ng/off-lekki-epe-expressway/houses-apartments-for-sale/1bdrm-apartment-in-ajah-off-lekki-epe-expressway-for-sale-2to9tvJ13nFtRWA5MsCS73Hj.html",
+          "scrapedAt": "2026-08-03T07:04:15.987Z"
+        },
+        {
+          "source": "Jiji",
+          "propertyType": "Residential",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Unspecified",
+          "corridorBucket": "Other Lagos",
+          "rawLocationText": "",
+          "title": "Jiji.ng in Nigeria: Buy & Sell ▷ Online Marketplace",
+          "priceValue": null,
+          "priceFormatted": "N/A",
+          "amenities": [],
+          "amenitiesText": "",
+          "realtorName": "Not listed",
+          "listingUrl": "https://jiji.ng/login.html",
+          "scrapedAt": "2026-08-03T07:04:21.689Z"
+        },
+        {
+          "source": "Jiji",
+          "propertyType": "Apartment / Flat",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Sangotedo",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "4422 results for Flat for sale  in Nigeria",
+          "title": "Flat for sale in Nigeria ▷ Prices in August 2026 on Jiji.ng",
+          "priceValue": null,
+          "priceFormatted": "N/A",
+          "amenities": [],
+          "amenitiesText": "",
+          "realtorName": "Not listed",
+          "listingUrl": "https://jiji.ng/sangotedo/houses-apartments-for-sale/1bdrm-apartment-in-sangotedo-for-sale-BeeWMSgpNMzwlg6hgzlMAlYX.html",
+          "scrapedAt": "2026-08-03T07:04:33.479Z"
+        },
+        {
+          "source": "Jiji",
+          "propertyType": "Apartment / Flat",
+          "bedrooms": 10,
+          "bedroomLabel": "5+ Bedrooms",
+          "location": "Sangotedo",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "10bdrm Block of Flats in Gwagwalada for sale",
+          "title": "10bdrm Block of Flats in Gwagwalada for sale",
+          "priceValue": 80000000,
+          "priceFormatted": "NGN 80.0M",
+          "amenities": [
+            "24hr Security"
+          ],
+          "amenitiesText": "24hr Security",
+          "realtorName": "Not listed",
+          "listingUrl": "https://jiji.ng/gwagwalada/houses-apartments-for-sale/10bdrm-block-of-flats-in-gwagwalada-for-sale-fRUQchvG7tzGNNyCL6NaBzI0.html",
+          "scrapedAt": "2026-08-03T07:04:37.245Z"
+        },
+        {
+          "source": "Jiji",
+          "propertyType": "Detached House",
+          "bedrooms": 2,
+          "bedroomLabel": "2 Bedrooms",
+          "location": "Sangotedo",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Furnished 2bdrm House in Guduwi, Lokogoma for sale",
+          "title": "Furnished 2bdrm House in Guduwi, Lokogoma for sale",
+          "priceValue": 11000000,
+          "priceFormatted": "NGN 11.0M",
+          "amenities": [
+            "Estate",
+            "Furnished"
+          ],
+          "amenitiesText": "Estate, Furnished",
+          "realtorName": "Not listed",
+          "listingUrl": "https://jiji.ng/lokogoma/houses-apartments-for-sale/furnished-2bdrm-house-in-guduwi-lokogoma-for-sale-ASpqRlhoziZSpGg2QeLkzjAJ.html",
+          "scrapedAt": "2026-08-03T07:04:40.882Z"
+        },
+        {
+          "source": "Jiji",
+          "propertyType": "Bungalow",
+          "bedrooms": 5,
+          "bedroomLabel": "5+ Bedrooms",
+          "location": "Sangotedo",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Furnished 5bdrm Bungalow in Uyo for sale",
+          "title": "Furnished 5bdrm Bungalow in Uyo for sale",
+          "priceValue": 95000000,
+          "priceFormatted": "NGN 95.0M",
+          "amenities": [
+            "Furnished"
+          ],
+          "amenitiesText": "Furnished",
+          "realtorName": "Not listed",
+          "listingUrl": "https://jiji.ng/uyo/houses-apartments-for-sale/furnished-5bdrm-bungalow-in-uyo-for-sale-dpqxfSWDVndkSFoDINJbeKek.html",
+          "scrapedAt": "2026-08-03T07:04:44.222Z"
+        },
+        {
+          "source": "Jiji",
+          "propertyType": "Bungalow",
+          "bedrooms": 3,
+          "bedroomLabel": "3 Bedrooms",
+          "location": "Sangotedo",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "3bdrm Bungalow in Mbikpong Estate, Uyo for sale",
+          "title": "3bdrm Bungalow in Mbikpong Estate, Uyo for sale",
+          "priceValue": 35000000,
+          "priceFormatted": "NGN 35.0M",
+          "amenities": [
+            "Estate"
+          ],
+          "amenitiesText": "Estate",
+          "realtorName": "Not listed",
+          "listingUrl": "https://jiji.ng/uyo/houses-apartments-for-sale/3bdrm-bungalow-in-mbikpong-estate-uyo-for-sale-xoPLpdzYN5HHzYwL9mxCSwla.html",
+          "scrapedAt": "2026-08-03T07:04:48.429Z"
+        },
+        {
+          "source": "Jiji",
+          "propertyType": "Apartment / Flat",
+          "bedrooms": 3,
+          "bedroomLabel": "3 Bedrooms",
+          "location": "Sangotedo",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "3bdrm Block of Flats in Fha Guzape for sale",
+          "title": "3bdrm Block of Flats in Fha Guzape for sale",
+          "priceValue": 160000000,
+          "priceFormatted": "NGN 160.0M",
+          "amenities": [
+            "Good Roads",
+            "Boys' Quarters"
+          ],
+          "amenitiesText": "Good Roads, Boys' Quarters",
+          "realtorName": "Not listed",
+          "listingUrl": "https://jiji.ng/guzape/houses-apartments-for-sale/3bdrm-block-of-flats-in-fha-guzape-for-sale-q0lPlikSpTd2vXuRDlX6edUY.html",
+          "scrapedAt": "2026-08-03T07:04:54.478Z"
+        },
+        {
+          "source": "Jiji",
+          "propertyType": "Apartment / Flat",
+          "bedrooms": 4,
+          "bedroomLabel": "4 Bedrooms",
+          "location": "Sangotedo",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "4bdrm Block of Flats in Gwagwalada for sale",
+          "title": "4bdrm Block of Flats in Gwagwalada for sale",
+          "priceValue": 80000000,
+          "priceFormatted": "NGN 80.0M",
+          "amenities": [],
+          "amenitiesText": "",
+          "realtorName": "Not listed",
+          "listingUrl": "https://jiji.ng/gwagwalada/houses-apartments-for-sale/4bdrm-block-of-flats-in-gwagwalada-for-sale-e0RT1aylffbLcvmbic03ccVq.html",
+          "scrapedAt": "2026-08-03T07:04:59.053Z"
+        },
+        {
+          "source": "Jiji",
+          "propertyType": "Apartment / Flat",
+          "bedrooms": 3,
+          "bedroomLabel": "3 Bedrooms",
+          "location": "Sangotedo",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "3bdrm Block of Flats in Gwagwalada for sale",
+          "title": "3bdrm Block of Flats in Gwagwalada for sale",
+          "priceValue": 55000000,
+          "priceFormatted": "NGN 55.0M",
+          "amenities": [],
+          "amenitiesText": "",
+          "realtorName": "Not listed",
+          "listingUrl": "https://jiji.ng/gwagwalada/houses-apartments-for-sale/3bdrm-block-of-flats-in-gwagwalada-for-sale-qfr0FagOo1hqO25guQE1w0Zk.html",
+          "scrapedAt": "2026-08-03T07:05:01.704Z"
+        },
+        {
+          "source": "Jiji",
+          "propertyType": "Duplex",
+          "bedrooms": null,
+          "bedroomLabel": "Unspecified",
+          "location": "Sangotedo",
+          "corridorBucket": "Ibeju-Lekki Corridor",
+          "rawLocationText": "Furnished 12bdrm Duplex in Ikotun, Alimosho for sale",
+          "title": "Furnished 12bdrm Duplex in Ikotun, Alimosho for sale",
+          "priceValue": 160000000,
+          "priceFormatted": "NGN 160.0M",
+          "amenities": [
+            "Furnished"
+          ],
+          "amenitiesText": "Furnished",
+          "realtorName": "Not listed",
+          "listingUrl": "https://jiji.ng/alimosho/houses-apartments-for-sale/furnished-12bdrm-duplex-in-ikotun-alimosho-for-sale-gfUtVCQpY1tDZGVFodQtRMAC.html",
+          "scrapedAt": "2026-08-03T07:05:05.392Z"
         }
       ]
     }

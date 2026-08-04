@@ -1,13 +1,6 @@
 {
   "runs": [
     {
-      "timestamp": "2026-06-23T10:28:05.717Z",
-      "status": "degraded",
-      "filtered": 2,
-      "themes": 2,
-      "warnings": 2
-    },
-    {
       "timestamp": "2026-06-23T11:04:58.119Z",
       "status": "failed",
       "filtered": 0,
@@ -418,6 +411,13 @@
       "status": "healthy",
       "filtered": 15,
       "themes": 4,
+      "warnings": 2
+    },
+    {
+      "timestamp": "2026-08-04T09:32:43.125Z",
+      "status": "healthy",
+      "filtered": 14,
+      "themes": 5,
       "warnings": 2
     }
   ]

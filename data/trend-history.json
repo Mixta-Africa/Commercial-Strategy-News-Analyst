@@ -1359,6 +1359,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-08-04",
+      "articleCount": 14,
+      "sentimentBreakdown": {
+        "bullish": 7,
+        "bearish": 5,
+        "neutral": 2
+      },
+      "averageSentiment": "bearish",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 4
+        },
+        {
+          "topic": "housing deficit",
+          "count": 3
+        },
+        {
+          "topic": "affordability",
+          "count": 2
+        },
+        {
+          "topic": "real estate market",
+          "count": 2
+        },
+        {
+          "topic": "Lagos",
+          "count": 2
+        }
+      ]
     }
   ]
 }

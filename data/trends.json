@@ -1,10 +1,10 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 14,
     "sentimentBreakdown": {
+      "bullish": 7,
       "bearish": 5,
-      "bullish": 9,
-      "neutral": 1
+      "neutral": 2
     },
     "topTopics": [
       {
@@ -12,30 +12,30 @@
         "count": 4
       },
       {
-        "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "infrastructure development",
+        "topic": "housing deficit",
         "count": 3
       },
       {
-        "topic": "mid-market",
+        "topic": "affordability",
         "count": 2
       },
       {
-        "topic": "building collapses",
+        "topic": "real estate market",
+        "count": 2
+      },
+      {
+        "topic": "Lagos",
         "count": 2
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "bearish"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 14,
     "sentimentBreakdown": {
+      "bullish": 7,
       "bearish": 5,
-      "bullish": 9,
-      "neutral": 1
+      "neutral": 2
     },
     "topTopics": [
       {
@@ -43,30 +43,30 @@
         "count": 4
       },
       {
-        "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "infrastructure development",
+        "topic": "housing deficit",
         "count": 3
       },
       {
-        "topic": "mid-market",
+        "topic": "affordability",
         "count": 2
       },
       {
-        "topic": "building collapses",
+        "topic": "real estate market",
+        "count": 2
+      },
+      {
+        "topic": "Lagos",
         "count": 2
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "bearish"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 14,
     "sentimentBreakdown": {
+      "bullish": 7,
       "bearish": 5,
-      "bullish": 9,
-      "neutral": 1
+      "neutral": 2
     },
     "topTopics": [
       {
@@ -74,22 +74,22 @@
         "count": 4
       },
       {
-        "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "infrastructure development",
+        "topic": "housing deficit",
         "count": 3
       },
       {
-        "topic": "mid-market",
+        "topic": "affordability",
         "count": 2
       },
       {
-        "topic": "building collapses",
+        "topic": "real estate market",
+        "count": 2
+      },
+      {
+        "topic": "Lagos",
         "count": 2
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "bearish"
   }
 }

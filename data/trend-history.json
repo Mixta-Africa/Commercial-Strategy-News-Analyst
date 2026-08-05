@@ -1394,22 +1394,30 @@
     },
     {
       "date": "2026-08-05",
-      "articleCount": 1,
+      "articleCount": 2,
       "sentimentBreakdown": {
-        "bearish": 1
+        "bullish": 2
       },
-      "averageSentiment": "bearish",
+      "averageSentiment": "bullish",
       "topTopics": [
         {
-          "topic": "security",
+          "topic": "smart homes",
           "count": 1
         },
         {
-          "topic": "investor-confidence",
+          "topic": "connected living",
           "count": 1
         },
         {
-          "topic": "nigeria-real-estate",
+          "topic": "digital adoption",
+          "count": 1
+        },
+        {
+          "topic": "premium residential developments",
+          "count": 1
+        },
+        {
+          "topic": "affordable housing",
           "count": 1
         }
       ]

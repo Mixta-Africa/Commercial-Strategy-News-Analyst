@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-08-05T08:09:40.350Z",
-  "status": "failed",
+  "timestamp": "2026-08-05T08:23:13.971Z",
+  "status": "healthy",
   "sources": {
     "gnews": {
       "ok": false,
@@ -79,22 +79,21 @@
     }
   },
   "counts": {
-    "raw": 275,
-    "filtered": 15,
-    "analyzed": 15,
+    "raw": 225,
+    "filtered": 1,
+    "analyzed": 1,
     "aiFallbacks": 0
   },
   "synthesis": {
     "ok": true,
-    "themes": 5
+    "themes": 1
   },
   "email": {
-    "sent": false
+    "sent": true
   },
   "pipelineGate": false,
   "warnings": [
     "Sources down: RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403)",
-    "Note: GNews (0 articles) — known issue, excluded from down-count",
-    "Digest email was NOT sent."
+    "Note: GNews (0 articles) — known issue, excluded from down-count"
   ]
 }

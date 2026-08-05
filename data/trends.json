@@ -1,95 +1,95 @@
 {
   "7day": {
-    "articleCount": 14,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "bearish": 5,
-      "neutral": 2
+      "neutral": 4,
+      "bullish": 10,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
+        "topic": "Nigeria",
         "count": 4
       },
       {
-        "topic": "housing deficit",
+        "topic": "luxury real estate",
         "count": 3
       },
       {
-        "topic": "affordability",
+        "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "real estate market",
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "Lagos",
+        "topic": "Lagos market",
         "count": 2
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 14,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "bearish": 5,
-      "neutral": 2
+      "neutral": 4,
+      "bullish": 10,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
+        "topic": "Nigeria",
         "count": 4
       },
       {
-        "topic": "housing deficit",
+        "topic": "luxury real estate",
         "count": 3
       },
       {
-        "topic": "affordability",
+        "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "real estate market",
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "Lagos",
+        "topic": "Lagos market",
         "count": 2
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 14,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "bearish": 5,
-      "neutral": 2
+      "neutral": 4,
+      "bullish": 10,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
+        "topic": "Nigeria",
         "count": 4
       },
       {
-        "topic": "housing deficit",
+        "topic": "luxury real estate",
         "count": 3
       },
       {
-        "topic": "affordability",
+        "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "real estate market",
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "Lagos",
+        "topic": "Lagos market",
         "count": 2
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "bullish"
   }
 }

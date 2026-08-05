@@ -1,14 +1,15 @@
 {
-  "updatedAt": "2026-08-05T08:03:41.932Z",
+  "updatedAt": "2026-08-05T08:09:40.350Z",
   "totalEntries": 14,
   "entries": [
     {
       "date": "2026-08-05",
-      "generatedAt": "2026-08-05T08:03:41.932Z",
-      "count": 13,
+      "generatedAt": "2026-08-05T08:09:40.350Z",
+      "count": 12,
       "categories": {
-        "proptech": 11,
-        "sustainable": 1,
+        "sustainable": 2,
+        "finance": 1,
+        "proptech": 8,
         "ai": 1
       },
       "file": "archive/innovation-2026-08-05.json"

@@ -1391,6 +1391,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-08-05",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 4,
+        "bullish": 10,
+        "bearish": 1
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Nigeria",
+          "count": 4
+        },
+        {
+          "topic": "luxury real estate",
+          "count": 3
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 2
+        },
+        {
+          "topic": "Lagos market",
+          "count": 2
+        }
+      ]
     }
   ]
 }

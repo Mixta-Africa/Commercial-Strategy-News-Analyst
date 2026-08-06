@@ -1,92 +1,89 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 5,
     "sentimentBreakdown": {
-      "bullish": 10,
-      "bearish": 4,
+      "bullish": 4,
       "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "security",
         "count": 2
       },
       {
-        "topic": "international arbitration",
-        "count": 2
+        "topic": "Nigerian real estate",
+        "count": 1
       },
       {
-        "topic": "investment",
-        "count": 2
+        "topic": "innovative projects",
+        "count": 1
       },
       {
-        "topic": "commercial property",
+        "topic": "national governance",
+        "count": 1
+      },
+      {
+        "topic": "Lekki Port",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 5,
     "sentimentBreakdown": {
-      "bullish": 10,
-      "bearish": 4,
+      "bullish": 4,
       "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "security",
         "count": 2
       },
       {
-        "topic": "international arbitration",
-        "count": 2
+        "topic": "Nigerian real estate",
+        "count": 1
       },
       {
-        "topic": "investment",
-        "count": 2
+        "topic": "innovative projects",
+        "count": 1
       },
       {
-        "topic": "commercial property",
+        "topic": "national governance",
+        "count": 1
+      },
+      {
+        "topic": "Lekki Port",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 5,
     "sentimentBreakdown": {
-      "bullish": 10,
-      "bearish": 4,
+      "bullish": 4,
       "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "security",
         "count": 2
       },
       {
-        "topic": "international arbitration",
-        "count": 2
+        "topic": "Nigerian real estate",
+        "count": 1
       },
       {
-        "topic": "investment",
-        "count": 2
+        "topic": "innovative projects",
+        "count": 1
       },
       {
-        "topic": "commercial property",
+        "topic": "national governance",
+        "count": 1
+      },
+      {
+        "topic": "Lekki Port",
         "count": 1
       }
     ],

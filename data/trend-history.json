@@ -1421,6 +1421,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-06",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bullish": 10,
+        "bearish": 4,
+        "neutral": 1
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 4
+        },
+        {
+          "topic": "security",
+          "count": 2
+        },
+        {
+          "topic": "international arbitration",
+          "count": 2
+        },
+        {
+          "topic": "investment",
+          "count": 2
+        },
+        {
+          "topic": "commercial property",
+          "count": 1
+        }
+      ]
     }
   ]
 }

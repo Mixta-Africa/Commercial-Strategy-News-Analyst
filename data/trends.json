@@ -1,86 +1,92 @@
 {
   "7day": {
-    "articleCount": 2,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 2
+      "bullish": 10,
+      "bearish": 4,
+      "neutral": 1
     },
     "topTopics": [
       {
-        "topic": "smart homes",
-        "count": 1
+        "topic": "Lagos real estate",
+        "count": 4
       },
       {
-        "topic": "connected living",
-        "count": 1
+        "topic": "security",
+        "count": 2
       },
       {
-        "topic": "digital adoption",
-        "count": 1
+        "topic": "international arbitration",
+        "count": 2
       },
       {
-        "topic": "premium residential developments",
-        "count": 1
+        "topic": "investment",
+        "count": 2
       },
       {
-        "topic": "affordable housing",
+        "topic": "commercial property",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 2,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 2
+      "bullish": 10,
+      "bearish": 4,
+      "neutral": 1
     },
     "topTopics": [
       {
-        "topic": "smart homes",
-        "count": 1
+        "topic": "Lagos real estate",
+        "count": 4
       },
       {
-        "topic": "connected living",
-        "count": 1
+        "topic": "security",
+        "count": 2
       },
       {
-        "topic": "digital adoption",
-        "count": 1
+        "topic": "international arbitration",
+        "count": 2
       },
       {
-        "topic": "premium residential developments",
-        "count": 1
+        "topic": "investment",
+        "count": 2
       },
       {
-        "topic": "affordable housing",
+        "topic": "commercial property",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 2,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 2
+      "bullish": 10,
+      "bearish": 4,
+      "neutral": 1
     },
     "topTopics": [
       {
-        "topic": "smart homes",
-        "count": 1
+        "topic": "Lagos real estate",
+        "count": 4
       },
       {
-        "topic": "connected living",
-        "count": 1
+        "topic": "security",
+        "count": 2
       },
       {
-        "topic": "digital adoption",
-        "count": 1
+        "topic": "international arbitration",
+        "count": 2
       },
       {
-        "topic": "premium residential developments",
-        "count": 1
+        "topic": "investment",
+        "count": 2
       },
       {
-        "topic": "affordable housing",
+        "topic": "commercial property",
         "count": 1
       }
     ],

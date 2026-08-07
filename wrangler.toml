@@ -1,0 +1,6 @@
+name = "commercial-strategy-news-analyst"
+compatibility_date = "2026-08-07"
+
+[assets]
+directory = "."
+not_found_handling = "single-page-application"

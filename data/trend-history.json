@@ -1452,6 +1452,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-07",
+      "articleCount": 13,
+      "sentimentBreakdown": {
+        "bullish": 4,
+        "neutral": 7,
+        "bearish": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 4
+        },
+        {
+          "topic": "Lagos market",
+          "count": 3
+        },
+        {
+          "topic": "Lekki Port",
+          "count": 2
+        },
+        {
+          "topic": "Nigeria",
+          "count": 2
+        },
+        {
+          "topic": "Mediterranean Shipping Company",
+          "count": 1
+        }
+      ]
     }
   ]
 }

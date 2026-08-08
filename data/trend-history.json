@@ -1484,6 +1484,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-08",
+      "articleCount": 9,
+      "sentimentBreakdown": {
+        "neutral": 5,
+        "bullish": 4
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 4
+        },
+        {
+          "topic": "investor confidence",
+          "count": 2
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "industrial space",
+          "count": 1
+        },
+        {
+          "topic": "land dispute",
+          "count": 1
+        }
+      ]
     }
   ]
 }

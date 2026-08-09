@@ -1,89 +1,92 @@
 {
   "7day": {
-    "articleCount": 9,
+    "articleCount": 6,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 4
+      "bullish": 3,
+      "neutral": 2,
+      "bearish": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "investor confidence",
         "count": 2
       },
       {
-        "topic": "affordable housing",
-        "count": 2
-      },
-      {
-        "topic": "industrial space",
+        "topic": "diaspora mortgage",
         "count": 1
       },
       {
-        "topic": "land dispute",
+        "topic": "housing development",
+        "count": 1
+      },
+      {
+        "topic": "national economic growth",
+        "count": 1
+      },
+      {
+        "topic": "estate administration",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 9,
+    "articleCount": 6,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 4
+      "bullish": 3,
+      "neutral": 2,
+      "bearish": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "investor confidence",
         "count": 2
       },
       {
-        "topic": "affordable housing",
-        "count": 2
-      },
-      {
-        "topic": "industrial space",
+        "topic": "diaspora mortgage",
         "count": 1
       },
       {
-        "topic": "land dispute",
+        "topic": "housing development",
+        "count": 1
+      },
+      {
+        "topic": "national economic growth",
+        "count": 1
+      },
+      {
+        "topic": "estate administration",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 9,
+    "articleCount": 6,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 4
+      "bullish": 3,
+      "neutral": 2,
+      "bearish": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "investor confidence",
         "count": 2
       },
       {
-        "topic": "affordable housing",
-        "count": 2
-      },
-      {
-        "topic": "industrial space",
+        "topic": "diaspora mortgage",
         "count": 1
       },
       {
-        "topic": "land dispute",
+        "topic": "housing development",
+        "count": 1
+      },
+      {
+        "topic": "national economic growth",
+        "count": 1
+      },
+      {
+        "topic": "estate administration",
         "count": 1
       }
     ],

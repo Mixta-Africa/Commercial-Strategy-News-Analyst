@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-08-08T07:39:52.223Z",
+  "timestamp": "2026-08-09T07:44:15.995Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -9,16 +9,16 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 70,
+      "count": 71,
       "error": null
     },
     "googlenews": {
       "ok": true,
-      "count": 128,
+      "count": 127,
       "error": null
     },
     "rss": {
-      "total": 30,
+      "total": 25,
       "feeds": {
         "ThisDay": {
           "ok": true,
@@ -26,13 +26,13 @@
           "error": null
         },
         "Premium Times": {
-          "ok": false,
+          "ok": true,
           "count": 0,
-          "error": "XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &"
+          "error": null
         },
         "BusinessDay": {
           "ok": true,
-          "count": 1,
+          "count": 0,
           "error": null
         },
         "Nairametrics": {
@@ -42,7 +42,7 @@
         },
         "Daily Trust": {
           "ok": true,
-          "count": 5,
+          "count": 1,
           "error": null
         },
         "The Punch (Business)": {
@@ -79,9 +79,9 @@
     }
   },
   "counts": {
-    "raw": 228,
-    "filtered": 9,
-    "analyzed": 9,
+    "raw": 223,
+    "filtered": 6,
+    "analyzed": 6,
     "aiFallbacks": 0
   },
   "synthesis": {
@@ -93,7 +93,7 @@
   },
   "pipelineGate": false,
   "warnings": [
-    "Sources down: RSS Premium Times (XML Parsing Malformed Payload: Invalid character in entity name\nLine: 0\nColumn: 640\nChar: &); RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403)",
+    "Sources down: RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403)",
     "Note: GNews (0 articles) — known issue, excluded from down-count"
   ]
 }

@@ -1515,6 +1515,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-09",
+      "articleCount": 6,
+      "sentimentBreakdown": {
+        "bullish": 3,
+        "neutral": 2,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 2
+        },
+        {
+          "topic": "diaspora mortgage",
+          "count": 1
+        },
+        {
+          "topic": "housing development",
+          "count": 1
+        },
+        {
+          "topic": "national economic growth",
+          "count": 1
+        },
+        {
+          "topic": "estate administration",
+          "count": 1
+        }
+      ]
     }
   ]
 }

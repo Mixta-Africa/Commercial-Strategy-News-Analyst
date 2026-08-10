@@ -1,15 +1,21 @@
 {
   "themes": [
     {
-      "label": "Rising Rental Costs",
+      "label": "Government Policies and Affordable Housing",
       "count": 1,
       "firstSeen": "2026-08-10",
       "lastSeen": "2026-08-10"
     },
     {
-      "label": "Diaspora Mortgage Financing",
+      "label": "Rising Rental Prices on Lagos Island",
+      "count": 1,
+      "firstSeen": "2026-08-10",
+      "lastSeen": "2026-08-10"
+    },
+    {
+      "label": "FMBN Diaspora Mortgage Loan",
       "count": 2,
-      "firstSeen": "2026-07-28",
+      "firstSeen": "2026-08-09",
       "lastSeen": "2026-08-10"
     },
     {
@@ -19,10 +25,16 @@
       "lastSeen": "2026-08-10"
     },
     {
-      "label": "Diaspora Mortgage Loan",
+      "label": "Diaspora Mortgage Financing",
+      "count": 2,
+      "firstSeen": "2026-07-28",
+      "lastSeen": "2026-08-10"
+    },
+    {
+      "label": "Rising Rental Costs",
       "count": 1,
-      "firstSeen": "2026-08-09",
-      "lastSeen": "2026-08-09"
+      "firstSeen": "2026-08-10",
+      "lastSeen": "2026-08-10"
     },
     {
       "label": "Economic Challenges",
@@ -31,25 +43,19 @@
       "lastSeen": "2026-08-09"
     },
     {
-      "label": "Diaspora Investment and Security",
-      "count": 1,
-      "firstSeen": "2026-08-08",
-      "lastSeen": "2026-08-08"
-    },
-    {
       "label": "Governance and Transparency",
       "count": 1,
       "firstSeen": "2026-08-08",
       "lastSeen": "2026-08-08"
     },
     {
-      "label": "Lekki Deep Seaport MSC Integration Accelerates Corridor Value Appreciation",
+      "label": "Diaspora Investment and Security",
       "count": 1,
-      "firstSeen": "2026-08-07",
-      "lastSeen": "2026-08-07"
+      "firstSeen": "2026-08-08",
+      "lastSeen": "2026-08-08"
     },
     {
-      "label": "MREIF Programme Eligibility Ambiguity Creates Mortgage Market Friction",
+      "label": "Security Disruptions in Lagos and Abuja Undermine Buyer Confidence and Execution",
       "count": 1,
       "firstSeen": "2026-08-07",
       "lastSeen": "2026-08-07"
@@ -61,31 +67,19 @@
       "lastSeen": "2026-08-07"
     },
     {
-      "label": "Security Disruptions in Lagos and Abuja Undermine Buyer Confidence and Execution",
+      "label": "MREIF Programme Eligibility Ambiguity Creates Mortgage Market Friction",
       "count": 1,
       "firstSeen": "2026-08-07",
       "lastSeen": "2026-08-07"
     },
     {
-      "label": "Government Efforts to Provide Affordable Housing",
+      "label": "Lekki Deep Seaport MSC Integration Accelerates Corridor Value Appreciation",
       "count": 1,
-      "firstSeen": "2026-08-06",
-      "lastSeen": "2026-08-06"
+      "firstSeen": "2026-08-07",
+      "lastSeen": "2026-08-07"
     },
     {
-      "label": "Growing Demand for Eco-Friendly Housing",
-      "count": 1,
-      "firstSeen": "2026-08-06",
-      "lastSeen": "2026-08-06"
-    },
-    {
-      "label": "Infrastructure Development Driving Economic Growth",
-      "count": 12,
-      "firstSeen": "2026-06-15",
-      "lastSeen": "2026-08-06"
-    },
-    {
-      "label": "Off-plan housing reform",
+      "label": "Cement price hike and construction boom",
       "count": 1,
       "firstSeen": "2026-08-06",
       "lastSeen": "2026-08-06"
@@ -97,37 +91,37 @@
       "lastSeen": "2026-08-06"
     },
     {
-      "label": "Cement price hike and construction boom",
+      "label": "Off-plan housing reform",
       "count": 1,
       "firstSeen": "2026-08-06",
       "lastSeen": "2026-08-06"
     },
     {
-      "label": "Renewed Hope Housing Programme",
+      "label": "Infrastructure Development Driving Economic Growth",
+      "count": 12,
+      "firstSeen": "2026-06-15",
+      "lastSeen": "2026-08-06"
+    },
+    {
+      "label": "Growing Demand for Eco-Friendly Housing",
       "count": 1,
-      "firstSeen": "2026-08-05",
+      "firstSeen": "2026-08-06",
+      "lastSeen": "2026-08-06"
+    },
+    {
+      "label": "Government Efforts to Provide Affordable Housing",
+      "count": 1,
+      "firstSeen": "2026-08-06",
+      "lastSeen": "2026-08-06"
+    },
+    {
+      "label": "Security Concerns",
+      "count": 2,
+      "firstSeen": "2026-08-02",
       "lastSeen": "2026-08-05"
     },
     {
-      "label": "Growing Demand for Smart Homes",
-      "count": 1,
-      "firstSeen": "2026-08-05",
-      "lastSeen": "2026-08-05"
-    },
-    {
-      "label": "Regulatory Crackdown on Fraudulent Estate Agents",
-      "count": 1,
-      "firstSeen": "2026-08-05",
-      "lastSeen": "2026-08-05"
-    },
-    {
-      "label": "Kano Governor Allocates Land to Reduce Housing Deficit",
-      "count": 1,
-      "firstSeen": "2026-08-05",
-      "lastSeen": "2026-08-05"
-    },
-    {
-      "label": "Premium Housing Embraces Smart Home Technology",
+      "label": "Accelerated MREIF Deployment Boosts Mortgage Availability",
       "count": 1,
       "firstSeen": "2026-08-05",
       "lastSeen": "2026-08-05"
@@ -139,31 +133,37 @@
       "lastSeen": "2026-08-05"
     },
     {
-      "label": "Accelerated MREIF Deployment Boosts Mortgage Availability",
+      "label": "Premium Housing Embraces Smart Home Technology",
       "count": 1,
       "firstSeen": "2026-08-05",
       "lastSeen": "2026-08-05"
     },
     {
-      "label": "Security Concerns",
-      "count": 2,
-      "firstSeen": "2026-08-02",
+      "label": "Kano Governor Allocates Land to Reduce Housing Deficit",
+      "count": 1,
+      "firstSeen": "2026-08-05",
       "lastSeen": "2026-08-05"
     },
     {
-      "label": "Luxury real estate affordability crisis deepens in Lagos",
+      "label": "Regulatory Crackdown on Fraudulent Estate Agents",
       "count": 1,
-      "firstSeen": "2026-08-04",
-      "lastSeen": "2026-08-04"
+      "firstSeen": "2026-08-05",
+      "lastSeen": "2026-08-05"
     },
     {
-      "label": "Commercial real estate vacancies surge due to affordability mismatch",
+      "label": "Growing Demand for Smart Homes",
       "count": 1,
-      "firstSeen": "2026-08-04",
-      "lastSeen": "2026-08-04"
+      "firstSeen": "2026-08-05",
+      "lastSeen": "2026-08-05"
     },
     {
-      "label": "Regulatory enforcement tightens against fraud and land encroachment",
+      "label": "Renewed Hope Housing Programme",
+      "count": 1,
+      "firstSeen": "2026-08-05",
+      "lastSeen": "2026-08-05"
+    },
+    {
+      "label": "Alternative real estate investment channels gain traction in Lagos",
       "count": 1,
       "firstSeen": "2026-08-04",
       "lastSeen": "2026-08-04"
@@ -175,13 +175,31 @@
       "lastSeen": "2026-08-04"
     },
     {
-      "label": "Alternative real estate investment channels gain traction in Lagos",
+      "label": "Regulatory enforcement tightens against fraud and land encroachment",
       "count": 1,
       "firstSeen": "2026-08-04",
       "lastSeen": "2026-08-04"
     },
     {
-      "label": "Regulatory crackdown on unregulated developers accelerates",
+      "label": "Commercial real estate vacancies surge due to affordability mismatch",
+      "count": 1,
+      "firstSeen": "2026-08-04",
+      "lastSeen": "2026-08-04"
+    },
+    {
+      "label": "Luxury real estate affordability crisis deepens in Lagos",
+      "count": 1,
+      "firstSeen": "2026-08-04",
+      "lastSeen": "2026-08-04"
+    },
+    {
+      "label": "Lagos rental inflation crisis compresses mid-income affordability",
+      "count": 2,
+      "firstSeen": "2026-07-24",
+      "lastSeen": "2026-08-03"
+    },
+    {
+      "label": "State-led housing supply shock in Ogun State",
       "count": 1,
       "firstSeen": "2026-08-03",
       "lastSeen": "2026-08-03"
@@ -193,22 +211,10 @@
       "lastSeen": "2026-08-03"
     },
     {
-      "label": "State-led housing supply shock in Ogun State",
+      "label": "Regulatory crackdown on unregulated developers accelerates",
       "count": 1,
       "firstSeen": "2026-08-03",
       "lastSeen": "2026-08-03"
-    },
-    {
-      "label": "Lagos rental inflation crisis compresses mid-income affordability",
-      "count": 2,
-      "firstSeen": "2026-07-24",
-      "lastSeen": "2026-08-03"
-    },
-    {
-      "label": "Housing Strategy and Economic Growth",
-      "count": 1,
-      "firstSeen": "2026-08-02",
-      "lastSeen": "2026-08-02"
     },
     {
       "label": "Luxury Real Estate Market",
@@ -217,10 +223,10 @@
       "lastSeen": "2026-08-02"
     },
     {
-      "label": "Launch of Fully Verified Direct Property Marketplace",
+      "label": "Housing Strategy and Economic Growth",
       "count": 1,
-      "firstSeen": "2026-08-01",
-      "lastSeen": "2026-08-01"
+      "firstSeen": "2026-08-02",
+      "lastSeen": "2026-08-02"
     },
     {
       "label": "Public-Private Partnerships in Housing Development",
@@ -229,7 +235,13 @@
       "lastSeen": "2026-08-01"
     },
     {
-      "label": "Digital Building Insurance Scheme",
+      "label": "Launch of Fully Verified Direct Property Marketplace",
+      "count": 1,
+      "firstSeen": "2026-08-01",
+      "lastSeen": "2026-08-01"
+    },
+    {
+      "label": "Dissolution of Presidential Implementation Committee",
       "count": 1,
       "firstSeen": "2026-07-31",
       "lastSeen": "2026-07-31"
@@ -241,19 +253,19 @@
       "lastSeen": "2026-07-31"
     },
     {
-      "label": "Dissolution of Presidential Implementation Committee",
+      "label": "Digital Building Insurance Scheme",
       "count": 1,
       "firstSeen": "2026-07-31",
       "lastSeen": "2026-07-31"
     },
     {
-      "label": "Collaboration between EFCC and LASRERA",
+      "label": "Foreign Investment in Housing Sector",
       "count": 1,
       "firstSeen": "2026-07-30",
       "lastSeen": "2026-07-30"
     },
     {
-      "label": "Establishment of National Housing Finance Authority",
+      "label": "Housing Sector Contribution to GDP",
       "count": 1,
       "firstSeen": "2026-07-30",
       "lastSeen": "2026-07-30"
@@ -265,37 +277,19 @@
       "lastSeen": "2026-07-30"
     },
     {
-      "label": "Housing Sector Contribution to GDP",
+      "label": "Establishment of National Housing Finance Authority",
       "count": 1,
       "firstSeen": "2026-07-30",
       "lastSeen": "2026-07-30"
     },
     {
-      "label": "Foreign Investment in Housing Sector",
+      "label": "Collaboration between EFCC and LASRERA",
       "count": 1,
       "firstSeen": "2026-07-30",
       "lastSeen": "2026-07-30"
     },
     {
-      "label": "Launch of Diaspora NHF Mortgage",
-      "count": 1,
-      "firstSeen": "2026-07-29",
-      "lastSeen": "2026-07-29"
-    },
-    {
-      "label": "Need for Comprehensive Regulatory Frameworks",
-      "count": 1,
-      "firstSeen": "2026-07-29",
-      "lastSeen": "2026-07-29"
-    },
-    {
-      "label": "Growing Demand for Regulated Property Investment Vehicles",
-      "count": 1,
-      "firstSeen": "2026-07-29",
-      "lastSeen": "2026-07-29"
-    },
-    {
-      "label": "Federal Housing Regulatory Overhaul and Mortgage Market Expansion",
+      "label": "Insurance Sector Push for Mandatory Housing Policy Integration",
       "count": 1,
       "firstSeen": "2026-07-29",
       "lastSeen": "2026-07-29"
@@ -307,16 +301,28 @@
       "lastSeen": "2026-07-29"
     },
     {
-      "label": "Insurance Sector Push for Mandatory Housing Policy Integration",
+      "label": "Federal Housing Regulatory Overhaul and Mortgage Market Expansion",
       "count": 1,
       "firstSeen": "2026-07-29",
       "lastSeen": "2026-07-29"
     },
     {
-      "label": "Luxury Segment Growth",
+      "label": "Growing Demand for Regulated Property Investment Vehicles",
       "count": 1,
-      "firstSeen": "2026-07-28",
-      "lastSeen": "2026-07-28"
+      "firstSeen": "2026-07-29",
+      "lastSeen": "2026-07-29"
+    },
+    {
+      "label": "Need for Comprehensive Regulatory Frameworks",
+      "count": 1,
+      "firstSeen": "2026-07-29",
+      "lastSeen": "2026-07-29"
+    },
+    {
+      "label": "Launch of Diaspora NHF Mortgage",
+      "count": 1,
+      "firstSeen": "2026-07-29",
+      "lastSeen": "2026-07-29"
     },
     {
       "label": "REIT Performance",
@@ -325,19 +331,13 @@
       "lastSeen": "2026-07-28"
     },
     {
-      "label": "National Housing Policy Push Accelerates Affordable Housing Supply",
+      "label": "Luxury Segment Growth",
       "count": 1,
-      "firstSeen": "2026-07-27",
-      "lastSeen": "2026-07-27"
+      "firstSeen": "2026-07-28",
+      "lastSeen": "2026-07-28"
     },
     {
-      "label": "Geopolitical Supply Chain Shocks Drive Construction Cost Inflation",
-      "count": 1,
-      "firstSeen": "2026-07-27",
-      "lastSeen": "2026-07-27"
-    },
-    {
-      "label": "Regulatory Crackdown on Planning Violations and Fraud Reshapes Development Risk",
+      "label": "Agency Sector Commission Disputes Erode Market Trust",
       "count": 1,
       "firstSeen": "2026-07-27",
       "lastSeen": "2026-07-27"
@@ -349,16 +349,16 @@
       "lastSeen": "2026-07-27"
     },
     {
-      "label": "Agency Sector Commission Disputes Erode Market Trust",
+      "label": "Regulatory Crackdown on Planning Violations and Fraud Reshapes Development Risk",
       "count": 1,
       "firstSeen": "2026-07-27",
       "lastSeen": "2026-07-27"
     },
     {
-      "label": "Regulatory Compliance",
+      "label": "Geopolitical Supply Chain Shocks Drive Construction Cost Inflation",
       "count": 1,
-      "firstSeen": "2026-07-26",
-      "lastSeen": "2026-07-26"
+      "firstSeen": "2026-07-27",
+      "lastSeen": "2026-07-27"
     }
   ]
 }

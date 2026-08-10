@@ -1,92 +1,89 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 4,
     "sentimentBreakdown": {
-      "bullish": 11,
-      "bearish": 3,
-      "neutral": 1
+      "bearish": 1,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "infrastructure development",
-        "count": 3
-      },
-      {
-        "topic": "currency crisis",
+        "topic": "Lagos real estate market",
         "count": 2
       },
       {
-        "topic": "security",
-        "count": 2
+        "topic": "affordable housing",
+        "count": 1
       },
       {
-        "topic": "real estate sector",
+        "topic": "housing costs",
+        "count": 1
+      },
+      {
+        "topic": "rental demand",
+        "count": 1
+      },
+      {
+        "topic": "premium segment",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 4,
     "sentimentBreakdown": {
-      "bullish": 11,
-      "bearish": 3,
-      "neutral": 1
+      "bearish": 1,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "infrastructure development",
-        "count": 3
-      },
-      {
-        "topic": "currency crisis",
+        "topic": "Lagos real estate market",
         "count": 2
       },
       {
-        "topic": "security",
-        "count": 2
+        "topic": "affordable housing",
+        "count": 1
       },
       {
-        "topic": "real estate sector",
+        "topic": "housing costs",
+        "count": 1
+      },
+      {
+        "topic": "rental demand",
+        "count": 1
+      },
+      {
+        "topic": "premium segment",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 4,
     "sentimentBreakdown": {
-      "bullish": 11,
-      "bearish": 3,
-      "neutral": 1
+      "bearish": 1,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "infrastructure development",
-        "count": 3
-      },
-      {
-        "topic": "currency crisis",
+        "topic": "Lagos real estate market",
         "count": 2
       },
       {
-        "topic": "security",
-        "count": 2
+        "topic": "affordable housing",
+        "count": 1
       },
       {
-        "topic": "real estate sector",
+        "topic": "housing costs",
+        "count": 1
+      },
+      {
+        "topic": "rental demand",
+        "count": 1
+      },
+      {
+        "topic": "premium segment",
         "count": 1
       }
     ],

@@ -1547,6 +1547,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-10",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bullish": 11,
+        "bearish": 3,
+        "neutral": 1
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 4
+        },
+        {
+          "topic": "infrastructure development",
+          "count": 3
+        },
+        {
+          "topic": "currency crisis",
+          "count": 2
+        },
+        {
+          "topic": "security",
+          "count": 2
+        },
+        {
+          "topic": "real estate sector",
+          "count": 1
+        }
+      ]
     }
   ]
 }

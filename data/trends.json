@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 14,
+    "articleCount": 2,
     "sentimentBreakdown": {
-      "bullish": 11,
-      "neutral": 3
+      "bullish": 1,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 4
+        "topic": "sustainable housing finance",
+        "count": 1
       },
       {
-        "topic": "affordable housing",
-        "count": 3
+        "topic": "MREIF",
+        "count": 1
       },
       {
-        "topic": "housing deficit",
-        "count": 2
+        "topic": "mortgage lending",
+        "count": 1
       },
       {
-        "topic": "real estate investment",
-        "count": 2
+        "topic": "Lagos housing deficit",
+        "count": 1
       },
       {
-        "topic": "property transactions",
-        "count": 2
+        "topic": "coup plot",
+        "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "bearish"
   },
   "30day": {
-    "articleCount": 14,
+    "articleCount": 2,
     "sentimentBreakdown": {
-      "bullish": 11,
-      "neutral": 3
+      "bullish": 1,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 4
+        "topic": "sustainable housing finance",
+        "count": 1
       },
       {
-        "topic": "affordable housing",
-        "count": 3
+        "topic": "MREIF",
+        "count": 1
       },
       {
-        "topic": "housing deficit",
-        "count": 2
+        "topic": "mortgage lending",
+        "count": 1
       },
       {
-        "topic": "real estate investment",
-        "count": 2
+        "topic": "Lagos housing deficit",
+        "count": 1
       },
       {
-        "topic": "property transactions",
-        "count": 2
+        "topic": "coup plot",
+        "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "bearish"
   },
   "90day": {
-    "articleCount": 14,
+    "articleCount": 2,
     "sentimentBreakdown": {
-      "bullish": 11,
-      "neutral": 3
+      "bullish": 1,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 4
+        "topic": "sustainable housing finance",
+        "count": 1
       },
       {
-        "topic": "affordable housing",
-        "count": 3
+        "topic": "MREIF",
+        "count": 1
       },
       {
-        "topic": "housing deficit",
-        "count": 2
+        "topic": "mortgage lending",
+        "count": 1
       },
       {
-        "topic": "real estate investment",
-        "count": 2
+        "topic": "Lagos housing deficit",
+        "count": 1
       },
       {
-        "topic": "property transactions",
-        "count": 2
+        "topic": "coup plot",
+        "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "bearish"
   }
 }

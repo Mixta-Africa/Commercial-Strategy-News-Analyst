@@ -1,90 +1,90 @@
 {
   "7day": {
-    "articleCount": 4,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "bearish": 1,
-      "bullish": 3
+      "bullish": 11,
+      "neutral": 3
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate market",
-        "count": 2
+        "topic": "Lagos real estate",
+        "count": 4
       },
       {
         "topic": "affordable housing",
-        "count": 1
+        "count": 3
       },
       {
-        "topic": "housing costs",
-        "count": 1
+        "topic": "housing deficit",
+        "count": 2
       },
       {
-        "topic": "rental demand",
-        "count": 1
+        "topic": "real estate investment",
+        "count": 2
       },
       {
-        "topic": "premium segment",
-        "count": 1
+        "topic": "property transactions",
+        "count": 2
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 4,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "bearish": 1,
-      "bullish": 3
+      "bullish": 11,
+      "neutral": 3
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate market",
-        "count": 2
+        "topic": "Lagos real estate",
+        "count": 4
       },
       {
         "topic": "affordable housing",
-        "count": 1
+        "count": 3
       },
       {
-        "topic": "housing costs",
-        "count": 1
+        "topic": "housing deficit",
+        "count": 2
       },
       {
-        "topic": "rental demand",
-        "count": 1
+        "topic": "real estate investment",
+        "count": 2
       },
       {
-        "topic": "premium segment",
-        "count": 1
+        "topic": "property transactions",
+        "count": 2
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 4,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "bearish": 1,
-      "bullish": 3
+      "bullish": 11,
+      "neutral": 3
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate market",
-        "count": 2
+        "topic": "Lagos real estate",
+        "count": 4
       },
       {
         "topic": "affordable housing",
-        "count": 1
+        "count": 3
       },
       {
-        "topic": "housing costs",
-        "count": 1
+        "topic": "housing deficit",
+        "count": 2
       },
       {
-        "topic": "rental demand",
-        "count": 1
+        "topic": "real estate investment",
+        "count": 2
       },
       {
-        "topic": "premium segment",
-        "count": 1
+        "topic": "property transactions",
+        "count": 2
       }
     ],
     "averageSentiment": "bullish"

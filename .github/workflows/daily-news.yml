@@ -232,7 +232,7 @@ jobs:
           fi
 
           for attempt in 1 2 3 4 5; do
-            git commit -m "Update dashboard data [skip ci]" --allow-empty
+            git commit -m "Update dashboard data" --allow-empty
             if git push origin main; then
               echo "Push succeeded on attempt $attempt."
               exit 0

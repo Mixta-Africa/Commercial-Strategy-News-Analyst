@@ -1609,6 +1609,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-12",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 5,
+        "bullish": 7,
+        "bearish": 3
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate market",
+          "count": 2
+        },
+        {
+          "topic": "Lagos market",
+          "count": 2
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 2
+        },
+        {
+          "topic": "housing supply",
+          "count": 2
+        },
+        {
+          "topic": "arms smuggling",
+          "count": 1
+        }
+      ]
     }
   ]
 }

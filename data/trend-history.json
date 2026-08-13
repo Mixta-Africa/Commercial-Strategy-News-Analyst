@@ -1641,6 +1641,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-13",
+      "articleCount": 8,
+      "sentimentBreakdown": {
+        "bullish": 3,
+        "bearish": 2,
+        "neutral": 3
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate market",
+          "count": 2
+        },
+        {
+          "topic": "West Africa",
+          "count": 1
+        },
+        {
+          "topic": "property investment",
+          "count": 1
+        },
+        {
+          "topic": "housing affordability",
+          "count": 1
+        },
+        {
+          "topic": "rent trap",
+          "count": 1
+        }
+      ]
     }
   ]
 }

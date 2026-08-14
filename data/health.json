@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-08-13T08:10:30.966Z",
-  "status": "failed",
+  "timestamp": "2026-08-14T08:06:36.157Z",
+  "status": "healthy",
   "sources": {
     "gnews": {
       "ok": false,
@@ -14,35 +14,35 @@
     },
     "googlenews": {
       "ok": true,
-      "count": 125,
+      "count": 126,
       "error": null
     },
     "rss": {
-      "total": 21,
+      "total": 38,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 4,
+          "count": 5,
           "error": null
         },
         "Premium Times": {
           "ok": true,
-          "count": 1,
+          "count": 5,
           "error": null
         },
         "BusinessDay": {
           "ok": true,
-          "count": 1,
+          "count": 0,
           "error": null
         },
         "Nairametrics": {
           "ok": true,
-          "count": 4,
+          "count": 5,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 1,
+          "count": 3,
           "error": null
         },
         "The Punch (Business)": {
@@ -66,9 +66,9 @@
           "error": "HTTP 403"
         },
         "Vanguard (Homes & Property)": {
-          "ok": false,
-          "count": 0,
-          "error": "timeout of 12000ms exceeded"
+          "ok": true,
+          "count": 10,
+          "error": null
         }
       }
     },
@@ -79,9 +79,9 @@
     }
   },
   "counts": {
-    "raw": 242,
-    "filtered": 8,
-    "analyzed": 8,
+    "raw": 276,
+    "filtered": 11,
+    "analyzed": 11,
     "aiFallbacks": 0
   },
   "synthesis": {
@@ -89,12 +89,11 @@
     "themes": 3
   },
   "email": {
-    "sent": false
+    "sent": true
   },
   "pipelineGate": false,
   "warnings": [
-    "Sources down: RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403); RSS Vanguard (Homes & Property) (timeout of 12000ms exceeded)",
-    "Note: GNews (0 articles) — known issue, excluded from down-count",
-    "Digest email was NOT sent."
+    "Sources down: RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403)",
+    "Note: GNews (0 articles) — known issue, excluded from down-count"
   ]
 }

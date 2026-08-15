@@ -1704,6 +1704,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-15",
+      "articleCount": 9,
+      "sentimentBreakdown": {
+        "bearish": 2,
+        "bullish": 6,
+        "neutral": 1
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 3
+        },
+        {
+          "topic": "Lagos real estate market",
+          "count": 2
+        },
+        {
+          "topic": "community development",
+          "count": 2
+        },
+        {
+          "topic": "construction costs",
+          "count": 1
+        },
+        {
+          "topic": "LAWMA levies",
+          "count": 1
+        }
+      ]
     }
   ]
 }

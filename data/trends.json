@@ -1,89 +1,92 @@
 {
   "7day": {
-    "articleCount": 11,
+    "articleCount": 9,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "neutral": 4
+      "bearish": 2,
+      "bullish": 6,
+      "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
+        "count": 3
       },
       {
-        "topic": "affordable housing",
+        "topic": "Lagos real estate market",
         "count": 2
       },
       {
-        "topic": "Nigeria's housing crisis",
+        "topic": "community development",
+        "count": 2
+      },
+      {
+        "topic": "construction costs",
         "count": 1
       },
       {
-        "topic": "REIT market growth",
-        "count": 1
-      },
-      {
-        "topic": "premium housing",
+        "topic": "LAWMA levies",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 11,
+    "articleCount": 9,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "neutral": 4
+      "bearish": 2,
+      "bullish": 6,
+      "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
+        "count": 3
       },
       {
-        "topic": "affordable housing",
+        "topic": "Lagos real estate market",
         "count": 2
       },
       {
-        "topic": "Nigeria's housing crisis",
+        "topic": "community development",
+        "count": 2
+      },
+      {
+        "topic": "construction costs",
         "count": 1
       },
       {
-        "topic": "REIT market growth",
-        "count": 1
-      },
-      {
-        "topic": "premium housing",
+        "topic": "LAWMA levies",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 11,
+    "articleCount": 9,
     "sentimentBreakdown": {
-      "bullish": 7,
-      "neutral": 4
+      "bearish": 2,
+      "bullish": 6,
+      "neutral": 1
     },
     "topTopics": [
       {
         "topic": "Lagos real estate",
-        "count": 4
+        "count": 3
       },
       {
-        "topic": "affordable housing",
+        "topic": "Lagos real estate market",
         "count": 2
       },
       {
-        "topic": "Nigeria's housing crisis",
+        "topic": "community development",
+        "count": 2
+      },
+      {
+        "topic": "construction costs",
         "count": 1
       },
       {
-        "topic": "REIT market growth",
-        "count": 1
-      },
-      {
-        "topic": "premium housing",
+        "topic": "LAWMA levies",
         "count": 1
       }
     ],

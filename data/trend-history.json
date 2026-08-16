@@ -1736,6 +1736,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-16",
+      "articleCount": 8,
+      "sentimentBreakdown": {
+        "neutral": 2,
+        "bullish": 5,
+        "bearish": 1
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 4
+        },
+        {
+          "topic": "Lagos real estate market",
+          "count": 2
+        },
+        {
+          "topic": "national security",
+          "count": 1
+        },
+        {
+          "topic": "presidential election",
+          "count": 1
+        },
+        {
+          "topic": "Canada-Nigeria real estate partnerships",
+          "count": 1
+        }
+      ]
     }
   ]
 }

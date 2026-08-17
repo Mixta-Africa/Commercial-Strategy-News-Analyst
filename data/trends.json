@@ -1,92 +1,89 @@
 {
   "7day": {
-    "articleCount": 8,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "neutral": 2,
-      "bullish": 5,
-      "bearish": 1
+      "bullish": 10,
+      "neutral": 2
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "Lagos real estate market",
+        "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "national security",
+        "topic": "Lagos housing market",
         "count": 1
       },
       {
-        "topic": "presidential election",
+        "topic": "Effective Rent Burden Matrix",
         "count": 1
       },
       {
-        "topic": "Canada-Nigeria real estate partnerships",
+        "topic": "GTI Investment Group",
+        "count": 1
+      },
+      {
+        "topic": "short-lets",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "30day": {
-    "articleCount": 8,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "neutral": 2,
-      "bullish": 5,
-      "bearish": 1
+      "bullish": 10,
+      "neutral": 2
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "Lagos real estate market",
+        "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "national security",
+        "topic": "Lagos housing market",
         "count": 1
       },
       {
-        "topic": "presidential election",
+        "topic": "Effective Rent Burden Matrix",
         "count": 1
       },
       {
-        "topic": "Canada-Nigeria real estate partnerships",
+        "topic": "GTI Investment Group",
+        "count": 1
+      },
+      {
+        "topic": "short-lets",
         "count": 1
       }
     ],
     "averageSentiment": "bullish"
   },
   "90day": {
-    "articleCount": 8,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "neutral": 2,
-      "bullish": 5,
-      "bearish": 1
+      "bullish": 10,
+      "neutral": 2
     },
     "topTopics": [
       {
-        "topic": "Lagos real estate",
-        "count": 4
-      },
-      {
-        "topic": "Lagos real estate market",
+        "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "national security",
+        "topic": "Lagos housing market",
         "count": 1
       },
       {
-        "topic": "presidential election",
+        "topic": "Effective Rent Burden Matrix",
         "count": 1
       },
       {
-        "topic": "Canada-Nigeria real estate partnerships",
+        "topic": "GTI Investment Group",
+        "count": 1
+      },
+      {
+        "topic": "short-lets",
         "count": 1
       }
     ],

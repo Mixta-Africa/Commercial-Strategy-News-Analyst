@@ -1,92 +1,95 @@
 {
   "7day": {
-    "articleCount": 12,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 10,
-      "neutral": 2
+      "neutral": 9,
+      "bullish": 3,
+      "bearish": 3
     },
     "topTopics": [
+      {
+        "topic": "affordable housing",
+        "count": 2
+      },
       {
         "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "Lagos housing market",
+        "topic": "rental demand",
+        "count": 2
+      },
+      {
+        "topic": "land_verification",
         "count": 1
       },
       {
-        "topic": "Effective Rent Burden Matrix",
-        "count": 1
-      },
-      {
-        "topic": "GTI Investment Group",
-        "count": 1
-      },
-      {
-        "topic": "short-lets",
+        "topic": "government_intervention",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 12,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 10,
-      "neutral": 2
+      "neutral": 9,
+      "bullish": 3,
+      "bearish": 3
     },
     "topTopics": [
+      {
+        "topic": "affordable housing",
+        "count": 2
+      },
       {
         "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "Lagos housing market",
+        "topic": "rental demand",
+        "count": 2
+      },
+      {
+        "topic": "land_verification",
         "count": 1
       },
       {
-        "topic": "Effective Rent Burden Matrix",
-        "count": 1
-      },
-      {
-        "topic": "GTI Investment Group",
-        "count": 1
-      },
-      {
-        "topic": "short-lets",
+        "topic": "government_intervention",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 12,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 10,
-      "neutral": 2
+      "neutral": 9,
+      "bullish": 3,
+      "bearish": 3
     },
     "topTopics": [
+      {
+        "topic": "affordable housing",
+        "count": 2
+      },
       {
         "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "Lagos housing market",
+        "topic": "rental demand",
+        "count": 2
+      },
+      {
+        "topic": "land_verification",
         "count": 1
       },
       {
-        "topic": "Effective Rent Burden Matrix",
-        "count": 1
-      },
-      {
-        "topic": "GTI Investment Group",
-        "count": 1
-      },
-      {
-        "topic": "short-lets",
+        "topic": "government_intervention",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   }
 }

@@ -1799,6 +1799,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-18",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 9,
+        "bullish": 3,
+        "bearish": 3
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "housing deficit",
+          "count": 2
+        },
+        {
+          "topic": "rental demand",
+          "count": 2
+        },
+        {
+          "topic": "land_verification",
+          "count": 1
+        },
+        {
+          "topic": "government_intervention",
+          "count": 1
+        }
+      ]
     }
   ]
 }

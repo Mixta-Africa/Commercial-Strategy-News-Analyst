@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 8,
-      "bullish": 6,
-      "bearish": 1
+      "bullish": 2,
+      "neutral": 11,
+      "bearish": 2
     },
     "topTopics": [
       {
-        "topic": "regulatory enforcement",
-        "count": 2
-      },
-      {
-        "topic": "flooding",
-        "count": 2
-      },
-      {
-        "topic": "affordability",
-        "count": 2
-      },
-      {
         "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "civil service housing",
+        "count": 3
+      },
+      {
+        "topic": "housing policy",
         "count": 2
       },
       {
-        "topic": "climate_resilience",
+        "topic": "security",
+        "count": 1
+      },
+      {
+        "topic": "safety",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 8,
-      "bullish": 6,
-      "bearish": 1
+      "bullish": 2,
+      "neutral": 11,
+      "bearish": 2
     },
     "topTopics": [
       {
-        "topic": "regulatory enforcement",
-        "count": 2
-      },
-      {
-        "topic": "flooding",
-        "count": 2
-      },
-      {
-        "topic": "affordability",
-        "count": 2
-      },
-      {
         "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "civil service housing",
+        "count": 3
+      },
+      {
+        "topic": "housing policy",
         "count": 2
       },
       {
-        "topic": "climate_resilience",
+        "topic": "security",
+        "count": 1
+      },
+      {
+        "topic": "safety",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 8,
-      "bullish": 6,
-      "bearish": 1
+      "bullish": 2,
+      "neutral": 11,
+      "bearish": 2
     },
     "topTopics": [
       {
-        "topic": "regulatory enforcement",
-        "count": 2
-      },
-      {
-        "topic": "flooding",
-        "count": 2
-      },
-      {
-        "topic": "affordability",
-        "count": 2
-      },
-      {
         "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "civil service housing",
+        "count": 3
+      },
+      {
+        "topic": "housing policy",
         "count": 2
       },
       {
-        "topic": "climate_resilience",
+        "topic": "security",
+        "count": 1
+      },
+      {
+        "topic": "safety",
         "count": 1
       }
     ],

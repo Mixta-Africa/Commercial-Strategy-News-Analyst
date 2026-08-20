@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-08-19T07:29:16.010Z",
-  "status": "failed",
+  "timestamp": "2026-08-20T07:32:18.014Z",
+  "status": "healthy",
   "sources": {
     "gnews": {
       "ok": false,
@@ -14,15 +14,15 @@
     },
     "googlenews": {
       "ok": true,
-      "count": 121,
+      "count": 126,
       "error": null
     },
     "rss": {
-      "total": 36,
+      "total": 37,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 8,
+          "count": 2,
           "error": null
         },
         "Premium Times": {
@@ -32,17 +32,17 @@
         },
         "BusinessDay": {
           "ok": true,
-          "count": 0,
+          "count": 1,
           "error": null
         },
         "Nairametrics": {
           "ok": true,
-          "count": 2,
+          "count": 6,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 4,
+          "count": 6,
           "error": null
         },
         "The Punch (Business)": {
@@ -79,22 +79,21 @@
     }
   },
   "counts": {
-    "raw": 260,
+    "raw": 231,
     "filtered": 15,
     "analyzed": 15,
     "aiFallbacks": 0
   },
   "synthesis": {
     "ok": true,
-    "themes": 4
+    "themes": 5
   },
   "email": {
-    "sent": false
+    "sent": true
   },
   "pipelineGate": false,
   "warnings": [
     "Sources down: RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403)",
-    "Note: GNews (0 articles) — known issue, excluded from down-count",
-    "Digest email was NOT sent."
+    "Note: GNews (0 articles) — known issue, excluded from down-count"
   ]
 }

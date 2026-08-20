@@ -1863,6 +1863,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-20",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bullish": 2,
+        "neutral": 11,
+        "bearish": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 4
+        },
+        {
+          "topic": "civil service housing",
+          "count": 3
+        },
+        {
+          "topic": "housing policy",
+          "count": 2
+        },
+        {
+          "topic": "security",
+          "count": 1
+        },
+        {
+          "topic": "safety",
+          "count": 1
+        }
+      ]
     }
   ]
 }

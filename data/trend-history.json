@@ -1895,6 +1895,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-21",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 8,
+        "bullish": 4,
+        "bearish": 3
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "AI",
+          "count": 2
+        },
+        {
+          "topic": "logistics",
+          "count": 2
+        },
+        {
+          "topic": "infrastructure",
+          "count": 2
+        },
+        {
+          "topic": "security",
+          "count": 1
+        },
+        {
+          "topic": "investor-sentiment",
+          "count": 1
+        }
+      ]
     }
   ]
 }

@@ -2,21 +2,21 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 2,
-      "neutral": 11,
-      "bearish": 2
+      "neutral": 8,
+      "bullish": 4,
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 4
+        "topic": "AI",
+        "count": 2
       },
       {
-        "topic": "civil service housing",
-        "count": 3
+        "topic": "logistics",
+        "count": 2
       },
       {
-        "topic": "housing policy",
+        "topic": "infrastructure",
         "count": 2
       },
       {
@@ -24,7 +24,7 @@
         "count": 1
       },
       {
-        "topic": "safety",
+        "topic": "investor-sentiment",
         "count": 1
       }
     ],
@@ -33,21 +33,21 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 2,
-      "neutral": 11,
-      "bearish": 2
+      "neutral": 8,
+      "bullish": 4,
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 4
+        "topic": "AI",
+        "count": 2
       },
       {
-        "topic": "civil service housing",
-        "count": 3
+        "topic": "logistics",
+        "count": 2
       },
       {
-        "topic": "housing policy",
+        "topic": "infrastructure",
         "count": 2
       },
       {
@@ -55,7 +55,7 @@
         "count": 1
       },
       {
-        "topic": "safety",
+        "topic": "investor-sentiment",
         "count": 1
       }
     ],
@@ -64,21 +64,21 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 2,
-      "neutral": 11,
-      "bearish": 2
+      "neutral": 8,
+      "bullish": 4,
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 4
+        "topic": "AI",
+        "count": 2
       },
       {
-        "topic": "civil service housing",
-        "count": 3
+        "topic": "logistics",
+        "count": 2
       },
       {
-        "topic": "housing policy",
+        "topic": "infrastructure",
         "count": 2
       },
       {
@@ -86,7 +86,7 @@
         "count": 1
       },
       {
-        "topic": "safety",
+        "topic": "investor-sentiment",
         "count": 1
       }
     ],

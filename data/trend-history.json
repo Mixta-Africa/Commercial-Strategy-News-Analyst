@@ -1927,6 +1927,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-22",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bearish": 5,
+        "bullish": 8,
+        "neutral": 2
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 3
+        },
+        {
+          "topic": "housing deficit",
+          "count": 2
+        },
+        {
+          "topic": "housing affordability",
+          "count": 1
+        },
+        {
+          "topic": "mortgage access",
+          "count": 1
+        },
+        {
+          "topic": "rent inflation",
+          "count": 1
+        }
+      ]
     }
   ]
 }

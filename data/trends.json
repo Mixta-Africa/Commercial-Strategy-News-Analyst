@@ -2,94 +2,94 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 8,
-      "bullish": 4,
-      "bearish": 3
+      "bearish": 5,
+      "bullish": 8,
+      "neutral": 2
     },
     "topTopics": [
       {
-        "topic": "AI",
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "logistics",
-        "count": 2
-      },
-      {
-        "topic": "infrastructure",
-        "count": 2
-      },
-      {
-        "topic": "security",
+        "topic": "housing affordability",
         "count": 1
       },
       {
-        "topic": "investor-sentiment",
+        "topic": "mortgage access",
+        "count": 1
+      },
+      {
+        "topic": "rent inflation",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 8,
-      "bullish": 4,
-      "bearish": 3
+      "bearish": 5,
+      "bullish": 8,
+      "neutral": 2
     },
     "topTopics": [
       {
-        "topic": "AI",
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "logistics",
-        "count": 2
-      },
-      {
-        "topic": "infrastructure",
-        "count": 2
-      },
-      {
-        "topic": "security",
+        "topic": "housing affordability",
         "count": 1
       },
       {
-        "topic": "investor-sentiment",
+        "topic": "mortgage access",
+        "count": 1
+      },
+      {
+        "topic": "rent inflation",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 8,
-      "bullish": 4,
-      "bearish": 3
+      "bearish": 5,
+      "bullish": 8,
+      "neutral": 2
     },
     "topTopics": [
       {
-        "topic": "AI",
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "logistics",
-        "count": 2
-      },
-      {
-        "topic": "infrastructure",
-        "count": 2
-      },
-      {
-        "topic": "security",
+        "topic": "housing affordability",
         "count": 1
       },
       {
-        "topic": "investor-sentiment",
+        "topic": "mortgage access",
+        "count": 1
+      },
+      {
+        "topic": "rent inflation",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bullish"
   }
 }

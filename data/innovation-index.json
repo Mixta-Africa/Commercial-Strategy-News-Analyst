@@ -1,7 +1,21 @@
 {
-  "updatedAt": "2026-08-21T07:34:13.851Z",
-  "totalEntries": 30,
+  "updatedAt": "2026-08-22T07:22:40.363Z",
+  "totalEntries": 31,
   "entries": [
+    {
+      "date": "2026-08-22",
+      "generatedAt": "2026-08-22T07:22:40.363Z",
+      "count": 13,
+      "categories": {
+        "policy": 1,
+        "proptech": 7,
+        "finance": 1,
+        "construction": 2,
+        "sustainable": 1,
+        "ai": 1
+      },
+      "file": "archive/innovation-2026-08-22.json"
+    },
     {
       "date": "2026-08-21",
       "generatedAt": "2026-08-21T07:34:13.851Z",

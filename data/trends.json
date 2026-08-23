@@ -1,95 +1,95 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 5,
     "sentimentBreakdown": {
-      "bearish": 5,
-      "bullish": 8,
+      "bullish": 2,
+      "bearish": 1,
       "neutral": 2
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "housing deficit",
+        "topic": "security",
         "count": 2
       },
       {
-        "topic": "housing affordability",
+        "topic": "diaspora-investment",
         "count": 1
       },
       {
-        "topic": "mortgage access",
+        "topic": "land-discount",
         "count": 1
       },
       {
-        "topic": "rent inflation",
+        "topic": "government-approved-estates",
+        "count": 1
+      },
+      {
+        "topic": "premium-plots",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 5,
     "sentimentBreakdown": {
-      "bearish": 5,
-      "bullish": 8,
+      "bullish": 2,
+      "bearish": 1,
       "neutral": 2
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "housing deficit",
+        "topic": "security",
         "count": 2
       },
       {
-        "topic": "housing affordability",
+        "topic": "diaspora-investment",
         "count": 1
       },
       {
-        "topic": "mortgage access",
+        "topic": "land-discount",
         "count": 1
       },
       {
-        "topic": "rent inflation",
+        "topic": "government-approved-estates",
+        "count": 1
+      },
+      {
+        "topic": "premium-plots",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 5,
     "sentimentBreakdown": {
-      "bearish": 5,
-      "bullish": 8,
+      "bullish": 2,
+      "bearish": 1,
       "neutral": 2
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "housing deficit",
+        "topic": "security",
         "count": 2
       },
       {
-        "topic": "housing affordability",
+        "topic": "diaspora-investment",
         "count": 1
       },
       {
-        "topic": "mortgage access",
+        "topic": "land-discount",
         "count": 1
       },
       {
-        "topic": "rent inflation",
+        "topic": "government-approved-estates",
+        "count": 1
+      },
+      {
+        "topic": "premium-plots",
         "count": 1
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   }
 }

@@ -2023,6 +2023,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-25",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bearish": 4,
+        "bullish": 4,
+        "neutral": 7
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable-housing",
+          "count": 3
+        },
+        {
+          "topic": "housing-deficit",
+          "count": 2
+        },
+        {
+          "topic": "mortgage_penetration",
+          "count": 1
+        },
+        {
+          "topic": "affordable_housing",
+          "count": 1
+        },
+        {
+          "topic": "land_administration",
+          "count": 1
+        }
+      ]
     }
   ]
 }

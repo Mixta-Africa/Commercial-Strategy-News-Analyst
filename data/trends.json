@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 4,
-      "bullish": 4,
+      "bearish": 3,
+      "bullish": 5,
       "neutral": 7
     },
     "topTopics": [
       {
-        "topic": "affordable-housing",
-        "count": 3
-      },
-      {
-        "topic": "housing-deficit",
+        "topic": "land_degradation",
         "count": 2
       },
       {
-        "topic": "mortgage_penetration",
+        "topic": "affordability crisis",
         "count": 1
       },
       {
-        "topic": "affordable_housing",
+        "topic": "rent burden",
         "count": 1
       },
       {
-        "topic": "land_administration",
+        "topic": "shared accommodation",
+        "count": 1
+      },
+      {
+        "topic": "policy response",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 4,
-      "bullish": 4,
+      "bearish": 3,
+      "bullish": 5,
       "neutral": 7
     },
     "topTopics": [
       {
-        "topic": "affordable-housing",
-        "count": 3
-      },
-      {
-        "topic": "housing-deficit",
+        "topic": "land_degradation",
         "count": 2
       },
       {
-        "topic": "mortgage_penetration",
+        "topic": "affordability crisis",
         "count": 1
       },
       {
-        "topic": "affordable_housing",
+        "topic": "rent burden",
         "count": 1
       },
       {
-        "topic": "land_administration",
+        "topic": "shared accommodation",
+        "count": 1
+      },
+      {
+        "topic": "policy response",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 4,
-      "bullish": 4,
+      "bearish": 3,
+      "bullish": 5,
       "neutral": 7
     },
     "topTopics": [
       {
-        "topic": "affordable-housing",
-        "count": 3
-      },
-      {
-        "topic": "housing-deficit",
+        "topic": "land_degradation",
         "count": 2
       },
       {
-        "topic": "mortgage_penetration",
+        "topic": "affordability crisis",
         "count": 1
       },
       {
-        "topic": "affordable_housing",
+        "topic": "rent burden",
         "count": 1
       },
       {
-        "topic": "land_administration",
+        "topic": "shared accommodation",
+        "count": 1
+      },
+      {
+        "topic": "policy response",
         "count": 1
       }
     ],

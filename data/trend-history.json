@@ -2055,6 +2055,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-26",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bearish": 3,
+        "bullish": 5,
+        "neutral": 7
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "land_degradation",
+          "count": 2
+        },
+        {
+          "topic": "affordability crisis",
+          "count": 1
+        },
+        {
+          "topic": "rent burden",
+          "count": 1
+        },
+        {
+          "topic": "shared accommodation",
+          "count": 1
+        },
+        {
+          "topic": "policy response",
+          "count": 1
+        }
+      ]
     }
   ]
 }

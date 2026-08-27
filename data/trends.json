@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 7,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "bullish": 5,
-      "neutral": 7
+      "bullish": 2,
+      "neutral": 4,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "land_degradation",
-        "count": 2
-      },
-      {
-        "topic": "affordability crisis",
+        "topic": "infrastructure-financing",
         "count": 1
       },
       {
-        "topic": "rent burden",
+        "topic": "public-private-partnerships",
         "count": 1
       },
       {
-        "topic": "shared accommodation",
+        "topic": "urbanization",
         "count": 1
       },
       {
-        "topic": "policy response",
+        "topic": "economic-growth",
+        "count": 1
+      },
+      {
+        "topic": "security",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 7,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "bullish": 5,
-      "neutral": 7
+      "bullish": 2,
+      "neutral": 4,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "land_degradation",
-        "count": 2
-      },
-      {
-        "topic": "affordability crisis",
+        "topic": "infrastructure-financing",
         "count": 1
       },
       {
-        "topic": "rent burden",
+        "topic": "public-private-partnerships",
         "count": 1
       },
       {
-        "topic": "shared accommodation",
+        "topic": "urbanization",
         "count": 1
       },
       {
-        "topic": "policy response",
+        "topic": "economic-growth",
+        "count": 1
+      },
+      {
+        "topic": "security",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 7,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "bullish": 5,
-      "neutral": 7
+      "bullish": 2,
+      "neutral": 4,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "land_degradation",
-        "count": 2
-      },
-      {
-        "topic": "affordability crisis",
+        "topic": "infrastructure-financing",
         "count": 1
       },
       {
-        "topic": "rent burden",
+        "topic": "public-private-partnerships",
         "count": 1
       },
       {
-        "topic": "shared accommodation",
+        "topic": "urbanization",
         "count": 1
       },
       {
-        "topic": "policy response",
+        "topic": "economic-growth",
+        "count": 1
+      },
+      {
+        "topic": "security",
         "count": 1
       }
     ],

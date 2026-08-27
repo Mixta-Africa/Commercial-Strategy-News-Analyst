@@ -2087,6 +2087,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-27",
+      "articleCount": 7,
+      "sentimentBreakdown": {
+        "bullish": 2,
+        "neutral": 4,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "infrastructure-financing",
+          "count": 1
+        },
+        {
+          "topic": "public-private-partnerships",
+          "count": 1
+        },
+        {
+          "topic": "urbanization",
+          "count": 1
+        },
+        {
+          "topic": "economic-growth",
+          "count": 1
+        },
+        {
+          "topic": "security",
+          "count": 1
+        }
+      ]
     }
   ]
 }

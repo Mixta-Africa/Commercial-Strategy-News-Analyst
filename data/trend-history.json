@@ -2119,6 +2119,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-28",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 11,
+        "bullish": 3,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "climate-resilience",
+          "count": 1
+        },
+        {
+          "topic": "land-restoration",
+          "count": 1
+        },
+        {
+          "topic": "drought-resilience",
+          "count": 1
+        },
+        {
+          "topic": "policy-commitments",
+          "count": 1
+        },
+        {
+          "topic": "rental_stabilization",
+          "count": 1
+        }
+      ]
     }
   ]
 }

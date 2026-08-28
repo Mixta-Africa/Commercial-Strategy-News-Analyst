@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 7,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 2,
-      "neutral": 4,
+      "neutral": 11,
+      "bullish": 3,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "infrastructure-financing",
+        "topic": "climate-resilience",
         "count": 1
       },
       {
-        "topic": "public-private-partnerships",
+        "topic": "land-restoration",
         "count": 1
       },
       {
-        "topic": "urbanization",
+        "topic": "drought-resilience",
         "count": 1
       },
       {
-        "topic": "economic-growth",
+        "topic": "policy-commitments",
         "count": 1
       },
       {
-        "topic": "security",
+        "topic": "rental_stabilization",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 7,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 2,
-      "neutral": 4,
+      "neutral": 11,
+      "bullish": 3,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "infrastructure-financing",
+        "topic": "climate-resilience",
         "count": 1
       },
       {
-        "topic": "public-private-partnerships",
+        "topic": "land-restoration",
         "count": 1
       },
       {
-        "topic": "urbanization",
+        "topic": "drought-resilience",
         "count": 1
       },
       {
-        "topic": "economic-growth",
+        "topic": "policy-commitments",
         "count": 1
       },
       {
-        "topic": "security",
+        "topic": "rental_stabilization",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 7,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 2,
-      "neutral": 4,
+      "neutral": 11,
+      "bullish": 3,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "infrastructure-financing",
+        "topic": "climate-resilience",
         "count": 1
       },
       {
-        "topic": "public-private-partnerships",
+        "topic": "land-restoration",
         "count": 1
       },
       {
-        "topic": "urbanization",
+        "topic": "drought-resilience",
         "count": 1
       },
       {
-        "topic": "economic-growth",
+        "topic": "policy-commitments",
         "count": 1
       },
       {
-        "topic": "security",
+        "topic": "rental_stabilization",
         "count": 1
       }
     ],

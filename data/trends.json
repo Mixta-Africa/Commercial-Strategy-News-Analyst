@@ -1,92 +1,89 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 12,
     "sentimentBreakdown": {
       "neutral": 11,
-      "bullish": 3,
-      "bearish": 1
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "climate-resilience",
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "payment flexibility",
+        "count": 2
+      },
+      {
+        "topic": "cross-border investment",
         "count": 1
       },
       {
-        "topic": "land-restoration",
+        "topic": "Ghana real estate",
         "count": 1
       },
       {
-        "topic": "drought-resilience",
-        "count": 1
-      },
-      {
-        "topic": "policy-commitments",
-        "count": 1
-      },
-      {
-        "topic": "rental_stabilization",
+        "topic": "AfCFTA",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 12,
     "sentimentBreakdown": {
       "neutral": 11,
-      "bullish": 3,
-      "bearish": 1
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "climate-resilience",
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "payment flexibility",
+        "count": 2
+      },
+      {
+        "topic": "cross-border investment",
         "count": 1
       },
       {
-        "topic": "land-restoration",
+        "topic": "Ghana real estate",
         "count": 1
       },
       {
-        "topic": "drought-resilience",
-        "count": 1
-      },
-      {
-        "topic": "policy-commitments",
-        "count": 1
-      },
-      {
-        "topic": "rental_stabilization",
+        "topic": "AfCFTA",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 12,
     "sentimentBreakdown": {
       "neutral": 11,
-      "bullish": 3,
-      "bearish": 1
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "climate-resilience",
+        "topic": "affordable housing",
+        "count": 3
+      },
+      {
+        "topic": "payment flexibility",
+        "count": 2
+      },
+      {
+        "topic": "cross-border investment",
         "count": 1
       },
       {
-        "topic": "land-restoration",
+        "topic": "Ghana real estate",
         "count": 1
       },
       {
-        "topic": "drought-resilience",
-        "count": 1
-      },
-      {
-        "topic": "policy-commitments",
-        "count": 1
-      },
-      {
-        "topic": "rental_stabilization",
+        "topic": "AfCFTA",
         "count": 1
       }
     ],

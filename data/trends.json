@@ -1,89 +1,89 @@
 {
   "7day": {
-    "articleCount": 12,
+    "articleCount": 8,
     "sentimentBreakdown": {
-      "neutral": 11,
-      "bullish": 1
+      "bearish": 2,
+      "neutral": 6
     },
     "topTopics": [
       {
+        "topic": "rent inflation",
+        "count": 1
+      },
+      {
+        "topic": "housing deficit",
+        "count": 1
+      },
+      {
         "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "payment flexibility",
-        "count": 2
-      },
-      {
-        "topic": "cross-border investment",
         "count": 1
       },
       {
-        "topic": "Ghana real estate",
+        "topic": "rent regulation",
         "count": 1
       },
       {
-        "topic": "AfCFTA",
+        "topic": "PPP",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 12,
+    "articleCount": 8,
     "sentimentBreakdown": {
-      "neutral": 11,
-      "bullish": 1
+      "bearish": 2,
+      "neutral": 6
     },
     "topTopics": [
       {
+        "topic": "rent inflation",
+        "count": 1
+      },
+      {
+        "topic": "housing deficit",
+        "count": 1
+      },
+      {
         "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "payment flexibility",
-        "count": 2
-      },
-      {
-        "topic": "cross-border investment",
         "count": 1
       },
       {
-        "topic": "Ghana real estate",
+        "topic": "rent regulation",
         "count": 1
       },
       {
-        "topic": "AfCFTA",
+        "topic": "PPP",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 12,
+    "articleCount": 8,
     "sentimentBreakdown": {
-      "neutral": 11,
-      "bullish": 1
+      "bearish": 2,
+      "neutral": 6
     },
     "topTopics": [
       {
+        "topic": "rent inflation",
+        "count": 1
+      },
+      {
+        "topic": "housing deficit",
+        "count": 1
+      },
+      {
         "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "payment flexibility",
-        "count": 2
-      },
-      {
-        "topic": "cross-border investment",
         "count": 1
       },
       {
-        "topic": "Ghana real estate",
+        "topic": "rent regulation",
         "count": 1
       },
       {
-        "topic": "AfCFTA",
+        "topic": "PPP",
         "count": 1
       }
     ],

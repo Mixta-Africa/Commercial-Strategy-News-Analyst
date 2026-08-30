@@ -2182,6 +2182,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-08-30",
+      "articleCount": 8,
+      "sentimentBreakdown": {
+        "bearish": 2,
+        "neutral": 6
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "rent inflation",
+          "count": 1
+        },
+        {
+          "topic": "housing deficit",
+          "count": 1
+        },
+        {
+          "topic": "affordable housing",
+          "count": 1
+        },
+        {
+          "topic": "rent regulation",
+          "count": 1
+        },
+        {
+          "topic": "PPP",
+          "count": 1
+        }
+      ]
     }
   ]
 }

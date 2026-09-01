@@ -2245,6 +2245,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-09-01",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 9,
+        "bullish": 3,
+        "bearish": 3
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "shortlet market",
+          "count": 2
+        },
+        {
+          "topic": "real-estate-standards",
+          "count": 1
+        },
+        {
+          "topic": "integrity",
+          "count": 1
+        },
+        {
+          "topic": "quality-housing",
+          "count": 1
+        }
+      ]
     }
   ]
 }

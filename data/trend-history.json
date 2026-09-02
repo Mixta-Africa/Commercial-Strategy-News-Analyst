@@ -2277,6 +2277,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-09-02",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bullish": 6,
+        "neutral": 7,
+        "bearish": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "market-growth",
+          "count": 1
+        },
+        {
+          "topic": "untapped-potential",
+          "count": 1
+        },
+        {
+          "topic": "Port-Harcourt",
+          "count": 1
+        },
+        {
+          "topic": "Lagos-growth",
+          "count": 1
+        },
+        {
+          "topic": "mortgage_rates",
+          "count": 1
+        }
+      ]
     }
   ]
 }

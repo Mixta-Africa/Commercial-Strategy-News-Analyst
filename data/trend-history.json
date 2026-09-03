@@ -2309,6 +2309,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-09-03",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bearish": 2,
+        "bullish": 5,
+        "neutral": 8
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "urbanization",
+          "count": 2
+        },
+        {
+          "topic": "housing deficit",
+          "count": 2
+        },
+        {
+          "topic": "flood risk",
+          "count": 1
+        },
+        {
+          "topic": "wetland loss",
+          "count": 1
+        },
+        {
+          "topic": "real estate boom",
+          "count": 1
+        }
+      ]
     }
   ]
 }

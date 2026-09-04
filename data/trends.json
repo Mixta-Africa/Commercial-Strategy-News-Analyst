@@ -1,95 +1,26 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "bearish": 2,
-      "bullish": 5,
-      "neutral": 8
+      "neutral": 14
     },
-    "topTopics": [
-      {
-        "topic": "urbanization",
-        "count": 2
-      },
-      {
-        "topic": "housing deficit",
-        "count": 2
-      },
-      {
-        "topic": "flood risk",
-        "count": 1
-      },
-      {
-        "topic": "wetland loss",
-        "count": 1
-      },
-      {
-        "topic": "real estate boom",
-        "count": 1
-      }
-    ],
+    "topTopics": [],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "bearish": 2,
-      "bullish": 5,
-      "neutral": 8
+      "neutral": 14
     },
-    "topTopics": [
-      {
-        "topic": "urbanization",
-        "count": 2
-      },
-      {
-        "topic": "housing deficit",
-        "count": 2
-      },
-      {
-        "topic": "flood risk",
-        "count": 1
-      },
-      {
-        "topic": "wetland loss",
-        "count": 1
-      },
-      {
-        "topic": "real estate boom",
-        "count": 1
-      }
-    ],
+    "topTopics": [],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "bearish": 2,
-      "bullish": 5,
-      "neutral": 8
+      "neutral": 14
     },
-    "topTopics": [
-      {
-        "topic": "urbanization",
-        "count": 2
-      },
-      {
-        "topic": "housing deficit",
-        "count": 2
-      },
-      {
-        "topic": "flood risk",
-        "count": 1
-      },
-      {
-        "topic": "wetland loss",
-        "count": 1
-      },
-      {
-        "topic": "real estate boom",
-        "count": 1
-      }
-    ],
+    "topTopics": [],
     "averageSentiment": "neutral"
   }
 }

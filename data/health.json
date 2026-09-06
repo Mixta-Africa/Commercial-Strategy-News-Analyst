@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-05T11:01:11.282Z",
+  "timestamp": "2026-09-06T11:25:14.750Z",
   "status": "degraded",
   "sources": {
     "gnews": {
@@ -9,7 +9,7 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 73,
+      "count": 70,
       "error": null
     },
     "googlenews": {
@@ -22,7 +22,7 @@
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 6,
+          "count": 1,
           "error": null
         },
         "Premium Times": {
@@ -37,18 +37,18 @@
         },
         "Nairametrics": {
           "ok": true,
-          "count": 2,
+          "count": 5,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 2,
+          "count": 4,
           "error": null
         },
         "The Punch (Business)": {
-          "ok": true,
+          "ok": false,
           "count": 0,
-          "error": null
+          "error": "HTTP 403"
         },
         "Estate Intel": {
           "ok": false,
@@ -79,23 +79,22 @@
     }
   },
   "counts": {
-    "raw": 231,
-    "filtered": 7,
-    "analyzed": 7,
-    "aiFallbacks": 7
+    "raw": 228,
+    "filtered": 8,
+    "analyzed": 8,
+    "aiFallbacks": 8
   },
   "synthesis": {
-    "ok": false,
-    "themes": 0
+    "ok": true,
+    "themes": 3
   },
   "email": {
     "sent": true
   },
   "pipelineGate": false,
   "warnings": [
-    "Sources down: RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403)",
+    "Sources down: RSS The Punch (Business) (HTTP 403); RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403)",
     "Note: GNews (0 articles) — known issue, excluded from down-count",
-    "Executive briefing failed to generate (digest fell back to article list).",
     "100% of articles had no AI summary."
   ]
 }

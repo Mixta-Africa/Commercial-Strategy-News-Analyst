@@ -2377,6 +2377,28 @@
       },
       "averageSentiment": "neutral",
       "topTopics": []
+    },
+    {
+      "date": "2026-09-08",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 15
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 1
+        },
+        {
+          "topic": "government projects",
+          "count": 1
+        },
+        {
+          "topic": "housing supply",
+          "count": 1
+        }
+      ]
     }
   ]
 }

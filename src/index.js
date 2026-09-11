@@ -24,6 +24,7 @@ const { scoreRelevance } = require('./relevance');
 const { getWatchListOverride, getSourcesOverride } = require('./config-loader');
 const { enrichArticles } = require('./content-enricher');
 const { generateEmailHTML, sendEmail } = require('./email-service');
+const { runProbes, buildStatusSummary } = require('./model-registry');
 const whitelist = require('./whitelist.json');
 
 class NewsPipeline {
@@ -733,6 +734,22 @@ class NewsPipeline {
 
     try {
       const health = new RunHealth(this.timestamp);
+
+      // PHASE 0: Probe AI providers — detect dead/deprecated models before
+      // they waste real API calls on 15 articles. Results cached in
+      // data/model-status.json and committed back to the repo, so each run
+      // starts from known state rather than discovering failures cold.
+      console.log('[PHASE 0] Probing AI providers...');
+      try {
+        const { status: modelStatus, results: probeResults } = await runProbes();
+        const modelSummary = buildStatusSummary(modelStatus);
+        console.log(`[PHASE 0] ${modelSummary.workingModels.length} working, ${modelSummary.deadModels.length} dead`);
+        if (modelSummary.alert) {
+          health.addWarning(`CRITICAL: Only ${modelSummary.totalWorking} AI provider(s) working. Dead: ${modelSummary.deadModels.join('; ')}`);
+        }
+      } catch (probeErr) {
+        console.warn('[PHASE 0] Provider probe failed (non-fatal):', probeErr.message);
+      }
 
       // Apply any dashboard-edited config (watch-list / sources) before collecting.
       await this.applyRemoteConfig();

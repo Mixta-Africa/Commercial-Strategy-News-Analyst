@@ -1,26 +1,92 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 7,
     "sentimentBreakdown": {
-      "neutral": 15
+      "neutral": 6,
+      "bearish": 1
     },
-    "topTopics": [],
+    "topTopics": [
+      {
+        "topic": "housing reforms",
+        "count": 1
+      },
+      {
+        "topic": "committee",
+        "count": 1
+      },
+      {
+        "topic": "policy changes",
+        "count": 1
+      },
+      {
+        "topic": "stakeholder recommendations",
+        "count": 1
+      },
+      {
+        "topic": "urban development",
+        "count": 1
+      }
+    ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 7,
     "sentimentBreakdown": {
-      "neutral": 15
+      "neutral": 6,
+      "bearish": 1
     },
-    "topTopics": [],
+    "topTopics": [
+      {
+        "topic": "housing reforms",
+        "count": 1
+      },
+      {
+        "topic": "committee",
+        "count": 1
+      },
+      {
+        "topic": "policy changes",
+        "count": 1
+      },
+      {
+        "topic": "stakeholder recommendations",
+        "count": 1
+      },
+      {
+        "topic": "urban development",
+        "count": 1
+      }
+    ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 7,
     "sentimentBreakdown": {
-      "neutral": 15
+      "neutral": 6,
+      "bearish": 1
     },
-    "topTopics": [],
+    "topTopics": [
+      {
+        "topic": "housing reforms",
+        "count": 1
+      },
+      {
+        "topic": "committee",
+        "count": 1
+      },
+      {
+        "topic": "policy changes",
+        "count": 1
+      },
+      {
+        "topic": "stakeholder recommendations",
+        "count": 1
+      },
+      {
+        "topic": "urban development",
+        "count": 1
+      }
+    ],
     "averageSentiment": "neutral"
   }
 }

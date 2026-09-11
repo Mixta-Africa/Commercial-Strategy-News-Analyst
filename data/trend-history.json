@@ -2420,12 +2420,34 @@
     },
     {
       "date": "2026-09-11",
-      "articleCount": 15,
+      "articleCount": 7,
       "sentimentBreakdown": {
-        "neutral": 15
+        "neutral": 6,
+        "bearish": 1
       },
       "averageSentiment": "neutral",
-      "topTopics": []
+      "topTopics": [
+        {
+          "topic": "housing reforms",
+          "count": 1
+        },
+        {
+          "topic": "committee",
+          "count": 1
+        },
+        {
+          "topic": "policy changes",
+          "count": 1
+        },
+        {
+          "topic": "stakeholder recommendations",
+          "count": 1
+        },
+        {
+          "topic": "urban development",
+          "count": 1
+        }
+      ]
     }
   ]
 }

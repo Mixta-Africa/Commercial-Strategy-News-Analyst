@@ -1,0 +1,170 @@
+{
+  "Groq::openai/gpt-oss-20b": {
+    "provider": "Groq",
+    "model": "openai/gpt-oss-20b",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:28.649Z",
+    "error": "401: Invalid API Key",
+    "response": null
+  },
+  "Groq::openai/gpt-oss-120b": {
+    "provider": "Groq",
+    "model": "openai/gpt-oss-120b",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:29.530Z",
+    "error": "401: Invalid API Key",
+    "response": null
+  },
+  "Gemini::gemini-2.5-flash": {
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:30.492Z",
+    "error": "429: You exceeded your current quota, please check your plan and billing details. For",
+    "response": null
+  },
+  "Gemini::gemini-2.5-flash-lite": {
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash-lite",
+    "status": "DEAD",
+    "lastProbed": "2026-09-11T22:20:31.480Z",
+    "error": "404: This model models/gemini-2.5-flash-lite is no longer available to new users. Ple",
+    "response": null
+  },
+  "Gemini::gemini-2.0-flash": {
+    "provider": "Gemini",
+    "model": "gemini-2.0-flash",
+    "status": "DEAD",
+    "lastProbed": "2026-09-11T22:20:32.418Z",
+    "error": "404: This model models/gemini-2.0-flash is no longer available. Please update your co",
+    "response": null
+  },
+  "SambaNova::Meta-Llama-3.3-70B-Instruct": {
+    "provider": "SambaNova",
+    "model": "Meta-Llama-3.3-70B-Instruct",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:33.701Z",
+    "error": "401: Incorrect API key provided: f8976e*****f5da. You can find your API key at https:",
+    "response": null
+  },
+  "SambaNova::Meta-Llama-3.1-405B-Instruct": {
+    "provider": "SambaNova",
+    "model": "Meta-Llama-3.1-405B-Instruct",
+    "status": "DEAD",
+    "lastProbed": "2026-09-11T22:20:34.736Z",
+    "error": "404: The model `Meta-Llama-3.1-405B-Instruct` does not exist or you do not have acces",
+    "response": null
+  },
+  "Mistral::mistral-small-latest": {
+    "provider": "Mistral",
+    "model": "mistral-small-latest",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:35.749Z",
+    "error": "401: Request failed with status code 401",
+    "response": null
+  },
+  "Mistral::open-mistral-nemo": {
+    "provider": "Mistral",
+    "model": "open-mistral-nemo",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:36.758Z",
+    "error": "401: Request failed with status code 401",
+    "response": null
+  },
+  "Together::meta-llama/Llama-3.3-70B-Instruct-Turbo-Free": {
+    "provider": "Together",
+    "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:37.858Z",
+    "error": "401: Invalid API key provided. You can find your API key at https://api.together.ai/s",
+    "response": null
+  },
+  "Together::meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo": {
+    "provider": "Together",
+    "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:38.970Z",
+    "error": "401: Invalid API key provided. You can find your API key at https://api.together.ai/s",
+    "response": null
+  },
+  "OpenRouter::inclusionai/ling-3.0-flash-vl:free": {
+    "provider": "OpenRouter",
+    "model": "inclusionai/ling-3.0-flash-vl:free",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:40.671Z",
+    "error": "ERR: Empty response from model",
+    "response": null
+  },
+  "OpenRouter::nex-agi/nex-n2.5-mini:free": {
+    "provider": "OpenRouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "status": "WORKING",
+    "lastProbed": "2026-09-11T22:20:41.986Z",
+    "error": null,
+    "response": "OK"
+  },
+  "OpenRouter::nex-agi/nex-n2.5-pro:free": {
+    "provider": "OpenRouter",
+    "model": "nex-agi/nex-n2.5-pro:free",
+    "status": "WORKING",
+    "lastProbed": "2026-09-11T22:20:44.063Z",
+    "error": null,
+    "response": "OK"
+  },
+  "OpenRouter::inclusionai/ling-3.0-flash-sante:free": {
+    "provider": "OpenRouter",
+    "model": "inclusionai/ling-3.0-flash-sante:free",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:45.539Z",
+    "error": "ERR: Empty response from model",
+    "response": null
+  },
+  "OpenRouter::inclusionai/ling-3.0-flash-fin:free": {
+    "provider": "OpenRouter",
+    "model": "inclusionai/ling-3.0-flash-fin:free",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:47.303Z",
+    "error": "ERR: Empty response from model",
+    "response": null
+  },
+  "OpenRouter::dots-studio/dots-3-note-preview:free": {
+    "provider": "OpenRouter",
+    "model": "dots-studio/dots-3-note-preview:free",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:48.994Z",
+    "error": "ERR: Empty response from model",
+    "response": null
+  },
+  "OpenRouter::liquid/lfm-2.5-2.6b:free": {
+    "provider": "OpenRouter",
+    "model": "liquid/lfm-2.5-2.6b:free",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:20:50.293Z",
+    "error": "ERR: Empty response from model",
+    "response": null
+  },
+  "OpenRouter::nvidia/nemotron-3.5-lightning:free": {
+    "provider": "OpenRouter",
+    "model": "nvidia/nemotron-3.5-lightning:free",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:21:01.100Z",
+    "error": "ERR: timeout of 10000ms exceeded",
+    "response": null
+  },
+  "OpenRouter::thinkingmachines/inkling-small:free": {
+    "provider": "OpenRouter",
+    "model": "thinkingmachines/inkling-small:free",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-11T22:21:02.002Z",
+    "error": "403: thinkingmachines/inkling-small:free is only available on agentic harnesses. Try ",
+    "response": null
+  },
+  "OpenRouter::poolside/laguna-s-2.1:free": {
+    "provider": "OpenRouter",
+    "model": "poolside/laguna-s-2.1:free",
+    "status": "WORKING",
+    "lastProbed": "2026-09-11T22:21:03.854Z",
+    "error": null,
+    "response": "OK"
+  }
+}

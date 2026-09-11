@@ -40,23 +40,25 @@ jobs:
 
           const tests = [
             {
-              name: 'Groq-8b (llama-3.1-8b-instant)',
+              name: 'Groq-20b (openai/gpt-oss-20b)',
               key: getFirstKey(process.env.GROQ_API_KEY),
               fn: async (key) => {
+                // Replaces llama-3.1-8b-instant (deprecated June 17 2026, Enterprise-only Aug 26 2026)
                 const r = await axios.post('https://api.groq.com/openai/v1/chat/completions',
-                  { model: 'llama-3.1-8b-instant', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
+                  { model: 'openai/gpt-oss-20b', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
                   { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: T });
-                return `${r.data.choices[0]?.message?.content?.trim()} | RPD bucket: 14,400`;
+                return `${r.data.choices[0]?.message?.content?.trim()} | article-analysis bucket`;
               }
             },
             {
-              name: 'Groq-70b (llama-3.3-70b-versatile)',
+              name: 'Groq-120b (openai/gpt-oss-120b)',
               key: getFirstKey(process.env.GROQ_API_KEY),
               fn: async (key) => {
+                // Replaces llama-3.3-70b-versatile (deprecated June 17 2026, Enterprise-only Aug 26 2026)
                 const r = await axios.post('https://api.groq.com/openai/v1/chat/completions',
-                  { model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
+                  { model: 'openai/gpt-oss-120b', messages: [{ role: 'user', content: 'Say OK' }], max_tokens: 5 },
                   { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: T });
-                return `${r.data.choices[0]?.message?.content?.trim()} | RPD bucket: 1,000`;
+                return `${r.data.choices[0]?.message?.content?.trim()} | synthesis bucket`;
               }
             },
             {
@@ -117,7 +119,9 @@ jobs:
               name: 'OpenRouter (free tier)',
               key: getFirstKey(process.env.OPENROUTER_API_KEY),
               fn: async (key) => {
-                const models = ['meta-llama/llama-3.3-70b:free', 'openai/gpt-oss-20b:free'];
+                // Free model list rotates. instruct suffix required in slug.
+                // deepseek-r1:free removed mid-2026.
+                const models = ['meta-llama/llama-3.3-70b-instruct:free', 'openai/gpt-oss-20b:free', 'google/gemma-3-27b-it:free'];
                 for (const m of models) {
                   try {
                     const r = await axios.post('https://openrouter.ai/api/v1/chat/completions',
@@ -164,6 +168,7 @@ jobs:
           SAMBANOVA_API_KEY: ${{ secrets.SAMBANOVA_API_KEY }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
         continue-on-error: true
 
       # ---------------------------------------------------------------
@@ -178,6 +183,7 @@ jobs:
           SAMBANOVA_API_KEY: ${{ secrets.SAMBANOVA_API_KEY }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
           GNEWS_API_KEY: ${{ secrets.GNEWS_API_KEY }}
           NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
           SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}

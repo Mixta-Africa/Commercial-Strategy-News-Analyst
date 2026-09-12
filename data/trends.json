@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 7,
+    "articleCount": 2,
     "sentimentBreakdown": {
-      "neutral": 6,
+      "bullish": 1,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "housing reforms",
+        "topic": "social housing",
         "count": 1
       },
       {
-        "topic": "committee",
+        "topic": "private sector",
         "count": 1
       },
       {
-        "topic": "policy changes",
+        "topic": "affordable housing",
         "count": 1
       },
       {
-        "topic": "stakeholder recommendations",
+        "topic": "gender equity",
         "count": 1
       },
       {
-        "topic": "urban development",
+        "topic": "Lagos",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "30day": {
-    "articleCount": 7,
+    "articleCount": 2,
     "sentimentBreakdown": {
-      "neutral": 6,
+      "bullish": 1,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "housing reforms",
+        "topic": "social housing",
         "count": 1
       },
       {
-        "topic": "committee",
+        "topic": "private sector",
         "count": 1
       },
       {
-        "topic": "policy changes",
+        "topic": "affordable housing",
         "count": 1
       },
       {
-        "topic": "stakeholder recommendations",
+        "topic": "gender equity",
         "count": 1
       },
       {
-        "topic": "urban development",
+        "topic": "Lagos",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "90day": {
-    "articleCount": 7,
+    "articleCount": 2,
     "sentimentBreakdown": {
-      "neutral": 6,
+      "bullish": 1,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "housing reforms",
+        "topic": "social housing",
         "count": 1
       },
       {
-        "topic": "committee",
+        "topic": "private sector",
         "count": 1
       },
       {
-        "topic": "policy changes",
+        "topic": "affordable housing",
         "count": 1
       },
       {
-        "topic": "stakeholder recommendations",
+        "topic": "gender equity",
         "count": 1
       },
       {
-        "topic": "urban development",
+        "topic": "Lagos",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   }
 }

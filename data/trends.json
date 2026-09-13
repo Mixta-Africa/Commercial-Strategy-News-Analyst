@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 2,
+    "articleCount": 11,
     "sentimentBreakdown": {
-      "bullish": 1,
-      "bearish": 1
+      "bullish": 3,
+      "neutral": 8
     },
     "topTopics": [
       {
-        "topic": "social housing",
+        "topic": "community redevelopment",
         "count": 1
       },
       {
-        "topic": "private sector",
+        "topic": "heritage preservation",
         "count": 1
       },
       {
-        "topic": "affordable housing",
+        "topic": "joint-venture ownership",
         "count": 1
       },
       {
-        "topic": "gender equity",
+        "topic": "phased rehousing",
         "count": 1
       },
       {
-        "topic": "Lagos",
+        "topic": "inclusive development",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 2,
+    "articleCount": 11,
     "sentimentBreakdown": {
-      "bullish": 1,
-      "bearish": 1
+      "bullish": 3,
+      "neutral": 8
     },
     "topTopics": [
       {
-        "topic": "social housing",
+        "topic": "community redevelopment",
         "count": 1
       },
       {
-        "topic": "private sector",
+        "topic": "heritage preservation",
         "count": 1
       },
       {
-        "topic": "affordable housing",
+        "topic": "joint-venture ownership",
         "count": 1
       },
       {
-        "topic": "gender equity",
+        "topic": "phased rehousing",
         "count": 1
       },
       {
-        "topic": "Lagos",
+        "topic": "inclusive development",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 2,
+    "articleCount": 11,
     "sentimentBreakdown": {
-      "bullish": 1,
-      "bearish": 1
+      "bullish": 3,
+      "neutral": 8
     },
     "topTopics": [
       {
-        "topic": "social housing",
+        "topic": "community redevelopment",
         "count": 1
       },
       {
-        "topic": "private sector",
+        "topic": "heritage preservation",
         "count": 1
       },
       {
-        "topic": "affordable housing",
+        "topic": "joint-venture ownership",
         "count": 1
       },
       {
-        "topic": "gender equity",
+        "topic": "phased rehousing",
         "count": 1
       },
       {
-        "topic": "Lagos",
+        "topic": "inclusive development",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   }
 }

@@ -2479,6 +2479,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-09-13",
+      "articleCount": 11,
+      "sentimentBreakdown": {
+        "bullish": 3,
+        "neutral": 8
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "community redevelopment",
+          "count": 1
+        },
+        {
+          "topic": "heritage preservation",
+          "count": 1
+        },
+        {
+          "topic": "joint-venture ownership",
+          "count": 1
+        },
+        {
+          "topic": "phased rehousing",
+          "count": 1
+        },
+        {
+          "topic": "inclusive development",
+          "count": 1
+        }
+      ]
     }
   ]
 }

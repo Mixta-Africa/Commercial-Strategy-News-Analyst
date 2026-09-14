@@ -2,28 +2,29 @@
   "7day": {
     "articleCount": 11,
     "sentimentBreakdown": {
-      "bullish": 3,
-      "neutral": 8
+      "neutral": 8,
+      "bearish": 2,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "community redevelopment",
+        "topic": "housing deficit",
+        "count": 2
+      },
+      {
+        "topic": "affordable-housing",
+        "count": 2
+      },
+      {
+        "topic": "affordable housing",
+        "count": 2
+      },
+      {
+        "topic": "land reclamation",
         "count": 1
       },
       {
-        "topic": "heritage preservation",
-        "count": 1
-      },
-      {
-        "topic": "joint-venture ownership",
-        "count": 1
-      },
-      {
-        "topic": "phased rehousing",
-        "count": 1
-      },
-      {
-        "topic": "inclusive development",
+        "topic": "housing affordability",
         "count": 1
       }
     ],
@@ -32,28 +33,29 @@
   "30day": {
     "articleCount": 11,
     "sentimentBreakdown": {
-      "bullish": 3,
-      "neutral": 8
+      "neutral": 8,
+      "bearish": 2,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "community redevelopment",
+        "topic": "housing deficit",
+        "count": 2
+      },
+      {
+        "topic": "affordable-housing",
+        "count": 2
+      },
+      {
+        "topic": "affordable housing",
+        "count": 2
+      },
+      {
+        "topic": "land reclamation",
         "count": 1
       },
       {
-        "topic": "heritage preservation",
-        "count": 1
-      },
-      {
-        "topic": "joint-venture ownership",
-        "count": 1
-      },
-      {
-        "topic": "phased rehousing",
-        "count": 1
-      },
-      {
-        "topic": "inclusive development",
+        "topic": "housing affordability",
         "count": 1
       }
     ],
@@ -62,28 +64,29 @@
   "90day": {
     "articleCount": 11,
     "sentimentBreakdown": {
-      "bullish": 3,
-      "neutral": 8
+      "neutral": 8,
+      "bearish": 2,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "community redevelopment",
+        "topic": "housing deficit",
+        "count": 2
+      },
+      {
+        "topic": "affordable-housing",
+        "count": 2
+      },
+      {
+        "topic": "affordable housing",
+        "count": 2
+      },
+      {
+        "topic": "land reclamation",
         "count": 1
       },
       {
-        "topic": "heritage preservation",
-        "count": 1
-      },
-      {
-        "topic": "joint-venture ownership",
-        "count": 1
-      },
-      {
-        "topic": "phased rehousing",
-        "count": 1
-      },
-      {
-        "topic": "inclusive development",
+        "topic": "housing affordability",
         "count": 1
       }
     ],

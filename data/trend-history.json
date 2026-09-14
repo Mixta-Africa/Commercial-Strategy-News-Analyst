@@ -2510,6 +2510,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-09-14",
+      "articleCount": 11,
+      "sentimentBreakdown": {
+        "neutral": 8,
+        "bearish": 2,
+        "bullish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "housing deficit",
+          "count": 2
+        },
+        {
+          "topic": "affordable-housing",
+          "count": 2
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "land reclamation",
+          "count": 1
+        },
+        {
+          "topic": "housing affordability",
+          "count": 1
+        }
+      ]
     }
   ]
 }

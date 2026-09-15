@@ -2542,6 +2542,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-09-15",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 10,
+        "bullish": 4,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "AI",
+          "count": 2
+        },
+        {
+          "topic": "trust",
+          "count": 2
+        },
+        {
+          "topic": "data center",
+          "count": 1
+        },
+        {
+          "topic": "cloud computing",
+          "count": 1
+        },
+        {
+          "topic": "hyperscalers",
+          "count": 1
+        }
+      ]
     }
   ]
 }

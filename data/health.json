@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-14T13:28:27.749Z",
-  "status": "healthy",
+  "timestamp": "2026-09-15T12:20:36.092Z",
+  "status": "degraded",
   "sources": {
     "gnews": {
       "ok": false,
@@ -9,7 +9,7 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 69,
+      "count": 71,
       "error": null
     },
     "googlenews": {
@@ -22,12 +22,12 @@
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 7,
+          "count": 2,
           "error": null
         },
         "Premium Times": {
           "ok": true,
-          "count": 1,
+          "count": 0,
           "error": null
         },
         "BusinessDay": {
@@ -37,12 +37,12 @@
         },
         "Nairametrics": {
           "ok": true,
-          "count": 5,
+          "count": 2,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 8,
+          "count": 7,
           "error": null
         },
         "The Punch (Business)": {
@@ -66,9 +66,9 @@
           "error": "HTTP 403"
         },
         "Vanguard (Homes & Property)": {
-          "ok": false,
-          "count": 0,
-          "error": "HTTP 403"
+          "ok": true,
+          "count": 10,
+          "error": null
         }
       }
     },
@@ -79,21 +79,22 @@
     }
   },
   "counts": {
-    "raw": 385,
-    "filtered": 11,
-    "analyzed": 11,
+    "raw": 229,
+    "filtered": 15,
+    "analyzed": 15,
     "aiFallbacks": 1
   },
   "synthesis": {
-    "ok": true,
-    "themes": 4
+    "ok": false,
+    "themes": 0
   },
   "email": {
     "sent": true
   },
   "pipelineGate": false,
   "warnings": [
-    "Sources down: RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403); RSS Vanguard (Homes & Property) (HTTP 403)",
-    "Note: GNews (0 articles) — known issue, excluded from down-count"
+    "Sources down: RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403)",
+    "Note: GNews (0 articles) — known issue, excluded from down-count",
+    "Executive briefing failed to generate (digest fell back to article list)."
   ]
 }

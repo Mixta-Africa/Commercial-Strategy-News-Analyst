@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 10,
-      "bullish": 4,
+      "neutral": 12,
+      "bullish": 1,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "AI",
+        "topic": "housing deficit",
+        "count": 4
+      },
+      {
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "trust",
+        "topic": "infrastructure",
         "count": 2
       },
       {
-        "topic": "data center",
-        "count": 1
+        "topic": "affordable housing",
+        "count": 2
       },
       {
-        "topic": "cloud computing",
-        "count": 1
-      },
-      {
-        "topic": "hyperscalers",
+        "topic": "tenant disputes",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 10,
-      "bullish": 4,
+      "neutral": 12,
+      "bullish": 1,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "AI",
+        "topic": "housing deficit",
+        "count": 4
+      },
+      {
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "trust",
+        "topic": "infrastructure",
         "count": 2
       },
       {
-        "topic": "data center",
-        "count": 1
+        "topic": "affordable housing",
+        "count": 2
       },
       {
-        "topic": "cloud computing",
-        "count": 1
-      },
-      {
-        "topic": "hyperscalers",
+        "topic": "tenant disputes",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 10,
-      "bullish": 4,
+      "neutral": 12,
+      "bullish": 1,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "AI",
+        "topic": "housing deficit",
+        "count": 4
+      },
+      {
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "trust",
+        "topic": "infrastructure",
         "count": 2
       },
       {
-        "topic": "data center",
-        "count": 1
+        "topic": "affordable housing",
+        "count": 2
       },
       {
-        "topic": "cloud computing",
-        "count": 1
-      },
-      {
-        "topic": "hyperscalers",
+        "topic": "tenant disputes",
         "count": 1
       }
     ],

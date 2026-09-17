@@ -1,22 +1,21 @@
 {
   "7day": {
-    "articleCount": 14,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 12,
-      "bullish": 1,
-      "bearish": 1
+      "bullish": 6,
+      "neutral": 9
     },
     "topTopics": [
       {
-        "topic": "housing deficit",
-        "count": 4
-      },
-      {
-        "topic": "Lagos real estate",
-        "count": 2
+        "topic": "logistics",
+        "count": 3
       },
       {
         "topic": "infrastructure",
+        "count": 2
+      },
+      {
+        "topic": "Lagos",
         "count": 2
       },
       {
@@ -24,30 +23,29 @@
         "count": 2
       },
       {
-        "topic": "tenant disputes",
-        "count": 1
+        "topic": "housing deficit",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 14,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 12,
-      "bullish": 1,
-      "bearish": 1
+      "bullish": 6,
+      "neutral": 9
     },
     "topTopics": [
       {
-        "topic": "housing deficit",
-        "count": 4
-      },
-      {
-        "topic": "Lagos real estate",
-        "count": 2
+        "topic": "logistics",
+        "count": 3
       },
       {
         "topic": "infrastructure",
+        "count": 2
+      },
+      {
+        "topic": "Lagos",
         "count": 2
       },
       {
@@ -55,30 +53,29 @@
         "count": 2
       },
       {
-        "topic": "tenant disputes",
-        "count": 1
+        "topic": "housing deficit",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 14,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 12,
-      "bullish": 1,
-      "bearish": 1
+      "bullish": 6,
+      "neutral": 9
     },
     "topTopics": [
       {
-        "topic": "housing deficit",
-        "count": 4
-      },
-      {
-        "topic": "Lagos real estate",
-        "count": 2
+        "topic": "logistics",
+        "count": 3
       },
       {
         "topic": "infrastructure",
+        "count": 2
+      },
+      {
+        "topic": "Lagos",
         "count": 2
       },
       {
@@ -86,8 +83,8 @@
         "count": 2
       },
       {
-        "topic": "tenant disputes",
-        "count": 1
+        "topic": "housing deficit",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"

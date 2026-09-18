@@ -2,29 +2,30 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "neutral": 9
+      "neutral": 13,
+      "bearish": 1,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "logistics",
+        "topic": "security",
         "count": 3
       },
       {
-        "topic": "infrastructure",
+        "topic": "interest rates",
         "count": 2
       },
       {
-        "topic": "Lagos",
+        "topic": "housing market",
         "count": 2
       },
       {
-        "topic": "affordable housing",
-        "count": 2
+        "topic": "kidnapping",
+        "count": 1
       },
       {
-        "topic": "housing deficit",
-        "count": 2
+        "topic": "ransom",
+        "count": 1
       }
     ],
     "averageSentiment": "neutral"
@@ -32,29 +33,30 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "neutral": 9
+      "neutral": 13,
+      "bearish": 1,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "logistics",
+        "topic": "security",
         "count": 3
       },
       {
-        "topic": "infrastructure",
+        "topic": "interest rates",
         "count": 2
       },
       {
-        "topic": "Lagos",
+        "topic": "housing market",
         "count": 2
       },
       {
-        "topic": "affordable housing",
-        "count": 2
+        "topic": "kidnapping",
+        "count": 1
       },
       {
-        "topic": "housing deficit",
-        "count": 2
+        "topic": "ransom",
+        "count": 1
       }
     ],
     "averageSentiment": "neutral"
@@ -62,29 +64,30 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 6,
-      "neutral": 9
+      "neutral": 13,
+      "bearish": 1,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "logistics",
+        "topic": "security",
         "count": 3
       },
       {
-        "topic": "infrastructure",
+        "topic": "interest rates",
         "count": 2
       },
       {
-        "topic": "Lagos",
+        "topic": "housing market",
         "count": 2
       },
       {
-        "topic": "affordable housing",
-        "count": 2
+        "topic": "kidnapping",
+        "count": 1
       },
       {
-        "topic": "housing deficit",
-        "count": 2
+        "topic": "ransom",
+        "count": 1
       }
     ],
     "averageSentiment": "neutral"

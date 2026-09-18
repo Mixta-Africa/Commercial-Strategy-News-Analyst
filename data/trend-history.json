@@ -2637,6 +2637,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-09-18",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 13,
+        "bearish": 1,
+        "bullish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "security",
+          "count": 3
+        },
+        {
+          "topic": "interest rates",
+          "count": 2
+        },
+        {
+          "topic": "housing market",
+          "count": 2
+        },
+        {
+          "topic": "kidnapping",
+          "count": 1
+        },
+        {
+          "topic": "ransom",
+          "count": 1
+        }
+      ]
     }
   ]
 }

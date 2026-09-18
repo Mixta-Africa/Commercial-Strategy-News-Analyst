@@ -3,7 +3,7 @@
     "provider": "Groq",
     "model": "openai/gpt-oss-20b",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:17:53.748Z",
+    "lastProbed": "2026-09-18T11:58:29.259Z",
     "error": "401: Invalid API Key",
     "response": null
   },
@@ -11,7 +11,7 @@
     "provider": "Groq",
     "model": "openai/gpt-oss-120b",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:17:54.679Z",
+    "lastProbed": "2026-09-18T11:58:30.122Z",
     "error": "401: Invalid API Key",
     "response": null
   },
@@ -43,7 +43,7 @@
     "provider": "SambaNova",
     "model": "Meta-Llama-3.3-70B-Instruct",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:17:57.010Z",
+    "lastProbed": "2026-09-18T11:58:31.109Z",
     "error": "401: Incorrect API key provided: f8976e*****f5da. You can find your API key at https:",
     "response": null
   },
@@ -59,7 +59,7 @@
     "provider": "Mistral",
     "model": "mistral-small-latest",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:17:58.039Z",
+    "lastProbed": "2026-09-18T11:58:32.067Z",
     "error": "401: Request failed with status code 401",
     "response": null
   },
@@ -67,7 +67,7 @@
     "provider": "Mistral",
     "model": "open-mistral-nemo",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:17:59.069Z",
+    "lastProbed": "2026-09-18T11:58:33.025Z",
     "error": "401: Request failed with status code 401",
     "response": null
   },
@@ -75,7 +75,7 @@
     "provider": "Together",
     "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:18:00.099Z",
+    "lastProbed": "2026-09-18T11:58:34.025Z",
     "error": "401: Invalid API key provided. You can find your API key at https://api.together.ai/s",
     "response": null
   },
@@ -83,7 +83,7 @@
     "provider": "Together",
     "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:18:01.084Z",
+    "lastProbed": "2026-09-18T11:58:35.014Z",
     "error": "401: Invalid API key provided. You can find your API key at https://api.together.ai/s",
     "response": null
   },
@@ -91,7 +91,7 @@
     "provider": "OpenRouter",
     "model": "inclusionai/ling-3.0-flash-vl:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:18:02.950Z",
+    "lastProbed": "2026-09-18T11:58:36.532Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -115,7 +115,7 @@
     "provider": "OpenRouter",
     "model": "inclusionai/ling-3.0-flash-sante:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:18:13.451Z",
+    "lastProbed": "2026-09-18T11:58:38.017Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -123,7 +123,7 @@
     "provider": "OpenRouter",
     "model": "inclusionai/ling-3.0-flash-fin:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:18:15.202Z",
+    "lastProbed": "2026-09-18T11:58:39.376Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -131,7 +131,7 @@
     "provider": "OpenRouter",
     "model": "dots-studio/dots-3-note-preview:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:18:16.923Z",
+    "lastProbed": "2026-09-18T11:58:41.832Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -139,15 +139,15 @@
     "provider": "OpenRouter",
     "model": "liquid/lfm-2.5-2.6b:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:18:18.005Z",
-    "error": "429: Provider returned error",
+    "lastProbed": "2026-09-18T11:58:43.214Z",
+    "error": "ERR: Empty response from model",
     "response": null
   },
   "OpenRouter::nvidia/nemotron-3.5-lightning:free": {
     "provider": "OpenRouter",
     "model": "nvidia/nemotron-3.5-lightning:free",
     "status": "WORKING",
-    "lastProbed": "2026-09-16T12:18:28.395Z",
+    "lastProbed": "2026-09-18T11:58:44.178Z",
     "error": null,
     "response": "Here's a thinking process"
   },
@@ -165,6 +165,22 @@
     "status": "DEGRADED",
     "lastProbed": "2026-09-17T12:18:20.166Z",
     "error": "429: Provider returned error",
+    "response": null
+  },
+  "OpenRouter::qwen/qwen3.8-27b:free": {
+    "provider": "OpenRouter",
+    "model": "qwen/qwen3.8-27b:free",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-18T11:58:40.275Z",
+    "error": "429: Provider returned error",
+    "response": null
+  },
+  "OpenRouter::deepseek/deepseek-v4-flash-0731:free": {
+    "provider": "OpenRouter",
+    "model": "deepseek/deepseek-v4-flash-0731:free",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-18T11:58:45.922Z",
+    "error": "ERR: Empty response from model",
     "response": null
   }
 }

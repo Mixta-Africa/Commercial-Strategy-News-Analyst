@@ -1,93 +1,93 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "neutral": 13,
-      "bearish": 1,
-      "bullish": 1
+      "bullish": 3,
+      "bearish": 3,
+      "neutral": 6
     },
     "topTopics": [
       {
-        "topic": "security",
-        "count": 3
-      },
-      {
-        "topic": "interest rates",
+        "topic": "financing",
         "count": 2
       },
       {
-        "topic": "housing market",
+        "topic": "satellite towns",
         "count": 2
       },
       {
-        "topic": "kidnapping",
-        "count": 1
+        "topic": "secondary cities",
+        "count": 2
       },
       {
-        "topic": "ransom",
-        "count": 1
+        "topic": "infrastructure",
+        "count": 2
+      },
+      {
+        "topic": "regulation",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "neutral": 13,
-      "bearish": 1,
-      "bullish": 1
+      "bullish": 3,
+      "bearish": 3,
+      "neutral": 6
     },
     "topTopics": [
       {
-        "topic": "security",
-        "count": 3
-      },
-      {
-        "topic": "interest rates",
+        "topic": "financing",
         "count": 2
       },
       {
-        "topic": "housing market",
+        "topic": "satellite towns",
         "count": 2
       },
       {
-        "topic": "kidnapping",
-        "count": 1
+        "topic": "secondary cities",
+        "count": 2
       },
       {
-        "topic": "ransom",
-        "count": 1
+        "topic": "infrastructure",
+        "count": 2
+      },
+      {
+        "topic": "regulation",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 12,
     "sentimentBreakdown": {
-      "neutral": 13,
-      "bearish": 1,
-      "bullish": 1
+      "bullish": 3,
+      "bearish": 3,
+      "neutral": 6
     },
     "topTopics": [
       {
-        "topic": "security",
-        "count": 3
-      },
-      {
-        "topic": "interest rates",
+        "topic": "financing",
         "count": 2
       },
       {
-        "topic": "housing market",
+        "topic": "satellite towns",
         "count": 2
       },
       {
-        "topic": "kidnapping",
-        "count": 1
+        "topic": "secondary cities",
+        "count": 2
       },
       {
-        "topic": "ransom",
-        "count": 1
+        "topic": "infrastructure",
+        "count": 2
+      },
+      {
+        "topic": "regulation",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"

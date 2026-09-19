@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-18T11:58:29.161Z",
-  "status": "failed",
+  "timestamp": "2026-09-19T11:42:02.396Z",
+  "status": "degraded",
   "sources": {
     "gnews": {
       "ok": false,
@@ -9,35 +9,35 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 69,
+      "count": 70,
       "error": null
     },
     "googlenews": {
       "ok": true,
-      "count": 125,
+      "count": 123,
       "error": null
     },
     "rss": {
-      "total": 30,
+      "total": 34,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 4,
+          "count": 5,
           "error": null
         },
         "Premium Times": {
           "ok": true,
-          "count": 0,
+          "count": 1,
           "error": null
         },
         "BusinessDay": {
           "ok": true,
-          "count": 0,
+          "count": 1,
           "error": null
         },
         "Nairametrics": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "Daily Trust": {
@@ -79,22 +79,22 @@
     }
   },
   "counts": {
-    "raw": 263,
-    "filtered": 15,
-    "analyzed": 15,
-    "aiFallbacks": 4
+    "raw": 227,
+    "filtered": 12,
+    "analyzed": 12,
+    "aiFallbacks": 1
   },
   "synthesis": {
-    "ok": true,
-    "themes": 5
+    "ok": false,
+    "themes": 0
   },
   "email": {
-    "sent": false
+    "sent": true
   },
   "pipelineGate": false,
   "warnings": [
     "Sources down: RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403)",
     "Note: GNews (0 articles) — known issue, excluded from down-count",
-    "Digest email was NOT sent."
+    "Executive briefing failed to generate (digest fell back to article list)."
   ]
 }

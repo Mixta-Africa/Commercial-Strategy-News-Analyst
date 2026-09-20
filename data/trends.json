@@ -1,95 +1,92 @@
 {
   "7day": {
-    "articleCount": 12,
+    "articleCount": 5,
     "sentimentBreakdown": {
-      "bullish": 3,
-      "bearish": 3,
-      "neutral": 6
+      "bearish": 2,
+      "neutral": 3
     },
     "topTopics": [
       {
-        "topic": "financing",
-        "count": 2
+        "topic": "insecurity",
+        "count": 1
       },
       {
-        "topic": "satellite towns",
-        "count": 2
+        "topic": "kidnappings",
+        "count": 1
       },
       {
-        "topic": "secondary cities",
-        "count": 2
+        "topic": "security risk",
+        "count": 1
       },
       {
-        "topic": "infrastructure",
-        "count": 2
+        "topic": "real estate demand",
+        "count": 1
       },
       {
-        "topic": "regulation",
-        "count": 2
+        "topic": "Lagos",
+        "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "30day": {
-    "articleCount": 12,
+    "articleCount": 5,
     "sentimentBreakdown": {
-      "bullish": 3,
-      "bearish": 3,
-      "neutral": 6
+      "bearish": 2,
+      "neutral": 3
     },
     "topTopics": [
       {
-        "topic": "financing",
-        "count": 2
+        "topic": "insecurity",
+        "count": 1
       },
       {
-        "topic": "satellite towns",
-        "count": 2
+        "topic": "kidnappings",
+        "count": 1
       },
       {
-        "topic": "secondary cities",
-        "count": 2
+        "topic": "security risk",
+        "count": 1
       },
       {
-        "topic": "infrastructure",
-        "count": 2
+        "topic": "real estate demand",
+        "count": 1
       },
       {
-        "topic": "regulation",
-        "count": 2
+        "topic": "Lagos",
+        "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "90day": {
-    "articleCount": 12,
+    "articleCount": 5,
     "sentimentBreakdown": {
-      "bullish": 3,
-      "bearish": 3,
-      "neutral": 6
+      "bearish": 2,
+      "neutral": 3
     },
     "topTopics": [
       {
-        "topic": "financing",
-        "count": 2
+        "topic": "insecurity",
+        "count": 1
       },
       {
-        "topic": "satellite towns",
-        "count": 2
+        "topic": "kidnappings",
+        "count": 1
       },
       {
-        "topic": "secondary cities",
-        "count": 2
+        "topic": "security risk",
+        "count": 1
       },
       {
-        "topic": "infrastructure",
-        "count": 2
+        "topic": "real estate demand",
+        "count": 1
       },
       {
-        "topic": "regulation",
-        "count": 2
+        "topic": "Lagos",
+        "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   }
 }

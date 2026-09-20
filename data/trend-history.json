@@ -2701,6 +2701,37 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-09-20",
+      "articleCount": 5,
+      "sentimentBreakdown": {
+        "bearish": 2,
+        "neutral": 3
+      },
+      "averageSentiment": "bearish",
+      "topTopics": [
+        {
+          "topic": "insecurity",
+          "count": 1
+        },
+        {
+          "topic": "kidnappings",
+          "count": 1
+        },
+        {
+          "topic": "security risk",
+          "count": 1
+        },
+        {
+          "topic": "real estate demand",
+          "count": 1
+        },
+        {
+          "topic": "Lagos",
+          "count": 1
+        }
+      ]
     }
   ]
 }

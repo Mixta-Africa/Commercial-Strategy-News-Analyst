@@ -3,7 +3,7 @@
     "provider": "Groq",
     "model": "openai/gpt-oss-20b",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:02.493Z",
+    "lastProbed": "2026-09-20T11:54:24.849Z",
     "error": "401: Invalid API Key",
     "response": null
   },
@@ -11,7 +11,7 @@
     "provider": "Groq",
     "model": "openai/gpt-oss-120b",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:03.352Z",
+    "lastProbed": "2026-09-20T11:54:25.820Z",
     "error": "401: Invalid API Key",
     "response": null
   },
@@ -19,7 +19,7 @@
     "provider": "Gemini",
     "model": "gemini-2.5-flash",
     "status": "WORKING",
-    "lastProbed": "2026-09-19T11:42:04.518Z",
+    "lastProbed": "2026-09-20T11:54:27.280Z",
     "error": null,
     "response": "OK"
   },
@@ -43,7 +43,7 @@
     "provider": "SambaNova",
     "model": "Meta-Llama-3.3-70B-Instruct",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:07.329Z",
+    "lastProbed": "2026-09-20T11:54:28.305Z",
     "error": "401: Incorrect API key provided: f8976e*****f5da. You can find your API key at https:",
     "response": null
   },
@@ -59,7 +59,7 @@
     "provider": "Mistral",
     "model": "mistral-small-latest",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:09.262Z",
+    "lastProbed": "2026-09-20T11:54:29.289Z",
     "error": "401: Request failed with status code 401",
     "response": null
   },
@@ -67,7 +67,7 @@
     "provider": "Mistral",
     "model": "open-mistral-nemo",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:10.219Z",
+    "lastProbed": "2026-09-20T11:54:30.281Z",
     "error": "401: Request failed with status code 401",
     "response": null
   },
@@ -75,7 +75,7 @@
     "provider": "Together",
     "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:11.235Z",
+    "lastProbed": "2026-09-20T11:54:31.288Z",
     "error": "401: Invalid API key provided. You can find your API key at https://api.together.ai/s",
     "response": null
   },
@@ -83,7 +83,7 @@
     "provider": "Together",
     "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:12.151Z",
+    "lastProbed": "2026-09-20T11:54:32.256Z",
     "error": "401: Invalid API key provided. You can find your API key at https://api.together.ai/s",
     "response": null
   },
@@ -91,7 +91,7 @@
     "provider": "OpenRouter",
     "model": "inclusionai/ling-3.0-flash-vl:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:13.964Z",
+    "lastProbed": "2026-09-20T11:54:33.869Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -99,7 +99,7 @@
     "provider": "OpenRouter",
     "model": "nex-agi/nex-n2.5-mini:free",
     "status": "WORKING",
-    "lastProbed": "2026-09-19T11:42:15.200Z",
+    "lastProbed": "2026-09-20T11:54:36.067Z",
     "error": null,
     "response": "OK"
   },
@@ -107,7 +107,7 @@
     "provider": "OpenRouter",
     "model": "nex-agi/nex-n2.5-pro:free",
     "status": "WORKING",
-    "lastProbed": "2026-09-19T11:42:17.272Z",
+    "lastProbed": "2026-09-20T11:54:37.391Z",
     "error": null,
     "response": "OK"
   },
@@ -115,7 +115,7 @@
     "provider": "OpenRouter",
     "model": "inclusionai/ling-3.0-flash-sante:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:18.711Z",
+    "lastProbed": "2026-09-20T11:54:38.856Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -123,7 +123,7 @@
     "provider": "OpenRouter",
     "model": "inclusionai/ling-3.0-flash-fin:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:20.088Z",
+    "lastProbed": "2026-09-20T11:54:40.203Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -131,7 +131,7 @@
     "provider": "OpenRouter",
     "model": "dots-studio/dots-3-note-preview:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:22.646Z",
+    "lastProbed": "2026-09-20T11:54:42.980Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -139,7 +139,7 @@
     "provider": "OpenRouter",
     "model": "liquid/lfm-2.5-2.6b:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:23.770Z",
+    "lastProbed": "2026-09-20T11:54:44.322Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -147,15 +147,15 @@
     "provider": "OpenRouter",
     "model": "nvidia/nemotron-3.5-lightning:free",
     "status": "WORKING",
-    "lastProbed": "2026-09-18T11:58:44.178Z",
+    "lastProbed": "2026-09-20T11:56:30.665Z",
     "error": null,
-    "response": "Here's a thinking process"
+    "response": "Here kiến tạo nhiều loại"
   },
   "OpenRouter::thinkingmachines/inkling-small:free": {
     "provider": "OpenRouter",
     "model": "thinkingmachines/inkling-small:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-17T12:18:18.920Z",
+    "lastProbed": "2026-09-20T11:56:31.568Z",
     "error": "403: thinkingmachines/inkling-small:free is only available on agentic harnesses. Try ",
     "response": null
   },
@@ -171,7 +171,7 @@
     "provider": "OpenRouter",
     "model": "qwen/qwen3.8-27b:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-19T11:42:20.999Z",
+    "lastProbed": "2026-09-20T11:54:41.363Z",
     "error": "429: Provider returned error",
     "response": null
   },

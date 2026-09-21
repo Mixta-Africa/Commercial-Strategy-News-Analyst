@@ -1,92 +1,89 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 4,
     "sentimentBreakdown": {
-      "neutral": 10,
-      "bearish": 4,
-      "bullish": 1
+      "neutral": 3,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
-        "count": 2
-      },
-      {
-        "topic": "Lagos real estate",
-        "count": 2
-      },
-      {
-        "topic": "security",
-        "count": 2
-      },
-      {
-        "topic": "affordable housing",
+        "topic": "2027",
         "count": 1
       },
       {
-        "topic": "national housing programme",
+        "topic": "politics",
+        "count": 1
+      },
+      {
+        "topic": "elections",
+        "count": 1
+      },
+      {
+        "topic": "Tinubu",
+        "count": 1
+      },
+      {
+        "topic": "Katsina",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 4,
     "sentimentBreakdown": {
-      "neutral": 10,
-      "bearish": 4,
-      "bullish": 1
+      "neutral": 3,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
-        "count": 2
-      },
-      {
-        "topic": "Lagos real estate",
-        "count": 2
-      },
-      {
-        "topic": "security",
-        "count": 2
-      },
-      {
-        "topic": "affordable housing",
+        "topic": "2027",
         "count": 1
       },
       {
-        "topic": "national housing programme",
+        "topic": "politics",
+        "count": 1
+      },
+      {
+        "topic": "elections",
+        "count": 1
+      },
+      {
+        "topic": "Tinubu",
+        "count": 1
+      },
+      {
+        "topic": "Katsina",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 4,
     "sentimentBreakdown": {
-      "neutral": 10,
-      "bearish": 4,
-      "bullish": 1
+      "neutral": 3,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
-        "count": 2
-      },
-      {
-        "topic": "Lagos real estate",
-        "count": 2
-      },
-      {
-        "topic": "security",
-        "count": 2
-      },
-      {
-        "topic": "affordable housing",
+        "topic": "2027",
         "count": 1
       },
       {
-        "topic": "national housing programme",
+        "topic": "politics",
+        "count": 1
+      },
+      {
+        "topic": "elections",
+        "count": 1
+      },
+      {
+        "topic": "Tinubu",
+        "count": 1
+      },
+      {
+        "topic": "Katsina",
         "count": 1
       }
     ],

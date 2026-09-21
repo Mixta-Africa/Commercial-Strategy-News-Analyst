@@ -2732,6 +2732,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-09-21",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 10,
+        "bearish": 4,
+        "bullish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "infrastructure",
+          "count": 2
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 2
+        },
+        {
+          "topic": "security",
+          "count": 2
+        },
+        {
+          "topic": "affordable housing",
+          "count": 1
+        },
+        {
+          "topic": "national housing programme",
+          "count": 1
+        }
+      ]
     }
   ]
 }

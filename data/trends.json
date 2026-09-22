@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 9,
+    "articleCount": 8,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bearish": 2,
-      "bullish": 1
+      "bullish": 3,
+      "neutral": 3,
+      "bearish": 2
     },
     "topTopics": [
       {
-        "topic": "historic lighting",
+        "topic": "mortgage",
         "count": 1
       },
       {
-        "topic": "urban heritage",
+        "topic": "financing",
         "count": 1
       },
       {
-        "topic": "public illumination",
+        "topic": "refinancing",
         "count": 1
       },
       {
-        "topic": "real-estate-investment",
+        "topic": "diapason",
         "count": 1
       },
       {
-        "topic": "regulatory-environment",
+        "topic": "homeimprovement",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 9,
+    "articleCount": 8,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bearish": 2,
-      "bullish": 1
+      "bullish": 3,
+      "neutral": 3,
+      "bearish": 2
     },
     "topTopics": [
       {
-        "topic": "historic lighting",
+        "topic": "mortgage",
         "count": 1
       },
       {
-        "topic": "urban heritage",
+        "topic": "financing",
         "count": 1
       },
       {
-        "topic": "public illumination",
+        "topic": "refinancing",
         "count": 1
       },
       {
-        "topic": "real-estate-investment",
+        "topic": "diapason",
         "count": 1
       },
       {
-        "topic": "regulatory-environment",
+        "topic": "homeimprovement",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 9,
+    "articleCount": 8,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bearish": 2,
-      "bullish": 1
+      "bullish": 3,
+      "neutral": 3,
+      "bearish": 2
     },
     "topTopics": [
       {
-        "topic": "historic lighting",
+        "topic": "mortgage",
         "count": 1
       },
       {
-        "topic": "urban heritage",
+        "topic": "financing",
         "count": 1
       },
       {
-        "topic": "public illumination",
+        "topic": "refinancing",
         "count": 1
       },
       {
-        "topic": "real-estate-investment",
+        "topic": "diapason",
         "count": 1
       },
       {
-        "topic": "regulatory-environment",
+        "topic": "homeimprovement",
         "count": 1
       }
     ],

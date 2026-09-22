@@ -1,0 +1,17 @@
+{
+  "name": "Mixta Market Intelligence",
+  "short_name": "Mixta Intel",
+  "description": "Nigerian real estate market intelligence dashboard",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b8243f",
+  "icons": [
+    {
+      "src": "assets/logo-header-cropped.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

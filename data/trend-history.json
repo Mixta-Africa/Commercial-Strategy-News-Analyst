@@ -2763,6 +2763,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-09-22",
+      "articleCount": 9,
+      "sentimentBreakdown": {
+        "neutral": 6,
+        "bearish": 2,
+        "bullish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "historic lighting",
+          "count": 1
+        },
+        {
+          "topic": "urban heritage",
+          "count": 1
+        },
+        {
+          "topic": "public illumination",
+          "count": 1
+        },
+        {
+          "topic": "real-estate-investment",
+          "count": 1
+        },
+        {
+          "topic": "regulatory-environment",
+          "count": 1
+        }
+      ]
     }
   ]
 }

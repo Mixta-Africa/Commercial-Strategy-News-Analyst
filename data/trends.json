@@ -1,89 +1,92 @@
 {
   "7day": {
-    "articleCount": 4,
+    "articleCount": 9,
     "sentimentBreakdown": {
-      "neutral": 3,
-      "bearish": 1
+      "neutral": 6,
+      "bearish": 2,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "2027",
+        "topic": "historic lighting",
         "count": 1
       },
       {
-        "topic": "politics",
+        "topic": "urban heritage",
         "count": 1
       },
       {
-        "topic": "elections",
+        "topic": "public illumination",
         "count": 1
       },
       {
-        "topic": "Tinubu",
+        "topic": "real-estate-investment",
         "count": 1
       },
       {
-        "topic": "Katsina",
+        "topic": "regulatory-environment",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 4,
+    "articleCount": 9,
     "sentimentBreakdown": {
-      "neutral": 3,
-      "bearish": 1
+      "neutral": 6,
+      "bearish": 2,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "2027",
+        "topic": "historic lighting",
         "count": 1
       },
       {
-        "topic": "politics",
+        "topic": "urban heritage",
         "count": 1
       },
       {
-        "topic": "elections",
+        "topic": "public illumination",
         "count": 1
       },
       {
-        "topic": "Tinubu",
+        "topic": "real-estate-investment",
         "count": 1
       },
       {
-        "topic": "Katsina",
+        "topic": "regulatory-environment",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 4,
+    "articleCount": 9,
     "sentimentBreakdown": {
-      "neutral": 3,
-      "bearish": 1
+      "neutral": 6,
+      "bearish": 2,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "2027",
+        "topic": "historic lighting",
         "count": 1
       },
       {
-        "topic": "politics",
+        "topic": "urban heritage",
         "count": 1
       },
       {
-        "topic": "elections",
+        "topic": "public illumination",
         "count": 1
       },
       {
-        "topic": "Tinubu",
+        "topic": "real-estate-investment",
         "count": 1
       },
       {
-        "topic": "Katsina",
+        "topic": "regulatory-environment",
         "count": 1
       }
     ],

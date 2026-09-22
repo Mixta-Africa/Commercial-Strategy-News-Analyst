@@ -4,15 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mixta Africa Intelligence — Commercial Strategy Desk</title>
-   
- <!-- Browser tab icon -->
-<link rel="icon" type="image/png" href="assets/logo-header-cropped.png" /> 
-   
-<!-- iOS "Add to Home Screen" icon -->
-<link rel="apple-touch-icon" href="assets/logo-header-cropped.png" /> 
-   
-<!-- Android / PWA "Add to Home Screen" -->
-<link rel="manifest" href="manifest.json" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <!-- Modern Executive Fonts: Poppins (Primary), Inter (UI), IBM Plex (Data) -->
@@ -3275,10 +3266,10 @@ function initGeospatialMap() {
   const defaultAnchor = geoAnchors[currentGeoScope];
   geoMap = L.map('mapContainer').setView([defaultAnchor.lat, defaultAnchor.lng], defaultAnchor.zoom);
   
-  // Clean, high-contrast light map for editorial feel
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; OpenStreetMap, &copy; CARTO',
-    subdomains: 'abcd', maxZoom: 12, minZoom: 3
+  // OpenStreetMap tiles — free, no API key, same light editorial feel
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    subdomains: 'abc', maxZoom: 19, minZoom: 3
   }).addTo(geoMap);
 }
 

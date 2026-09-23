@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 8,
+    "articleCount": 11,
     "sentimentBreakdown": {
-      "bullish": 3,
-      "neutral": 3,
-      "bearish": 2
+      "neutral": 8,
+      "bullish": 2,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "mortgage",
+        "topic": "security",
+        "count": 2
+      },
+      {
+        "topic": "governance",
         "count": 1
       },
       {
-        "topic": "financing",
+        "topic": "peace",
         "count": 1
       },
       {
-        "topic": "refinancing",
+        "topic": "crime",
         "count": 1
       },
       {
-        "topic": "diapason",
-        "count": 1
-      },
-      {
-        "topic": "homeimprovement",
+        "topic": "state government",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 8,
+    "articleCount": 11,
     "sentimentBreakdown": {
-      "bullish": 3,
-      "neutral": 3,
-      "bearish": 2
+      "neutral": 8,
+      "bullish": 2,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "mortgage",
+        "topic": "security",
+        "count": 2
+      },
+      {
+        "topic": "governance",
         "count": 1
       },
       {
-        "topic": "financing",
+        "topic": "peace",
         "count": 1
       },
       {
-        "topic": "refinancing",
+        "topic": "crime",
         "count": 1
       },
       {
-        "topic": "diapason",
-        "count": 1
-      },
-      {
-        "topic": "homeimprovement",
+        "topic": "state government",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 8,
+    "articleCount": 11,
     "sentimentBreakdown": {
-      "bullish": 3,
-      "neutral": 3,
-      "bearish": 2
+      "neutral": 8,
+      "bullish": 2,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "mortgage",
+        "topic": "security",
+        "count": 2
+      },
+      {
+        "topic": "governance",
         "count": 1
       },
       {
-        "topic": "financing",
+        "topic": "peace",
         "count": 1
       },
       {
-        "topic": "refinancing",
+        "topic": "crime",
         "count": 1
       },
       {
-        "topic": "diapason",
-        "count": 1
-      },
-      {
-        "topic": "homeimprovement",
+        "topic": "state government",
         "count": 1
       }
     ],

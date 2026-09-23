@@ -2795,6 +2795,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-09-23",
+      "articleCount": 11,
+      "sentimentBreakdown": {
+        "neutral": 8,
+        "bullish": 2,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "security",
+          "count": 2
+        },
+        {
+          "topic": "governance",
+          "count": 1
+        },
+        {
+          "topic": "peace",
+          "count": 1
+        },
+        {
+          "topic": "crime",
+          "count": 1
+        },
+        {
+          "topic": "state government",
+          "count": 1
+        }
+      ]
     }
   ]
 }

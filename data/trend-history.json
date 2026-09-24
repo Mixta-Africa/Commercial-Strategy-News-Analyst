@@ -2827,6 +2827,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-09-24",
+      "articleCount": 11,
+      "sentimentBreakdown": {
+        "bullish": 4,
+        "neutral": 5,
+        "bearish": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 2
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "FMBN",
+          "count": 2
+        },
+        {
+          "topic": "mortgage",
+          "count": 2
+        },
+        {
+          "topic": "government policy",
+          "count": 2
+        }
+      ]
     }
   ]
 }

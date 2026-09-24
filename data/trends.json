@@ -2,30 +2,30 @@
   "7day": {
     "articleCount": 11,
     "sentimentBreakdown": {
-      "neutral": 8,
-      "bullish": 2,
-      "bearish": 1
+      "bullish": 4,
+      "neutral": 5,
+      "bearish": 2
     },
     "topTopics": [
       {
-        "topic": "security",
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "governance",
-        "count": 1
+        "topic": "affordable housing",
+        "count": 2
       },
       {
-        "topic": "peace",
-        "count": 1
+        "topic": "FMBN",
+        "count": 2
       },
       {
-        "topic": "crime",
-        "count": 1
+        "topic": "mortgage",
+        "count": 2
       },
       {
-        "topic": "state government",
-        "count": 1
+        "topic": "government policy",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"
@@ -33,30 +33,30 @@
   "30day": {
     "articleCount": 11,
     "sentimentBreakdown": {
-      "neutral": 8,
-      "bullish": 2,
-      "bearish": 1
+      "bullish": 4,
+      "neutral": 5,
+      "bearish": 2
     },
     "topTopics": [
       {
-        "topic": "security",
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "governance",
-        "count": 1
+        "topic": "affordable housing",
+        "count": 2
       },
       {
-        "topic": "peace",
-        "count": 1
+        "topic": "FMBN",
+        "count": 2
       },
       {
-        "topic": "crime",
-        "count": 1
+        "topic": "mortgage",
+        "count": 2
       },
       {
-        "topic": "state government",
-        "count": 1
+        "topic": "government policy",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"
@@ -64,30 +64,30 @@
   "90day": {
     "articleCount": 11,
     "sentimentBreakdown": {
-      "neutral": 8,
-      "bullish": 2,
-      "bearish": 1
+      "bullish": 4,
+      "neutral": 5,
+      "bearish": 2
     },
     "topTopics": [
       {
-        "topic": "security",
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "governance",
-        "count": 1
+        "topic": "affordable housing",
+        "count": 2
       },
       {
-        "topic": "peace",
-        "count": 1
+        "topic": "FMBN",
+        "count": 2
       },
       {
-        "topic": "crime",
-        "count": 1
+        "topic": "mortgage",
+        "count": 2
       },
       {
-        "topic": "state government",
-        "count": 1
+        "topic": "government policy",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"

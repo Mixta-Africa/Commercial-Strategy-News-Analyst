@@ -2859,6 +2859,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-09-25",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bearish": 2,
+        "neutral": 7,
+        "bullish": 6
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "legal dispute",
+          "count": 2
+        },
+        {
+          "topic": "real‑estate",
+          "count": 2
+        },
+        {
+          "topic": "mortgage rates",
+          "count": 2
+        },
+        {
+          "topic": "bond yields",
+          "count": 2
+        }
+      ]
     }
   ]
 }

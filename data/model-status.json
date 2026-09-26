@@ -3,7 +3,7 @@
     "provider": "Groq",
     "model": "openai/gpt-oss-20b",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:24:28.010Z",
+    "lastProbed": "2026-09-26T11:55:58.076Z",
     "error": "401: Invalid API Key",
     "response": null
   },
@@ -11,7 +11,7 @@
     "provider": "Groq",
     "model": "openai/gpt-oss-120b",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:24:28.893Z",
+    "lastProbed": "2026-09-26T11:55:58.967Z",
     "error": "401: Invalid API Key",
     "response": null
   },
@@ -27,7 +27,7 @@
     "provider": "Gemini",
     "model": "gemini-2.5-flash-lite",
     "status": "DEAD",
-    "lastProbed": "2026-09-19T11:42:05.412Z",
+    "lastProbed": "2026-09-26T11:55:59.893Z",
     "error": "404: This model models/gemini-2.5-flash-lite is no longer available to new users. Ple",
     "response": null
   },
@@ -35,7 +35,7 @@
     "provider": "Gemini",
     "model": "gemini-2.0-flash",
     "status": "DEAD",
-    "lastProbed": "2026-09-19T11:42:06.351Z",
+    "lastProbed": "2026-09-26T11:56:00.851Z",
     "error": "404: This model models/gemini-2.0-flash is no longer available. Please update your co",
     "response": null
   },
@@ -43,7 +43,7 @@
     "provider": "SambaNova",
     "model": "Meta-Llama-3.3-70B-Instruct",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:24:32.102Z",
+    "lastProbed": "2026-09-26T11:56:02.050Z",
     "error": "401: Incorrect API key provided: f8976e*****f5da.",
     "response": null
   },
@@ -51,7 +51,7 @@
     "provider": "SambaNova",
     "model": "Meta-Llama-3.1-405B-Instruct",
     "status": "DEAD",
-    "lastProbed": "2026-09-19T11:42:08.308Z",
+    "lastProbed": "2026-09-26T11:56:03.139Z",
     "error": "404: The model `Meta-Llama-3.1-405B-Instruct` does not exist or you do not have acces",
     "response": null
   },
@@ -59,7 +59,7 @@
     "provider": "Mistral",
     "model": "mistral-small-latest",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:24:33.087Z",
+    "lastProbed": "2026-09-26T11:56:04.112Z",
     "error": "401: Request failed with status code 401",
     "response": null
   },
@@ -67,7 +67,7 @@
     "provider": "Mistral",
     "model": "open-mistral-nemo",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:24:34.096Z",
+    "lastProbed": "2026-09-26T11:56:05.106Z",
     "error": "401: Request failed with status code 401",
     "response": null
   },
@@ -75,7 +75,7 @@
     "provider": "Together",
     "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:24:35.185Z",
+    "lastProbed": "2026-09-26T11:56:06.192Z",
     "error": "401: Invalid API key provided. You can find your API key at https://api.together.ai/s",
     "response": null
   },
@@ -83,7 +83,7 @@
     "provider": "Together",
     "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:24:36.263Z",
+    "lastProbed": "2026-09-26T11:56:07.192Z",
     "error": "401: Invalid API key provided. You can find your API key at https://api.together.ai/s",
     "response": null
   },
@@ -115,7 +115,7 @@
     "provider": "OpenRouter",
     "model": "inclusionai/ling-3.0-flash-sante:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:24:43.316Z",
+    "lastProbed": "2026-09-26T11:56:08.766Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -123,7 +123,7 @@
     "provider": "OpenRouter",
     "model": "inclusionai/ling-3.0-flash-fin:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:24:44.939Z",
+    "lastProbed": "2026-09-26T11:56:10.175Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -131,7 +131,7 @@
     "provider": "OpenRouter",
     "model": "dots-studio/dots-3-note-preview:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:24:47.715Z",
+    "lastProbed": "2026-09-26T11:56:12.962Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -139,8 +139,8 @@
     "provider": "OpenRouter",
     "model": "liquid/lfm-2.5-2.6b:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:24:49.006Z",
-    "error": "ERR: Empty response from model",
+    "lastProbed": "2026-09-26T11:56:13.986Z",
+    "error": "429: Provider returned error",
     "response": null
   },
   "OpenRouter::nvidia/nemotron-3.5-lightning:free": {
@@ -155,7 +155,7 @@
     "provider": "OpenRouter",
     "model": "thinkingmachines/inkling-small:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:25:10.797Z",
+    "lastProbed": "2026-09-26T11:56:14.847Z",
     "error": "403: thinkingmachines/inkling-small:free is only available on agentic harnesses. Try ",
     "response": null
   },
@@ -163,7 +163,7 @@
     "provider": "OpenRouter",
     "model": "poolside/laguna-s-2.1:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:25:11.708Z",
+    "lastProbed": "2026-09-26T11:56:15.742Z",
     "error": "429: Provider returned error",
     "response": null
   },
@@ -171,7 +171,7 @@
     "provider": "OpenRouter",
     "model": "qwen/qwen3.8-27b:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-09-25T12:24:45.967Z",
+    "lastProbed": "2026-09-26T11:56:11.087Z",
     "error": "429: Provider returned error",
     "response": null
   },
@@ -181,6 +181,22 @@
     "status": "DEGRADED",
     "lastProbed": "2026-09-19T11:42:25.480Z",
     "error": "ERR: Empty response from model",
+    "response": null
+  },
+  "OpenRouter::thinkingmachines/inkling:free": {
+    "provider": "OpenRouter",
+    "model": "thinkingmachines/inkling:free",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-26T11:56:17.115Z",
+    "error": "403: thinkingmachines/inkling:free is only available on agentic harnesses. Try pluggi",
+    "response": null
+  },
+  "OpenRouter::poolside/laguna-xs-2.1:free": {
+    "provider": "OpenRouter",
+    "model": "poolside/laguna-xs-2.1:free",
+    "status": "DEGRADED",
+    "lastProbed": "2026-09-26T11:56:18.020Z",
+    "error": "429: Provider returned error",
     "response": null
   }
 }

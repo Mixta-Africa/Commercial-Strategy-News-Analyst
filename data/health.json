@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-25T12:24:27.900Z",
-  "status": "degraded",
+  "timestamp": "2026-09-26T11:55:57.984Z",
+  "status": "healthy",
   "sources": {
     "gnews": {
       "ok": false,
@@ -18,11 +18,11 @@
       "error": null
     },
     "rss": {
-      "total": 30,
+      "total": 34,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 3,
+          "count": 6,
           "error": null
         },
         "Premium Times": {
@@ -37,7 +37,7 @@
         },
         "Nairametrics": {
           "ok": true,
-          "count": 2,
+          "count": 3,
           "error": null
         },
         "Daily Trust": {
@@ -79,14 +79,14 @@
     }
   },
   "counts": {
-    "raw": 231,
-    "filtered": 15,
-    "analyzed": 15,
-    "aiFallbacks": 2
+    "raw": 235,
+    "filtered": 10,
+    "analyzed": 10,
+    "aiFallbacks": 1
   },
   "synthesis": {
-    "ok": false,
-    "themes": 0
+    "ok": true,
+    "themes": 5
   },
   "email": {
     "sent": true
@@ -94,7 +94,6 @@
   "pipelineGate": false,
   "warnings": [
     "Sources down: RSS Estate Intel (HTTP 403); RSS Guardian Nigeria (Property) (HTTP 403)",
-    "Note: GNews (0 articles) — known issue, excluded from down-count",
-    "Executive briefing failed to generate (digest fell back to article list)."
+    "Note: GNews (0 articles) — known issue, excluded from down-count"
   ]
 }

@@ -2891,6 +2891,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-09-26",
+      "articleCount": 10,
+      "sentimentBreakdown": {
+        "bullish": 1,
+        "neutral": 8,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "luxury real estate",
+          "count": 1
+        },
+        {
+          "topic": "premium residential",
+          "count": 1
+        },
+        {
+          "topic": "urbanisation",
+          "count": 1
+        },
+        {
+          "topic": "consumer preferences",
+          "count": 1
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 1
+        }
+      ]
     }
   ]
 }

@@ -1,7 +1,19 @@
 {
-  "updatedAt": "2026-09-25T12:24:27.900Z",
-  "totalEntries": 65,
+  "updatedAt": "2026-09-26T11:55:57.984Z",
+  "totalEntries": 66,
   "entries": [
+    {
+      "date": "2026-09-26",
+      "generatedAt": "2026-09-26T11:55:57.984Z",
+      "count": 9,
+      "categories": {
+        "policy": 1,
+        "proptech": 6,
+        "ai": 1,
+        "design": 1
+      },
+      "file": "archive/innovation-2026-09-26.json"
+    },
     {
       "date": "2026-09-25",
       "generatedAt": "2026-09-25T12:24:27.900Z",

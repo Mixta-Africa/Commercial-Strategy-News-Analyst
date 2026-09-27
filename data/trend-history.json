@@ -2923,6 +2923,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-09-27",
+      "articleCount": 5,
+      "sentimentBreakdown": {
+        "neutral": 2,
+        "bullish": 3
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "Lagos",
+          "count": 2
+        },
+        {
+          "topic": "infrastructure",
+          "count": 2
+        },
+        {
+          "topic": "solar",
+          "count": 1
+        },
+        {
+          "topic": "CSR",
+          "count": 1
+        },
+        {
+          "topic": "community development",
+          "count": 1
+        }
+      ]
     }
   ]
 }

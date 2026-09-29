@@ -2,94 +2,94 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bullish": 8,
+      "neutral": 9,
+      "bullish": 5,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
+        "topic": "Lagos",
+        "count": 3
+      },
+      {
+        "topic": "insurance",
+        "count": 3
+      },
+      {
+        "topic": "Apapa",
         "count": 2
       },
       {
-        "topic": "2027",
-        "count": 1
+        "topic": "property damage",
+        "count": 2
       },
       {
-        "topic": "domestic violence",
-        "count": 1
-      },
-      {
-        "topic": "mental health",
-        "count": 1
-      },
-      {
-        "topic": "safety",
-        "count": 1
+        "topic": "Lagos real estate",
+        "count": 2
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bullish": 8,
+      "neutral": 9,
+      "bullish": 5,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
+        "topic": "Lagos",
+        "count": 3
+      },
+      {
+        "topic": "insurance",
+        "count": 3
+      },
+      {
+        "topic": "Apapa",
         "count": 2
       },
       {
-        "topic": "2027",
-        "count": 1
+        "topic": "property damage",
+        "count": 2
       },
       {
-        "topic": "domestic violence",
-        "count": 1
-      },
-      {
-        "topic": "mental health",
-        "count": 1
-      },
-      {
-        "topic": "safety",
-        "count": 1
+        "topic": "Lagos real estate",
+        "count": 2
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   },
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bullish": 8,
+      "neutral": 9,
+      "bullish": 5,
       "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
+        "topic": "Lagos",
+        "count": 3
+      },
+      {
+        "topic": "insurance",
+        "count": 3
+      },
+      {
+        "topic": "Apapa",
         "count": 2
       },
       {
-        "topic": "2027",
-        "count": 1
+        "topic": "property damage",
+        "count": 2
       },
       {
-        "topic": "domestic violence",
-        "count": 1
-      },
-      {
-        "topic": "mental health",
-        "count": 1
-      },
-      {
-        "topic": "safety",
-        "count": 1
+        "topic": "Lagos real estate",
+        "count": 2
       }
     ],
-    "averageSentiment": "bullish"
+    "averageSentiment": "neutral"
   }
 }

@@ -2986,6 +2986,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-09-29",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 9,
+        "bullish": 5,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos",
+          "count": 3
+        },
+        {
+          "topic": "insurance",
+          "count": 3
+        },
+        {
+          "topic": "Apapa",
+          "count": 2
+        },
+        {
+          "topic": "property damage",
+          "count": 2
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 2
+        }
+      ]
     }
   ]
 }

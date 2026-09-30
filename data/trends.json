@@ -2,30 +2,30 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 9,
-      "bullish": 5,
-      "bearish": 1
+      "neutral": 11,
+      "bearish": 3,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos",
+        "topic": "interest rates",
         "count": 3
       },
       {
-        "topic": "insurance",
-        "count": 3
-      },
-      {
-        "topic": "Apapa",
+        "topic": "Kenya",
         "count": 2
       },
       {
-        "topic": "property damage",
+        "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "Lagos real estate",
-        "count": 2
+        "topic": "corruption",
+        "count": 1
+      },
+      {
+        "topic": "land acquisition",
+        "count": 1
       }
     ],
     "averageSentiment": "neutral"
@@ -33,30 +33,30 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 9,
-      "bullish": 5,
-      "bearish": 1
+      "neutral": 11,
+      "bearish": 3,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos",
+        "topic": "interest rates",
         "count": 3
       },
       {
-        "topic": "insurance",
-        "count": 3
-      },
-      {
-        "topic": "Apapa",
+        "topic": "Kenya",
         "count": 2
       },
       {
-        "topic": "property damage",
+        "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "Lagos real estate",
-        "count": 2
+        "topic": "corruption",
+        "count": 1
+      },
+      {
+        "topic": "land acquisition",
+        "count": 1
       }
     ],
     "averageSentiment": "neutral"
@@ -64,30 +64,30 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 9,
-      "bullish": 5,
-      "bearish": 1
+      "neutral": 11,
+      "bearish": 3,
+      "bullish": 1
     },
     "topTopics": [
       {
-        "topic": "Lagos",
+        "topic": "interest rates",
         "count": 3
       },
       {
-        "topic": "insurance",
-        "count": 3
-      },
-      {
-        "topic": "Apapa",
+        "topic": "Kenya",
         "count": 2
       },
       {
-        "topic": "property damage",
+        "topic": "housing deficit",
         "count": 2
       },
       {
-        "topic": "Lagos real estate",
-        "count": 2
+        "topic": "corruption",
+        "count": 1
+      },
+      {
+        "topic": "land acquisition",
+        "count": 1
       }
     ],
     "averageSentiment": "neutral"

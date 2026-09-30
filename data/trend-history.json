@@ -3018,6 +3018,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-09-30",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 11,
+        "bearish": 3,
+        "bullish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "interest rates",
+          "count": 3
+        },
+        {
+          "topic": "Kenya",
+          "count": 2
+        },
+        {
+          "topic": "housing deficit",
+          "count": 2
+        },
+        {
+          "topic": "corruption",
+          "count": 1
+        },
+        {
+          "topic": "land acquisition",
+          "count": 1
+        }
+      ]
     }
   ]
 }

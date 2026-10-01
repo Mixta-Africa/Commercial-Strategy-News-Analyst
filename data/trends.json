@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 11,
-      "bearish": 3,
-      "bullish": 1
+      "bullish": 4,
+      "bearish": 2,
+      "neutral": 9
     },
     "topTopics": [
       {
-        "topic": "interest rates",
-        "count": 3
-      },
-      {
-        "topic": "Kenya",
+        "topic": "infrastructure",
         "count": 2
       },
       {
-        "topic": "housing deficit",
-        "count": 2
-      },
-      {
-        "topic": "corruption",
+        "topic": "tech-hub",
         "count": 1
       },
       {
-        "topic": "land acquisition",
+        "topic": "Yabacon Valley",
+        "count": 1
+      },
+      {
+        "topic": "online-real-estate",
+        "count": 1
+      },
+      {
+        "topic": "modern-residential-complexes",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 11,
-      "bearish": 3,
-      "bullish": 1
+      "bullish": 4,
+      "bearish": 2,
+      "neutral": 9
     },
     "topTopics": [
       {
-        "topic": "interest rates",
-        "count": 3
-      },
-      {
-        "topic": "Kenya",
+        "topic": "infrastructure",
         "count": 2
       },
       {
-        "topic": "housing deficit",
-        "count": 2
-      },
-      {
-        "topic": "corruption",
+        "topic": "tech-hub",
         "count": 1
       },
       {
-        "topic": "land acquisition",
+        "topic": "Yabacon Valley",
+        "count": 1
+      },
+      {
+        "topic": "online-real-estate",
+        "count": 1
+      },
+      {
+        "topic": "modern-residential-complexes",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 11,
-      "bearish": 3,
-      "bullish": 1
+      "bullish": 4,
+      "bearish": 2,
+      "neutral": 9
     },
     "topTopics": [
       {
-        "topic": "interest rates",
-        "count": 3
-      },
-      {
-        "topic": "Kenya",
+        "topic": "infrastructure",
         "count": 2
       },
       {
-        "topic": "housing deficit",
-        "count": 2
-      },
-      {
-        "topic": "corruption",
+        "topic": "tech-hub",
         "count": 1
       },
       {
-        "topic": "land acquisition",
+        "topic": "Yabacon Valley",
+        "count": 1
+      },
+      {
+        "topic": "online-real-estate",
+        "count": 1
+      },
+      {
+        "topic": "modern-residential-complexes",
         "count": 1
       }
     ],

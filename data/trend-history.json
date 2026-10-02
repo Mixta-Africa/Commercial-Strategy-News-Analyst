@@ -3082,6 +3082,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-02",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 11,
+        "bullish": 4
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "housing",
+          "count": 2
+        },
+        {
+          "topic": "court",
+          "count": 1
+        },
+        {
+          "topic": "property management",
+          "count": 1
+        },
+        {
+          "topic": "Victoria Island",
+          "count": 1
+        },
+        {
+          "topic": "legal intervention",
+          "count": 1
+        }
+      ]
     }
   ]
 }

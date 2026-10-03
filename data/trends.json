@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 11,
-      "bullish": 4
+      "neutral": 12,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "housing",
-        "count": 2
-      },
-      {
-        "topic": "court",
-        "count": 1
-      },
-      {
-        "topic": "property management",
-        "count": 1
+        "topic": "property dispute",
+        "count": 3
       },
       {
         "topic": "Victoria Island",
-        "count": 1
+        "count": 3
       },
       {
-        "topic": "legal intervention",
-        "count": 1
+        "topic": "court receiver",
+        "count": 2
+      },
+      {
+        "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "geospatial",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"
@@ -32,29 +32,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 11,
-      "bullish": 4
+      "neutral": 12,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "housing",
-        "count": 2
-      },
-      {
-        "topic": "court",
-        "count": 1
-      },
-      {
-        "topic": "property management",
-        "count": 1
+        "topic": "property dispute",
+        "count": 3
       },
       {
         "topic": "Victoria Island",
-        "count": 1
+        "count": 3
       },
       {
-        "topic": "legal intervention",
-        "count": 1
+        "topic": "court receiver",
+        "count": 2
+      },
+      {
+        "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "geospatial",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"
@@ -62,29 +62,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 11,
-      "bullish": 4
+      "neutral": 12,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "housing",
-        "count": 2
-      },
-      {
-        "topic": "court",
-        "count": 1
-      },
-      {
-        "topic": "property management",
-        "count": 1
+        "topic": "property dispute",
+        "count": 3
       },
       {
         "topic": "Victoria Island",
-        "count": 1
+        "count": 3
       },
       {
-        "topic": "legal intervention",
-        "count": 1
+        "topic": "court receiver",
+        "count": 2
+      },
+      {
+        "topic": "Lagos real estate",
+        "count": 2
+      },
+      {
+        "topic": "geospatial",
+        "count": 2
       }
     ],
     "averageSentiment": "neutral"

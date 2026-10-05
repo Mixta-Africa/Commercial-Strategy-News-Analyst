@@ -24,7 +24,6 @@ const { scoreRelevance } = require('./relevance');
 const { getWatchListOverride, getSourcesOverride } = require('./config-loader');
 const { enrichArticles } = require('./content-enricher');
 const { generateEmailHTML, sendEmail } = require('./email-service');
-const { runProbes, buildStatusSummary } = require('./model-registry');
 const whitelist = require('./whitelist.json');
 
 class NewsPipeline {
@@ -735,22 +734,6 @@ class NewsPipeline {
     try {
       const health = new RunHealth(this.timestamp);
 
-      // PHASE 0: Probe AI providers — detect dead/deprecated models before
-      // they waste real API calls on 15 articles. Results cached in
-      // data/model-status.json and committed back to the repo, so each run
-      // starts from known state rather than discovering failures cold.
-      console.log('[PHASE 0] Probing AI providers...');
-      try {
-        const { status: modelStatus, results: probeResults } = await runProbes();
-        const modelSummary = buildStatusSummary(modelStatus);
-        console.log(`[PHASE 0] ${modelSummary.workingModels.length} working, ${modelSummary.deadModels.length} dead`);
-        if (modelSummary.alert) {
-          health.addWarning(`CRITICAL: Only ${modelSummary.totalWorking} AI provider(s) working. Dead: ${modelSummary.deadModels.join('; ')}`);
-        }
-      } catch (probeErr) {
-        console.warn('[PHASE 0] Provider probe failed (non-fatal):', probeErr.message);
-      }
-
       // Apply any dashboard-edited config (watch-list / sources) before collecting.
       await this.applyRemoteConfig();
 
@@ -786,7 +769,42 @@ class NewsPipeline {
       console.log('[PHASE 2.5] Enriching article content...');
       const enriched = await enrichArticles(filtered);
 
-      const analyzed = await this.analyzeArticles(enriched);
+      // ─── PHASE 3.5: Intelligence Domain Classification ─────────────────────
+      // One batch call classifies all enriched articles by D1-D6 domain before
+      // per-article analysis. Articles classified D0 (noise) are dropped here,
+      // saving AI quota. Domain tags are carried forward into analysis & synthesis.
+      console.log('[PHASE 3.5] Running intelligence domain classification filter...');
+      let signalArticles = enriched;
+      try {
+        const classifications = await this.agents.classifyDomains(enriched);
+        const domainTagged = enriched.map((a, i) => ({
+          ...a,
+          domain:         classifications[i]?.domain         || 'D0_UNKNOWN',
+          editorial_note: classifications[i]?.editorial_note || '',
+          _drop:          classifications[i]?.drop           || false,
+        }));
+
+        const dropped = domainTagged.filter(a => a._drop);
+        signalArticles = domainTagged.filter(a => !a._drop);
+
+        console.log(`[PHASE 3.5] ${signalArticles.length}/${enriched.length} articles pass intelligence filter (${dropped.length} dropped as noise)`);
+        if (dropped.length > 0) {
+          console.log(`[PHASE 3.5] Dropped: ${dropped.map(a => `"${(a.title || '').substring(0, 50)}" [${a.domain}]`).join(' | ')}`);
+        }
+
+        // Log domain breakdown
+        const domainCounts = {};
+        for (const a of signalArticles) {
+          domainCounts[a.domain] = (domainCounts[a.domain] || 0) + 1;
+        }
+        console.log(`[PHASE 3.5] Domain breakdown: ${Object.entries(domainCounts).map(([d, n]) => `${d}(${n})`).join(', ')}`);
+      } catch (classifyErr) {
+        console.warn(`[PHASE 3.5] Classification failed (non-fatal), proceeding with all enriched articles: ${classifyErr.message}`);
+        signalArticles = enriched;
+      }
+      // ──────────────────────────────────────────────────────────────────────────
+
+      const analyzed = await this.analyzeArticles(signalArticles);
 
       // --- NEW FIX: Smart Tab Routing ---
       await this.appendAnalyzedToSheets(analyzed);

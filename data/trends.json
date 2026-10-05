@@ -1,95 +1,26 @@
 {
   "7day": {
-    "articleCount": 10,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "neutral": 5,
-      "bullish": 2
+      "neutral": 15
     },
-    "topTopics": [
-      {
-        "topic": "affordable housing",
-        "count": 2
-      },
-      {
-        "topic": "legal action",
-        "count": 1
-      },
-      {
-        "topic": "asset freeze",
-        "count": 1
-      },
-      {
-        "topic": "luxury real estate",
-        "count": 1
-      },
-      {
-        "topic": "influencer",
-        "count": 1
-      }
-    ],
+    "topTopics": [],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 10,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "neutral": 5,
-      "bullish": 2
+      "neutral": 15
     },
-    "topTopics": [
-      {
-        "topic": "affordable housing",
-        "count": 2
-      },
-      {
-        "topic": "legal action",
-        "count": 1
-      },
-      {
-        "topic": "asset freeze",
-        "count": 1
-      },
-      {
-        "topic": "luxury real estate",
-        "count": 1
-      },
-      {
-        "topic": "influencer",
-        "count": 1
-      }
-    ],
+    "topTopics": [],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 10,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 3,
-      "neutral": 5,
-      "bullish": 2
+      "neutral": 15
     },
-    "topTopics": [
-      {
-        "topic": "affordable housing",
-        "count": 2
-      },
-      {
-        "topic": "legal action",
-        "count": 1
-      },
-      {
-        "topic": "asset freeze",
-        "count": 1
-      },
-      {
-        "topic": "luxury real estate",
-        "count": 1
-      },
-      {
-        "topic": "influencer",
-        "count": 1
-      }
-    ],
+    "topTopics": [],
     "averageSentiment": "neutral"
   }
 }

@@ -55,6 +55,152 @@ class Agents {
     return this._complete(prompt, label);
   }
 
+  /**
+   * PHASE 3.5 — Domain Classification Filter
+   *
+   * Takes all enriched articles in a single batch call and assigns each one:
+   *   domain        : D1–D6 (or "D0" = noise / no signal)
+   *   editorial_note: one analyst sentence explaining the classification
+   *   drop          : true if the article carries no actionable intelligence
+   *
+   * Domains:
+   *   D1  Capital & Financing       — investment, mortgage, funding rounds
+   *   D2  Land & Regulatory         — policy, land tenure, permits, zoning
+   *   D3  Demand Intelligence       — buyer behaviour, affordability, migration
+   *   D4  Partnership & JV          — joint ventures, developer alliances
+   *   D5  Geopolitical Risk         — macro risk, FX, insecurity, political events
+   *   D6  Market Creation           — new infrastructure, corridors, anchor tenants
+   *   D0  Noise                     — no real estate signal; drop = true
+   *
+   * Primary model : Groq 120b  (fast, high quality, handles large batches)
+   * Fallback      : Gemini     (generous daily quota)
+   *
+   * Returns an array of classification objects in the same order as articles[].
+   * On total failure returns a pass-through array (domain="D0_UNKNOWN", drop=false)
+   * so the pipeline degrades gracefully rather than discarding everything.
+   */
+  async classifyDomains(articles) {
+    if (!articles || articles.length === 0) return [];
+
+    // Build a compact article list for the batch prompt
+    const articleList = articles.map((a, i) => {
+      const title   = (a.title       || '').trim().substring(0, 120);
+      const snippet = (a.description || a.content || '').trim().substring(0, 200);
+      return `[${i}] Title: "${title}" | Snippet: "${snippet}"`;
+    }).join('\n');
+
+    const prompt = `You are an intelligence classifier for a Nigerian real estate investment firm.
+
+Classify each article below into ONE domain and decide whether it should be DROPPED (no actionable signal for a real estate developer).
+
+DOMAIN CODES:
+D1 = Capital & Financing       (investment flows, mortgage rates, funding rounds, REITs)
+D2 = Land & Regulatory         (land tenure, policy, permits, zoning, government directives)
+D3 = Demand Intelligence       (buyer behaviour, affordability, rental demand, migration patterns)
+D4 = Partnership & JV          (joint ventures, developer alliances, acquisitions)
+D5 = Geopolitical Risk         (macro risk, FX/naira moves, insecurity, political instability)
+D6 = Market Creation           (new infrastructure, road/rail corridors, anchor tenants, new cities)
+D0 = Noise                     (sports, celebrity, health, no real estate relevance)
+
+ARTICLES:
+${articleList}
+
+RULES:
+- Assign exactly one domain per article.
+- Set drop=true ONLY for D0 (no real estate signal at all).
+- editorial_note: one short sentence — what the article is about and why this domain fits.
+- Return ONLY a JSON array. No markdown, no preamble.
+
+OUTPUT FORMAT:
+[
+  {"index": 0, "domain": "D1", "editorial_note": "CBN holds rates; mortgage affordability unchanged short-term.", "drop": false},
+  {"index": 1, "domain": "D0", "editorial_note": "Celebrity arrest story; no real estate signal.", "drop": true},
+  ...
+]`;
+
+    // Try Groq 120b first, then Gemini
+    let raw = null;
+
+    // Groq 120b attempt
+    for (const key of this.groqKeys) {
+      try {
+        console.log('[PHASE 3.5] Classifying domains via Groq-120b...');
+        const body = {
+          model: 'openai/gpt-oss-120b',
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.1,
+          max_tokens: Math.max(800, articles.length * 60),
+        };
+        const res = await axios.post(
+          'https://api.groq.com/openai/v1/chat/completions', body,
+          { headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, timeout: TIMEOUT }
+        );
+        raw = res.data.choices[0]?.message?.content || '';
+        if (raw && raw.trim()) break;
+      } catch (err) {
+        const status = err.response?.status;
+        console.warn(`[PHASE 3.5] Groq-120b failed (${status || 'ERR'}): ${(err.message || '').substring(0, 120)}`);
+      }
+    }
+
+    // Gemini fallback
+    if (!raw || !raw.trim()) {
+      for (const key of this.geminiKeys) {
+        try {
+          console.log('[PHASE 3.5] Falling back to Gemini for domain classification...');
+          const generationConfig = {
+            temperature: 0.1,
+            maxOutputTokens: Math.max(800, articles.length * 60),
+            responseMimeType: 'application/json'
+          };
+          const models = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-1.5-flash'];
+          for (const model of models) {
+            try {
+              const res = await axios.post(
+                `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+                { contents: [{ parts: [{ text: prompt }] }], generationConfig },
+                { headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, timeout: TIMEOUT }
+              );
+              raw = res.data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+              if (raw && raw.trim()) break;
+            } catch (e) {
+              if (e.response?.status !== 404) throw e;
+            }
+          }
+          if (raw && raw.trim()) break;
+        } catch (err) {
+          console.warn(`[PHASE 3.5] Gemini fallback failed: ${(err.message || '').substring(0, 120)}`);
+        }
+      }
+    }
+
+    // Parse response
+    if (!raw || !raw.trim()) {
+      console.warn('[PHASE 3.5] All classifiers failed — passing all articles through unclassified.');
+      return articles.map((_, i) => ({ index: i, domain: 'D0_UNKNOWN', editorial_note: 'Classification unavailable.', drop: false }));
+    }
+
+    try {
+      // Model may return an object like {"articles": [...]} or the bare array
+      const arrayMatch = raw.match(/\[[\s\S]*\]/);
+      if (!arrayMatch) throw new Error('No JSON array found in classification response');
+      const parsed = JSON.parse(arrayMatch[0]);
+
+      // Build a full result array in original article order
+      const resultMap = {};
+      for (const item of parsed) {
+        resultMap[item.index] = item;
+      }
+
+      return articles.map((_, i) => resultMap[i] || { index: i, domain: 'D0_UNKNOWN', editorial_note: 'Not returned by classifier.', drop: false });
+    } catch (err) {
+      console.warn(`[PHASE 3.5] Failed to parse classification response: ${err.message}`);
+      const snippet = (raw || '').substring(0, 200);
+      console.warn(`[PHASE 3.5] Raw snippet: "${snippet}"`);
+      return articles.map((_, i) => ({ index: i, domain: 'D0_UNKNOWN', editorial_note: 'Parse failure — passing through.', drop: false }));
+    }
+  }
+
   // ─── CORE FALLBACK ENGINE ────────────────────────────────────────────────────
 
   _tryExtractJSON(text) {
@@ -164,8 +310,7 @@ class Agents {
   // prompt instruction) so the API itself refuses to emit non-JSON text.
 
   async _groqFast(prompt, key, maxTokens = 1000, forceJSON = false) {
-    // openai/gpt-oss-20b replaces llama-3.1-8b-instant (deprecated June 17 2026, Enterprise-only Aug 26 2026)
-    const body = { model: 'openai/gpt-oss-20b', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: maxTokens };
+    const body = { model: 'llama-3.1-8b-instant', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: maxTokens };
     if (forceJSON) body.response_format = { type: 'json_object' };
     const res = await axios.post(
       'https://api.groq.com/openai/v1/chat/completions', body,
@@ -175,8 +320,7 @@ class Agents {
   }
 
   async _groq70b(prompt, key, maxTokens = 1000, forceJSON = false) {
-    // openai/gpt-oss-120b replaces llama-3.3-70b-versatile (deprecated June 17 2026, Enterprise-only Aug 26 2026)
-    const body = { model: 'openai/gpt-oss-120b', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: maxTokens };
+    const body = { model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: maxTokens };
     if (forceJSON) body.response_format = { type: 'json_object' };
     const res = await axios.post(
       'https://api.groq.com/openai/v1/chat/completions', body,
@@ -247,10 +391,7 @@ class Agents {
   }
 
   async _openrouter(prompt, key, maxTokens = 1000, forceJSON = false) {
-    // Free model list rotates. Current working slugs as of Sep 2026:
-    // meta-llama/llama-3.3-70b-instruct:free (note: must include "instruct" in slug)
-    // deepseek-r1:free removed mid-2026; openai/gpt-oss-20b:free added
-    const models = ['meta-llama/llama-3.3-70b-instruct:free', 'openai/gpt-oss-20b:free', 'google/gemma-3-27b-it:free'];
+    const models = ['meta-llama/llama-3.3-70b:free', 'openai/gpt-oss-20b:free'];
     let lastErr;
     for (const model of models) {
       try {

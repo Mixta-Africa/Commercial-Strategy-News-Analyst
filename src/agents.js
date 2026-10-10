@@ -310,7 +310,7 @@ OUTPUT FORMAT:
   // prompt instruction) so the API itself refuses to emit non-JSON text.
 
   async _groqFast(prompt, key, maxTokens = 1000, forceJSON = false) {
-    const body = { model: 'llama-3.1-8b-instant', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: maxTokens };
+    const body = { model: 'openai/gpt-oss-20b', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: maxTokens };
     if (forceJSON) body.response_format = { type: 'json_object' };
     const res = await axios.post(
       'https://api.groq.com/openai/v1/chat/completions', body,
@@ -320,7 +320,7 @@ OUTPUT FORMAT:
   }
 
   async _groq70b(prompt, key, maxTokens = 1000, forceJSON = false) {
-    const body = { model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: maxTokens };
+    const body = { model: 'openai/gpt-oss-120b', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: maxTokens };
     if (forceJSON) body.response_format = { type: 'json_object' };
     const res = await axios.post(
       'https://api.groq.com/openai/v1/chat/completions', body,
@@ -391,7 +391,12 @@ OUTPUT FORMAT:
   }
 
   async _openrouter(prompt, key, maxTokens = 1000, forceJSON = false) {
-    const models = ['meta-llama/llama-3.3-70b:free', 'openai/gpt-oss-20b:free'];
+    const models = [
+      'openrouter/free',                        // auto-router: picks any available free model
+      'meta-llama/llama-3.3-70b-instruct:free', // instruct suffix required
+      'openai/gpt-oss-20b:free',
+      'google/gemma-3-27b-it:free',
+    ];
     let lastErr;
     for (const model of models) {
       try {

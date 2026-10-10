@@ -3221,6 +3221,38 @@
       },
       "averageSentiment": "neutral",
       "topTopics": []
+    },
+    {
+      "date": "2026-10-10",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 10,
+        "bearish": 2,
+        "bullish": 3
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "new development",
+          "count": 2
+        },
+        {
+          "topic": "Lekki",
+          "count": 2
+        },
+        {
+          "topic": "property-dispute",
+          "count": 2
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 1
+        },
+        {
+          "topic": "developer launch",
+          "count": 1
+        }
+      ]
     }
   ]
 }

@@ -3253,6 +3253,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-11",
+      "articleCount": 7,
+      "sentimentBreakdown": {
+        "neutral": 5,
+        "bearish": 1,
+        "bullish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lekki Scheme II",
+          "count": 1
+        },
+        {
+          "topic": "NOVA HEIGHTS",
+          "count": 1
+        },
+        {
+          "topic": "1159 Realty",
+          "count": 1
+        },
+        {
+          "topic": "Realtors Escape",
+          "count": 1
+        },
+        {
+          "topic": "pre‑launch sales",
+          "count": 1
+        }
+      ]
     }
   ]
 }

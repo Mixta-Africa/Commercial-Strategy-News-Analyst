@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "fetchedAt": "2026-10-12T09:16:22.187Z",
+  "lastRunAt": "2026-10-12T09:16:22.187Z",
+  "world_bank": {
+    "gdp_growth": {
+      "value": 4.01,
+      "year": 2025
+    },
+    "fetchedAt": "2026-10-12T09:16:22.187Z"
+  },
+  "imf_gdp_forecast": {
+    "gdp_growth": {
+      "current": {
+        "year": 2026,
+        "value": 4.1
+      },
+      "next": {
+        "year": 2027,
+        "value": 4.3
+      }
+    },
+    "inflation": {
+      "current": {
+        "year": 2026,
+        "value": 16
+      },
+      "next": {
+        "year": 2027,
+        "value": 15.9
+      }
+    },
+    "fetchedAt": "2026-10-12T09:16:22.187Z"
+  },
+  "cbn_exchange_rate": {
+    "rate": 1330.17,
+    "source": "open.er-api.com (mid-market)",
+    "asOf": "Mon, 12 Oct 2026 00:02:32 +0000",
+    "fetchedAt": "2026-10-12T09:16:22.187Z"
+  },
+  "nbs_manual": null,
+  "status": {
+    "world_bank": {
+      "ok": false,
+      "at": "2026-10-12T09:16:22.187Z",
+      "indicators": 1,
+      "errors": [
+        "remittances: timeout of 20000ms exceeded"
+      ]
+    },
+    "imf": {
+      "ok": true,
+      "at": "2026-10-12T09:16:22.187Z",
+      "indicators": 2,
+      "errors": []
+    },
+    "fx": {
+      "ok": true,
+      "at": "2026-10-12T09:16:22.187Z",
+      "errors": []
+    },
+    "nbs_manual": {
+      "ok": false,
+      "at": "2026-10-12T09:16:22.187Z",
+      "errors": [
+        "401: Request failed with status code 401"
+      ]
+    }
+  }
+}

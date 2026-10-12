@@ -3285,6 +3285,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-12",
+      "articleCount": 11,
+      "sentimentBreakdown": {
+        "bullish": 6,
+        "neutral": 5
+      },
+      "averageSentiment": "bullish",
+      "topTopics": [
+        {
+          "topic": "affordability",
+          "count": 2
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "construction finance",
+          "count": 2
+        },
+        {
+          "topic": "housing reforms",
+          "count": 2
+        },
+        {
+          "topic": "2026",
+          "count": 1
+        }
+      ]
     }
   ]
 }

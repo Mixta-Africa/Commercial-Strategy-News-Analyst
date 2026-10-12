@@ -210,6 +210,21 @@ jobs:
         continue-on-error: true
 
       # ---------------------------------------------------------------
+      # MACRO INDICATORS (Reports tab "Live Macro Indicators")
+      # Writes data/macro-indicators.json from World Bank, IMF, a USD/NGN FX
+      # feed and the NBS figures typed into the dashboard Config tab (Firebase).
+      # Previously nothing wrote this file, so the panel never updated.
+      # World Bank/IMF refresh at most every 6 days; FX + NBS every run.
+      # A failing source keeps its last good value. continue-on-error + the
+      # script's own exit(0) mean this can never fail the daily run.
+      # ---------------------------------------------------------------
+      - name: Fetch macro indicators
+        run: node src/macro-fetcher.js
+        env:
+          FIREBASE_DB_URL: ${{ secrets.FIREBASE_DB_URL }}
+        continue-on-error: true
+
+      # ---------------------------------------------------------------
       # COMMIT DASHBOARD DATA BACK TO REPO (for GitHub Pages)
       #
       # This step's job is to land THIS run's freshly generated data/ files

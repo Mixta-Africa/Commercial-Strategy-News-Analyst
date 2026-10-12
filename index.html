@@ -4,6 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mixta Africa Intelligence — Commercial Strategy Desk</title>
+<!-- Browser tab icon -->
+<link rel="icon" type="image/png" href="assets/logo-header-cropped.png" />
+<!-- iOS "Add to Home Screen" icon -->
+<link rel="apple-touch-icon" href="assets/logo-header-cropped.png" />
+<!-- Android / PWA "Add to Home Screen" -->
+<link rel="manifest" href="manifest.json" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <!-- Modern Executive Fonts: Poppins (Primary), Inter (UI), IBM Plex (Data) -->
@@ -289,6 +295,15 @@ button, select, input { font-family: inherit; }
 .mc-trend.stable { color: var(--neutral-sig); }
 .mc-trend.declining { color: var(--bear); background: var(--bear-soft); }
 .mc-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.05em; }
+.mc-lede { font-family: var(--font-body); font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-top: 12px; }
+.mc-impl { font-family: var(--font-body); font-size: 13px; line-height: 1.5; color: var(--ink-soft); margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--maroon); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.mc-impl strong { color: var(--maroon); }
+.mc-foot { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.mc-pill { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); border: 1px solid var(--rule); border-radius: var(--radius); padding: 2px 8px; }
+.mc-pill-faint { border-style: dashed; }
+.mc-archive-toggle { text-align: center; padding: 8px 0; }
+.mc-archive-toggle button { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--maroon); background: none; border: 1px solid var(--rule); border-radius: var(--radius); padding: 8px 18px; cursor: pointer; }
+.mc-archive-toggle button:hover { border-color: var(--maroon); }
 
 /* Detail View */
 .detail-back { font-family: var(--font-ui); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); cursor: pointer; background: none; border: none; margin-bottom: 40px; display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s; padding:0; }
@@ -1408,7 +1423,7 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
 
   <header class="site-header">
     <div class="masthead">
-      <img src="assets/logo-header-cropped.png" 
+      <img src="assets/logo-header.png" 
            alt="Mixta Africa Market Intelligence Hub" 
            class="masthead-logo"
            title="Commercial Strategy Department — Premium real estate &amp; competitive markets, updated daily"
@@ -1430,7 +1445,6 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
       <button data-view="markets">Markets</button>
       <button data-view="themes">Themes &amp; Trends</button>
       <button data-view="competition">Competition</button>
-      <button data-view="outreach">Outreach</button>
       <button data-view="innovation-hub">Innovation</button>
       <button data-view="reports">Reports</button>
       <button data-view="library" data-focus="nav-library">Library</button>
@@ -1587,7 +1601,7 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
     <section id="themes" class="view">
       <div class="section-divider" style="margin-top:0;"><h2>Narrative Momentum</h2></div>
       <div class="dateline" style="font-family: var(--font-ui); font-size: 13.5px; color: var(--ink-soft); margin-bottom: 24px;">
-        Recurring themes the synthesizer has tracked across briefings, ranked by how many consecutive days each has appeared.
+        Themes the synthesizer has tracked across briefings, most recently seen first. Status reflects the actual days a theme appeared; themes not seen for 14+ days are archived below.
       </div>
       <div id="themesBody" class="momentum-grid"><div class="loading">Loading temporal index...</div></div>
 
@@ -1761,37 +1775,6 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
       </div>
     </section>
 
-    <!-- OUTREACH INTELLIGENCE -->
-    <section id="outreach" class="view">
-      <div class="section-divider" style="margin-top:0;" data-no-accordion="true">
-        <h2>Outreach Intelligence</h2>
-        <div class="decision-selector">
-          <span class="decision-selector-label">Decision</span>
-          <select id="outreachDecisionType" class="decision-select" onchange="setDecisionType(this.value)">
-            <option value="targeting">Which corporates to approach?</option>
-            <option value="pricing">Should we raise or hold prices?</option>
-          </select>
-        </div>
-      </div>
-      <!-- PIPELINE COUNTER -->
-      <div class="pipeline-counter" id="pipelineCounter">
-        <div>
-          <div class="pipeline-counter-label">Active corporate conversations</div>
-          <div class="pipeline-target-text">Target: 3–4 concurrent</div>
-        </div>
-        <div class="pipeline-counter-track" id="pipelineDots"></div>
-        <div>
-          <span class="pipeline-count-text" id="pipelineCountText">—</span>
-          <span class="pipeline-target-text"> / 4 target</span>
-        </div>
-      </div>
-      <div id="outreachSignalContainer"></div>
-      <!-- SECTOR INTELLIGENCE PANEL — opens inline when company is clicked -->
-      <div id="sectorIntelPanel" style="display:none;"></div>
-      <!-- COMPANY BRIEF MODAL — kept for pipeline state management only, no script/coaching -->
-      <div id="companyBriefModal" style="display:none;"></div>
-    </section>
-
     <!-- INNOVATION HUB — global real estate disruption and innovation -->
     <section id="innovation-hub" class="view">
       <div class="section-divider" style="margin-top:0;"><h2>Innovation &amp; Disruption Hub</h2></div>
@@ -1836,7 +1819,7 @@ body.focus-mode [data-focus="nav-library"] { opacity: 0.3; pointer-events: none;
     <section id="reports" class="view">
       <div class="section-divider" style="margin-top:0;" data-no-accordion="true">
         <h2>Market Intelligence Reports</h2>
-        <!-- Decision-type selector — persists across Reports and Outreach tabs -->
+        <!-- Decision-type selector — persists across Reports -->
         <div class="decision-selector">
           <span class="decision-selector-label">Decision</span>
           <select id="globalDecisionType" class="decision-select" onchange="setDecisionType(this.value)">
@@ -2325,7 +2308,7 @@ Rules: Be specific, cite dates and facts from the articles. Do not mention Mixta
   const WORKER_URL = 'https://mixta-ai-proxy.olasunkanmitimilehintaiwo.workers.dev'; // ← replace with your actual Worker URL
 
   const PROVIDER_MODELS = [
-    { name: 'Groq',      provider: 'groq',      model: 'llama-3.1-8b-instant'        },
+    { name: 'Groq',      provider: 'groq',      model: 'openai/gpt-oss-20b'            },
     { name: 'SambaNova', provider: 'sambanova', model: 'Meta-Llama-3.3-70B-Instruct' },
     { name: 'Mistral',   provider: 'mistral',   model: 'mistral-small-latest'         },
   ];
@@ -2578,28 +2561,92 @@ function renderFilteredTable() {
 }
 
 // Narrative Momentum cards
+// Theme status is derived from REAL sighting dates (themes.json `history`, written
+// by the synthesizer). For entries recorded before `history` existed it falls back
+// to firstSeen/lastSeen/count, clamped so a run-count can't exceed the calendar span.
+// "Fading" is only assigned to a theme that was seen on 2+ days and has since gone
+// quiet — the old logic stamped every once-seen theme "Declining", which meant nothing.
+function _themeStatus(t) {
+  const DAY = 86400000;
+  const ago = (d) => d ? Math.floor((Date.now() - Date.parse(d)) / DAY) : 9999;
+  const hist = Array.isArray(t.history) && t.history.length ? [...new Set(t.history)] : null;
+  const span = Math.max(1, ago(t.firstSeen) - ago(t.lastSeen) + 1);
+  const days = hist ? hist.length : Math.min(Math.max(1, t.count || 1), span);
+  const lastAgo = ago(t.lastSeen), firstAgo = ago(t.firstSeen);
+  const recent = hist ? hist.filter(d => ago(d) <= 7).length : (lastAgo <= 7 ? days : 0);
+  let cls, label;
+  if (lastAgo > 7 && days >= 2)        { cls = 'declining'; label = '▼ Fading'; }
+  else if (firstAgo <= 2 && days <= 2) { cls = 'rising';    label = '▲ New'; }
+  else if (recent >= 3)                { cls = 'rising';    label = '▲ Building'; }
+  else if (days >= 3)                  { cls = 'stable';    label = '→ Established'; }
+  else if (days === 1)                 { cls = 'stable';    label = '→ Single sighting'; }
+  else                                 { cls = 'stable';    label = '→ Watching'; }
+  return { cls, label, days, lastAgo, firstAgo };
+}
+
+function _toggleThemeArchive() {
+  const box = document.getElementById('themeArchive');
+  const btn = document.getElementById('themeArchiveBtn');
+  if (!box || !btn) return;
+  const open = box.style.display === 'none';
+  box.style.display = open ? 'grid' : 'none';
+  btn.textContent = open ? 'Hide earlier themes' : btn.dataset.label;
+}
+
 function renderThemes(memory) {
   const el = document.getElementById('themesBody');
-  const themes = (memory?.themes || []).slice().sort((a,b) => b.count - a.count || (a.lastSeen < b.lastSeen ? 1 : -1));
-  if (!themes.length) {
+  const all = (memory?.themes || []).slice().sort((a, b) =>
+    (a.lastSeen < b.lastSeen ? 1 : a.lastSeen > b.lastSeen ? -1 : 0) || (b.count - a.count));
+  if (!all.length) {
     el.innerHTML = '<div class="empty" style="grid-column: 1/-1;">No theme history yet.</div>';
     return;
   }
-  
-  let html = '';
-  for (const t of themes) {
-    let trendClass = 'stable'; let trendIcon = '→ Stable';
-    if (t.count > 3 || t.novelty === 'New') { trendClass = 'rising'; trendIcon = '▲ Rising'; }
-    else if (t.count === 1) { trendClass = 'declining'; trendIcon = '▼ Declining'; }
 
-    html += `
+  // Today's briefing carries full analysis for themes still active; older memory
+  // entries (pre-history) fall back to it so their cards are not bare titles.
+  const todays = (typeof loadedBriefingCache !== 'undefined' && loadedBriefingCache?.themes) || [];
+  const slug = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const findToday = (label) => todays.find(x => x.label === label) || todays.find(x => slug(x.label) === slug(label));
+
+  const card = (t) => {
+    const s = _themeStatus(t);
+    const d = t.detail || findToday(t.label) || null;
+    const lede = d?.what_happened || '';
+    const impl = d?.why_it_matters_to_mixta || '';
+    const nSrc = (d?.sources || d?.sourceArticles || []).length;
+    const seenTxt = s.days === 1 ? 'Seen once' : `Seen on ${s.days} days`;
+    const lastTxt = s.lastAgo <= 0 ? 'today' : s.lastAgo === 1 ? 'yesterday' : `${s.lastAgo}d ago`;
+    return `
       <div class="momentum-card" onclick="openThemeDetail('${esc(t.label)}', 'themes')">
         <div class="mc-header">
-          <span class="mc-trend ${trendClass}">${trendIcon}</span>
-          <span class="mc-meta">${t.count} Day Momentum</span>
+          <span class="mc-trend ${s.cls}">${s.label}</span>
+          <span class="mc-meta">${seenTxt} · last ${lastTxt}</span>
         </div>
         <div class="mc-title">${esc(t.label)}</div>
+        ${lede ? `<div class="mc-lede">${esc(lede)}</div>` : ''}
+        ${impl ? `<div class="mc-impl"><strong>Mixta:</strong> ${esc(impl)}</div>` : ''}
+        <div class="mc-foot">
+          ${d?.confidence ? `<span class="mc-pill">${esc(d.confidence)} confidence</span>` : ''}
+          ${nSrc ? `<span class="mc-pill">${nSrc} source${nSrc > 1 ? 's' : ''}</span>` : ''}
+          ${!lede ? '<span class="mc-pill mc-pill-faint">Open for article history</span>' : ''}
+        </div>
       </div>`;
+  };
+
+  // Themes not seen for 14+ days leave the main grid instead of cluttering it.
+  const active = all.filter(t => _themeStatus(t).lastAgo <= 14);
+  const archived = all.filter(t => _themeStatus(t).lastAgo > 14);
+
+  let html = active.length
+    ? active.map(card).join('')
+    : '<div class="empty" style="grid-column: 1/-1;">No themes have been seen in the last 14 days.</div>';
+  if (archived.length) {
+    const lbl = `Show ${archived.length} earlier theme${archived.length > 1 ? 's' : ''}`;
+    html += `
+      <div class="mc-archive-toggle" style="grid-column: 1/-1;">
+        <button id="themeArchiveBtn" data-label="${lbl}" onclick="_toggleThemeArchive()">${lbl}</button>
+      </div>
+      <div id="themeArchive" class="momentum-grid" style="display:none; grid-column: 1/-1;">${archived.map(card).join('')}</div>`;
   }
   el.innerHTML = html;
 }
@@ -3781,634 +3828,6 @@ function renderCompetitivePositioningCard() {
   </div>`;
 }
 
-// ════════════════════════════════════════════════════════════════════════
-// USE CASE 2: OUTREACH SIGNAL BANNER
-// Maps active briefing themes to corporate sector targets.
-// When a bullish/strategic theme matches a sector, surfaces an outreach signal.
-// ════════════════════════════════════════════════════════════════════════
-
-// Sector → theme keyword mapping
-// Add new rows as the corporate targets table grows.
-// ── Corporate targeting database ─────────────────────────────────────────────
-// Each entry: sector label, primary companies (₦1.5M+/month salary capacity),
-// secondary companies (₦500K-₦1.5M — lower priority, still reachable), 
-// employee band estimates at ₦1.5M+, and keyword triggers from the news pipeline.
-// "estStaff15M" = estimated Lagos-based staff earning ₦1.5M+/month.
-const SECTOR_THEME_MAP = [
-  {
-    sector: 'Energy (Oil & Gas)',
-    companies: [
-      { name: 'Seplat Energy',         estStaff15M: 1380, note: 'ENGAGED', priority: 'primary',
-        bonusMonth: [3,9], bonusNote: 'Q1 (Mar) and Q3 (Sep) performance bonuses; annual in April',
-        contact: 'HR Director / Cooperative Chairman', linkedin: 'seplat-energy', product: 'Lakowe Crossings 3-bed' },
-      { name: 'TotalEnergies Nigeria', estStaff15M: 500,  note: 'IOC pay scale', priority: 'primary',
-        bonusMonth: [4,12], bonusNote: 'April (Q1 close) and December (year-end); French fiscal cycle',
-        contact: 'HR Manager', linkedin: 'totalenergies', product: 'Lakowe Annexe / Lakowe Crossings' },
-      { name: 'ExxonMobil Nigeria',    estStaff15M: 300,  note: 'reduced headcount', priority: 'primary',
-        bonusMonth: [3,12], bonusNote: 'March and December; US parent fiscal year alignment',
-        contact: 'Welfare & Benefits Manager', linkedin: 'exxonmobil', product: 'Lakowe Annexe' },
-      { name: 'Renaissance Africa Energy (Shell Nigeria)', estStaff15M: 450, note: 'SNEPCo staff', priority: 'primary',
-        bonusMonth: [2,8], bonusNote: 'February (year-end close) and August (H1 performance)',
-        contact: 'Staff Cooperative Chairman', linkedin: 'shell', product: 'Lakowe Crossings / Garden City Golf Annexe (PH)' },
-      { name: 'Oando',                 estStaff15M: 900,  note: 'grown via NAOC', priority: 'primary',
-        bonusMonth: [4], bonusNote: 'April annual bonus post-AGM results',
-        contact: 'Group HR Director', linkedin: 'oando-plc', product: 'Lakowe Crossings 3-bed' },
-      { name: 'Nestoil',               estStaff15M: 360,  note: 'EPCC engineers', priority: 'primary',
-        bonusMonth: [3,9], bonusNote: 'Project milestone bonuses — March and September typical',
-        contact: 'HR / Admin Manager', linkedin: 'nestoil-limited', product: 'Lakowe Crossings' },
-      { name: 'Dangote Refinery',      estStaff15M: 400,  note: 'operational staff growing', priority: 'primary',
-        bonusMonth: [12], bonusNote: 'Year-end December; new operational staff receiving first full-year bonuses from 2025',
-        contact: 'HR Director', linkedin: 'dangote-group', product: 'Lakowe Crossings / Lagos New Town plots' },
-    ],
-    secondary: [
-      { name: 'Nest Oil Nigeria',      estStaff15M: 200,  note: 'mid-tier operator', priority: 'secondary' },
-      { name: 'Shoreline Energy',      estStaff15M: 80,   note: 'Lagos-based', priority: 'secondary' },
-      { name: 'AITEO Group',           estStaff15M: 150,  note: 'upstream operator', priority: 'secondary' },
-    ],
-    keywords: ['energy', 'oil', 'gas', 'petroleum', 'upstream', 'downstream', 'NNPC', 'refinery', 'pipeline', 'LNG', 'crude', 'hydrocarbon'],
-    reachablePrimary: 3410,
-  },
-  {
-    sector: 'Financial Services & Banking',
-    companies: [
-      { name: 'Stanbic IBTC',          estStaff15M: 600,  note: 'investment banking tier', priority: 'primary',
-        bonusMonth: [3,9], bonusNote: 'March (full year) and September (H1); Standard Bank group cycle',
-        contact: 'Head of Human Resources', linkedin: 'stanbic-ibtc', product: 'Lakowe Crossings / Lakowe Annexe' },
-      { name: 'Zenith Bank',           estStaff15M: 1200, note: 'large Lagos base', priority: 'primary',
-        bonusMonth: [4], bonusNote: 'April post-AGM; Zenith has an active staff housing welfare scheme',
-        contact: 'Group Head, Human Resources', linkedin: 'zenith-bank', product: 'Lakowe Crossings 2&3-bed' },
-      { name: 'GTBank',                estStaff15M: 900,  note: 'VI HQ concentration', priority: 'primary',
-        bonusMonth: [4], bonusNote: 'April post-results; GTCO staff cooperative is active',
-        contact: 'Chief People Officer', linkedin: 'guaranty-trust-bank', product: 'Lakowe Crossings 3-bed' },
-      { name: 'Access Bank',           estStaff15M: 1100, note: 'post-merger growth', priority: 'primary',
-        bonusMonth: [4,10], bonusNote: 'April and October; Access has a documented staff mortgage programme via its own retail arm',
-        contact: 'Group HR Director', linkedin: 'access-bank-plc', product: 'Lakowe Crossings / LNT commercial' },
-      { name: 'UBA',                   estStaff15M: 800,  note: 'pan-Africa HQ Lagos', priority: 'primary',
-        bonusMonth: [4], bonusNote: 'April post-AGM; UBA staff cooperative society is well-organised',
-        contact: 'Chief People Officer', linkedin: 'uba-group', product: 'Lakowe Crossings 2&3-bed' },
-      { name: 'First Bank',            estStaff15M: 950,  note: 'legacy senior cohort', priority: 'primary',
-        bonusMonth: [3], bonusNote: 'March year-end close; senior cohort (DMDs, EDs) are top individual buyers',
-        contact: 'Group Executive, Human Capital', linkedin: 'firstbank-nigeria', product: 'Lakowe Annexe / Lakowe Crossings' },
-      { name: 'Citibank Nigeria',      estStaff15M: 180,  note: 'all-senior staff', priority: 'primary',
-        bonusMonth: [2], bonusNote: 'February; US parent year-end cycle; individual LinkedIn outreach most effective',
-        contact: 'Country HR Manager', linkedin: 'citi', product: 'Lakowe Annexe' },
-    ],
-    secondary: [
-      { name: 'FCMB',                  estStaff15M: 400,  note: 'mid-band dominant', priority: 'secondary' },
-      { name: 'Fidelity Bank',         estStaff15M: 350,  note: 'growing retail', priority: 'secondary' },
-    ],
-    keywords: ['banking', 'financial', 'mortgage', 'FMBN', 'NHF', 'interest rate', 'CBN', 'credit', 'investment banking', 'capital market', 'asset management'],
-    reachablePrimary: 6170,
-  },
-  {
-    sector: 'Telecoms',
-    companies: [
-      { name: 'MTN Nigeria',           estStaff15M: 1600, note: 'Lagos commercial HQ', priority: 'primary',
-        bonusMonth: [3,9], bonusNote: 'March (full year) and September (H1); MTN staff cooperative is one of the most active in Lagos',
-        contact: 'Cooperative Chairman / HR Director', linkedin: 'mtn-nigeria', product: 'Lakowe Crossings 3-bed bulk' },
-      { name: 'Airtel Nigeria',        estStaff15M: 700,  note: 'V/I HQ', priority: 'primary',
-        bonusMonth: [4,10], bonusNote: 'April and October; Bharti Airtel group cycle',
-        contact: 'HR Business Partner', linkedin: 'airtel-nigeria', product: 'Lakowe Crossings 2&3-bed' },
-      { name: 'IHS Towers',            estStaff15M: 300,  note: 'infrastructure play', priority: 'primary',
-        bonusMonth: [3], bonusNote: 'March post-year-end results; NYSE-listed so US fiscal alignment',
-        contact: 'VP Human Resources', linkedin: 'ihs-towers', product: 'Lakowe Crossings' },
-    ],
-    secondary: [
-      { name: 'Glo (Globacom)',        estStaff15M: 500,  note: 'salary verification needed', priority: 'secondary' },
-      { name: '9mobile',               estStaff15M: 200,  note: 'reduced post-acquisition', priority: 'secondary' },
-    ],
-    keywords: ['telecom', 'broadband', '5G', 'connectivity', 'digital', 'spectrum', 'MTN', 'Airtel', 'network rollout'],
-    reachablePrimary: 2950,
-  },
-  {
-    sector: 'FMCG & Consumer Goods',
-    companies: [
-      { name: 'Nigerian Breweries',    estStaff15M: 800,  note: 'confirmed ₦4.2M avg salary (2024)', priority: 'primary',
-        bonusMonth: [4,12], bonusNote: 'April (full year post-AGM) and December (year-end); Heineken parent cycle',
-        contact: 'HR Manager / Welfare Coordinator', linkedin: 'nigerian-breweries', product: 'Lakowe Crossings 2&3-bed' },
-      { name: 'Nestlé Nigeria',        estStaff15M: 350,  note: 'Ilupeju HQ', priority: 'primary',
-        bonusMonth: [4], bonusNote: 'April post-AGM; Swiss parent year-end alignment',
-        contact: 'HR Business Partner', linkedin: 'nestle-nigeria', product: 'Lakowe Crossings' },
-      { name: 'Unilever Nigeria',      estStaff15M: 400,  note: 'Lagos HQ', priority: 'primary',
-        bonusMonth: [3], bonusNote: 'March; UK fiscal year; transitioning workforce after consumer goods split',
-        contact: 'HR Director', linkedin: 'unilever-nigeria', product: 'Lakowe Crossings' },
-    ],
-    secondary: [
-      { name: 'Dangote Group (Consumer)', estStaff15M: 300, note: 'Lagos HQ', priority: 'secondary' },
-      { name: 'Honeywell Group',       estStaff15M: 150,  note: 'flour + diversified', priority: 'secondary' },
-    ],
-    keywords: ['consumer', 'FMCG', 'manufacturing', 'brewery', 'food', 'retail', 'Nestlé', 'Unilever', 'consumer goods'],
-    reachablePrimary: 2400,
-  },
-  {
-    sector: 'Industrials & Construction',
-    companies: [
-      { name: 'Julius Berger Nigeria', estStaff15M: 360,  note: 'Lekki-Epe corridor positioning', priority: 'primary',
-        bonusMonth: [12,3], bonusNote: 'December (German parent year-end) and March (project completion bonuses)',
-        contact: 'HR Manager / NSE chapter network', linkedin: 'julius-berger', product: 'Lakowe Crossings — corridor alignment is a strong narrative' },
-      { name: 'BUA Cement',            estStaff15M: 200,  note: 'Lagos operations', priority: 'primary',
-        bonusMonth: [4], bonusNote: 'April post-AGM; BUA Group senior staff',
-        contact: 'Group HR Director', linkedin: 'bua-group', product: 'Lakowe Crossings / LNT commercial' },
-      { name: 'Dangote Cement',        estStaff15M: 200,  note: 'Lagos HQ', priority: 'primary',
-        bonusMonth: [4], bonusNote: 'April post-AGM; senior Dangote Cement staff are typically high earners',
-        contact: 'Group HR Director', linkedin: 'dangote-group', product: 'Lagos New Town plots / Lakowe Crossings' },
-    ],
-    secondary: [
-      { name: 'Arbico',                estStaff15M: 80,   note: 'construction services', priority: 'secondary' },
-      { name: 'RCC Nigeria',           estStaff15M: 60,   note: 'road construction', priority: 'secondary' },
-    ],
-    keywords: ['infrastructure', 'construction', 'highway', 'expressway', 'Lekki', 'corridor', 'building', 'cement', 'Julius Berger', 'bridge', 'road'],
-    reachablePrimary: 1310,
-  },
-  {
-    sector: 'Tech & Fintech',
-    companies: [
-      { name: 'Flutterwave',           estStaff15M: 500,  note: 'all staff above ₦1.5M band', priority: 'primary',
-        bonusMonth: [1,7], bonusNote: 'January and July; equity vest cycles also create liquidity windows',
-        contact: 'Direct LinkedIn to senior engineers / product leads', linkedin: 'flutterwave', product: 'Lakowe Crossings 2-bed or 3-bed — individual buyer focus' },
-      { name: 'Paystack (Stripe)',     estStaff15M: 300,  note: 'Lagos HQ, competitive pay', priority: 'primary',
-        bonusMonth: [1,7], bonusNote: 'January and July; Stripe parent cycle; equity-heavy compensation',
-        contact: 'Direct LinkedIn — avoid HR channel', linkedin: 'paystack', product: 'Lakowe Crossings 2-bed' },
-      { name: 'Interswitch',           estStaff15M: 400,  note: 'V/I HQ', priority: 'primary',
-        bonusMonth: [4], bonusNote: 'April post-year-end; Interswitch has an active staff cooperative',
-        contact: 'Staff Cooperative / HR Director', linkedin: 'interswitch-group', product: 'Lakowe Crossings 3-bed' },
-      { name: 'TeamApt / Moniepoint',  estStaff15M: 350,  note: 'fast-growing, Lagos HQ', priority: 'primary',
-        bonusMonth: [1,7], bonusNote: 'January and July; equity vesting events create additional liquidity',
-        contact: 'Direct LinkedIn to senior engineers', linkedin: 'moniepoint', product: 'Lakowe Crossings 2-bed' },
-    ],
-    secondary: [
-      { name: 'Jumia Nigeria',         estStaff15M: 200,  note: 'mixed salary band', priority: 'secondary' },
-      { name: 'Opay',                  estStaff15M: 150,  note: 'growing headcount', priority: 'secondary' },
-    ],
-    keywords: ['tech', 'startup', 'fintech', 'digital economy', 'proptech', 'innovation', 'AI', 'technology', 'software', 'payments'],
-    reachablePrimary: 2180,
-  },
-  {
-    sector: 'Professional Services & Consulting',
-    companies: [
-      { name: 'PwC Nigeria',           estStaff15M: 600,  note: 'all senior/manager above band', priority: 'primary',
-        bonusMonth: [7], bonusNote: 'July — UK fiscal year end (April 5 → July payment); Big 4 promotion/bonus cycle',
-        contact: 'HR Director / People & Culture Manager', linkedin: 'pwc-nigeria', product: 'Lakowe Crossings 3-bed / Lakowe Annexe' },
-      { name: 'Deloitte Nigeria',      estStaff15M: 500,  note: 'V/I HQ', priority: 'primary',
-        bonusMonth: [9], bonusNote: 'September — US fiscal year end; Deloitte Global cycle',
-        contact: 'HR Business Partner', linkedin: 'deloitte-nigeria', product: 'Lakowe Crossings / Lakowe Annexe' },
-      { name: 'KPMG Nigeria',          estStaff15M: 450,  note: 'Lagos Harbour dominant', priority: 'primary',
-        bonusMonth: [10], bonusNote: 'October — global KPMG fiscal year end (Sept 30 → Oct payment)',
-        contact: 'People & Change Manager', linkedin: 'kpmg-nigeria', product: 'Lakowe Annexe / Lakowe Crossings 3-bed' },
-      { name: 'EY Nigeria',            estStaff15M: 400,  note: 'Lagos office', priority: 'primary',
-        bonusMonth: [7], bonusNote: 'July — UK fiscal year alignment',
-        contact: 'HR Manager', linkedin: 'ey-nigeria', product: 'Lakowe Crossings 3-bed' },
-      { name: 'Accenture Nigeria',     estStaff15M: 300,  note: 'Lagos + VI', priority: 'primary',
-        bonusMonth: [9], bonusNote: 'September — Accenture August fiscal year end',
-        contact: 'HR Lead Nigeria', linkedin: 'accenture-nigeria', product: 'Lakowe Crossings' },
-    ],
-    secondary: [
-      { name: 'BDO Nigeria',           estStaff15M: 150,  note: 'mid-tier advisory', priority: 'secondary' },
-      { name: 'RSM Nigeria',           estStaff15M: 100,  note: 'mid-tier', priority: 'secondary' },
-    ],
-    keywords: ['consulting', 'advisory', 'audit', 'professional services', 'accounting', 'management consulting'],
-    reachablePrimary: 2390,
-  },
-  {
-    sector: 'International Organisations & NGOs',
-    companies: [
-      { name: 'World Bank (Lagos office)', estStaff15M: 120, note: 'expat + senior local', priority: 'primary',
-        bonusMonth: [7], bonusNote: 'July — World Bank fiscal year end (June 30)',
-        contact: 'Country Operations Officer / HR', linkedin: 'world-bank', product: 'Lakowe Annexe' },
-      { name: 'UNDP Nigeria',          estStaff15M: 80,   note: 'Abuja + Lagos', priority: 'primary',
-        bonusMonth: [12], bonusNote: 'December — UN calendar year end',
-        contact: 'Operations Manager', linkedin: 'undp', product: 'Lakowe Crossings' },
-    ],
-    secondary: [
-      { name: 'USAID Nigeria',         estStaff15M: 60,   note: 'Lagos + Abuja', priority: 'secondary' },
-      { name: 'UNICEF Nigeria',        estStaff15M: 80,   note: 'Abuja-dominant', priority: 'secondary' },
-    ],
-    keywords: ['international', 'development', 'NGO', 'World Bank', 'UN', 'foreign mission', 'diplomat'],
-    reachablePrimary: 390,
-  },
-];
-
-function renderOutreachSignals(briefingData, trendHistory) {
-  const container = document.getElementById('outreachSignalContainer');
-  if (!container) return;
-
-  // ── THREE-SIGNAL MODEL ────────────────────────────────────────────────────
-  // A signal fires only when Signal C (macro base) is true AND
-  // (Signal A (calendar) OR Signal B (event-detected)).
-  // This eliminates the lazy "sector appeared 3x = recommend engagement" pattern.
-
-  // Signal C — Macro base condition
-  // Derived from 7-day sentiment. Outreach is only worth activating when the
-  // macro environment is neutral-to-positive. In a sustained bearish period,
-  // even the best corporate trigger produces low conversion.
-  const days = trendHistory?.days || [];
-  const last7 = days.slice(-7);
-  let macroScore = 0;
-  for (const d of last7) {
-    const b = d.sentimentBreakdown || {};
-    const total = (b.bullish||0) + (b.bearish||0) + (b.neutral||0);
-    if (total > 0) macroScore += ((b.bullish||0) - (b.bearish||0)) / total;
-  }
-  macroScore = last7.length ? macroScore / last7.length : 0;
-  const macroClear = macroScore > -0.15; // blocks only sustained bearish periods
-
-  // Signal A — Calendar trigger (bonus cycle windows, always on if macro clear)
-  // Nigerian corporate bonus payments cluster in Jan-Feb (year-end close) and
-  // Jul-Aug (H1 close). The 6 weeks following a bonus payment are the highest
-  // conversion window in any property sales cycle.
-  const now = new Date();
-  const month = now.getMonth() + 1; // 1-indexed
-  const bonusWindow = (month >= 1 && month <= 2) || (month >= 7 && month <= 8);
-  const bonusLabel = bonusWindow
-    ? month <= 2 ? 'Year-end bonus cycle (Jan–Feb)' : 'H1 bonus cycle (Jul–Aug)'
-    : null;
-
-  // Signal B — Event trigger (news-detected corporate lifecycle events)
-  // Five event types, ranked by conversion probability:
-  // 1. Contract win / major expansion announcement
-  // 2. Salary review / minimum wage compliance
-  // 3. IPO / ESOP / share listing
-  // 4. Staff welfare / cooperative / housing benefit programme
-  // 5. Sector-specific growth narrative (lowest weight, needs bonus window too)
-
-  const themes = briefingData?.themes || [];
-  const recentDays = (trendHistory?.days || []).slice(-14);
-  const recentTopics = recentDays.flatMap(d => (d.topTopics || []).map(t => t.topic || ''));
-
-  // Event detection patterns ordered by conversion weight
-  const eventPatterns = [
-    {
-      type: 'contract_win',
-      label: 'Contract win / expansion',
-      weight: 5,
-      patterns: [/contract|award(ed)?|win(s)?|won|billion.*(deal|project)|expansion|new (office|hq|headquarters)/i],
-    },
-    {
-      type: 'salary_review',
-      label: 'Salary review / pay rise',
-      weight: 4,
-      patterns: [/salary|pay rise|wage|compensation|review|remuneration|minimum wage/i],
-    },
-    {
-      type: 'ipo_esop',
-      label: 'IPO / share listing / ESOP',
-      weight: 4,
-      patterns: [/ipo|initial public offer|listing|stock exchange|esop|share (scheme|option|allocation)/i],
-    },
-    {
-      type: 'welfare',
-      label: 'Staff welfare / cooperative',
-      weight: 3,
-      patterns: [/cooperative|staff welfare|housing (benefit|scheme|programme)|welfare fund/i],
-    },
-    {
-      type: 'sector_growth',
-      label: 'Sector growth narrative',
-      weight: 1, // only actionable alongside bonus window
-      patterns: [/growth|expand|profit|revenue|record|milestone|bullish/i],
-    },
-  ];
-
-  // Entry point database — how to approach each sector
-  // This determines the specific action in the outreach recommendation
-  const ENTRY_POINTS = {
-    'Energy (Oil & Gas)': {
-      primary: 'HR / Welfare Director',
-      route: 'Request a 20-minute slot to present a group bulk-purchase offer. Seplat, Oando, and TotalEnergies all have established staff cooperative societies — approach the cooperative chairman directly for a faster route to a group presentation.',
-      cooperative: true,
-    },
-    'Financial Services & Banking': {
-      primary: 'Head of Human Resources',
-      route: 'Banks respond best to a formal letter of intent addressed to the HR Director, followed by a bulk-discount term sheet. Zenith, GTBank, and Access all have documented staff housing programmes. Citibank and Standard Chartered staff are individually reachable through LinkedIn for personal purchases.',
-      cooperative: false,
-    },
-    'Telecoms': {
-      primary: 'Staff Cooperative Society',
-      route: 'MTN Nigeria has an active staff cooperative with real estate as a primary investment class. Approach the cooperative chairman (typically a senior finance staff member). Airtel responds well to a direct HR approach with a group payment plan proposal.',
-      cooperative: true,
-    },
-    'FMCG & Consumer Goods': {
-      primary: 'HR / Admin Manager',
-      route: 'Nigerian Breweries and Nestlé have strong welfare cultures. The most effective entry is a referral through a staff member who has already purchased, then escalate to a formal HR presentation. Offer a payment plan tied to the salary cycle.',
-      cooperative: false,
-    },
-    'Industrials & Construction': {
-      primary: 'Professional Association Network',
-      route: 'Julius Berger senior engineers are reachable through the Nigerian Society of Engineers (NSE) and COREN events. A presentation at an NSE Lagos chapter event reaches 200+ senior engineers simultaneously. BUA and Lafarge respond to direct HR outreach.',
-      cooperative: false,
-    },
-    'Tech & Fintech': {
-      primary: 'Direct / LinkedIn',
-      route: 'Tech staff respond poorly to formal HR channels — they are individually reachable. Target senior engineers and product managers directly on LinkedIn with a specific unit offering. Flutterwave and Paystack staff are active on Twitter/X — a company-tagged post from a credible account generates direct enquiries.',
-      cooperative: false,
-    },
-    'Professional Services & Consulting': {
-      primary: 'Direct / Partner Network',
-      route: 'Big 4 partners are individually reachable and make decisions independently. Approach PwC and Deloitte partners directly. For senior managers, a referral from an existing client who works there is the highest-conversion route. McKinsey and BCG staff are LinkedIn-reachable.',
-      cooperative: false,
-    },
-    'International Organisations & NGOs': {
-      primary: 'Admin / Procurement Officer',
-      route: 'International organisations have formal procurement processes for staff benefits. Submit a proposal through the admin department. World Bank and UNDP staff are also individually reachable — they are high-intent buyers who understand asset appreciation arguments.',
-      cooperative: false,
-    },
-  };
-
-  const signals = [];
-
-  for (const sector of SECTOR_THEME_MAP) {
-    if (!macroClear) continue; // Signal C gate — suppress all signals in sustained bearish periods
-
-    // Detect Signal B events in recent themes and topics
-    const sectorText = (themes.map(t =>
-      (t.label||'') + ' ' + (t.what_happened||'') + ' ' + (t.recommendation||'')
-    ).join(' ') + ' ' + recentTopics.join(' ')).toLowerCase();
-
-    // Only check if this sector\'s keywords appear at all
-    const sectorMentioned = sector.keywords.some(kw => sectorText.includes(kw.toLowerCase()));
-    if (!sectorMentioned && !bonusWindow) continue;
-
-    let detectedEvents = [];
-    let highestWeight = 0;
-    let matchedThemes = []; // store for card rendering
-
-    if (sectorMentioned) {
-      // Filter to sector-relevant text chunks
-      matchedThemes = themes
-        .filter(t => sector.keywords.some(kw =>
-          ((t.label||'') + (t.what_happened||'')).toLowerCase().includes(kw.toLowerCase())));
-      const sectorChunks = matchedThemes
-        .map(t => (t.label||'') + ' ' + (t.what_happened||''));
-
-      for (const event of eventPatterns) {
-        // Skip sector_growth events unless bonus window is also active
-        if (event.type === 'sector_growth' && !bonusWindow) continue;
-        const matchText = sectorChunks.join(' ') + ' ' + recentTopics.join(' ');
-        if (event.patterns.some(re => re.test(matchText))) {
-          detectedEvents.push(event);
-          highestWeight = Math.max(highestWeight, event.weight);
-        }
-      }
-    }
-
-    // Signal A: bonus window — use company-specific calendars where available
-    // Sector-level generic window fires for large pools, but company-specific
-    // windows are more precise and fire independently of the generic window.
-    const currentMonth = now.getMonth() + 1;
-    const companySpecificBonus = (sector.companies || []).some(c =>
-      c.bonusMonth?.includes(currentMonth) || c.bonusMonth?.includes(currentMonth - 1)
-    );
-    const calendarFires = (bonusWindow || companySpecificBonus) && (sector.reachablePrimary || 0) >= 500;
-    // Signal B: event detected
-    const eventFires = detectedEvents.length > 0 && highestWeight >= 2;
-
-    if (!calendarFires && !eventFires) continue;
-
-    // Determine signal strength
-    let strength, triggerType;
-    if (eventFires && calendarFires && highestWeight >= 4) {
-      strength = 'Strong'; triggerType = 'event+calendar';
-    } else if (eventFires && highestWeight >= 4) {
-      strength = 'Strong'; triggerType = 'event';
-    } else if (eventFires && calendarFires) {
-      strength = 'Moderate'; triggerType = 'event+calendar';
-    } else if (eventFires) {
-      strength = 'Moderate'; triggerType = 'event';
-    } else {
-      strength = 'Emerging'; triggerType = 'calendar';
-    }
-
-    signals.push({
-      sector, strength, triggerType, detectedEvents, highestWeight,
-      calendarFires, bonusWindow, bonusLabel, macroClear, macroScore,
-      matchedThemes, // themes that matched this sector — used for source citations
-    });
-  }
-
-  if (!signals.length) {
-    if (bonusWindow && macroClear) {
-      container.innerHTML = `
-        <div class="outreach-macro-strip outreach-macro-neutral">
-          <span class="outreach-macro-dot">${icon('calendar')}</span>
-          <span><strong>Bonus Window Active</strong> — ${esc(bonusLabel)}. No specific corporate event has been detected to combine with this window. Consider proactive outreach to the highest-pool sectors (Banking, Energy) on calendar basis alone.</span>
-        </div>`;
-    } else {
-      container.innerHTML = `<div style="color:var(--ink-faint);font-family:var(--font-ui);font-size:13px;font-style:italic;padding:24px 0;">No outreach signals are active today. Signals require macro conditions to be neutral-to-positive plus a calendar window or detected corporate event.</div>`;
-    }
-    return;
-  }
-
-  // ── Macro status strip (reads once, applies to all cards below) ───────────
-  const macroStripClass = macroScore > 0.1 ? 'outreach-macro-bull' : macroScore < -0.05 ? 'outreach-macro-bear' : 'outreach-macro-neutral';
-  const macroStripText = macroScore > 0.1
-    ? `${icon('circle-check')} Macro: Bullish — favourable conversion environment. Outreach signals active.`
-    : macroScore < -0.05
-    ? `${icon('triangle-alert')} Macro: Slightly negative (${(macroScore*100).toFixed(0)}/100) — signals fire on event strength but conversion environment is below ideal. Focus on highest-intent prospects.`
-    : `${icon('neutral')} Macro: Neutral — conditions adequate for outreach. Prioritise event-triggered sectors over calendar-only.`;
-
-  let html = `<div class="outreach-macro-strip ${macroStripClass}">${macroStripText}</div>`;
-  if (bonusWindow) {
-    html += `<div class="outreach-bonus-badge">${icon('calendar')} ${esc(bonusLabel)} — bonus window active across all qualifying sectors</div>`;
-  }
-
-  // ── Split into event-triggered vs calendar-only ───────────────────────────
-  const eventSignals = signals.filter(s => s.triggerType !== 'calendar');
-  const calendarSignals = signals.filter(s => s.triggerType === 'calendar');
-
-  // Sort: Strong first, then by reachable pool
-  const sortByStrength = arr => arr.sort((a,b) => {
-    const order = { 'Strong': 0, 'Moderate': 1, 'Emerging': 2 };
-    const d = (order[a.strength]||99) - (order[b.strength]||99);
-    return d !== 0 ? d : (b.sector.reachablePrimary||0) - (a.sector.reachablePrimary||0);
-  });
-  sortByStrength(eventSignals);
-  sortByStrength(calendarSignals);
-
-  // ── Event-triggered cards (individual, time-sensitive) ────────────────────
-  if (eventSignals.length) {
-    html += `<div class="outreach-section-label">Event-Triggered Signals <span class="outreach-section-count">${eventSignals.length}</span></div>`;
-    html += eventSignals.map(sig => {
-      const primaryCos = (sig.sector.companies || []).filter(c => c.priority === 'primary');
-      const secondaryCos = (sig.sector.companies || []).filter(c => c.priority === 'secondary');
-      const totalReachable = sig.sector.reachablePrimary || 0;
-      const entryPoint = ENTRY_POINTS[sig.sector.sector];
-      const sigIcon = sig.strength === 'Strong' ? icon('signal-strong', 16) : sig.strength === 'Moderate' ? icon('signal-medium', 16) : icon('signal-weak', 16);
-
-      let triggerLine = '';
-      if (sig.triggerType === 'event+calendar') {
-        const evtLabel = sig.detectedEvents[0]?.label || 'sector event';
-        triggerLine = `<strong>Two signals converging:</strong> ${esc(evtLabel)} detected in this week's news + ${esc(sig.bonusLabel)}. Both event receptivity and disposable income align simultaneously — highest-quality window.`;
-      } else {
-        const evt = sig.detectedEvents[0];
-        triggerLine = `<strong>${esc(evt?.label || 'Event detected')}:</strong> ${
-          evt?.type === 'contract_win' ? 'A major contract or expansion announcement creates job security confidence — the single strongest predictor of property purchase intent. Act within the next 3 weeks while the news is fresh.' :
-          evt?.type === 'salary_review' ? 'A salary review or pay adjustment means affected staff have more disposable income than 30 days ago. This is a 4–6 week conversion window.' :
-          evt?.type === 'ipo_esop' ? 'An IPO or ESOP vesting event means staff have realised liquidity or share value. Asset-seeking behaviour peaks in the 60 days following a vesting event.' :
-          evt?.type === 'welfare' ? 'A welfare or cooperative initiative signals the company is actively facilitating staff financial decisions. Approach the cooperative chairman — they are already in buying mode.' :
-          'Sector growth narrative supports a property conversation framed around asset appreciation.'
-        }`;
-      }
-
-      const entryLine = entryPoint
-        ? `<div class="outreach-entry-block">
-            <div class="outreach-entry-label">Entry Point: ${esc(entryPoint.primary)}</div>
-            <div class="outreach-entry-route">${esc(entryPoint.route)}</div>
-          </div>` : '';
-
-      // Supporting news — themes that triggered this signal
-      const supportingThemes = (sig.matchedThemes || []).slice(0, 3);
-      const sourcesHtml = supportingThemes.length
-        ? `<div class="outreach-sources">
-            <div class="outreach-sources-label">Supporting intelligence</div>
-            ${supportingThemes.map(t => {
-              const sourceArticles = (t.sourceArticles || []).slice(0, 2);
-              return `<div class="outreach-source-theme">
-                <div class="outreach-source-theme-label">${esc(t.label)}</div>
-                <div class="outreach-source-theme-body">${esc(t.what_happened || '')}</div>
-                ${sourceArticles.map(a =>
-                  `<div class="outreach-source-article">
-                    ${a.url
-                      ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.title)}</a>`
-                      : esc(a.title)
-                    }
-                    ${a.source ? `<span class="outreach-source-name">${esc(a.source)}</span>` : ''}
-                  </div>`
-                ).join('')}
-              </div>`;
-            }).join('')}
-          </div>` : '';
-
-      // Company list — primary targets with staff counts
-      const top5 = primaryCos.slice(0, 5).map(c => {
-        const state = getCompanyState(c.name);
-        const cls = state === 'active' ? 'active-pipeline' : state === 'snoozed' ? 'snoozed' : '';
-        return `<button class="outreach-co-btn ${cls}" onclick="openCompanyBrief(${JSON.stringify(JSON.stringify(c))}, ${JSON.stringify(JSON.stringify(sig.sector))})">${esc(c.name)} ~${c.estStaff15M.toLocaleString()}</button>`;
-      }).join('');
-
-      const allPrimary = primaryCos.length > 5
-        ? `<div class="outreach-company-more">+${primaryCos.length - 5} more — click any name to generate conversation brief</div>` : '';
-
-      const secNote = secondaryCos.length
-        ? `<div class="outreach-secondary-note">Secondary (₦500K–₦1.5M): ${secondaryCos.map(c=>esc(c.name)).join(' · ')}</div>` : '';
-
-      return `<div class="outreach-signal-banner">
-        <div class="outreach-signal-icon">${sigIcon}</div>
-        <div class="outreach-signal-body">
-          <div class="outreach-signal-label">${esc(sig.strength)} Signal · ${esc(sig.sector.sector)} · ${totalReachable.toLocaleString()} reachable primary staff</div>
-          <div class="outreach-signal-text">${triggerLine}</div>
-          ${entryLine}
-          ${sourcesHtml}
-          <div class="outreach-signal-companies">${top5}${allPrimary}</div>
-          ${secNote}
-        </div>
-      </div>`;
-    }).join('');
-  }
-
-  // ── Calendar-only signals — ONE consolidated card ─────────────────────────
-  if (calendarSignals.length) {
-    const totalReachable = calendarSignals.reduce((sum, s) => sum + (s.sector.reachablePrimary||0), 0);
-    const tableRows = calendarSignals.map((sig, i) => {
-      const ep = ENTRY_POINTS[sig.sector.sector];
-      const primaryCos = (sig.sector.companies||[]).filter(c=>c.priority==='primary').slice(0,3);
-      // Check which companies in this sector have specific bonus windows this month
-      const currentMonth = now.getMonth() + 1;
-      const companyButtons = primaryCos.map(c => {
-        const state = getCompanyState(c.name);
-        const cls = state === 'active' ? 'active-pipeline' : state === 'snoozed' ? 'snoozed' : '';
-        const inBonus = c.bonusMonth?.includes(currentMonth) || c.bonusMonth?.includes(currentMonth - 1);
-        const bonusDot = inBonus ? ` ${icon('calendar', 12)}` : '';
-        return `<button class="outreach-co-btn ${cls}" onclick="openCompanyBrief(${JSON.stringify(JSON.stringify(c))}, ${JSON.stringify(JSON.stringify(sig.sector))})">${esc(c.name)}${bonusDot}</button>`;
-      }).join('');
-      return `<tr>
-        <td class="cal-rank">${i+1}</td>
-        <td class="cal-sector">${esc(sig.sector.sector)}</td>
-        <td class="cal-reachable">${(sig.sector.reachablePrimary||0).toLocaleString()}</td>
-        <td class="cal-entry">${ep ? esc(ep.primary) : '—'}</td>
-        <td class="cal-cos">${companyButtons}</td>
-      </tr>`;
-    }).join('');
-
-    html += `
-      <div class="outreach-section-label" style="margin-top:${eventSignals.length ? '36px' : '0'};">
-        Calendar Window · ${calendarSignals.length} Sector${calendarSignals.length > 1 ? 's' : ''} Active · ${totalReachable.toLocaleString()} reachable staff
-        <span class="outreach-section-count">${calendarSignals.length}</span>
-      </div>
-      <div class="outreach-calendar-card">
-        <div class="outreach-calendar-desc">
-          ${esc(bonusLabel || 'Bonus window active')} — the 6 weeks following bonus payments are the highest discretionary-spend period in the property sales cycle. ${icon('calendar', 12)} = company-specific bonus window active this month. Click any company name to open its conversation brief.
-        </div>
-        <table class="outreach-cal-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Sector</th>
-              <th>Reachable Staff</th>
-              <th>Entry Channel</th>
-              <th>Priority Companies (click to brief)</th>
-            </tr>
-          </thead>
-          <tbody>${tableRows}</tbody>
-        </table>
-      </div>`;
-  }
-
-  // ── Decision-type context ──────────────────────────────────────────────────
-  // Each decision mode surfaces a different view of the same signal data.
-  // Targeting (default): full signal cards + company buttons + pipeline counter
-  // Pricing: macro environment only — outreach is not the pricing decision
-  // Monitoring: active sector summary only — no company-level detail
-
-  const pipelineCounter = document.getElementById('pipelineCounter');
-
-  if (_decisionType === 'pricing') {
-    if (pipelineCounter) pipelineCounter.style.display = 'none';
-    const totalReachable = [...eventSignals, ...calendarSignals]
-      .reduce((n, s) => n + (s.sector.reachablePrimary || 0), 0);
-    container.innerHTML = `
-      ${html.split('</div>')[0]}</div>
-      <div style="background:var(--paper-card);border:1px solid var(--rule);border-radius:var(--radius);padding:24px 28px;margin-top:16px;">
-        <div style="font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--maroon);margin-bottom:12px;">Pricing decision selected</div>
-        <div style="font-family:var(--font-body);font-size:14px;color:var(--ink-soft);line-height:1.65;">
-          Corporate outreach signals are not the primary input for a pricing decision. Switch to the <strong>Competition tab</strong> to review the current market median, absorption rate, and stale listing breakdown — the three indicators that directly inform whether to raise or hold prices.
-        </div>
-        <div style="margin-top:16px;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);">
-          ${[...eventSignals, ...calendarSignals].length} active signal${[...eventSignals, ...calendarSignals].length !== 1 ? 's' : ''} across ${totalReachable.toLocaleString()} reachable staff — switch to "Which corporates to approach?" to view them.
-        </div>
-      </div>`;
-    return;
-  }
-
-  if (_decisionType === 'monitoring') {
-    if (pipelineCounter) pipelineCounter.style.display = 'none';
-    const allSignals = [...eventSignals, ...calendarSignals];
-    const sectorSummary = allSignals.length
-      ? allSignals.map(s =>
-          `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--rule);">
-            <div>
-              <div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--ink);">${esc(s.sector.sector)}</div>
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);margin-top:2px;">${s.strength} signal · ${(s.sector.reachablePrimary||0).toLocaleString()} qualifying staff</div>
-            </div>
-            <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:${s.strength==='Strong'?'var(--maroon)':'var(--ink-soft)'};">${s.triggerType === 'event+calendar' ? 'Event + Calendar' : s.triggerType === 'event' ? 'Event' : 'Calendar'}</div>
-          </div>`
-        ).join('')
-      : '<div style="color:var(--ink-faint);font-style:italic;padding:16px 0;">No active outreach signals this week.</div>';
-
-    container.innerHTML = `
-      ${html.split('</div>')[0]}</div>
-      <div style="background:var(--paper-card);border:1px solid var(--rule);border-radius:var(--radius);padding:24px 28px;margin-top:16px;">
-        <div style="font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--maroon);margin-bottom:16px;">Active sectors this week</div>
-        ${sectorSummary}
-        <div style="margin-top:16px;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);">Switch to "Which corporates to approach?" for company-level detail and intelligence panels.</div>
-      </div>`;
-    return;
-  }
-
-  // Targeting mode (default) — show pipeline counter and full signal cards
-  if (pipelineCounter) pipelineCounter.style.display = '';
-
-  container.innerHTML = html;
-}
 // Renders a colour-coded strip of daily sentiment readings with an
 // interpreted signal and commercial action recommendation.
 // ════════════════════════════════════════════════════════════════════════
@@ -4916,17 +4335,6 @@ const HELP_CONTENT = {
       { h: 'Two-Gate Absorption Validation', p: 'A listing only counts as absorbed if it was present for at least 7 consecutive scrape days before disappearing (Gate 1) and cross-referenced against its price history (Gate 2). This filters out lapsed agent subscriptions and one-off posting errors.' },
       { h: 'Price Trend Over Time', p: 'Default view groups by bedroom count across the full corridor. Selecting a Location filter switches to property-type lines within that location. Hover over any point to see the exact date, series, and price.' },
       { h: 'Add Mixta Price', p: 'Prices saved here persist to Firebase across sessions and appear in the competitive positioning card and all pricing charts. Set property type correctly — it affects which comparison group you appear in.' },
-    ]
-  },
-  outreach: {
-    title: 'Outreach Intelligence — How to read this',
-    sections: [
-      { h: 'Pipeline Counter', p: 'The strip at the top shows how many active corporate conversations are tracked against a target of 3–4. Open any company brief and click "Mark as Active Pipeline" to fill a slot. When you have fewer than 3 active conversations, the counter shows in amber.' },
-      { h: 'Three-Signal Model', p: 'A signal fires when: (1) macro sentiment is not in a sustained bearish period, AND either (2) a company-specific bonus window is active, OR (3) a corporate lifecycle event is detected in the news. News volume alone never triggers a signal.' },
-      { h: 'Company Conversation Brief', p: 'Click any company name to open its Conversation Brief. Shows: the specific contact to approach (named role), the recommended approach route, the recommended Mixta product, that company\'s specific bonus calendar month, this week\'s relevant market signal, and a constructed conversation opener.' },
-      { h: 'Company-Specific Bonus Calendar', p: 'Each company has its own bonus payment month based on its parent company\'s fiscal year. A calendar icon in the company name means that company\'s specific bonus window is active this month. PwC pays in July (UK fiscal year), KPMG in October, Zenith Bank in April (post-AGM).' },
-      { h: 'Snooze System', p: 'Inside the Company Brief, snooze a company for 30 or 90 days. Snoozed companies are greyed out in signal cards and will not re-appear until the snooze expires. Prevents signal fatigue from companies you\'ve already contacted.' },
-      { h: 'Macro Status Strip', p: 'The coloured bar at the top shows the current macro environment. When the strip shows bearish, focus on closing existing pipeline rather than new outreach.' },
     ]
   },
   innovation: {
@@ -6626,7 +6034,7 @@ RESPOND WITH JSON ONLY:
     const WORKER = 'https://mixta-ai-proxy.olasunkanmitimilehintaiwo.workers.dev';
     const providers = [
       { name: 'SambaNova', provider: 'sambanova', model: 'Meta-Llama-3.3-70B-Instruct' },
-      { name: 'Groq 70b',  provider: 'groq',      model: 'llama-3.3-70b-versatile' },
+      { name: 'Groq 70b',  provider: 'groq',      model: 'openai/gpt-oss-120b'        },
     ];
     for (const { provider, model } of providers) {
       try {
@@ -6797,8 +6205,8 @@ let _decisionType = 'pricing'; // default
 
 function setDecisionType(type) {
   _decisionType = type;
-  // Sync selectors — outreach tab only has targeting/pricing options
-  const els = ['globalDecisionType', 'outreachDecisionType'];
+  // Sync selectors
+  const els = ['globalDecisionType'];
   els.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -6807,10 +6215,6 @@ function setDecisionType(type) {
   });
   // Update macro tile panel
   renderMacroDashboard();
-  // Re-render outreach signals — the decision type affects what intelligence is surfaced
-  if (window._lastBriefingData && window._lastTrendHistory) {
-    renderOutreachSignals(window._lastBriefingData, window._lastTrendHistory);
-  }
   // Update report decision context line
   const ctx = document.getElementById('reportDecisionContext');
   if (ctx) {
@@ -6843,15 +6247,26 @@ function renderMacroDashboard() {
   const nbs = live?.nbs_manual || {};
   const m = MACRO_INDICATORS;
 
+  // Header captions state what actually happened on the last pipeline run —
+  // fresh, stale, or failing — instead of promising an update that may never come.
+  const ageDays = (iso) => Math.floor((Date.now() - Date.parse(iso)) / 86400000);
+  const staleTag = (iso, limit) => (iso && ageDays(iso) > limit) ? ` (${ageDays(iso)}d old — pipeline may be failing)` : '';
+  const st = live?.status || {};
   const fetched = live?.fetchedAt
-    ? `World Bank & IMF last fetched ${live.fetchedAt.slice(0,10)}`
-    : 'Using hardcoded baseline — pipeline will update Monday';
+    ? `World Bank & IMF refreshed ${live.fetchedAt.slice(0,10)}${staleTag(live.fetchedAt, 14)}${st.world_bank?.ok === false || st.imf?.ok === false ? ' · last refresh partly failed' : ''}`
+    : live?.lastRunAt
+      ? 'World Bank & IMF fetch has not succeeded yet — showing baseline'
+      : 'Using hardcoded baseline — no live data file yet (written by the daily pipeline)';
   const cbnNote = cbn.fetchedAt
-    ? `CBN rate fetched ${cbn.fetchedAt.slice(0,10)}`
-    : 'CBN rate not yet fetched';
+    ? `FX rate ${cbn.fetchedAt.slice(0,10)}${staleTag(cbn.fetchedAt, 3)}${st.fx?.ok === false ? ' · last fetch failed, showing previous' : ''}`
+    : 'FX rate not yet fetched';
   const nbsNote = nbs.updatedAt
     ? `NBS figures manually updated ${nbs.updatedAt}`
     : 'NBS figures not yet entered — use Update NBS Data below';
+
+  // Rows overridden by live data get a "· live" suffix on their source label.
+  const liveKeys = window._macroLiveKeys || new Set();
+  const src = (path, base, liveLabel) => liveKeys.has(path) ? `${liveLabel || base} · live` : base;
 
   const row = (label, value, source, highlight = false) => `
     <div class="macro-row${highlight ? ' macro-row-highlight' : ''}">
@@ -6869,23 +6284,23 @@ function renderMacroDashboard() {
 
       <div class="macro-group">
         <div class="macro-group-label">Monetary Policy</div>
-        ${row('CBN MPR', m.monetary_policy.cbn_mpr, 'CBN MPC', true)}
-        ${row('Naira / USD (Official)', m.monetary_policy.naira_usd_official, 'CBN EFEM')}
+        ${row('CBN MPR', m.monetary_policy.cbn_mpr, src('monetary_policy.cbn_mpr', 'CBN MPC', 'CBN MPC (manual entry)'), true)}
+        ${row('Naira / USD', m.monetary_policy.naira_usd_official, src('monetary_policy.naira_usd_official', 'CBN EFEM', 'Market mid-rate'))}
         ${row('Prime Lending Rate', m.monetary_policy.prime_lending_rate, 'Commercial banks')}
         ${row('Mortgage Rate', m.monetary_policy.mortgage_rate, 'Lenders / FMBN')}
       </div>
 
       <div class="macro-group">
         <div class="macro-group-label">Macroeconomic</div>
-        ${row('Real GDP Growth', m.macroeconomic.gdp_growth_2025, 'NBS / World Bank', true)}
-        ${row('GDP Growth Forecast', m.macroeconomic.gdp_growth_2026_fcst, 'IMF / World Bank')}
-        ${row('Headline Inflation (CPI)', m.macroeconomic.headline_inflation, 'NBS', true)}
-        ${row('Food Inflation', m.macroeconomic.food_inflation, 'NBS')}
-        ${row('Core Inflation', m.macroeconomic.core_inflation, 'NBS')}
+        ${row('Real GDP Growth', m.macroeconomic.gdp_growth_2025, src('macroeconomic.gdp_growth_2025', 'NBS / World Bank', 'World Bank'), true)}
+        ${row('GDP Growth Forecast', m.macroeconomic.gdp_growth_2026_fcst, src('macroeconomic.gdp_growth_2026_fcst', 'IMF / World Bank', 'IMF WEO'))}
+        ${row('Headline Inflation (CPI)', m.macroeconomic.headline_inflation, src('macroeconomic.headline_inflation', 'NBS', 'NBS (manual entry)'), true)}
+        ${row('Food Inflation', m.macroeconomic.food_inflation, src('macroeconomic.food_inflation', 'NBS', 'NBS (manual entry)'))}
+        ${row('Core Inflation', m.macroeconomic.core_inflation, src('macroeconomic.core_inflation', 'NBS', 'NBS (manual entry)'))}
         ${row('Unemployment', m.macroeconomic.unemployment, 'NBS Labour Force')}
         ${row('Brent Oil Price', m.macroeconomic.oil_price_brent, 'ICE Brent')}
         ${row('Nigeria Oil Output', m.macroeconomic.nigeria_oil_output, 'NNPC / OPEC')}
-        ${m.macroeconomic.real_estate_gdp_pct ? row('Real Estate GDP Growth', m.macroeconomic.real_estate_gdp_pct, 'NBS', true) : ''}
+        ${m.macroeconomic.real_estate_gdp_pct ? row('Real Estate GDP Growth', m.macroeconomic.real_estate_gdp_pct, src('macroeconomic.real_estate_gdp_pct', 'NBS', 'NBS (manual entry)'), true) : ''}
       </div>
 
       <div class="macro-group">
@@ -6898,7 +6313,7 @@ function renderMacroDashboard() {
 
       <div class="macro-group">
         <div class="macro-group-label">External / Global</div>
-        ${row('Diaspora Remittances', m.world_bank_outlook.remittances_2025, 'World Bank')}
+        ${row('Diaspora Remittances', m.world_bank_outlook.remittances_2025, src('world_bank_outlook.remittances_2025', 'World Bank'))}
         ${row('FX Reform Note', m.world_bank_outlook.subsidy_reform_note, 'World Bank')}
         ${row('Poverty Headcount', m.world_bank_outlook.poverty_headcount, 'World Bank')}
       </div>
@@ -6999,6 +6414,71 @@ const MACRO_INDICATORS = {
     remittances_2025:     '$20.9bn (World Bank migration data, 2025 estimate)',
   },
 };
+
+// ── LIVE MACRO MERGE ──────────────────────────────────────────────────────────
+// Overlays data/macro-indicators.json (written by src/macro-fetcher.js in the
+// daily pipeline) and the manual NBS figures (Firebase) onto MACRO_INDICATORS.
+// Every call starts from the pristine baseline, so repeated merges (file first,
+// then Firebase NBS) never compound, and a field that stops being live reverts
+// to baseline. Report prompts and the Reports tab both read MACRO_INDICATORS,
+// so one merge updates both.
+//
+// Vintage guard: a live value only replaces the baseline if it is at least as
+// recent as the baseline's own year, so a lagging annual series can never
+// overwrite a fresher figure.
+const _MACRO_BASELINE = JSON.parse(JSON.stringify(MACRO_INDICATORS));
+window._macroLiveKeys = new Set();
+
+function _mergeMacroIndicators(live) {
+  try {
+    if (live) window._liveMacroData = live;
+    live = window._liveMacroData || {};
+
+    // 1) reset to baseline
+    for (const grp of Object.keys(_MACRO_BASELINE)) {
+      MACRO_INDICATORS[grp] = (typeof _MACRO_BASELINE[grp] === 'object')
+        ? { ..._MACRO_BASELINE[grp] } : _MACRO_BASELINE[grp];
+    }
+    const liveKeys = new Set();
+    const set = (grp, key, val) => { MACRO_INDICATORS[grp][key] = val; liveKeys.add(`${grp}.${key}`); };
+    const isNum = (n) => typeof n === 'number' && isFinite(n);
+    const pct = (raw) => { const s = String(raw).trim(); return /[%(]/.test(s) ? s : `${s}%`; };
+
+    // 2) pipeline-fetched data
+    const wb = live.world_bank || {};
+    const imf = live.imf_gdp_forecast || {};
+    const fx = live.cbn_exchange_rate || {};
+
+    if (isNum(wb.gdp_growth?.value) && wb.gdp_growth.year >= 2025) {
+      set('macroeconomic', 'gdp_growth_2025', `${wb.gdp_growth.value}% real GDP growth (World Bank, ${wb.gdp_growth.year})`);
+    }
+    const fc = imf.gdp_growth?.current || imf.gdp_growth?.next;
+    if (isNum(fc?.value)) {
+      set('macroeconomic', 'gdp_growth_2026_fcst', `${fc.value}% forecast for ${fc.year} (IMF World Economic Outlook)`);
+    }
+    if (isNum(wb.remittances_usd_bn?.value) && wb.remittances_usd_bn.year >= 2025) {
+      set('world_bank_outlook', 'remittances_2025', `$${wb.remittances_usd_bn.value}bn (World Bank, ${wb.remittances_usd_bn.year})`);
+    }
+    if (isNum(fx.rate)) {
+      const asOf = (fx.asOf && !isNaN(Date.parse(fx.asOf))) ? new Date(fx.asOf).toISOString().slice(0, 10) : (fx.fetchedAt || '').slice(0, 10);
+      set('monetary_policy', 'naira_usd_official', `~₦${Math.round(fx.rate).toLocaleString('en-NG')}/$ (market mid-rate${asOf ? ', ' + asOf : ''})`);
+    }
+
+    // 3) manual NBS / CBN figures (Config tab → Firebase, also mirrored in the file)
+    const nbs = live.nbs_manual || {};
+    const by = nbs.updatedAt ? `, entered ${nbs.updatedAt}` : '';
+    if (nbs.headline_cpi_yoy)        set('macroeconomic', 'headline_inflation',  `${pct(nbs.headline_cpi_yoy)} year-on-year (NBS${by})`);
+    if (nbs.food_inflation)          set('macroeconomic', 'food_inflation',      `${pct(nbs.food_inflation)} year-on-year (NBS${by})`);
+    if (nbs.core_inflation)          set('macroeconomic', 'core_inflation',      `${pct(nbs.core_inflation)} year-on-year (NBS${by})`);
+    if (nbs.real_estate_gdp_growth)  set('macroeconomic', 'real_estate_gdp_pct', `${pct(nbs.real_estate_gdp_growth)} (NBS${by})`);
+    if (nbs.mpr)                     set('monetary_policy', 'cbn_mpr',           `${pct(nbs.mpr)} (CBN MPC${by})`);
+
+    window._macroLiveKeys = liveKeys;
+    if (typeof renderMacroDashboard === 'function') renderMacroDashboard();
+  } catch (e) {
+    console.warn('[Macro] merge failed — baseline retained:', e.message);
+  }
+}
 
 // ── REPORTS ENGINE ────────────────────────────────────────────────────────────
 // Multi-phase generation architecture:
@@ -7170,13 +6650,13 @@ async function _aiCall(prompt, maxTokens, preferGroq = false) {
   const WORKER = 'https://mixta-ai-proxy.olasunkanmitimilehintaiwo.workers.dev';
   const PROVIDERS = preferGroq
     ? [
-        { name: 'Groq 70b',  provider: 'groq',      model: 'llama-3.3-70b-versatile'          },
+        { name: 'Groq 70b',  provider: 'groq',      model: 'openai/gpt-oss-120b'                },
         { name: 'SambaNova', provider: 'sambanova', model: 'Meta-Llama-3.3-70B-Instruct'      },
         { name: 'Mistral',   provider: 'mistral',    model: 'mistral-small-latest'              },
       ]
     : [
         { name: 'SambaNova', provider: 'sambanova', model: 'Meta-Llama-3.3-70B-Instruct'      },
-        { name: 'Groq 70b',  provider: 'groq',      model: 'llama-3.3-70b-versatile'          },
+        { name: 'Groq 70b',  provider: 'groq',      model: 'openai/gpt-oss-120b'                },
         { name: 'Mistral',   provider: 'mistral',    model: 'mistral-small-latest'              },
       ];
 
@@ -7706,200 +7186,6 @@ function _initReportsTab() {
   setDecisionType(_decisionType);
 }
 
-// ── OUTREACH PIPELINE + SNOOZE SYSTEM ────────────────────────────────────────
-// Firebase-backed per-company state: 'active' | 'snoozed:YYYY-MM-DD' | null
-// Active = company is in a live conversation (counts toward pipeline target)
-// Snoozed = signal suppressed until date (won\'t appear in signal cards)
-// Both are written to Firebase ref: outreach/companies/{companyKey}
-
-const _PIPELINE_TARGET = 4;
-let _companyStates = {}; // { companyKey: { status, snoozeUntil, updatedAt } }
-
-function _coKey(name) {
-  return name.toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 40);
-}
-
-function getCompanyState(name) {
-  const s = _companyStates[_coKey(name)];
-  if (!s) return 'none';
-  if (s.status === 'active') return 'active';
-  if (s.status === 'snoozed') {
-    if (s.snoozeUntil && new Date(s.snoozeUntil) > new Date()) return 'snoozed';
-    return 'none'; // snooze expired
-  }
-  return 'none';
-}
-
-async function _loadCompanyStates() {
-  if (!firebaseReady || !db) return;
-  try {
-    const snap = await db.ref('outreach/companies').once('value');
-    _companyStates = snap.val() || {};
-    _renderPipelineCounter();
-  } catch (e) { console.warn('[Outreach] State load failed:', e.message); }
-}
-
-async function _setCompanyState(name, status, snoozeUntil = null) {
-  const key = _coKey(name);
-  const data = { status, snoozeUntil, updatedAt: new Date().toISOString().slice(0, 10) };
-  _companyStates[key] = data;
-  _renderPipelineCounter();
-  if (firebaseReady && db) {
-    try { await db.ref(`outreach/companies/${key}`).set(data); }
-    catch (e) { console.warn('[Outreach] State save failed:', e.message); }
-  }
-}
-
-function _renderPipelineCounter() {
-  const activeCount = Object.values(_companyStates).filter(s => s.status === 'active').length;
-  const dotsEl = document.getElementById('pipelineDots');
-  const countEl = document.getElementById('pipelineCountText');
-  if (!dotsEl || !countEl) return;
-
-  // 4 dots — filled for each active conversation
-  dotsEl.innerHTML = Array.from({ length: _PIPELINE_TARGET }, (_, i) =>
-    `<div class="pipeline-dot${i < activeCount ? ' filled' : ''}"></div>`
-  ).join('');
-
-  countEl.textContent = activeCount;
-  countEl.className = 'pipeline-count-text ' + (
-    activeCount === 0 ? 'alert' : activeCount < 3 ? 'warn' : 'good'
-  );
-}
-
-// ── COMPANY BRIEF ─────────────────────────────────────────────────────────────
-function openCompanyBrief(companyJSON, sectorJSON) {
-  const c = JSON.parse(companyJSON);
-  const sector = JSON.parse(sectorJSON);
-  const state = getCompanyState(c.name);
-  const now = new Date();
-  const currentMonth = now.getMonth() + 1;
-
-  // Bonus window logic — company-specific
-  const bonusMonths = c.bonusMonth || [];
-  const inBonusWindow = bonusMonths.includes(currentMonth) ||
-    bonusMonths.includes(currentMonth - 1); // within month after bonus
-  const nextBonus = bonusMonths.find(m => m > currentMonth) || bonusMonths[0];
-  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const nextBonusLabel = nextBonus ? monthNames[nextBonus - 1] : null;
-  const bonusBadgeHtml = inBonusWindow
-    ? `<span class="brief-bonus-badge">● Bonus window active now</span>`
-    : nextBonusLabel
-      ? `<span class="brief-bonus-badge upcoming">↑ Next bonus window: ${nextBonusLabel}</span>`
-      : '';
-
-  // Recommended product
-  const product = c.product || 'Lakowe Crossings';
-
-  // Conversation opener — constructed from sector intelligence
-  const themes = window._lastBriefingData?.themes || [];
-  const sectorTheme = themes.find(t =>
-    sector.keywords?.some(kw => ((t.label||'') + (t.what_happened||'')).toLowerCase().includes(kw.toLowerCase()))
-  );
-  const marketSignal = sectorTheme
-    ? `Recent intelligence shows: ${sectorTheme.what_happened || sectorTheme.label}.`
-    : `Current market conditions in the ${sector.sector} sector are favourable for property investment conversations.`;
-
-  const openerText = inBonusWindow
-    ? `"Good morning [Name], I wanted to reach out at this time of year when many of your colleagues are thinking about long-term investments. We have a specific offering for ${sector.sector} professionals at ${product} — ${c.bonusNote || 'priced to suit your current income profile'}. Would you have 15 minutes this week for a brief introduction?"`
-    : `"Good morning [Name], I'm reaching out from Mixta Africa. ${marketSignal} Given this, we thought it would be a good time to introduce our offering at ${product} to professionals in the ${sector.sector} sector. Would you be available for a brief call?"`;
-
-  const stateLabel = state === 'active' ? 'In Pipeline' : state === 'snoozed' ? 'Snoozed' : 'Not contacted';
-  const stateColor = state === 'active' ? '#1E5E40' : state === 'snoozed' ? '#A47D29' : 'var(--ink-faint)';
-
-  const modal = document.getElementById('companyBriefModal');
-  if (!modal) return;
-  modal.style.display = 'block';
-  modal.innerHTML = `
-    <div class="brief-modal-backdrop" onclick="if(event.target===this)closeCompanyBrief()">
-      <div class="brief-modal">
-        <button class="brief-modal-close" onclick="closeCompanyBrief()">✕</button>
-        <div class="brief-company-name">${esc(c.name)}</div>
-        <span class="brief-sector-tag">${esc(sector.sector)} · ~${(c.estStaff15M||0).toLocaleString()} qualifying staff · <span style="color:${stateColor};font-weight:700;">${stateLabel}</span></span>
-        ${bonusBadgeHtml}
-
-        <div class="brief-section">
-          <div class="brief-section-label">Entry Point</div>
-          <div class="brief-section-body"><strong>${esc(c.contact || 'HR Director')}</strong></div>
-        </div>
-
-        <div class="brief-section">
-          <div class="brief-section-label">Approach Route</div>
-          <div class="brief-section-body">${esc(
-            (sector.sector === c.sector ? '' : '') +
-            (ENTRY_POINTS_MAP[sector.sector]?.route || 'Direct contact through HR or cooperative society.')
-          )}</div>
-        </div>
-
-        <div class="brief-section">
-          <div class="brief-section-label">Recommended Product</div>
-          <div class="brief-section-body">${esc(product)}</div>
-        </div>
-
-        <div class="brief-section">
-          <div class="brief-section-label">Bonus Calendar</div>
-          <div class="brief-section-body">${esc(c.bonusNote || 'Bonus timing not confirmed — use sector-level H1/H2 calendar.')}</div>
-        </div>
-
-        <div class="brief-section">
-          <div class="brief-section-label">Market Context (This Week)</div>
-          <div class="brief-section-body">${esc(marketSignal)}</div>
-        </div>
-
-        <div class="brief-section">
-          <div class="brief-section-label">Suggested Conversation Opener</div>
-          <div class="brief-opener-box">${esc(openerText)}</div>
-        </div>
-
-        <div class="brief-modal-actions">
-          ${state !== 'active'
-            ? `<button class="brief-active-btn" onclick="markActive(${JSON.stringify(JSON.stringify(c.name))})">Mark as Active Pipeline</button>`
-            : `<button class="brief-snooze-btn" style="color:#1E5E40;border-color:#1E5E40;" onclick="markActive(${JSON.stringify(JSON.stringify(c.name))})">✓ In Pipeline</button>`
-          }
-          <button class="brief-snooze-btn" onclick="snoozeCompany(${JSON.stringify(JSON.stringify(c.name))}, 30)">Snooze 30 days</button>
-          <button class="brief-snooze-btn" onclick="snoozeCompany(${JSON.stringify(JSON.stringify(c.name))}, 90)">Snooze 90 days</button>
-          ${c.linkedin ? `<a href="https://www.linkedin.com/company/${esc(c.linkedin)}" target="_blank" rel="noopener" class="brief-snooze-btn" style="text-decoration:none;text-align:center;">LinkedIn →</a>` : ''}
-        </div>
-      </div>
-    </div>`;
-}
-
-function closeCompanyBrief() {
-  const modal = document.getElementById('companyBriefModal');
-  if (modal) modal.style.display = 'none';
-}
-
-async function markActive(nameJSON) {
-  const name = JSON.parse(nameJSON);
-  await _setCompanyState(name, 'active');
-  closeCompanyBrief();
-  // Re-render signals to reflect new state
-  if (window._lastBriefingData && window._lastTrendHistory)
-    renderOutreachSignals(window._lastBriefingData, window._lastTrendHistory);
-}
-
-async function snoozeCompany(nameJSON, days) {
-  const name = JSON.parse(nameJSON);
-  const until = new Date();
-  until.setDate(until.getDate() + days);
-  await _setCompanyState(name, 'snoozed', until.toISOString().slice(0, 10));
-  closeCompanyBrief();
-  if (window._lastBriefingData && window._lastTrendHistory)
-    renderOutreachSignals(window._lastBriefingData, window._lastTrendHistory);
-}
-
-// ENTRY_POINTS_MAP — keyed by sector name for brief generation
-const ENTRY_POINTS_MAP = {
-  'Energy (Oil & Gas)': { route: 'Request a 20-minute slot to present a group bulk-purchase offer. Approach the cooperative chairman directly for a faster route to a group presentation. Seplat, Oando, and TotalEnergies all have established staff cooperative societies.' },
-  'Financial Services & Banking': { route: 'Banks respond best to a formal letter of intent addressed to the HR Director, followed by a bulk-discount term sheet. Zenith, GTBank, and Access all have documented staff housing programmes. Citibank and Standard Chartered staff are individually reachable through LinkedIn for personal purchases.' },
-  'Telecoms': { route: 'MTN Nigeria has an active staff cooperative with real estate as a primary investment class. Approach the cooperative chairman. Airtel responds well to a direct HR approach with a group payment plan proposal.' },
-  'FMCG & Consumer Goods': { route: 'Nigerian Breweries and Nestlé have strong welfare cultures. The most effective entry is a referral through a staff member who has already purchased, then escalate to a formal HR presentation. Offer a payment plan tied to the salary cycle.' },
-  'Industrials & Construction': { route: 'Julius Berger senior engineers are reachable through the NSE and COREN events. A presentation at an NSE Lagos chapter event reaches 200+ senior engineers simultaneously. BUA and Lafarge respond to direct HR outreach.' },
-  'Tech & Fintech': { route: 'Tech staff respond poorly to formal HR channels. Target senior engineers and product managers directly on LinkedIn with a specific unit offering. Flutterwave and Paystack staff are active on social media — a company-tagged post from a credible account generates direct enquiries.' },
-  'Professional Services & Consulting': { route: 'Big 4 staff are best reached after their fiscal year-end bonus. A formal letter to the HR Director offering a staff-exclusive discount and flexible payment plan is most effective. McKinsey and BCG staff prefer individual LinkedIn contact.' },
-  'International Organisations & NGOs': { route: 'World Bank and UNDP staff are high-quality individual buyers. Direct LinkedIn outreach to senior programme officers and operations managers. Avoid HR channels — expat and senior local staff make personal decisions independently.' },
-};
-
 // ══════════════════════════════════════════════════════════════════════════
 // SVG LINE ICON LIBRARY
 // All icons are 16×16 viewBox, stroke-based (no fill), 1.5px stroke-width.
@@ -8188,13 +7474,9 @@ function expandSection(sectionId, headingText) {
   // ── Use Case 1: Competitive Positioning Card ─────────────────────────────
   renderCompetitivePositioningCard();
 
-  // ── Use Case 2: Outreach Signal Banner ───────────────────────────────────
-  // Store refs so brief generator and re-renders can access them
+  // Store refs so the report generator can access them
   window._lastBriefingData = briefing;
   window._lastTrendHistory = trendHistory;
-  renderOutreachSignals(briefing, trendHistory);
-  // Load company pipeline states from Firebase (pipeline counter + snooze)
-  _loadCompanyStates();
 
   // ── Use Case 3: Sentiment Sales Calendar ─────────────────────────────────
   renderSentimentCalendar(trendHistory);

@@ -3317,6 +3317,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-13",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 6,
+        "bullish": 7,
+        "bearish": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 4
+        },
+        {
+          "topic": "insecurity",
+          "count": 2
+        },
+        {
+          "topic": "investment",
+          "count": 2
+        },
+        {
+          "topic": "mortgage reform",
+          "count": 2
+        },
+        {
+          "topic": "government policy",
+          "count": 2
+        }
+      ]
     }
   ]
 }

@@ -1,95 +1,95 @@
 {
   "7day": {
-    "articleCount": 15,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 10,
-      "bullish": 2,
-      "bearish": 3
+      "bearish": 5,
+      "bullish": 3,
+      "neutral": 6
     },
     "topTopics": [
       {
         "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "mortgage rates",
         "count": 2
       },
       {
-        "topic": "security",
+        "topic": "interest rates",
         "count": 2
       },
       {
-        "topic": "mortgage access",
+        "topic": "government-regulation",
         "count": 1
       },
       {
-        "topic": "private sector partnership",
-        "count": 1
-      },
-      {
-        "topic": "Lagos housing crisis",
+        "topic": "land-use",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "30day": {
-    "articleCount": 15,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 10,
-      "bullish": 2,
-      "bearish": 3
+      "bearish": 5,
+      "bullish": 3,
+      "neutral": 6
     },
     "topTopics": [
       {
         "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "mortgage rates",
         "count": 2
       },
       {
-        "topic": "security",
+        "topic": "interest rates",
         "count": 2
       },
       {
-        "topic": "mortgage access",
+        "topic": "government-regulation",
         "count": 1
       },
       {
-        "topic": "private sector partnership",
-        "count": 1
-      },
-      {
-        "topic": "Lagos housing crisis",
+        "topic": "land-use",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   },
   "90day": {
-    "articleCount": 15,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 10,
-      "bullish": 2,
-      "bearish": 3
+      "bearish": 5,
+      "bullish": 3,
+      "neutral": 6
     },
     "topTopics": [
       {
         "topic": "affordable housing",
+        "count": 4
+      },
+      {
+        "topic": "mortgage rates",
         "count": 2
       },
       {
-        "topic": "security",
+        "topic": "interest rates",
         "count": 2
       },
       {
-        "topic": "mortgage access",
+        "topic": "government-regulation",
         "count": 1
       },
       {
-        "topic": "private sector partnership",
-        "count": 1
-      },
-      {
-        "topic": "Lagos housing crisis",
+        "topic": "land-use",
         "count": 1
       }
     ],
-    "averageSentiment": "neutral"
+    "averageSentiment": "bearish"
   }
 }

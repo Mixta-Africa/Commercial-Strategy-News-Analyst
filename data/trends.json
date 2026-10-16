@@ -1,95 +1,95 @@
 {
   "7day": {
-    "articleCount": 14,
+    "articleCount": 10,
     "sentimentBreakdown": {
-      "bearish": 5,
       "bullish": 3,
-      "neutral": 6
+      "neutral": 6,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 4
-      },
-      {
-        "topic": "mortgage rates",
+        "topic": "mortgage",
         "count": 2
       },
       {
-        "topic": "interest rates",
+        "topic": "FMBN",
         "count": 2
       },
       {
-        "topic": "government-regulation",
+        "topic": "National Housing Finance Authority",
+        "count": 2
+      },
+      {
+        "topic": "loan ceiling",
         "count": 1
       },
       {
-        "topic": "land-use",
+        "topic": "NHF",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 14,
+    "articleCount": 10,
     "sentimentBreakdown": {
-      "bearish": 5,
       "bullish": 3,
-      "neutral": 6
+      "neutral": 6,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 4
-      },
-      {
-        "topic": "mortgage rates",
+        "topic": "mortgage",
         "count": 2
       },
       {
-        "topic": "interest rates",
+        "topic": "FMBN",
         "count": 2
       },
       {
-        "topic": "government-regulation",
+        "topic": "National Housing Finance Authority",
+        "count": 2
+      },
+      {
+        "topic": "loan ceiling",
         "count": 1
       },
       {
-        "topic": "land-use",
+        "topic": "NHF",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 14,
+    "articleCount": 10,
     "sentimentBreakdown": {
-      "bearish": 5,
       "bullish": 3,
-      "neutral": 6
+      "neutral": 6,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 4
-      },
-      {
-        "topic": "mortgage rates",
+        "topic": "mortgage",
         "count": 2
       },
       {
-        "topic": "interest rates",
+        "topic": "FMBN",
         "count": 2
       },
       {
-        "topic": "government-regulation",
+        "topic": "National Housing Finance Authority",
+        "count": 2
+      },
+      {
+        "topic": "loan ceiling",
         "count": 1
       },
       {
-        "topic": "land-use",
+        "topic": "NHF",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   }
 }

@@ -3413,6 +3413,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-16",
+      "articleCount": 10,
+      "sentimentBreakdown": {
+        "bullish": 3,
+        "neutral": 6,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "mortgage",
+          "count": 2
+        },
+        {
+          "topic": "FMBN",
+          "count": 2
+        },
+        {
+          "topic": "National Housing Finance Authority",
+          "count": 2
+        },
+        {
+          "topic": "loan ceiling",
+          "count": 1
+        },
+        {
+          "topic": "NHF",
+          "count": 1
+        }
+      ]
     }
   ]
 }

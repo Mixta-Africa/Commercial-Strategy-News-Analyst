@@ -3445,6 +3445,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-17",
+      "articleCount": 11,
+      "sentimentBreakdown": {
+        "neutral": 6,
+        "bearish": 5
+      },
+      "averageSentiment": "bearish",
+      "topTopics": [
+        {
+          "topic": "land fraud",
+          "count": 2
+        },
+        {
+          "topic": "escrow",
+          "count": 2
+        },
+        {
+          "topic": "explosions",
+          "count": 1
+        },
+        {
+          "topic": "security",
+          "count": 1
+        },
+        {
+          "topic": "property-damage",
+          "count": 1
+        }
+      ]
     }
   ]
 }

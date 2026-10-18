@@ -1,19 +1,23 @@
 {
   "schema": 1,
-  "fetchedAt": "2026-10-12T09:16:22.187Z",
-  "lastRunAt": "2026-10-17T11:25:09.960Z",
+  "fetchedAt": "2026-10-18T11:59:37.679Z",
+  "lastRunAt": "2026-10-18T11:59:37.679Z",
   "world_bank": {
     "gdp_growth": {
       "value": 4.01,
       "year": 2025
     },
-    "fetchedAt": "2026-10-12T09:16:22.187Z"
+    "fetchedAt": "2026-10-18T11:59:37.679Z",
+    "remittances_usd_bn": {
+      "value": 22.8,
+      "year": 2025
+    }
   },
   "imf_gdp_forecast": {
     "gdp_growth": {
       "current": {
         "year": 2026,
-        "value": 4.1
+        "value": 4.2
       },
       "next": {
         "year": 2027,
@@ -23,45 +27,43 @@
     "inflation": {
       "current": {
         "year": 2026,
-        "value": 16
+        "value": 15.6
       },
       "next": {
         "year": 2027,
-        "value": 15.9
+        "value": 14.7
       }
     },
-    "fetchedAt": "2026-10-12T09:16:22.187Z"
+    "fetchedAt": "2026-10-18T11:59:37.679Z"
   },
   "cbn_exchange_rate": {
-    "rate": 1332.43,
+    "rate": 1332.35,
     "source": "open.er-api.com (mid-market)",
-    "asOf": "Sat, 17 Oct 2026 00:02:32 +0000",
-    "fetchedAt": "2026-10-17T11:25:09.960Z"
+    "asOf": "Sun, 18 Oct 2026 00:02:31 +0000",
+    "fetchedAt": "2026-10-18T11:59:37.679Z"
   },
   "nbs_manual": null,
   "status": {
     "world_bank": {
-      "ok": false,
-      "at": "2026-10-12T09:16:22.187Z",
-      "indicators": 1,
-      "errors": [
-        "remittances: timeout of 20000ms exceeded"
-      ]
+      "ok": true,
+      "at": "2026-10-18T11:59:37.679Z",
+      "indicators": 2,
+      "errors": []
     },
     "imf": {
       "ok": true,
-      "at": "2026-10-12T09:16:22.187Z",
+      "at": "2026-10-18T11:59:37.679Z",
       "indicators": 2,
       "errors": []
     },
     "fx": {
       "ok": true,
-      "at": "2026-10-17T11:25:09.960Z",
+      "at": "2026-10-18T11:59:37.679Z",
       "errors": []
     },
     "nbs_manual": {
       "ok": false,
-      "at": "2026-10-17T11:25:09.960Z",
+      "at": "2026-10-18T11:59:37.679Z",
       "errors": [
         "401: Request failed with status code 401"
       ]

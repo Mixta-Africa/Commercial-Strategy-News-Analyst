@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 11,
+    "articleCount": 7,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bearish": 5
+      "neutral": 4,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "land fraud",
+        "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "escrow",
+        "topic": "infrastructure",
         "count": 2
       },
       {
-        "topic": "explosions",
+        "topic": "housing crisis",
         "count": 1
       },
       {
-        "topic": "security",
+        "topic": "policy",
         "count": 1
       },
       {
-        "topic": "property-damage",
+        "topic": "human rights",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 11,
+    "articleCount": 7,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bearish": 5
+      "neutral": 4,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "land fraud",
+        "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "escrow",
+        "topic": "infrastructure",
         "count": 2
       },
       {
-        "topic": "explosions",
+        "topic": "housing crisis",
         "count": 1
       },
       {
-        "topic": "security",
+        "topic": "policy",
         "count": 1
       },
       {
-        "topic": "property-damage",
+        "topic": "human rights",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 11,
+    "articleCount": 7,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bearish": 5
+      "neutral": 4,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "land fraud",
+        "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "escrow",
+        "topic": "infrastructure",
         "count": 2
       },
       {
-        "topic": "explosions",
+        "topic": "housing crisis",
         "count": 1
       },
       {
-        "topic": "security",
+        "topic": "policy",
         "count": 1
       },
       {
-        "topic": "property-damage",
+        "topic": "human rights",
         "count": 1
       }
     ],
-    "averageSentiment": "bearish"
+    "averageSentiment": "neutral"
   }
 }

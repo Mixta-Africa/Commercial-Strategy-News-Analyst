@@ -3539,6 +3539,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-20",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bullish": 4,
+        "bearish": 2,
+        "neutral": 9
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "mortgage financing",
+          "count": 2
+        },
+        {
+          "topic": "housing reforms",
+          "count": 1
+        },
+        {
+          "topic": "construction cost reduction",
+          "count": 1
+        },
+        {
+          "topic": "local manufacturing",
+          "count": 1
+        }
+      ]
     }
   ]
 }

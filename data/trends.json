@@ -2,9 +2,9 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 9,
-      "bullish": 5,
-      "bearish": 1
+      "bullish": 4,
+      "bearish": 2,
+      "neutral": 9
     },
     "topTopics": [
       {
@@ -12,19 +12,19 @@
         "count": 2
       },
       {
-        "topic": "Lagos",
+        "topic": "mortgage financing",
         "count": 2
       },
       {
-        "topic": "premium real estate",
+        "topic": "housing reforms",
         "count": 1
       },
       {
-        "topic": "award",
+        "topic": "construction cost reduction",
         "count": 1
       },
       {
-        "topic": "competition",
+        "topic": "local manufacturing",
         "count": 1
       }
     ],
@@ -33,9 +33,9 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 9,
-      "bullish": 5,
-      "bearish": 1
+      "bullish": 4,
+      "bearish": 2,
+      "neutral": 9
     },
     "topTopics": [
       {
@@ -43,19 +43,19 @@
         "count": 2
       },
       {
-        "topic": "Lagos",
+        "topic": "mortgage financing",
         "count": 2
       },
       {
-        "topic": "premium real estate",
+        "topic": "housing reforms",
         "count": 1
       },
       {
-        "topic": "award",
+        "topic": "construction cost reduction",
         "count": 1
       },
       {
-        "topic": "competition",
+        "topic": "local manufacturing",
         "count": 1
       }
     ],
@@ -64,9 +64,9 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 9,
-      "bullish": 5,
-      "bearish": 1
+      "bullish": 4,
+      "bearish": 2,
+      "neutral": 9
     },
     "topTopics": [
       {
@@ -74,19 +74,19 @@
         "count": 2
       },
       {
-        "topic": "Lagos",
+        "topic": "mortgage financing",
         "count": 2
       },
       {
-        "topic": "premium real estate",
+        "topic": "housing reforms",
         "count": 1
       },
       {
-        "topic": "award",
+        "topic": "construction cost reduction",
         "count": 1
       },
       {
-        "topic": "competition",
+        "topic": "local manufacturing",
         "count": 1
       }
     ],

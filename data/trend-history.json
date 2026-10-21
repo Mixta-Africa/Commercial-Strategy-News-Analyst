@@ -3571,6 +3571,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-21",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 7,
+        "bearish": 3,
+        "bullish": 5
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 4
+        },
+        {
+          "topic": "FMBN",
+          "count": 3
+        },
+        {
+          "topic": "real-estate",
+          "count": 2
+        },
+        {
+          "topic": "mortgage",
+          "count": 2
+        },
+        {
+          "topic": "non-interest mortgage",
+          "count": 2
+        }
+      ]
     }
   ]
 }

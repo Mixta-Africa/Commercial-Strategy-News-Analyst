@@ -3603,6 +3603,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-10-22",
+      "articleCount": 3,
+      "sentimentBreakdown": {
+        "bullish": 1,
+        "bearish": 1,
+        "neutral": 1
+      },
+      "averageSentiment": "bearish",
+      "topTopics": [
+        {
+          "topic": "infrastructure",
+          "count": 2
+        },
+        {
+          "topic": "affordability",
+          "count": 1
+        },
+        {
+          "topic": "selective demand",
+          "count": 1
+        },
+        {
+          "topic": "rail expansion",
+          "count": 1
+        },
+        {
+          "topic": "Lekki‑Epe corridor",
+          "count": 1
+        }
+      ]
     }
   ]
 }

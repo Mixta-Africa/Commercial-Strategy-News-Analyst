@@ -3667,6 +3667,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-24",
+      "articleCount": 10,
+      "sentimentBreakdown": {
+        "bullish": 2,
+        "bearish": 2,
+        "neutral": 6
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "mortgage",
+          "count": 3
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "politics",
+          "count": 2
+        },
+        {
+          "topic": "housing",
+          "count": 1
+        },
+        {
+          "topic": "PPP",
+          "count": 1
+        }
+      ]
     }
   ]
 }

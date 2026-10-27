@@ -3762,6 +3762,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-27",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 8,
+        "bullish": 4,
+        "bearish": 3
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "real estate",
+          "count": 2
+        },
+        {
+          "topic": "insurance",
+          "count": 2
+        },
+        {
+          "topic": "interest rates",
+          "count": 2
+        },
+        {
+          "topic": "allocation dates",
+          "count": 1
+        },
+        {
+          "topic": "Lagos market",
+          "count": 1
+        }
+      ]
     }
   ]
 }

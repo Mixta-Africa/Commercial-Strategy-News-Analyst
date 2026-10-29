@@ -3826,6 +3826,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-29",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bearish": 2,
+        "bullish": 4,
+        "neutral": 9
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "security",
+          "count": 3
+        },
+        {
+          "topic": "property market",
+          "count": 2
+        },
+        {
+          "topic": "kidnapping",
+          "count": 2
+        },
+        {
+          "topic": "Lekki",
+          "count": 2
+        },
+        {
+          "topic": "hidden costs",
+          "count": 1
+        }
+      ]
     }
   ]
 }

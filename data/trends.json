@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 12,
-      "bullish": 1,
-      "bearish": 2
+      "bearish": 2,
+      "bullish": 4,
+      "neutral": 9
     },
     "topTopics": [
       {
         "topic": "security",
-        "count": 4
+        "count": 3
       },
       {
-        "topic": "investor confidence",
+        "topic": "property market",
         "count": 2
       },
       {
-        "topic": "election",
-        "count": 1
+        "topic": "kidnapping",
+        "count": 2
       },
       {
-        "topic": "INEC",
-        "count": 1
+        "topic": "Lekki",
+        "count": 2
       },
       {
-        "topic": "ADC",
+        "topic": "hidden costs",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 12,
-      "bullish": 1,
-      "bearish": 2
+      "bearish": 2,
+      "bullish": 4,
+      "neutral": 9
     },
     "topTopics": [
       {
         "topic": "security",
-        "count": 4
+        "count": 3
       },
       {
-        "topic": "investor confidence",
+        "topic": "property market",
         "count": 2
       },
       {
-        "topic": "election",
-        "count": 1
+        "topic": "kidnapping",
+        "count": 2
       },
       {
-        "topic": "INEC",
-        "count": 1
+        "topic": "Lekki",
+        "count": 2
       },
       {
-        "topic": "ADC",
+        "topic": "hidden costs",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 12,
-      "bullish": 1,
-      "bearish": 2
+      "bearish": 2,
+      "bullish": 4,
+      "neutral": 9
     },
     "topTopics": [
       {
         "topic": "security",
-        "count": 4
+        "count": 3
       },
       {
-        "topic": "investor confidence",
+        "topic": "property market",
         "count": 2
       },
       {
-        "topic": "election",
-        "count": 1
+        "topic": "kidnapping",
+        "count": 2
       },
       {
-        "topic": "INEC",
-        "count": 1
+        "topic": "Lekki",
+        "count": 2
       },
       {
-        "topic": "ADC",
+        "topic": "hidden costs",
         "count": 1
       }
     ],

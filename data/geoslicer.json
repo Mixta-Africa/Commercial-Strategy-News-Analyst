@@ -1,20 +1,38 @@
 {
-  "generatedAt": "2026-10-28T13:48:28.745Z",
+  "generatedAt": "2026-10-29T13:56:50.785Z",
   "total": 106,
   "byScope": {
-    "global": 21,
-    "africa": 45,
+    "global": 22,
+    "africa": 47,
     "nigeria": 24,
-    "lagos": 16
+    "lagos": 13
   },
   "aiSentimentApplied": false,
   "articles": [
+    {
+      "title": "ULI Forecast: Higher Rates Threaten Property Values as Rosen Warns of AI Correction",
+      "description": "ULI Forecast: Higher Rates Threaten Property Values as Rosen Warns of AI Correction&nbsp;&nbsp;Urban Land Magazine",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNa00tRVJWQ0tTY0kyTGdndmlLbWQxYWFxNFNoM2VwNW1wSXo4UWlZRXhkb3I4bGJxcDJLekQxd1RDZFN4T1MxNU9KRnZ3MXc1Um81dlBzYXFra29lQ3JGM2daWGtTeS1XakZnZkxHZTduUzlmMHotVlVpellPZWVXWWRXSGpjRllYR08zb0hEcjNuUjF5NUtiR2JSX2ZSM1BGWnA4UGFrZXlJR2Nm?oc=5",
+      "source": "Urban Land Magazine",
+      "publishedAt": "Thu, 29 Oct 2026 11:09:03 GMT",
+      "geoScope": "global",
+      "sentiment": "neutral"
+    },
     {
       "title": "Global real estate outlook mid-year update",
       "description": "Global real estate outlook mid-year update&nbsp;&nbsp;JLL",
       "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5ydVh3SWtfU0xjRmp5MDh6bExYZnEtNkNDcEZlTzdCX0VfVW14UGh2RTVVR0UxdHR6a3hId1FHalhDeUVoMzRMWllkUU9VeF8zQzFBZG9VM250RlZ2RVRfUE9CX2hJc0JhUXJkakxiWFVCdks1OE13?oc=5",
       "source": "JLL",
       "publishedAt": "Mon, 03 Aug 2026 07:00:00 GMT",
+      "geoScope": "global",
+      "sentiment": "neutral"
+    },
+    {
+      "title": "The superrich have some very specific demands for their next homes",
+      "description": "The superrich have some very specific demands for their next homes&nbsp;&nbsp;Business Insider",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNYXd0TjlPWjh1ajNFcHRRNlNpdGR3UTUwbVE4UjBwWm5Oa1pNaTk2MXB5aFp6aWRiX0VGLXBzVUZKaWpRUTJWZjlIZmdua0JyNG5TSThwNDZadGRNVEhTOXcyRVRkS3JNU3VURnpGTllwVG90ak9DSnBDc2dhWWU1eFdlRmU0bUNsemNwQkw3Q1lPRlBGcEE?oc=5",
+      "source": "Business Insider",
+      "publishedAt": "Mon, 26 Oct 2026 12:31:00 GMT",
       "geoScope": "global",
       "sentiment": "neutral"
     },
@@ -28,38 +46,20 @@
       "sentiment": "neutral"
     },
     {
-      "title": "DAR GLOBAL CAPITAL PARTNERS TARGETS HIGH-VALUE REAL ESTATE OPPORTUNITIES IN DUBAI ACROSS GLOBAL INVESTMENT MANDATE",
-      "description": "DAR GLOBAL CAPITAL PARTNERS TARGETS HIGH-VALUE REAL ESTATE OPPORTUNITIES IN DUBAI ACROSS GLOBAL INVESTMENT MANDATE&nbsp;&nbsp;Yahoo Finance",
-      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNMzc4cmU4SmF2MFZGVnl3YjlpMzExX1JfWFU3ZDVJMk9sU1N2Wk9iU2RzOVk2d1NYSkpDQURiSFVTWGtBTDJ3R0VZaFNZTVdxOTJBQUhneW1CQ3ZZTy0zd2k0Q2xhU251X2pmTzdHS3VkTHk3R0NXSlprMkc1aUlWN1c1VXhPVnN6?oc=5",
+      "title": "State Street’s RWO or iShares’ REET: Which Global Real Estate ETF Should Long-Term Investors Choose?",
+      "description": "State Street’s RWO or iShares’ REET: Which Global Real Estate ETF Should Long-Term Investors Choose?&nbsp;&nbsp;Yahoo Finance",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQYXpuU1JhckxLZUlWOFUyVHVpNXRKS2pJcnQ0TFRRc3BPWDdNTGNmWm1ZVnR2eUhDSVFMdURydnpueUJXQjlKVXpNUFJSY2N0SjJrWkdJVmlMQUdSTUN4aTBxNTFNSklOazNtZ0ZCTmlLM0tPUWJtOGNaOWJYTFV4ZE16VzhUSHlIa05uMGxzUTNaRG1rYmc?oc=5",
       "source": "Yahoo Finance",
-      "publishedAt": "Mon, 26 Oct 2026 08:35:00 GMT",
+      "publishedAt": "Mon, 26 Oct 2026 11:19:25 GMT",
       "geoScope": "global",
       "sentiment": "neutral"
     },
     {
-      "title": "Real estate builds on new terrain",
-      "description": "Real estate builds on new terrain&nbsp;&nbsp;McKinsey & Company",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNYVdwWTNRZEV6OXpxQXRzT0l5UGNIQjNpVnlnaHA0MmJaTFlxaVlmcVNCZ2lKMHN5TkZXMUp6RUtJZW9Cc2xTRnJxOEhUdlc3bUdwWk1CWm51anlydUJuZXJERExyX1RoWFFrcjVJQTA1ZU50SDMyRU5nRnpMc1J3UVlWd1kxbWpEU1VMZzF4SDlSLTM4UDAzbzk0VFVCV1hUSlM0ano2TWc5UQ?oc=5",
-      "source": "McKinsey & Company",
-      "publishedAt": "Tue, 10 Mar 2026 07:00:00 GMT",
-      "geoScope": "global",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "Which Real Estate ETF Is the Better Buy: State Street’s XLRE or Northern Trust’s Global GQRE?",
-      "description": "Which Real Estate ETF Is the Better Buy: State Street’s XLRE or Northern Trust’s Global GQRE?&nbsp;&nbsp;The Motley Fool",
-      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxPSDFXcy1oYkI5dURuVzhsSXZnVEFkT1hhb2lpS0ExdWVYS2MxRDFWRHVQMFdNTTNEdzVKRnFFbC1OSlpzdDBzZFRXMWE5eFg0U2pPa2xEeVNMek0wNDFHWFRnWkZ1RkxPM0NqNW1iUjBxcF96dGlWTGtTSmJESzExeXU3eEpYejBBYkJjZ3g3c3Z4d3N5LWdyLWhQRG5tSndtOWhUTTBDYWdQZ0lmSWk0bkVZaVpNeURsVm1qa1R5X1k3YVg4Q3d0Q3JBMlhkdXZsQlNkOQ?oc=5",
-      "source": "The Motley Fool",
-      "publishedAt": "Tue, 27 Oct 2026 16:36:00 GMT",
-      "geoScope": "global",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "A Turning Point for Real Estate: Recovery Takes Shape",
-      "description": "A Turning Point for Real Estate: Recovery Takes Shape&nbsp;&nbsp;Morgan Stanley",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPazFqN1dDRHRLSTc4U1FYLTZXc0NrSVlpUXhnZWl2TVIwVnc5XzdvbjE4RHF5M01HQ3pyMEQ3bXJxSFI0TWpqbm9uemF1WmRrME9sNHptOVRyU080TDJESzlDLWdjLUxNYkpKbE14VnpScjh6eDNidEpZTW9tdGZaZTkxRDVRZEdyZjd6SVdfdjB6dw?oc=5",
-      "source": "Morgan Stanley",
-      "publishedAt": "Wed, 08 Apr 2026 07:00:00 GMT",
+      "title": "New waterfront estate in Naples fetches $71 million in off-market deal",
+      "description": "New waterfront estate in Naples fetches $71 million in off-market deal&nbsp;&nbsp;Bradenton Herald",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9CR2pxZ19VNm5pTkZpNVQ2dl9haHhqM1VyRmowOTFYVmtINV8wVmhjQkh1WFhCQkhoOWExMWZPM3VKa1hUd2lNN2QyVEkyQVBwd3FjTmxkTmY5ODE4Z0JCMi13?oc=5",
+      "source": "Bradenton Herald",
+      "publishedAt": "Wed, 28 Oct 2026 13:36:00 GMT",
       "geoScope": "global",
       "sentiment": "neutral"
     },
@@ -82,6 +82,15 @@
       "sentiment": "neutral"
     },
     {
+      "title": "Ireland Commercial Property MarketBeat Reports | IE",
+      "description": "Ireland Commercial Property MarketBeat Reports | IE&nbsp;&nbsp;Cushman & Wakefield",
+      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE96T3NoQXgxbWFQenEzSUpwWE5uVmtGc05kbmx0SFZJQl9BbEFKLVcyYlBpdDdNVlFpZFAyblBuTnZaQ3hmMHlyTHRVcFNoU2Z1WmFoYmVEQ2I5WWY1cGpvUXgxUm9ZRktycFZzVTFKTDFPT1B3Q2VONkVtbw?oc=5",
+      "source": "Cushman & Wakefield",
+      "publishedAt": "Tue, 18 Aug 2026 07:00:00 GMT",
+      "geoScope": "global",
+      "sentiment": "neutral"
+    },
+    {
       "title": "Commercial Property Investment Trends To Watch In 2026",
       "description": "Commercial Property Investment Trends To Watch In 2026&nbsp;&nbsp;DirectorsTalk Interviews",
       "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxORFRjVHlNRmY1ZnRqRTRydGhiT0ZZZUNnUm9hVlkxVFdZaHotdEtQREpOSXNfY3ZKQm40amxzMUlLYzlSNEFrMlJ1MXZXOFBxMk5aQVpjSG50MGk0YktFT0JSdWp1NDNjUTZmSERGc2kyQVVVRzdoUkgxbUtQZXN4QWhfY0VuMllfQWFJdi1scFBBalZocjBNSnQ1SkxDSWwwZ2hxQlhXNW0?oc=5",
@@ -91,29 +100,11 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Hong Kong Property Market Q2 2026: Resilient Demand & Investment Trends | Colliers",
-      "description": "Hong Kong Property Market Q2 2026: Resilient Demand & Investment Trends | Colliers&nbsp;&nbsp;Colliers",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOTEhBa0Y1enlDd0FPOXIza3FNN0dUa2VPbUxmSkFXOGhrOXRxczQ0QUNqUUhYbW1VRVpmVnZZQWh4VGc1OWpIRG81RXZlMjFWd2R1NDBlbnV4UnFzRHBYMUpyZG84QTk1VkxmeUdzWEU5Y193TkE5TWxvT0djbUQ0RW9aNWd5VnRRMnRjSm9RSzR4MlRnMGFybGhkY1pXdw?oc=5",
-      "source": "Colliers",
-      "publishedAt": "Wed, 15 Jul 2026 07:00:00 GMT",
-      "geoScope": "global",
-      "sentiment": "neutral"
-    },
-    {
       "title": "Why REITs aren't getting killed by rising interest rates this time around",
       "description": "Why REITs aren't getting killed by rising interest rates this time around&nbsp;&nbsp;CNBC",
       "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxPOGRwWUlJX29ua25MX3o4TW1iVW5DeFVOcGpXaHR2cmxmdXRkOHAxem96OEpzR2V1M3BoRFJ4SDNKVWJIbzFJblVwOF9fdE0tUFU3bjRoR1l0N3VCVkRNUGhNOW9ueU1sWXdsNmtQUUFnSnp3ang0cDZRMDkxeDdGMHRIZjd0T0dxUFlrTkFGTnRJV3hmbkdpb3dDU0ozTmdSZFNBb9IBqgFBVV95cUxQM3N3bU1mZlA1UjZSeVEwVnNLUEFZZ0VCa0dFRktLS1ZPYTBKYlNQNEdiOFJpdDNKV3dzMFJPWDBIVmxfYmJ6NnppbVVQd2MyN194X2U0VG83V1ctOFNCblRaTnNhb0h6MlNXUG4zUGhGREM5Z05nUDZKeVNLWEVFMk1BMzg4c0JZMkNON1BrMERMNlctWUJjOWZ6SjM0OGNQUXZNX3JzZ2NxQQ?oc=5",
       "source": "CNBC",
       "publishedAt": "Thu, 08 Oct 2026 07:00:00 GMT",
-      "geoScope": "global",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "GO Residential Real Estate Investment Trust (TSX:GO.U): High Net Income, Premium Rental Demand and Portfolio Expansion Shape Long-Term Profitability Outlook",
-      "description": "GO Residential Real Estate Investment Trust (TSX:GO.U): High Net Income, Premium Rental Demand and Portfolio Expansion Shape Long-Term Profitability Outlook&nbsp;&nbsp;kalkine.ca",
-      "url": "https://news.google.com/rss/articles/CBMilAJBVV95cUxPeFdhazNUTnpCX1ZzODRzZm56d01adnd1ZElrNXlONTJIcXh1RmtNdkpKamV0ejRpRDJ4anJPekVFQ1hxXzZiekJJSVdNNnVyd1dYNFJ3ODRHcGs3dE1qMHJ2eVBucGlGbzRHWmlQN0ZhM0FEeEtuRkhuY3J3b211eXp6V3BremkyOEl4anBMekYtM21fWkdOYTY0TnlhaVZPeW9pWFBrQlNYSWlkeklzYXdiTDZxVGludTNvSnFEdWhZeTlBRTVQTU14T0tFa1ZoTlladUhqNE1WcTdYeTduZVFSY1d2dzg2M1FaY1MwcUJaOHN6Z3JSQkdnLUdoQkZJQ042aGVuRUdqQVFjN21DR1Frck0?oc=5",
-      "source": "kalkine.ca",
-      "publishedAt": "Mon, 26 Oct 2026 11:57:00 GMT",
       "geoScope": "global",
       "sentiment": "neutral"
     },
@@ -145,6 +136,15 @@
       "sentiment": "neutral"
     },
     {
+      "title": "Marwest Apartment REIT (TSXV:MAR.UN) Gains Ground as Renewed Buying Interest Supports a Constructive Market Outlook",
+      "description": "Marwest Apartment REIT (TSXV:MAR.UN) Gains Ground as Renewed Buying Interest Supports a Constructive Market Outlook&nbsp;&nbsp;kalkine.ca",
+      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPZlBSZXlOVTVDSXdvWDF5VldIZGxWZmZhb3dONTBjYWszbGs1Q0s0YktnSnM4Q3drbUttRUtUX2tXSmxxWmdtUTROWnExeE5vdlRoam9Zbk0yNlg1R2h6X3RsakVSZUYyN0VMcmx5UFE0YUo0NzRkcVdOR3NIbmVid0F3VUF2YUV0NHFNdGtYcFItV2hyeDhvX2c2R3VOVVpsQzNjUWJWdHp2Qm16UGZtNWlkaUdKRmF1czd1MjBQS3NvUVUtR0VBZHJSVTZDVFRqdUEtdFhQNUh1OVhxOGpUOA?oc=5",
+      "source": "kalkine.ca",
+      "publishedAt": "Mon, 26 Oct 2026 07:31:00 GMT",
+      "geoScope": "global",
+      "sentiment": "neutral"
+    },
+    {
       "title": "5 Best Housing Stocks for 2026 and How to Invest",
       "description": "5 Best Housing Stocks for 2026 and How to Invest&nbsp;&nbsp;The Motley Fool",
       "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPNWNEVElITXRULTNvdzNHTUdZUllFR3lqN0tqRnZFT1ZCZEpKX2RpNzFQM2Z4RHo1d256YWJGZVAtbk9LT3JIT2Q5ZEpyQnNNVnhGd21ReXkxLWVXVDZ4SzFpOUdveElqYk1TNG1hTFZEX0VVNUpJNC1WSjI3MXB1MWVJWUpPOXBFVnJJM0RHM0NMVXRaejVuT0RkR3Z5UVNsZE5oUWJPb2lIdw?oc=5",
@@ -154,74 +154,92 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Rising interest rates derail property recovery as buyers recut deals",
-      "description": "Rising interest rates derail property recovery as buyers recut deals&nbsp;&nbsp;Financial Times",
-      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPT3dUTG1neTZ5T1JpbjBFOFFZbVB5dWlYVTVOb2c2azlZZ0VLdnpOWW1OX3hmZ183WXB6VF9fc2tVcjNzUGNaaTRwd3Jvd2tISkhRbUlhSHJuZzhWNUdFZUVkY0J6YmN4dE9CWWxuclk2LWliMm9QZUZ4anhZVkplTnBBYi0?oc=5",
-      "source": "Financial Times",
-      "publishedAt": "Mon, 19 Oct 2026 07:00:00 GMT",
+      "title": "European property slump deepens as borrowing costs force price cuts",
+      "description": "European property slump deepens as borrowing costs force price cuts&nbsp;&nbsp;Reuters",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOc00zMm5kNnRhTGZZUWRELXU0WlM0Nk9WMzdOVDNZYlpVSnkyTDRlcXZadWx3em1lbGRrTDRNdTVCWGdaNTE1Y05FamZ4VkpmejhhQWhXdzMwa3RST0J6R2FzLUpSU0p6SEY1ZjZpWkZLQ05zcmFURGpVZ3FybHZBOWZwMUpzeXlKR2F2aGp1bzlUcHprMDlwbEFNUEVLVXZTNDllZ0VheEdhejBYWk8ybkVvZFZhdk5u?oc=5",
+      "source": "Reuters",
+      "publishedAt": "Thu, 29 Oct 2026 11:32:07 GMT",
       "geoScope": "global",
       "sentiment": "neutral"
     },
     {
-      "title": "Global property market stagnates – are there prospects for a recovery?",
-      "description": "Global property market stagnates – are there prospects for a recovery?&nbsp;&nbsp;MoneyWeek",
-      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPVUx3cmJMcnI5SUF5OTRYN2pmX3B5Rm5hRjRPRHhQUFk5NFFyREx4VEJUeEN5Y3plWFc3WThYZlBuMlQtaEI4OEtObE5SZ29sTk0yd2lGZ01jLTVzcGt1eHJOX2owSUNqUllNQzMwclhXcmlmREw0WWgxODRiR1lIbkFablhWajR0eXJtUmhndWdJMEp4?oc=5",
-      "source": "MoneyWeek",
-      "publishedAt": "Fri, 16 Oct 2026 07:00:00 GMT",
+      "title": "Europe's Commercial Property Slump Deepens Amid Rising Borrowing Costs",
+      "description": "Europe's Commercial Property Slump Deepens Amid Rising Borrowing Costs&nbsp;&nbsp;Global Banking & Finance Review",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPQkttVldzZjBNOFVhUzlRT0RiclBIengyOGxkZG0tYVNFeHZ0cEtSWHE1OWhnalU4WF9WbWxMZzh5WmhNc3NfZktiSFhhMVcwNWtuX3JKWTVNMFFRUDFvT2QzaGduWUtJSFBuU1RucUFqTmxxa3RPd1YtemZ6Rk5vbE9oX25nMlVxZHVwWjZWRW11UTIwTUZGVTZpUGFlTF9nU2c?oc=5",
+      "source": "Global Banking & Finance Review",
+      "publishedAt": "Thu, 29 Oct 2026 10:27:56 GMT",
       "geoScope": "global",
       "sentiment": "neutral"
     },
     {
-      "title": "France's Residential Property Market Analysis 2026",
-      "description": "France's Residential Property Market Analysis 2026&nbsp;&nbsp;Global Property Guide",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBSY0ZPX0Fld0ZRSXVBWURNRHFZVWdhdGZlaXhtZGgtX1pXMmowX2k2REYxSGp5aTFkeXNrdklNSnc0TVpqM2FwdHIyUjBQX0FkSXBfaFM2VlVINDFtaHZUTWdvSGRkd0Y2NHB6V3RKaUM?oc=5",
+      "title": "Will the housing market crash? It's not looking likely",
+      "description": "Will the housing market crash? It's not looking likely&nbsp;&nbsp;Yahoo Finance",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxON2M3NWM5Y196bVY3SFVZYlJLdWx6b0xIa0UtTjdpcDF1QU03QTVvVzV5Rm95Y2J3ODZZNHluYy1tdS1nUWJ0Y0VheHNNdG9rUENOSV9TNVdKYWlzTHNkQjZvZHljVzRNazFjNk5rSDJXNWRXMWhKS2RQdjJ1bUFuZ3ZMUG5LZ0xfa0ZRZWhySF8wWEs1Z1NwNDhUMUFiYjVPeGx4eThldGw0d1MySzZXeHl2ZkY3Rzhpc3g2YWNmTFZBblJMek5v?oc=5",
+      "source": "Yahoo Finance",
+      "publishedAt": "Tue, 27 Oct 2026 15:58:08 GMT",
+      "geoScope": "global",
+      "sentiment": "neutral"
+    },
+    {
+      "title": "Slovakia's Residential Real Estate Market Analysis 2026",
+      "description": "Slovakia's Residential Real Estate Market Analysis 2026&nbsp;&nbsp;Global Property Guide",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5WVzluUzJpT01ZY0liZzkwNTZOdHN4dnF5Q2Exald1R3lGZllxUF9kRHN6LTJ6NXpUQ1JPM2lSTHpLdzFCZExiNE5fOW0ySWpLWWV4Tk5oREVUa0hDeHZzcjJITXRWVXZSSERXWFRHVTNsQnM?oc=5",
       "source": "Global Property Guide",
-      "publishedAt": "Tue, 01 Sep 2026 07:00:00 GMT",
+      "publishedAt": "Thu, 01 Oct 2026 07:00:00 GMT",
       "geoScope": "global",
       "sentiment": "neutral"
     },
     {
-      "title": "Global property stagnates",
-      "description": "Global property stagnates&nbsp;&nbsp;PressReader",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE4zdjRFZkdzZjh4VHA1eFM0bDRGMkZVZllNMXVBMm4wQUVXMTBGTG9POTI4ZUJERHFTUmdRb1poY3hId2E0TjZmSC1IYl9DN2EwU2l4MzJHdlFQdVdvQzFFcGdiVW53akNpNUxhak1jSXo2eVll?oc=5",
-      "source": "PressReader",
-      "publishedAt": "Fri, 16 Oct 2026 20:20:30 GMT",
+      "title": "Toronto housing market faces fresh uncertainty after Bank of Canada rate hike, real estate experts say",
+      "description": "Toronto housing market faces fresh uncertainty after Bank of Canada rate hike, real estate experts say&nbsp;&nbsp;CBC",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQRnJ3NnVnVXhBd1Z4LXhSN1MycEFCMXdoQ1hUX2dUVFh3OWI5ZkZFTllRalV3ajlNcld4NkJUbTZlcUNFYzRMWkdaaXN3M3VGUHB1Z2hJWlpGRFJYMmg1UlVnY0xCbXJNZm9rY0xPMGZqMVNpanZMVC11RkxIczJRN0VvOXlBN25ZSlJDYzhYa2lHWUR3RkdGMFF2dEo2eGFUQ216MjIzTG9yQzhiZFhzZjN0TEJTZU44bUhGZnRqVm1KazRC?oc=5",
+      "source": "CBC",
+      "publishedAt": "Thu, 29 Oct 2026 09:00:00 GMT",
       "geoScope": "global",
       "sentiment": "neutral"
     },
     {
-      "title": "Ranked: Real Estate Returns Across 57 Countries Since 2008",
-      "description": "Ranked: Real Estate Returns Across 57 Countries Since 2008&nbsp;&nbsp;Visual Capitalist",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQMy1qbVJkdG5IWFIxRlF3SFktaWQ4aGR2Q3IxZnlrRFVMVldVZVdJcFdobmJSZTlMbmpPT2JybnN4TjBlRjA5WmtXemxuNFJzai1rekUtVHR0Rk5EVjNReFpRWVBMdVdiS2JxWG1BTFBtM0luVVNVNEVtUWxpOVhjbWdrUThPUU5Sbnp1OHI0b0xwRVJtSjQ4TzB3?oc=5",
-      "source": "Visual Capitalist",
-      "publishedAt": "Thu, 10 Sep 2026 07:00:00 GMT",
+      "title": "Higher interest rates another hurdle for B.C.’s housing market",
+      "description": "Higher interest rates another hurdle for B.C.’s housing market&nbsp;&nbsp;Global News",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOT2FZYXA3clVGS2JfUWVSdVVYRERGanQzWVRKZDdSMzRrak9WTi1SQUdNdTRZZ0g0MzZEWVd0SFMwY3NsRmpvVUxBNDdZX0dvd1gtb0xmV1FhYk01MzdKcElwMVZELVcycHBIUmhha2M0MWl4alVqcXNrSW9ISFlHNDdpUmVJUkhBc0VTNGdfanRxNHk5MWpPOVpxUm5uV0dT?oc=5",
+      "source": "Global News",
+      "publishedAt": "Wed, 28 Oct 2026 15:56:03 GMT",
       "geoScope": "global",
       "sentiment": "neutral"
     },
     {
-      "title": "Real Estate - Africa",
-      "description": "Real Estate - Africa&nbsp;&nbsp;Statista",
-      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBWY1d3eVVkN2hwb0JjVC1CdHV6R2c3elRsYWJBWXN2ZFc3TjY3SUYzd1NnMXVQS0pGTjZEcllqTWotQzhHel9iak1FaE52ejJmcjJtV2JwekRHUnhiSVRLUWNrQkVFM0U?oc=5",
-      "source": "Statista",
-      "publishedAt": "Fri, 12 Jun 2026 15:59:05 GMT",
+      "title": "Nareit Highlights REITs and Real Estate Transformation at Africa Real Estate Conference",
+      "description": "Nareit Highlights REITs and Real Estate Transformation at Africa Real Estate Conference&nbsp;&nbsp;Nareit",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOMFlfZVVKSGRlcUd0elNCLW1rZnNQYUw5UUtfWkhGRktyR3hILUtRTlJhVmlUM1JzQm5TVFJ0RmlSSGowT1NOU2Q4OWVsdG9YV09FRWFtLWJwTDVFX3E4UkxmVGRyOXQ0RFRUUkVCVUh3Sk1xTXNmMmg2OGFYVExKWjdxRnhlRW5ranRpczJzeTZkSDJvZGVwcGF4ek1tS1ZBMGdlODBOdnZxTnAxdHJZcHozU3lKY2VI?oc=5",
+      "source": "Nareit",
+      "publishedAt": "Thu, 22 Oct 2026 21:02:18 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
     {
-      "title": "Standard Bank and Java Capital partner to build an integrated real estate advisory and co-investment platform",
-      "description": "Standard Bank and Java Capital partner to build an integrated real estate advisory and co-investment platform&nbsp;&nbsp;News24",
-      "url": "https://news.google.com/rss/articles/CBMigwJBVV95cUxPbmM2TzVLVHVOMkRfaG5KTFpyNGtYYUhDdE9uWXo3WjJYR2V5YU85Ynd6NDR2c2JyMFhkWHNEMlRPOXg5X0F0WjAzQlFqUWRzb0M3Nm4wbGx1M0R5N1dFLTBpT1VQTU50eWFQT3RyWXNpbjc4NDdIa3hBcWZuVGFqT05ONFZGY21oR1owdDBLUEh1RGoxeGo5TlplWC15Y1dlUDVNLWJXNHJ5YjdESzZaOU9FWFVBeFhpMWwtS0F3NFBVRHNQTEF5bjVzSEdGQktYdW52cjNfcmJpa2dNdHJQYjVZd2s3amVWTHBSYkF5eFhQTG9KcGNuVU1EbzNPZ0FNWVJz?oc=5",
-      "source": "News24",
-      "publishedAt": "Tue, 27 Oct 2026 15:49:57 GMT",
+      "title": "Real estate investment and ESG: Regional perspectives and cross-border investment",
+      "description": "Real estate investment and ESG: Regional perspectives and cross-border investment&nbsp;&nbsp;Dentons",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNQ2ZOX1lsNHQzUUFsWEx0djIwSkhKTnVhNUo2a0c3UmRVVl8xWG5wWjFKZmNTc1NWSkI4S2pyR1VQODRTYjluSnBZaUZGOWtkbFBCTk9GRGdFTkUyS0VleDY5eVg3dWxIeFJzem82aXNxMnY1UWlhNXFyRTBjY3ZYbmppc2llNWEtZVlxcDN4N05QUQ?oc=5",
+      "source": "Dentons",
+      "publishedAt": "Thu, 11 Jun 2026 07:00:00 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
     {
-      "title": "How does private real estate work?",
-      "description": "How does private real estate work?&nbsp;&nbsp;BlackRock",
-      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNTG1iZVVYRDNsalMwQXZmV1VWSUI4M3MxeV9yRmdBeVlReG4yTjFVd05sTHZPWmxoRzlZWVloZmVGMmVtMF9jUm1oeExaN09kTFNLVllzcUZ4WEFqNTZmMmZzSG1sS2x4c0Q0eTdsV3hQelNvZlhZeml5Vkx1SnhQZGpvWURQaUU?oc=5",
-      "source": "BlackRock",
-      "publishedAt": "Fri, 05 Jun 2026 04:19:49 GMT",
+      "title": "Panterra: Côte d’Ivoire, Nigeria and Ghana most attractive real estate market in West Africa",
+      "description": "Panterra: Côte d’Ivoire, Nigeria and Ghana most attractive real estate market in West Africa&nbsp;&nbsp;CNBC Africa",
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQSWxHYzkzb2hjM0F6TVoyOXhkTHVIcUdYXzAweWlTMUQ1blNiZ3FsdjNXcHZRYklIczRFR1FGcVNCcmRpbVdYSkJUQ2l1bVZ5SEpPc3Jidm1SYVlib1ZzaUxtVWNhQnYtX1VTRERvTndPQUZPZUFDZEJXaEYwLUlZblZPX094WnZ6bTdkSU9kLUFGcDJOVHpvak41RFUyT3dLX1FkUDBCQnM4bjBLbmVzWTFzc0ViWnNOeWpYVmsxLWZCT19hVXVZNjNWZ1liODJp?oc=5",
+      "source": "CNBC Africa",
+      "publishedAt": "Mon, 05 Oct 2026 07:00:00 GMT",
+      "geoScope": "africa",
+      "sentiment": "neutral"
+    },
+    {
+      "title": "CI Capital launches Egyptian real estate investment fund",
+      "description": "CI Capital launches Egyptian real estate investment fund&nbsp;&nbsp;Africa Private Equity News",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPcHpac1dLbHVyYmtMMEVwdlVyejZMTmZ4UDR2amJjUkhmQTR1dVQ5R2RfQXFnOTFTcFZWME92aTdZSWgxS1FaZ0h5Z1cxQ2tOZUZmSk5lYWtIQXlpQWFBNTZSMmkxRC1PZ2ZTSDRZbXlFdm1oX040NnBCa193NW5nZA?oc=5",
+      "source": "Africa Private Equity News",
+      "publishedAt": "Wed, 18 Mar 2026 07:00:00 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
@@ -235,20 +253,20 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Real Estate Investment in Africa: 10 Top Hotspots & Trends for 2026",
-      "description": "Real Estate Investment in Africa: 10 Top Hotspots & Trends for 2026&nbsp;&nbsp;https://www.nigeriahousingmarket.com/",
-      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPZWV4Wk1PTGxMZFNzZVVKX2FMb0VXQlpGVVFzWnE2alRIM2dhWjVXaEdZTlpjMDgzeVVzWENyZGpHdnpDRWkzSEEtZ01jejRVNU93TTRxZ3pOMDlyVUVQRHNISnVLTGtRZ19pQXNmYXZtSjRtdWlaM3pHY2YxdGEzZDZB?oc=5",
-      "source": "https://www.nigeriahousingmarket.com/",
-      "publishedAt": "Tue, 19 May 2026 07:00:00 GMT",
+      "title": "How does private real estate work?",
+      "description": "How does private real estate work?&nbsp;&nbsp;BlackRock",
+      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNTG1iZVVYRDNsalMwQXZmV1VWSUI4M3MxeV9yRmdBeVlReG4yTjFVd05sTHZPWmxoRzlZWVloZmVGMmVtMF9jUm1oeExaN09kTFNLVllzcUZ4WEFqNTZmMmZzSG1sS2x4c0Q0eTdsV3hQelNvZlhZeml5Vkx1SnhQZGpvWURQaUU?oc=5",
+      "source": "BlackRock",
+      "publishedAt": "Fri, 05 Jun 2026 04:19:49 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
     {
-      "title": "Africa Real Estate Market Value grows to USD 17.6 trillion | Nigeria, Kenya and Ghana top the bill",
-      "description": "Africa Real Estate Market Value grows to USD 17.6 trillion | Nigeria, Kenya and Ghana top the bill&nbsp;&nbsp;The Tanzania Times",
-      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPNlVHd2Y2NS1qRXRITFZwVGpLOUNCbTNnVHVETmVqZVNnZzJyYWtBazJQcUNSZS1rdzNfR2VNVDBvb2NkTjVGcEN3NndRMlh6WmxWQklQZXdfYjJZdWI0RS1zbE9MV01VN1JVa3BJSjZYblJsMVdNZGtoYzRkLUF6RHhfZEVLSlFtdWdJR0dHNmtnd3k0NTZRUVJaY2FfTUtLWWdSb3hwSlg0ZnllYWVzM3JSYXhvQ2RseGxyLVNrYw?oc=5",
-      "source": "The Tanzania Times",
-      "publishedAt": "Thu, 20 Aug 2026 07:00:00 GMT",
+      "title": "Real Estate - Africa",
+      "description": "Real Estate - Africa&nbsp;&nbsp;Statista",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBWY1d3eVVkN2hwb0JjVC1CdHV6R2c3elRsYWJBWXN2ZFc3TjY3SUYzd1NnMXVQS0pGTjZEcllqTWotQzhHel9iak1FaE52ejJmcjJtV2JwekRHUnhiSVRLUWNrQkVFM0U?oc=5",
+      "source": "Statista",
+      "publishedAt": "Fri, 12 Jun 2026 15:59:05 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
@@ -298,6 +316,15 @@
       "sentiment": "neutral"
     },
     {
+      "title": "Property players meet in Nairobi to explore investment opportunities, reforms",
+      "description": "Property players meet in Nairobi to explore investment opportunities, reforms&nbsp;&nbsp;The Star, Kenya",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNNVVwcUtyT2Q0dy1qUjRNNVEwTTJTTi1tNkFnRDZ5d2k0WTNWRVFJYU9VUlVqOHAtT1p6Y1d6OGp1MXpUWjk4RXN5WDJDQ3JUbUFGMi1VQjVfTVgwaXdfcFZFUExBNVhMWkpvQmg0S3hUY2c3STR4b2FleGpmNU5SeENMT1N4ZkVwM3Q3dW94QlJ4YklFRi1DVmVLUzVub1VWR1BtVkFKSTBhSFhBSE9pT0Y4ZWktcXluYnZqMUVmQzc?oc=5",
+      "source": "The Star, Kenya",
+      "publishedAt": "Thu, 29 Oct 2026 08:38:00 GMT",
+      "geoScope": "africa",
+      "sentiment": "neutral"
+    },
+    {
       "title": "PHOTO ESSAY: Nairobi’s Skyline Transformation Displays Chinese Real Estate Developers’ Influence",
       "description": "PHOTO ESSAY: Nairobi’s Skyline Transformation Displays Chinese Real Estate Developers’ Influence&nbsp;&nbsp;The China-Global South Project",
       "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOdDNqLUhlcVQ5SFNyOC05V1YxV1U1Y2NCb2dGOTF1QkN3REQzTWFQTFlNVThscmxrU3NiOGdiWnpleElFdVhFanFkcnE1cFpOZU1YZHN4eTN1Sm9nRjdVRjNUUm9aZjhYYU5ncVowY2NkWmh4aGdlckk2LW9HOXJ4QWFFSEpqaXBkdGZrUFRHR2lQcV9sSGZOSHUwSjB3UmZhcE54NGhn?oc=5",
@@ -325,11 +352,11 @@
       "sentiment": "neutral"
     },
     {
-      "title": "CBK survey: Why Kenya’s real estate firms are under pressure to cut costs",
-      "description": "CBK survey: Why Kenya’s real estate firms are under pressure to cut costs&nbsp;&nbsp;People Daily",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNdURTSF9NZndwTnlFdS1ZcmNOTy00dHdRdUZ0NHUzdWY5djJmQ0ozTnRWYXNIV3BQY3A1TG9USFJWc25zWkRhSU5CTjRTUDJ5cUhuekRHeWtoYWdXRnhhYWY1VFpldnBDdXRJQVRlNV9MQnNjSEdtRHpaYTdmQXRfT29GcWpzOTVUc3NXaDAtUDdpZnRpbFdTMHFjRVNwNmc2eHdpbFRYZHpBeHVM?oc=5",
-      "source": "People Daily",
-      "publishedAt": "Thu, 22 Oct 2026 03:57:20 GMT",
+      "title": "Africa Real Estate Market Value grows to USD 17.6 trillion | Nigeria, Kenya and Ghana top the bill",
+      "description": "Africa Real Estate Market Value grows to USD 17.6 trillion | Nigeria, Kenya and Ghana top the bill&nbsp;&nbsp;The Tanzania Times",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPNlVHd2Y2NS1qRXRITFZwVGpLOUNCbTNnVHVETmVqZVNnZzJyYWtBazJQcUNSZS1rdzNfR2VNVDBvb2NkTjVGcEN3NndRMlh6WmxWQklQZXdfYjJZdWI0RS1zbE9MV01VN1JVa3BJSjZYblJsMVdNZGtoYzRkLUF6RHhfZEVLSlFtdWdJR0dHNmtnd3k0NTZRUVJaY2FfTUtLWWdSb3hwSlg0ZnllYWVzM3JSYXhvQ2RseGxyLVNrYw?oc=5",
+      "source": "The Tanzania Times",
+      "publishedAt": "Thu, 20 Aug 2026 07:00:00 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
@@ -338,7 +365,7 @@
       "description": "Occupied Before Approval: Hidden Dangers Facing Renting Families in Nairobi&nbsp;&nbsp;Parents Africa",
       "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNdm53Q3cxeENUTDdGTl9yQXF1Z3VMdEJHVkRYS2JhSkJwb1Z1T2kxOFRvV2cyY0ZvbThoQ3RzOFJtNG52U1ViT3p6a0J6d0JaMlB6MjYydmhvZVFfcDFLV0VXZ21PSU0tRzlEaXNtX3NkR3lUODJqc3lWYnVxZHJ2Ry1lVjU4YUEydGN3N19jM0x2VTViZ2RydjN2MzVYaF9sdmg4?oc=5",
       "source": "Parents Africa",
-      "publishedAt": "Sat, 24 Oct 2026 05:11:42 GMT",
+      "publishedAt": "Sat, 24 Oct 2026 05:09:52 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
@@ -352,38 +379,38 @@
       "sentiment": "neutral"
     },
     {
-      "title": "South Africa’s property market looks better on paper ahead of interest rates decision",
-      "description": "South Africa’s property market looks better on paper ahead of interest rates decision&nbsp;&nbsp;IOL",
-      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOUnlCTzlscmRVc25hVVBJRU5ETVZzdG9aX3RYRlR2ZXJVSzJyTUNJYmpyeXlCQUxaVVdGdVNmS0FkWWhfbVhLbm1Mc3N4NFJ0Z3JJWE5JeUw2VFZHalNmQVg3Z2pqc3BnSXhNc09waThXRHhGRE5GQ3VxWGZQWi1rZV9XZzZwOGJpREtEUXZ5bFNzWHVIYy1jZG5YaE9mU1VuR1JJR2Nta3BvVXJweGxzWTBFRnVfWlFVV0ZlRDZ4bldjVi16RzczdWIzZVI?oc=5",
-      "source": "IOL",
-      "publishedAt": "Thu, 28 May 2026 07:00:00 GMT",
+      "title": "FNB launches industry-first bank-funded homeownership grant in response to South Africa's 3.4 million affordable housing backlog",
+      "description": "FNB launches industry-first bank-funded homeownership grant in response to South Africa's 3.4 million affordable housing backlog&nbsp;&nbsp;Novus Press Bulletin",
+      "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxObG5iWndpSDJlNUN5QkdiRXdHdURFaDFseVVsOVFmakYwYUZhclFHWGVqeXIxeHRVWFpuM1VfNU1aVjhDZ3YtSjVoQ3gyV0tVRWtrdDNaLUdhWVMxek83Q3Z3SEFneHR1d2lBNjQ2a3U3LUNuNGRaSXdtVGszX0FlSFMyS2pqaXk2M0VvSTdZbk5zSUVyUEI3Z0JKbUVxNHJkVjF4RWU2bDRfdlRzYUk5WUZTZExxd09NaWtLTTByTklUQmxCNWFReGFkNGh6LTZTNUFsd0llV3VvVG0ycTRaTTB3bEVPcXU1ZzBKRGhBLVp0U093M1hNRWZn?oc=5",
+      "source": "Novus Press Bulletin",
+      "publishedAt": "Thu, 29 Oct 2026 09:45:01 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
     {
-      "title": "From R1.3m to R2.4m: South Africa’s property market sees a major split",
-      "description": "From R1.3m to R2.4m: South Africa’s property market sees a major split&nbsp;&nbsp;Bizcommunity",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQTTVkRm5EeTlSYkZBbFdnajA5M096djA1RnlKUGZPUXhMY2tSQnBFR3RFN2k0bEtDdGR4dEExYjhzY1kxX2FzMzZJVnBrNkpwQUNIaVpqbERSTV8yV2tLZVVEQzVteTgyY1ZCc0dIZlF2aEFzdUROd0NCUklsLXlvMGhBSXd5cWRQTlp4SnZCNDZWcFVVZ2V2OHNIX2NaZDViM0FSWUFlOW13Z1laWVhKaQ?oc=5",
+      "title": "Beyond the metros: Where South Africa’s property market is thriving",
+      "description": "Beyond the metros: Where South Africa’s property market is thriving&nbsp;&nbsp;Bizcommunity",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQNWNKSXJtVk9UcGxpLW1IWEJMOWEtWUxjSTlPdG93dkxYNmtQT19LalhscDFlVTNWQTdpLXRsdVVVVVhiX0JNOG4wOWwxall0T2R6cFVqMUYxVVNvODg3Uk5jQTFnUXlIMWQ3MXE2MENJN2ZGRlV2OGdQWEFwcFhGcEhLUWlHTFN4ZUJ5QUJFcEoycVpqdlVPal85NmtKbk9HODRXMlpiSlRnUTUyZFBN?oc=5",
       "source": "Bizcommunity",
-      "publishedAt": "Mon, 24 Aug 2026 14:42:36 GMT",
+      "publishedAt": "Wed, 23 Sep 2026 12:13:19 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
     {
-      "title": "South Africa’s residential property market extends upward momentum in March",
-      "description": "South Africa’s residential property market extends upward momentum in March&nbsp;&nbsp;EWN",
-      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxORVRvY1FfM0N5YmhvYWpXazlmcTRjaG4xOUN1RnUwODRJQWYxY3hXaUxIVElCTWgzMmZaWVNQZ25ESDZZQzZMMlRCZS1nWWJLdkRLOUxrbzduZmpnREY2T2NoWHMtaW4xTmZSb2o5THVILUNuNXdjUUJVRnJSMGZYS3NjR0RHSHlUNkFDNG9EVW5rWldsOTk2VVBlQXRIR3c?oc=5",
-      "source": "EWN",
-      "publishedAt": "Thu, 06 Aug 2026 07:00:00 GMT",
-      "geoScope": "africa",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "South Africa's property sector becomes two-speed ahead of interest rate decision",
-      "description": "South Africa's property sector becomes two-speed ahead of interest rate decision&nbsp;&nbsp;IOL",
-      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQNzd3SlJFeVY4eWFLWWU4bXp2MXVMaFZRalY0Z204Tk9ibFV2UHo5MVJsM18yVjExZS02RE1uM1lrY2pSbnY1OWdtcUhFWGtjQnJXenlIQmFBTHhISEZFNWx1YnptTkZvUlJjYVJCZ0lacXB1WXI2RjlyaV9KZ2xzSkRGT0RPaTM5N0hOSlJGZW5sTGxTYnJDMFZETnc3SlA1Vll4Q3oweXVfS3BCSHoybTN2endreWd2RkNJMXNGRllDelBhMU1EU29vN1I0aFIzeHc?oc=5",
+      "title": "Buying your first home? Banks are competing harder for your loan",
+      "description": "Buying your first home? Banks are competing harder for your loan&nbsp;&nbsp;IOL",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQUXNrODRMV1hNWEVfVGNlUWU0VVUyY3ZiVkhRQ1hJVmhLaVlWdTdnVTg1cHVVbDZaYkFuWmlNSEJqMDlyaENLSDFCMU5tYnhVUzNVQVVNVG1ER0Z6ZU9Ddm1ncV9NWFBfRjE0UElDRlBqTEJ3QktMVDJPMkk2MWVHMGh0M3dudDJsX3BrdHdXaXZCSkNKeFc2QjRsbFJVRUsxandoUlJoYl9TaEtUZTE4RQ?oc=5",
       "source": "IOL",
-      "publishedAt": "Thu, 23 Jul 2026 07:00:00 GMT",
+      "publishedAt": "Mon, 26 Oct 2026 08:35:57 GMT",
+      "geoScope": "africa",
+      "sentiment": "neutral"
+    },
+    {
+      "title": "Residential property prices: Good news for South African homeowners",
+      "description": "Residential property prices: Good news for South African homeowners&nbsp;&nbsp;SAPeople",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOVVNlY2wxbUxBVnJBd1JhYXRmSWpSdzV0eU1TY1BTN0FfZ3NDTWhURzRlaldzUkNoMmpzSjhrNnVxMk1ZVUw4TTJObW90eTJwSGF3NFRha3E1V1Fmd1V6TnhfMEwyRi1wUXNfMVBNLThEalc3d0tfbjZST2V4cFZJYzA5ZFRHMERyRTZLUEpBYmN4Zy1JQWNpTmJxbEp1VFpMZzVr?oc=5",
+      "source": "SAPeople",
+      "publishedAt": "Thu, 06 Aug 2026 07:00:00 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
@@ -397,11 +424,11 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Ernest Hanson on Beaufort Properties, Real Estate Investment Opportunities and Prime Residential Developments in Accra",
-      "description": "Ernest Hanson on Beaufort Properties, Real Estate Investment Opportunities and Prime Residential Developments in Accra&nbsp;&nbsp;MarcoPolis",
-      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxOVVlraTlPNHRKeTZmNE9rd0Uxbng0RW9ya3dXcUd4RWJSZDliQlhlRkxqMEowZGY2ZV9DekpVTkI4eWJ4LWt3VGQ1R3NpdVVXb1ViNWZDLWEyTV8ybDBrQncxLWFQQm9icld0U1NSdmpxREFVQm9CMUFYUFhQcVk2QjRyazhZclYzOFlaNExuWHJmci1rLXp6VEFkT1U4b3NuZ2NPdklhWVRNbjgtWHAxQmw1SUpPVldFUzlLTHFSX20wR19iTC1vTFJ0ODV3Qm80ejhJQncxVC04bXNP?oc=5",
-      "source": "MarcoPolis",
-      "publishedAt": "Fri, 19 Jun 2026 07:00:00 GMT",
+      "title": "Ghanaian alcohol tycoon Kwabena Adjei is building a 27-storey luxury tower in Accra",
+      "description": "Ghanaian alcohol tycoon Kwabena Adjei is building a 27-storey luxury tower in Accra&nbsp;&nbsp;Billionaires.Africa",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPODhUNUhSb19nQlJBblgxbUk4M1JidUhQMmIzeWtsaU9zUVlIVENwbjc3VmlDeW9pOGg1Wk5ORjE3Nml0bWFiWXFFdGg5WDgwVnI0V3hEM3ctU3JHZHh2N0hrUnJKV1dMX3dvWld2cjZ6eFVHSC1BRnVUaVk3ZHp2UklTazR6blIyNHkxaVhKMnk5ZjVVa1VEb2NkdU1EWXV3S1dXMF9sSEY3MnhRcGlTdUhQN3VnOERkU21wblpCUlBLZXZPX3c?oc=5",
+      "source": "Billionaires.Africa",
+      "publishedAt": "Mon, 05 Oct 2026 07:00:00 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
@@ -433,11 +460,11 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Greater Accra Region, Greater Accra Region, Address available on request Property for Sale",
-      "description": "Greater Accra Region, Greater Accra Region, Address available on request Property for Sale&nbsp;&nbsp;Realtor.com",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPRl9uMk01eG9Na0t1WXF1eGtJbG5id3NpV3RmeUVTOWVqZXctMlQ1Y0dIYTNteVhLTnV2ZDd0aHZiM2VKLXhFZThtdTFOWUItOEo1N0ZJOGxzRVJURGJicVZmdVctRjJLaDZtOWJKNVA2YUhydGdKb0ZvdTQwSGItaXRVUDBoSmR2eXQ1UU5VUDNLbi1XSnBn?oc=5",
-      "source": "Realtor.com",
-      "publishedAt": "Tue, 20 Jan 2026 20:48:11 GMT",
+      "title": "Rents, Trust, and Survival: Accra Street Journals' Story of Accra's Small Business Economy",
+      "description": "Rents, Trust, and Survival: Accra Street Journals' Story of Accra's Small Business Economy&nbsp;&nbsp;Modern Ghana",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQU081M0FVNmJ6aHVhSjN6MWVEenZXYm5pZDExV3Q4UVItdEljWTVwTFhMbzV5cXdreWx4eUROTFdpU0JJTVBNMXdjNVBpbXVnNDIyUFRha1lwcDVFTXgtd3BrdWNiYXpaQ0ZMSmFHTmZ6YjF6a2JFQkNOb1BRT0ZndWQwdjN4MmdVdE0tZ1RtQnVPczhpQlVN0gGWAUFVX3lxTE9ENU96bXN5VHpWVXg3YnNaTFZzNFl0dFljQ2FWbVVXa29mUkhEV1pWNVo1Qk5tV1VIc0FuSmt1dHBTcWhDTlR1N0VMUE52dmYxRkpQZVFsVm1mVUxHaU9yM2toMFJoalYwRERoTGJ1RG1TYjhURnpkZXhLLTlIdzlHT1M3VUUzcEhSY0YycHlXb0x4RGNrQQ?oc=5",
+      "source": "Modern Ghana",
+      "publishedAt": "Wed, 05 Aug 2026 07:00:00 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
@@ -460,29 +487,11 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Grova Developments awards Hassan Allam Construction $1bln contract to deliver Grova Westfields in West Cairo",
-      "description": "Grova Developments awards Hassan Allam Construction $1bln contract to deliver Grova Westfields in West Cairo&nbsp;&nbsp;Zawya",
-      "url": "https://news.google.com/rss/articles/CBMi_gFBVV95cUxPcjZIMTN0VnNSTjZzdDlSSjFXU21VOFpvZ2RPVjEtdkZXbU1uQVozZ1pxSHc0NWo2akNVTWVqOUlxdWtMeVA5d1QwUXU4T0plQm51R1F5TDdrcFMzbzFlOWYyVGhzdDA3S2xkYjJQM09NLWRrMGtYQTJlWkM2QUx0d2dEWTdpVU5qMnlDOHFmVENySHhDN2p0N0Z3SmJLclFCY1hJSmFlNmRBWUl6eTJhTk05TVdhQ1ZDTGM0UVpIN0tLazRrYjlnOHdnOHAwTW5MQTBZWTRjbnNlNF9FT21PVWFZb0RTbC1rOV94V1BjSHRwU0pNX1ZseFVxa3h4Zw?oc=5",
-      "source": "Zawya",
-      "publishedAt": "Tue, 29 Sep 2026 07:00:00 GMT",
-      "geoScope": "africa",
-      "sentiment": "neutral"
-    },
-    {
       "title": "Cairo’s Real Estate Market Is Shifting: Sales Cool, Rents Rise and Competition Builds",
       "description": "Cairo’s Real Estate Market Is Shifting: Sales Cool, Rents Rise and Competition Builds&nbsp;&nbsp;waya.media",
       "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOYjlEclY0X00wS3Rnai1WRjNKaGpnSGtEQVFXVDNYQldMTjZXSWwySmZBclA0MUlXOVh1TmprdFRiSy1GTFdXNVBlY3lvT3p5aHFEbEVERHhoYzFZUjN4b2dQOG9TZkI4QWY3Wm5XOW5Gc2ZEM1dOUlA5Nk1JcWcyUU54Y2IxTHZ2MllJa3dUMlJCTTFhOXZGOW80R3hvbGk2NzRnUw?oc=5",
       "source": "waya.media",
       "publishedAt": "Sun, 30 Aug 2026 07:00:00 GMT",
-      "geoScope": "africa",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "Telecom Egypt to bring FTTH to New Cairo property development",
-      "description": "Telecom Egypt to bring FTTH to New Cairo property development&nbsp;&nbsp;Telecompaper",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOc2wwS1FHQ2oxSTFUdGFVV0llWjFwMWpjcGhBZzZGRnF2X0VScWh3STYxRDFubjZEMk1hcUZ5THoxUHRJX2tRYVgtZldSNUYxS1pHUWFTOEdIUlFOcXFoTjlSWk4xdVpCQVBVOGlhTTMzSzQtb05iOHhNQXAwbnpXRjB6T0NHZV9zVmI4OUdWUFg1cE5vRFdxX3FWWFBaRXVlbGZfMVFZYw?oc=5",
-      "source": "Telecompaper",
-      "publishedAt": "Wed, 24 Jun 2026 07:00:00 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
@@ -496,38 +505,20 @@
       "sentiment": "neutral"
     },
     {
-      "title": "AI, World Cup and piracy... Moroccan and U.S. experts discuss intellectual property in creative industries",
-      "description": "AI, World Cup and piracy... Moroccan and U.S. experts discuss intellectual property in creative industries&nbsp;&nbsp;Yabiladi.com",
-      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQSkY4elRhOXZycjl0VGswand0VW15MF9RTDFVTkxyeFQ5bEJJdUhyN0hTd2ZmUjYyQkxfRFRKWWxVLVlZdEJRRkUtWG1fckJWMXFUckhzRTdweTFfa044QjhFTW4yMFQ2eU9QYTRKVk9ObjVWcXRRMFN0WC11MnI1QUxELVJPMXEtRWF4eEhhTEMxckw2?oc=5",
-      "source": "Yabiladi.com",
-      "publishedAt": "Fri, 16 Oct 2026 11:44:40 GMT",
+      "title": "Egypt’s top developers post EGP 271bn in sales as real estate market enters correction phase",
+      "description": "Egypt’s top developers post EGP 271bn in sales as real estate market enters correction phase&nbsp;&nbsp;Daily News Egypt",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOQzZqSTVfNkYzV1V3V3J3akNkYVNEb2NpTnpfUTJSQmU2dEQ0RC00cW1VQXNBNUZxbnpCd1Atck1oVEJhYVhfdlhTX2RfczJ5Q3FEZ3pBNUVOVlptQkpXUS1RTFlmdDlVelhXQjJOZzRvQVVtTjJVQUdWV09iaDNuQUw2SFJvRExmMTJmdE9HaDc3TGNDQVJLOEhwUmg4UUgtWHBuTFp2YTFsclJ2SU1ORFpOM1hORGd4SmRwMmZSNkViTDNjY3hLTDFxc3E2Xzg?oc=5",
+      "source": "Daily News Egypt",
+      "publishedAt": "Sun, 31 May 2026 07:00:00 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
     {
-      "title": "How to Estimate Your Property’s Value in Morocco Before Selling It",
-      "description": "How to Estimate Your Property’s Value in Morocco Before Selling It&nbsp;&nbsp;Morocco World News",
-      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPbHpJcU5Wa2pzVkxhNGFpakpWYVVUM1NUZG1NWVRSTWJPc3VCVjFvV04xbW5QVWh1U1ZqNkhJbGJSazN5bVBWM18tczdPQ2tMNC1rakhoNi1HbkZYM01jNXdpT3pZYlJJb1FkZGk0VUdoTS1mNjNxQ2s4UkFyZ2xxTzNJeWlRMVZiQTNVMHcwaHhtaVZhdk9CdF83UlRJMDdTazc5M2NJLUlzVGZYMG5ob2NPOFA?oc=5",
-      "source": "Morocco World News",
-      "publishedAt": "Tue, 01 Sep 2026 07:00:00 GMT",
-      "geoScope": "africa",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "Morocco's housing market slumps as property transactions fall 40% - HESPRESS English",
-      "description": "Morocco's housing market slumps as property transactions fall 40%&nbsp;&nbsp;HESPRESS English - Morocco News",
-      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPbmxCMGphOUMzel82OUJkNmJCNUt2N2R3TDVzQ3k1Qm5QOFMwam9kUk1ON1hmaDhBUXVLUHd2bFJYck9NU0k0cGxvZGJkQ2JOaThDUzlWNlJDWkxyc3NOZlBLYTVnMWNWNjRDUGRieFJmU09aaURGVmpMUWdocGJZejdmMFB6M0ZzZ0t3b3B5T1JOcmRUVU9SVEVicWdmcTY3?oc=5",
-      "source": "HESPRESS English - Morocco News",
-      "publishedAt": "Mon, 06 Jul 2026 07:00:00 GMT",
-      "geoScope": "africa",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "Mohammedia, Grand Casablanca 28800 Other for Sale",
-      "description": "Mohammedia, Grand Casablanca 28800 Other for Sale&nbsp;&nbsp;Real Estate",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQT1YyUnJ5WWE3cnZUNXVjSEFjMjJlTmxFaDYtaWZsZWJxekJqTGNxU1oyQ1BxbWtVR0N1dktXQ2MyYW10OVpWMldYa2lkWlAyUEczOHJJVTI5aWJIN1JnaFBKUTBpM2VRenBvc0lJaEhUNmJtZnJ4QTNwbzhZM3E4UHBpSWRSaW5rM21sM2l1S3JNZw?oc=5",
-      "source": "Real Estate",
-      "publishedAt": "Fri, 23 Oct 2026 03:10:18 GMT",
+      "title": "Oman showcases experience in real estate development in Cairo",
+      "description": "Oman showcases experience in real estate development in Cairo&nbsp;&nbsp;Oman Observer",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOeVAya1dsYlBvMmhiR3FMSkFEVWNwM0FDQ0NOZ04xZmxGX0hocl9hREx0aWdLVlItX2E5ODl5MHc0SUxnd3dUeTVIRzZWN2tuaHpNTXVVRmFnWF82dS0zTUhKWnluSGZMN3h2WFprVEIyNjdMUl9NNnZmSUdMVG5WOTRJT3lCTHU4b1VCUUFsdmdkUnBMblBFdkxKVTJwOFd6akdjT29MV0NucE5IS0xN0gFaQVVfeXFMUEtsc3lMTVpLM1h1STRWbFZaNzM2eWdLOUF4MUlpVUxzLVRLb0JQdXItNWZXQm5NUEl4eUItUWM2YWd6YWxJSzJoVWpzQXZuRjBVZklxVWVIT3ZB?oc=5",
+      "source": "Oman Observer",
+      "publishedAt": "Wed, 06 May 2026 07:00:00 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
@@ -541,11 +532,47 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Moroccan billionaire Anas Sefrioui expands from property into pharmaceuticals with Servier deal",
-      "description": "Moroccan billionaire Anas Sefrioui expands from property into pharmaceuticals with Servier deal&nbsp;&nbsp;Business Insider Africa",
-      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPYmpBb20xYlU1QmZnMHl3cjZqOFhmc2hfcjUwamVUekp4VE5fSnJkWDFha3dlSUxVLUlHY1k4cUN0RGpyMXVOaW95c25pbVRmY1V4R3ZobmI3M19tejVtNW1fUmxQcnFpbGVTYTdNRmVwckUtVURwSUdGaGs3Sk5MUTBkVWlNMWpxMkVoS09rcVIxN0NPR0lyd1pudHdPODB3Q2NmUEI5NTdHMWdtRlo1Z0JQZ3E0R2EwRWhyVkUxTlJUSEVHVWh3NHpELU9fZmdZY2dwVXNn?oc=5",
-      "source": "Business Insider Africa",
-      "publishedAt": "Fri, 21 Aug 2026 07:00:00 GMT",
+      "title": "Alami Lazraq scores $40-million gain from stake in Casablanca property developer",
+      "description": "Alami Lazraq scores $40-million gain from stake in Casablanca property developer&nbsp;&nbsp;Billionaires.Africa",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNV1NEMGlWMFdWWG5YOGFhM2NMUEFFZy0xNThsck56VTRnMjE1Rm1oUlFxT055ODkyLXAtaVlNX0NtZGU5SnVNdTliM0h1ZUFid3JOMXRJWWdHNXR1Y05Gd0sxeUlISTR1SURwVjlUUm55cGxvZFVqbG9vTHNrZzhYQjRhYk5MNHo4cWxERDlwM0tuTDhCOFRKR1FKTDA5MV80WW5BbVpjbHJ2TjdES21lc2Q4V250eHJGZ3hSVzBEZGg?oc=5",
+      "source": "Billionaires.Africa",
+      "publishedAt": "Tue, 11 Jul 2023 07:00:00 GMT",
+      "geoScope": "africa",
+      "sentiment": "neutral"
+    },
+    {
+      "title": "AI, World Cup and piracy... Moroccan and U.S. experts discuss intellectual property in creative industries",
+      "description": "AI, World Cup and piracy... Moroccan and U.S. experts discuss intellectual property in creative industries&nbsp;&nbsp;Yabiladi.com",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQSkY4elRhOXZycjl0VGswand0VW15MF9RTDFVTkxyeFQ5bEJJdUhyN0hTd2ZmUjYyQkxfRFRKWWxVLVlZdEJRRkUtWG1fckJWMXFUckhzRTdweTFfa044QjhFTW4yMFQ2eU9QYTRKVk9ObjVWcXRRMFN0WC11MnI1QUxELVJPMXEtRWF4eEhhTEMxckw2?oc=5",
+      "source": "Yabiladi.com",
+      "publishedAt": "Fri, 16 Oct 2026 07:00:00 GMT",
+      "geoScope": "africa",
+      "sentiment": "neutral"
+    },
+    {
+      "title": "Morocco's housing market slumps as property transactions fall 40% - HESPRESS English",
+      "description": "Morocco's housing market slumps as property transactions fall 40%&nbsp;&nbsp;HESPRESS English - Morocco News",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPbmxCMGphOUMzel82OUJkNmJCNUt2N2R3TDVzQ3k1Qm5QOFMwam9kUk1ON1hmaDhBUXVLUHd2bFJYck9NU0k0cGxvZGJkQ2JOaThDUzlWNlJDWkxyc3NOZlBLYTVnMWNWNjRDUGRieFJmU09aaURGVmpMUWdocGJZejdmMFB6M0ZzZ0t3b3B5T1JOcmRUVU9SVEVicWdmcTY3?oc=5",
+      "source": "HESPRESS English - Morocco News",
+      "publishedAt": "Mon, 06 Jul 2026 07:00:00 GMT",
+      "geoScope": "africa",
+      "sentiment": "neutral"
+    },
+    {
+      "title": "Casablanca stock exchange opens a new gateway to real estate investment",
+      "description": "Casablanca stock exchange opens a new gateway to real estate investment&nbsp;&nbsp;Telquel.ma",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNR1NFQm52Q1JwTGh4dWx3QlBQNG1LblN2cGZZd3UzRXFrM1c5aXRQV3cwR05oV0FLS2NTVWdweDM0NUkyeDJUZEJXSlBGc3NJOFpCLUduYldBcFd3OXVKOUotZWpWRXBlQW5GU3JuUEtKSGZKSUEwTk54amdncGZtOEdoY0NwN1picnpqbDRBWXozYVpkVkFsS3RCYV9oOUhZNzFFV1c5ZWJqZWFtZ2ZFamJUYmVwSEE?oc=5",
+      "source": "Telquel.ma",
+      "publishedAt": "Tue, 08 Sep 2026 07:00:00 GMT",
+      "geoScope": "africa",
+      "sentiment": "neutral"
+    },
+    {
+      "title": "Four Seasons opens 186-room property in Casablanca",
+      "description": "Four Seasons opens 186-room property in Casablanca&nbsp;&nbsp;Hotelier Middle East",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPS1QteGplaHJucTgwQUtWcU96TTJKMnNta1dBN1RYaC1wdlBnS3NHdG1iYVdWc0dnZktqdWllemJVcS1mVVZaRlRwcjgwbkFhc2xkU0JVZEdQUl8zbGNrNGJYQ0hENkdIVG56U2VpTmxNdEVKSUV4Y0VBRWZMZDF2X3pWb1JOaVZYenhieDRVa3dXRzFlV0drOVk4eWg2dkprcWc?oc=5",
+      "source": "Hotelier Middle East",
+      "publishedAt": "Mon, 16 Nov 2015 08:00:00 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
@@ -595,65 +622,65 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Rwanda launches construction of affordable housing units for average income earners - Xinhua | English.news.cn",
-      "description": "Rwanda launches construction of affordable housing units for average income earners - Xinhua | English.news.cn&nbsp;&nbsp;新华网",
-      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE4xYVB6Y0QweGZKdnd1dE1mUXJVUFItYVhRX25iUnFmWnpkSjJ6cXQtWFpTbFhHbDlTNEg2NzRnOHZtckZ4ZmpCdUdSR05vQzBaQWxLeU45dklHalVTa0x6aUpVR044SmJGNzBr?oc=5",
-      "source": "新华网",
-      "publishedAt": "Tue, 04 Jun 2019 07:00:00 GMT",
+      "title": "Rwanda scheme: Asylum seekers won’t get homes that Suella Braverman promised",
+      "description": "Rwanda scheme: Asylum seekers won’t get homes that Suella Braverman promised&nbsp;&nbsp;openDemocracy",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNYlJ5Q0N0RmhYaTh0eUVhekFIR2ZpaHg3dVBkek9VTVd1NV92VHRDODhZNVN6RHBwU0UwQ0stWmJPX3BtMjNnemNhS1lnQWl0WjVvNGFUQ1drZFpINXNaZmtoYUdiYVZrTl9nbEtOSWxRNkNKOUJHblR4cF9WS0lnUnRFVEl3UUZmc0JYZUtEb1VFWlV1YXJaTVdLeV9mdTA1cjZyeQ?oc=5",
+      "source": "openDemocracy",
+      "publishedAt": "Wed, 24 Jan 2024 08:00:00 GMT",
       "geoScope": "africa",
       "sentiment": "neutral"
     },
     {
-      "title": "Firm seeks global partnerships to boost Nigeria’s real estate sector",
-      "description": "Firm seeks global partnerships to boost Nigeria’s real estate sector&nbsp;&nbsp;Vanguard News",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxONlRZaWxuNVJpUkpBV1BpYjZGdlBWazU2V1N3TGl2T0NFdnVkUGpSSEJsY3VRTUVpamdhUHZ2eUNzNUQ2a3BybXZjRmU2bzN3NEJINVItRUlibWZaUDJtZEFPbDdUZ21nZ2RjVnpiQjZGYWlEcXU0SG1OUTNuNElDSEhRdlBjTzc2OGZHX2JvbVU3aXpua1NITHVqbHh2cTUyNnJ3RngyQdIBrAFBVV95cUxNUDloaGQ2TnJKUTlXQmYzb1BNWmpMSmtZRmFwQUpsT0w3Y1QzZkxSYmRHamJ5T0RwQVdPYV9IVjlCaW1wcjdPSWstemp1NURGeXVRalRVLTdLaV9pTkkxajROT2VUTGpiMWU3aThjdjNYQUxmeXBEQTBrM21ReFZUUUdnMExjbUJ5VjdJU0RJUFpkR3JjTVVvQTJuWEFpV0d3c1RVdUN1QktXNjVY?oc=5",
-      "source": "Vanguard News",
-      "publishedAt": "Tue, 27 Oct 2026 19:05:52 GMT",
+      "title": "Family Homes Fund widens capital sources to tackle Nigeria’s 15m housing deficit",
+      "description": "Family Homes Fund widens capital sources to tackle Nigeria’s 15m housing deficit&nbsp;&nbsp;Businessday NG",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPSGJSQ2JpOWdkZUlFTGMwMDlVcTJuS19mTU5OR1MxOFE3LS1IZFRjekIzRzJDbUMwUER3ZVdzMk9mZDA5NHBMbkxPQlc5eTI2WnJxbWtfS0x5QW56a1h2RjRZdlhkMXNOMnpqZ2VYUkZSMXUzSk1ySF9hQzU2NlhFRURGckNfLVZvUjRidXRYLTUwT1pfQ0FDTjNvTHdBVmJBSWhzR2FpclNNQUVEQWg2YS1PaDhtUkc2Y3NMdW9n0gHDAUFVX3lxTE1yMGQ4ZV92NHh6Tk5TMmZCUDBnQTk2QkJnSEh2aHFFOTE3WllTVU5yaUZEWWRZOXVmeVR3VzZ5NjMzRFpORkhtQmVrMVlPTk5DSTB1eDR2akVrU2dVWkRXZVJHZ0VCbjM4Q0xCNDViZEtidjBWaGM3UUFjdm4wNFRJbkRxZk1aVG9zYW1aa1lMUVBYVWgyUWlhVVY5Nm13bG9SRFBtMUU1MDRvVVh1UlZud1pQWkJUcGlQUXRFN2gtNENKcw?oc=5",
+      "source": "Businessday NG",
+      "publishedAt": "Wed, 28 Oct 2026 20:46:29 GMT",
       "geoScope": "nigeria",
       "sentiment": "neutral"
     },
     {
-      "title": "Nigeria’s Housing Finance Challenge: FHFL Has 18,000 Homes in Its Pipeline",
-      "description": "Nigeria’s Housing Finance Challenge: FHFL Has 18,000 Homes in Its Pipeline&nbsp;&nbsp;https://www.nigeriahousingmarket.com/",
-      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxObVBObzFVVWRNS3htVkNaNXV0RUFJTXFYZHBQRzhUVTFlUDVqWngzT1g5X0FTLTFLNWlSdFJpMnZsNGVOUnlpX0NERWNBZFNEZ05PQTBqclE1SWdYalVRUG9lT2IzS2JjY0RhOU1xeVhNR0RQZWh6MGNHbXZKWmlPeng4Y0ZCdEtUSDdTeHRMYw?oc=5",
+      "title": "Lagos tackling 3.3m housing deficit, says Sanwo-Olu",
+      "description": "Lagos tackling 3.3m housing deficit, says Sanwo-Olu&nbsp;&nbsp;Punch Newspapers",
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNWHc3UHAxVTVjMUczMXV3NTFFYnVrdm9TQ3V2eDE2M01zRDZVaW1TaDR5TFNwbjdNLUIyc0RkVGl6dkFWdTRCUktzbmJXOXBnYzA5OHlLa0NnVk1GNUozTGd3czZwNGlyZXpScWdtU1RHbXRZaVgtZVozSlpYSFRoeExJb0tsQTV0Q0pTWE9sWnp5eUN3THY1aFd0Yjc2d2xCRFB3NUV3RFA4S2xpMU90Y2dBQQ?oc=5",
+      "source": "Punch Newspapers",
+      "publishedAt": "Wed, 28 Oct 2026 23:10:49 GMT",
+      "geoScope": "nigeria",
+      "sentiment": "neutral"
+    },
+    {
+      "title": "Lagos’ $1tn Growth Plan Puts Land Administration and Infrastructure in Focus",
+      "description": "Lagos’ $1tn Growth Plan Puts Land Administration and Infrastructure in Focus&nbsp;&nbsp;https://www.nigeriahousingmarket.com/",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNTDY3QU1fVEtDaHJUcThJek0zSzVqWTd3THNORHRaVlQzeW1XQWZENlJrNzJPLXBCRE1uN2E0dTk4WVFOZ3RnVHRWZWRneUNJTk9oNEh5TEt2bjN5UXFvQ3Y4UHZCWDMzRUVlNTh6RldaSmVVRkFMeGxQSHl4bmwySWZjS0h6YV9Bd3NhQ19xME9YVF8yNlM0?oc=5",
       "source": "https://www.nigeriahousingmarket.com/",
-      "publishedAt": "Wed, 28 Oct 2026 09:53:57 GMT",
+      "publishedAt": "Thu, 29 Oct 2026 09:23:57 GMT",
       "geoScope": "nigeria",
       "sentiment": "neutral"
     },
     {
-      "title": "Coastal Highway Opens New Real Estate Investment Frontiers In Lagos",
-      "description": "Coastal Highway Opens New Real Estate Investment Frontiers In Lagos&nbsp;&nbsp;Head Topics",
-      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPQXZzYzNmdUdDWE9vZUFkbFpiNnJWTzhIWURGajdqT2NDTEV1NE5TdUgwMVpTc3BVN2JOMVc5bGw1V1NyalVoZ2I2RmZZSGhDR2pTU25HeVJjcmN0QmtwVzRCM2piWE05ZnlyT2gxbEdxQmVOWmd3Ym5BNUxIeUVYQXpNWFp4Y2hvR280UWN2R1ZNcXIxY2J5ZXpyY3RJQ0k?oc=5",
-      "source": "Head Topics",
-      "publishedAt": "Wed, 28 Oct 2026 12:52:00 GMT",
+      "title": "FG, Harmony Gardens to build 5,000 homes in Lagos",
+      "description": "FG, Harmony Gardens to build 5,000 homes in Lagos&nbsp;&nbsp;Vanguard News",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOaHVJd2dTV05CVHpSYlFuUGxPVEkwbFpQWGhGTi13TE80dXhVQUl5M2pmNjdHQWFGVFFJTGIyalBJQXpZeGZOTXhYUWlyejdJcTM3cWRUaDZFMDFvY19EOXREeG5jSlpQakZJMWIwTWlqNEdEX1BhYnZVd1BHS2JFWUd2c0V1UmJncndub9IBkgFBVV95cUxNTWdkblR2SzhNVTNRR0tjSk92bV8wcDFZOW51NFo1YndheExJRGNWRG1QRVpqak1iS0NCNUU5TUoxcER6VHRRLTdueXlNeEhaOElXb0h2QUFDWHBoVV9fWUVjMDZWUVFjT3RkOFcycnFvajRnSDQ2OGJMQkFMeFlnaWZ3clJ1aVg2cVZWNHdSMnpYUQ?oc=5",
+      "source": "Vanguard News",
+      "publishedAt": "Wed, 28 Oct 2026 20:54:02 GMT",
       "geoScope": "nigeria",
       "sentiment": "neutral"
     },
     {
-      "title": "Karsana Phase 5 Estate: T Pumpy urges Nigerians to benefit from infrastructure, flexible payment, instant allocation offers",
-      "description": "Karsana Phase 5 Estate: T Pumpy urges Nigerians to benefit from infrastructure, flexible payment, instant allocation offers&nbsp;&nbsp;The Sun Nigeria",
-      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNRzA5YTB3TVQ1bjVwUDRZOUFiQWExbGhiSkRrN2Jtdk15ejNLcmd1S0NoeUNZMVd4eU5tQkN6OF9pOG1UR0VLM3ZBT1dMV25MY1VIMHNyVjNnVi1KSnFUWmY4WU9mRjFGQUxBY1ZZUnBDTXlpOGFyZjZXRXJVYlRSeHBheS03aTBnMmcyS2tmNWxGOW16YzFWRXFiRnRNSmhWSzVUbE5KNXhQeDFnY3Bac3gydk1RNFFQdjVuRnRsNVl3SFV4X1VUdE1JNWxWZG1YQTB5S0RB?oc=5",
-      "source": "The Sun Nigeria",
-      "publishedAt": "Tue, 27 Oct 2026 17:11:43 GMT",
+      "title": "Kano pledges partnership with estate surveyors on housing development – FRCN HQ",
+      "description": "Kano pledges partnership with estate surveyors on housing development – FRCN HQ&nbsp;&nbsp;FRCN HQ",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPczdNcWtVaE5MejdRdGt2U0dyb2lIN3BrbUR6ejkxbHFycnhaMGFzSzlLcG9oOVctTm1GODEzWjNweVc5anVReFZPYS1vUFJDOEU1NmhkUEVaS045cF9McFRaV082bGp2MkRoQXczNGhESWhKb1lpdVJLWnR5Z3VUMTRFOHpaZC1vS3pjTlBNdlBpeTBYNTVYMEFyZTdGMVJYUlY3d0o3VGtWOXNKOHc?oc=5",
+      "source": "FRCN HQ",
+      "publishedAt": "Wed, 28 Oct 2026 17:36:37 GMT",
       "geoScope": "nigeria",
       "sentiment": "neutral"
     },
     {
-      "title": "Why housing policies failed to deliver desired results — Oyedele",
-      "description": "Why housing policies failed to deliver desired results — Oyedele&nbsp;&nbsp;Tribune Online",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQeHAtWHowQ194eFN0eWd1Q05qT3RNR0dWZk1WRFI5d1FGRV81Ti0xSEcybXF6V3c5MTlvcG5lNVFiX29fTHJTVThFZVhvTjhDcWNDbExENWRmWWdZWUdvQTdZVDZaeDdYbmFKVHVCOUxTZlVOOFQzTjQ2anV2TWtjc1dEbHZvc3pFUlRYVnBObDdVcExmMUE?oc=5",
-      "source": "Tribune Online",
-      "publishedAt": "Tue, 27 Oct 2026 06:20:00 GMT",
-      "geoScope": "nigeria",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "Haqtri is bringing a social experience to discovering property",
-      "description": "Haqtri is bringing a social experience to discovering property&nbsp;&nbsp;TechCabal",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPMlFMNEM0d2J0c29JclB2WDFRWjFLT004eVJPa19xaUtJMWhzM2tOS2t3cTcxT19zM29hRlJuQkZlQUNKMWlYNXAxTTcwMk9JdDJJeWhSMEE1Qjk2REJWS092NF81b1VsTGczZjZZeVlqWFlTLWhTSFJWbkpIWDBqMmNKcVpMU1FJNndtYlMycElCakN5Y2lMcXV0Mko?oc=5",
-      "source": "TechCabal",
-      "publishedAt": "Mon, 26 Oct 2026 15:45:25 GMT",
+      "title": "‘Why housing deficit persists’",
+      "description": "‘Why housing deficit persists’&nbsp;&nbsp;The Nation Newspaper",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1GM0xsVjc1OTEweEN6amZJNXk4Ym9tUWU3X1ZWWHF1VTB5N0tfdnRpTnBmUm90Tks2MnlGRUtlWnRvSDRObEtjT3NoN0VUT1dZckN1eE56X3ZhMi1JUzE3V0M1dDY5SWFhWkdR0gFwQVVfeXFMTVNldTlYZ2R4eTcydzFzV0dHQlZ5djNQVEpkalhzaGpCMncxLTRZNG5YZXNBS3d6N014cG9HZVBQbVlWcl9TTjV1RVMzMEw2VGw3TWxCUl9FUVFvRzFLeTlNcUszQjNXR2tZekFOVHQ0VA?oc=5",
+      "source": "The Nation Newspaper",
+      "publishedAt": "Mon, 26 Oct 2026 09:03:58 GMT",
       "geoScope": "nigeria",
       "sentiment": "neutral"
     },
@@ -667,15 +694,6 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Bujeti Publishes Report on Nigeria’s Real Estate Market",
-      "description": "Bujeti Publishes Report on Nigeria’s Real Estate Market&nbsp;&nbsp;Condia",
-      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPdFJTMjBoZ3RTT0l4WkVrN0g2dmI2ZHlxa1pQOTNvelJ0ZExnS0JhZjFUbzhaNlBvemxwQ0xlbFZ3bW8wQTVhNzdpVFNIclA3QVJxb1NQaml5TDRyOWppUDZ5NmFWZmVXaVdSY0g3elJSRUZxR0ZCQXBoamc2UGI0RHd3RnRvOTBDMjBxdw?oc=5",
-      "source": "Condia",
-      "publishedAt": "Mon, 12 Oct 2026 07:00:00 GMT",
-      "geoScope": "nigeria",
-      "sentiment": "neutral"
-    },
-    {
       "title": "Nigeria’s Property Market Enters Year-End Buying Season as Q4 Demand Builds",
       "description": "Nigeria’s Property Market Enters Year-End Buying Season as Q4 Demand Builds&nbsp;&nbsp;https://www.nigeriahousingmarket.com/",
       "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQSld4dVV0RjVJakpzSXNEYmRPYndpT3hMdFd6MlV5emFpNlY4UFpJUGFRaG1qMGhlNUx2YlJfWC1hYWQ5czhOX2VXeWlyQzhtdVpFWXdldXV3UjVvSU8yRnNXSmtNcUF4LWdmZHo1S3NFemV2MGJpU3BjT05nNW9IWEpaRDE4NWFaVUR3czRrNnk3enpOWWJGVHl2akQ0MGc?oc=5",
@@ -685,10 +703,10 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Rent projected to rise in Q4 2026 – Report",
-      "description": "Rent projected to rise in Q4 2026 – Report&nbsp;&nbsp;Daily Trust",
-      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE5WM2hsQW81SWdlMTNZaldtNXZsVFB1OEppcHVmOXozT09hTThpeXcyTkNfZVE5X201ODBDWWlxS3I4R3MyU3huOW5Ib3Z5bmhsdTIwVWpWMmxOak10aGV3eXhxTVNncGpOUU4wODNVOHd5Zw?oc=5",
-      "source": "Daily Trust",
+      "title": "Bujeti Publishes Report on Nigeria’s Real Estate Market",
+      "description": "Bujeti Publishes Report on Nigeria’s Real Estate Market&nbsp;&nbsp;Condia",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPdFJTMjBoZ3RTT0l4WkVrN0g2dmI2ZHlxa1pQOTNvelJ0ZExnS0JhZjFUbzhaNlBvemxwQ0xlbFZ3bW8wQTVhNzdpVFNIclA3QVJxb1NQaml5TDRyOWppUDZ5NmFWZmVXaVdSY0g3elJSRUZxR0ZCQXBoamc2UGI0RHd3RnRvOTBDMjBxdw?oc=5",
+      "source": "Condia",
       "publishedAt": "Mon, 12 Oct 2026 07:00:00 GMT",
       "geoScope": "nigeria",
       "sentiment": "neutral"
@@ -703,11 +721,29 @@
       "sentiment": "neutral"
     },
     {
+      "title": "How Lagos’ Tech Boom Is Reshaping The Future Of Nigeria’s Housing Market",
+      "description": "How Lagos’ Tech Boom Is Reshaping The Future Of Nigeria’s Housing Market&nbsp;&nbsp;LEADERSHIP Newspapers",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPNmRjZktCMmh6ZFF4NWltdHRhVjFuWkdPbVBzV2VvZjNNbTZyekdzSUE0Wm9URGs3S041UG5QYnlJc0Vab1RoTGRpdTh2V2xvNTdLNms4YkViaHlRN1Y1ZGhaYk42U21xZVhQeVVlZW9hYU9UcXJ0anplVDg1U2F0SEZEZzdTWUktNFJwY0VYcnRiM3NHODBXaQ?oc=5",
+      "source": "LEADERSHIP Newspapers",
+      "publishedAt": "Sun, 18 Oct 2026 07:00:00 GMT",
+      "geoScope": "nigeria",
+      "sentiment": "neutral"
+    },
+    {
       "title": "Knight Frank: Infrastructure, affordability and changing occupier needs reshape Nigeria’s property markets",
       "description": "Knight Frank: Infrastructure, affordability and changing occupier needs reshape Nigeria’s property markets&nbsp;&nbsp;Businessday NG",
       "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxQZ3Q2YmkzUjlRRURiRFN2eEwtaG5WUTdPWnR2Snd2azdES0wzc05sUWtDQXBnVGpqNm1oRDRnaUp6M2FRNDRxZHViOVZ1ZU9OYnVITndYOUJLOE56U0JxMWNBenpVNzY1dEdVckV0VnQwaUxoRzRCMGVySk1pWTFJSTd6ZmlqUVhhblkwTmxiSzNFX1NkcFdNSDFjSUFBSjQzcVBJNjNYZjRobThsZjlmZXU3cXRSYmNCdGdlb1I4SFBlZGp5eU1rajdNbnU5dzZCbEoyS0o2TXVWRV9kZEthR2l30gHnAUFVX3lxTE5VZHVwZFd3ejZUaWlEUTA4NF9wUHdENWxlbW0xcmh4WlRLNzF2b0M4elhaSENnMzdPMVNiY3BFa21VT25FYVdiUy1feXUxb05LeWg2MVVYeHY3RWFpYlh3QzFfWHR3ZVItT1RxMXkyY1BxVVpaZ1Y1cEdYczBwTVpsMDFsRm1BZFRWaVl4cmJSMEFYV3J2UGRBRGRqYzdYYktEZXJROG9RV0ZoWUZFb3JfMHFRbzMtejdiTWl4NFZ4d3VJNHFuVEdSMEx0aHZWRkdfSTBYR3RJd0xkWlN5cFlJektxelhpbw?oc=5",
       "source": "Businessday NG",
       "publishedAt": "Wed, 21 Oct 2026 15:34:56 GMT",
+      "geoScope": "nigeria",
+      "sentiment": "neutral"
+    },
+    {
+      "title": "Real estate firm to host investment partnership programme in Abuja",
+      "description": "Real estate firm to host investment partnership programme in Abuja&nbsp;&nbsp;Vanguard News",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNX1ppdm9FOHJnVEhoRGdkUVVEN0xMYWlxRHRqaWpCTUZnMzJyZ3dkSzc3V2U0d054amZnX19DSDNydEZJaWRHczk2NDZSUm50LXExOE1JeFY0V2FEY2pzTkpOV2FObFBLQ0RjN2JOMzJrY0F6THBPSm1Gb2lDM0ZqQW1Nc0lyTEE4ZDk1TXQ0QW4tQ1U1QVc2VXRPSGRrTnoyVllObjFB0gGrAUFVX3lxTFA3WFJsWE1aUEVJbTZSbVBCYUtJVm9ob09JSF9DRVItNlVqYzB3d2ZLVDhvUnV0VllOMDRJcnlmSlBWZWpuZjJ2UE0wQXJJdmhxS1U3VmNEZDdwcXhrY3NVelpUelZhNTBaT0MxN1BnVmpRaUk4TlZvcnhuYnF2S0ZRMFl6a1E0ZndYTjJ6WFRXaXFETzQ3TjMzaHMxUlR6MTBxampvRU1BSU1Mdw?oc=5",
+      "source": "Vanguard News",
+      "publishedAt": "Thu, 29 Oct 2026 04:47:02 GMT",
       "geoScope": "nigeria",
       "sentiment": "neutral"
     },
@@ -730,38 +766,29 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Wike Tasks Abuja Property Firm On Affordable Housing",
-      "description": "Wike Tasks Abuja Property Firm On Affordable Housing&nbsp;&nbsp;LEADERSHIP Newspapers",
-      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOb3BxTnJ6aWtUMzRRdjZkNGJDOXY3ZWJ6ZnhDdldXTEhFQlZjSHN4RjBLRGxBMDllU0dybVRmcTI2dXd0VUtlbVBUWHVKSnAybU5oVzMzeHA3dmlxdm9WUVN3YWdocVFueTBycm92NzhZcjc2QTF0aEdOajF0REdQbQ?oc=5",
-      "source": "LEADERSHIP Newspapers",
-      "publishedAt": "Thu, 22 Oct 2026 16:35:50 GMT",
+      "title": "TRI TOWER: Promiseland boss, Amb. Lawrence Emmanuel champions new era of world-class real estate development in Nigeria",
+      "description": "TRI TOWER: Promiseland boss, Amb. Lawrence Emmanuel champions new era of world-class real estate development in Nigeria&nbsp;&nbsp;Daily Post Nigeria",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOTFE0QXRPSkdDWi1ZWC1sT2VhUGVLTGR0WXVnY3o1QlRLZVpxck5XYVYzWjZHNVEyVEFnQ1ZVamh2c1JIZlY1eXc2LTVWMlp3bUNaX2FGYnZ1aHFJSUpod0x4dktzbVFaSzNBb1hnVl9CZ0hTZUR3V3U0UndDRmxYU2lCQ0t0STduZk45bnFmaDdMcEhLektuelhyVXhGcVN3dVVnOGFQMDA0ZmZkdzZOVEkzME5NT2s?oc=5",
+      "source": "Daily Post Nigeria",
+      "publishedAt": "Fri, 09 Oct 2026 07:00:00 GMT",
       "geoScope": "nigeria",
       "sentiment": "neutral"
     },
     {
-      "title": "Periwinkle Empire unveils $150m Abuja residential tower",
-      "description": "Periwinkle Empire unveils $150m Abuja residential tower&nbsp;&nbsp;Vanguard News",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxONnRPTkdxekdWS0F6bzB5Yi1VYW5XNTdDeGhQU3d3dFdqWmRzeF9xWERXbEdLbHhfYWtTSWMyNkd1aUlCUnhQd0J4cFFMbl94a2xZRFBGdlZGZ09RMXp4cHJTa2RjcGhIM05QdlMyaXJfRXREaG96XzRrcjR5SW1TWXJYNUd4MmlLU0hLRDlnQXdrMHUzb1HSAZsBQVVfeXFMT1ZQUG8wa0dQQ28za3FyR1ZVc0lvSXk2eU9PV1VkT3R5QmlPbElSNUZjUnpwdS0yX0U1WEliaDhrOUlQbWNoMmFkMHpkVVNMT2NobUpMc0plcDQ5em50LXc5Vk9XaHhlRnF4bmFOelA2a1FnV2Vuc294YUxRRVRpNDB0YjE5X2dpODg1TnpWUWtVVFp2MzBNNzdsclE?oc=5",
-      "source": "Vanguard News",
-      "publishedAt": "Thu, 08 Oct 2026 07:00:00 GMT",
+      "title": "Private Developers Launch 50-Hectare Abuja Estate To Help Bridge Nigeria’s 20m Housing Gap",
+      "description": "Private Developers Launch 50-Hectare Abuja Estate To Help Bridge Nigeria’s 20m Housing Gap&nbsp;&nbsp;Arise News",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOX1pOVzFtTTZKWkFKUjBWWDVQVHFqQ3RnS051MDB0ZElPUXNzLW9PUzBLTEptZHNzYmtMc0ZVS29BZ19jNWdkU25QenAyUEFsMDEtSEU1aTZQdXlZRE1zYmg3aHJyZWs0NGt4OTl5ckZiSHN1RFJJUnBlNm5wVTRQUWZpM21vOEZSQnNyWDVUMW1KZzd3Z2FfME5jYTFEMzFIajVRNFpHOXd6YU1fZ0lmcg?oc=5",
+      "source": "Arise News",
+      "publishedAt": "Wed, 26 Aug 2026 07:00:00 GMT",
       "geoScope": "nigeria",
       "sentiment": "neutral"
     },
     {
-      "title": "Periwinkle Empire unveils $150m 20-storey residential tower project in Abuja",
-      "description": "Periwinkle Empire unveils $150m 20-storey residential tower project in Abuja&nbsp;&nbsp;The Guardian Nigeria News",
-      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPbXB3aTlydmlYdm12QnFMNmIwRkFBTnY4dVJZSW9CWFhzdEd6blk4Y0tpamtWU05FNGRTUnJFZFNXR1QxN1llTDNQWjFMeWNrTjdxcVZRaW1zZXZweDhXYjcyVWM2R2dPSVZGOGtDaUVObEhUZ1d5Y1B2WmN5YW1ZUnpOMTAzYmI5U1Q2WHJQelFmaFUwSDFsVlJ4ZVpDV3NfNEkxQ1duUU4?oc=5",
-      "source": "The Guardian Nigeria News",
-      "publishedAt": "Thu, 08 Oct 2026 07:00:00 GMT",
-      "geoScope": "nigeria",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "Experts seek affordable rentals, new financing to expand housing access in Abuja",
-      "description": "Experts seek affordable rentals, new financing to expand housing access in Abuja&nbsp;&nbsp;Businessday NG",
-      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNblpBOGdncFY0VE1xTnBRTUFEd2QzNzhsSFhVb1ZPbmh4STFJR2Fva1VyWFRFcmdQTGF3cy1UbkhORnZnTkJfQXdIMDdwRFFGLW5EYjNBQU5VSjVmNmozREpSV1BwNFdtQ0JBN2JNMnhVYmcydFJNaklKak5JSkJKaVBRUzBiNWNSX05meXpqQkx2WVRDbXZMWVhrakxDN0FORHpnTlpGSE8xR2x0azZxcU95ZnRPTnhkemfSAb8BQVVfeXFMTkpxVjVNM2xhUjM2dEZNRGdLaDF2QmpSZGJaWXJvNHM5VGM1ZEtaMzNQNXowOWtrLTZINzJjZkFmMFV1VXZEb2VnRzRoc2dSdnN2dmdUalhGQTAtc0VmcGcyWDNlZ0JvRVc2c2c5bVd6cWNlOWE5dkJkUjhnM1NRMngyVnBMaGVjbUJ0R1lFZEs3T2NpT1l1RUhSSEZTbFhIckNSNHV6MmhjLWVhWjR3TGlxN1dkWUtoc09kM09hWnc?oc=5",
-      "source": "Businessday NG",
-      "publishedAt": "Thu, 15 Oct 2026 07:00:00 GMT",
+      "title": "Abuja’s Emerging Property Corridors Draw Investors Seeking Long-Term Wealth",
+      "description": "Abuja’s Emerging Property Corridors Draw Investors Seeking Long-Term Wealth&nbsp;&nbsp;https://www.nigeriahousingmarket.com/",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNbVJIdVdTbkV1aEFrQ2ExYkJaamI5aXdIbVJaRTl2MFRCVzI0UEJpdFRETGlocTA2aGhoZ0g5ZEdDS18xdWZhc2gzZDFNa1NSOF8yN2p6SVl2RVozN0VvSC05OTVZWG9RZjZfM3FSaFJpT1NtMURpVjNxWEppRmc4cnpfNEY4clpMeldWdGJwUGZXZk1WaUpWcQ?oc=5",
+      "source": "https://www.nigeriahousingmarket.com/",
+      "publishedAt": "Tue, 29 Sep 2026 07:00:00 GMT",
       "geoScope": "nigeria",
       "sentiment": "neutral"
     },
@@ -784,11 +811,11 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Inside exotic property locations in Port Harcourt",
-      "description": "Inside exotic property locations in Port Harcourt&nbsp;&nbsp;Daily Trust",
-      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE91WUN0Z2ltQ2E5bHpWdGhtTTBQTVllbk9CR0tlc2VtSmVqVzRCeHdBSENxenZibDd5UURoMlpVMFB5SWRVRHNUZXBHdWxpWTVIZUdPTl9NY1RQX0hkTmNycmlkMWFTSHNTSmtaZDVVbDBUalFGcENYWDF1Q2ZuQQ?oc=5",
+      "title": "Why rents keep soaring in P/Harcourt",
+      "description": "Why rents keep soaring in P/Harcourt&nbsp;&nbsp;Daily Trust",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5ReFozMVI2TmVJdFMtczRkbklJMFE3X0htd19VVzIyVXYyTnBJaHNkbkU2cDRQR1gteTBZSV8xa1AzUGhnQ0RYbmVtcDN5UHYtVjFNWlkzUnFHRnBBcVFhdVlNd0dnNFVhY0Vacg?oc=5",
       "source": "Daily Trust",
-      "publishedAt": "Mon, 06 Jul 2026 07:00:00 GMT",
+      "publishedAt": "Mon, 05 Oct 2026 07:00:00 GMT",
       "geoScope": "nigeria",
       "sentiment": "neutral"
     },
@@ -802,21 +829,30 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Two Brothers Docked For Alleged N3.2m Land Scam In Port Harcourt",
-      "description": "Two Brothers Docked For Alleged N3.2m Land Scam In Port Harcourt&nbsp;&nbsp;Independent Newspaper Nigeria",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNRTJoLU03WFczMWtUVkluc1JXWUtHU0U2alY3MExpZ3k3S0xXOE9xdFN4S1hHVkRSeXdPeGNITDRBZm1aci1ncDBUOS16c3lyZkFMZTZZeU1VYlZDbUpFR1ZPNElNN1BuNUttb3NLbDNEdlZjYldKVmk1RklNV2tCZWEzVm9uMUdObjZXd2pkY2x6dw?oc=5",
-      "source": "Independent Newspaper Nigeria",
-      "publishedAt": "Fri, 03 Jul 2026 07:00:00 GMT",
+      "title": "EFCC arraigns siblings for alleged land fraud",
+      "description": "EFCC arraigns siblings for alleged land fraud&nbsp;&nbsp;Punch Newspapers",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9EZDgzYzZMTjR2LWJhZzBsaVFKS0NDZjRhdnc0ZWpNUHhpV0owZHJ4Sy1hSjJReDlpb1paaC1RX0tsb2FKcUhad3ZRWndMSUdqWmNNX0dxVEtROTZEODNlYXpscHNJZWJrS1NMSFpTU1FZclZr?oc=5",
+      "source": "Punch Newspapers",
+      "publishedAt": "Sat, 04 Jul 2026 07:00:00 GMT",
       "geoScope": "nigeria",
       "sentiment": "neutral"
     },
     {
-      "title": "Port Harcourt’s Housing Crisis: Residents Demand Action as Rent Prices Soar",
-      "description": "Port Harcourt’s Housing Crisis: Residents Demand Action as Rent Prices Soar&nbsp;&nbsp;Nigeria Info FM",
-      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPN0l5UGhBWEtsUUt3TUZCX2VDMF9Db0NSTE5nTzc2ekhiaFMyMEpsTzRPdjZMNXlhUXNpM3pZSThfd2ZYMEdlM2F3aXExcHdYQ3VfXzZRZ1I0dFk4LWlqdERBN3VUVzBHV21OZE1WNXJmRGVRcnpKdWtCaUVpWnpYWEIxaEhmeWllcHBKa1k4THBtYmNydTBrMlhjck5Da3BEbjBpMWlYcGxZcXR3a0xWWW9FLVAwZw?oc=5",
-      "source": "Nigeria Info FM",
-      "publishedAt": "Sat, 23 May 2026 07:00:00 GMT",
+      "title": "Rising Waters Disrupt Port Harcourt Businesses as Homes and Roads Go Under",
+      "description": "Rising Waters Disrupt Port Harcourt Businesses as Homes and Roads Go Under&nbsp;&nbsp;https://www.nigeriahousingmarket.com/",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQd0RUU3FvTnlnTUZwQ0RFajRUR05KaUdjSkFINGxIOEVMbi04MjMxRG1lOGx5ajFfdGVYc25UMG9WNk03M3JZM3FhZlQtTFdzT2pEUkNqUzFfQ2FvQk96alZMY1ZDTEc0M1pjRVN5WUhycVNmUGs4ajREd3NzcHo2TVhSbVZ5Z2x6aW1YdW1TX25wYzgxaTVJZ2FB?oc=5",
+      "source": "https://www.nigeriahousingmarket.com/",
+      "publishedAt": "Thu, 01 Oct 2026 07:00:00 GMT",
       "geoScope": "nigeria",
+      "sentiment": "neutral"
+    },
+    {
+      "title": "Coastal Highway Opens New Real Estate Investment Frontiers In Lagos",
+      "description": "Coastal Highway Opens New Real Estate Investment Frontiers In Lagos&nbsp;&nbsp;LEADERSHIP Newspapers",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQRlY4VXV2OHEtRld0UUlVWmFKMTBHTXBDSWZQek1VQWJ0NzNXeTlPVXVNeDBReC02ODhWd0FjOFhpUGdpY0RFOTliSG1pSGdUeG9nSVptT1gzZWRDS3FBSkNJSzA1YS1Dd0xZaEtXNDdGVlVhWUc1Vm5EaDhkbFIyMXBIZXlKMkQxbzlRbjVLQlFsQzVZ?oc=5",
+      "source": "LEADERSHIP Newspapers",
+      "publishedAt": "Wed, 28 Oct 2026 12:45:34 GMT",
+      "geoScope": "lagos",
       "sentiment": "neutral"
     },
     {
@@ -829,47 +865,29 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Lagos sports commission partners real estate sector on sports development",
-      "description": "Lagos sports commission partners real estate sector on sports development&nbsp;&nbsp;Western Post",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQUFFjbktYU3hRWkpEbEdoMm8ybzlJdnA3LV92UTV4dzB2Qml0dllXbE5oZm4tM1FxUk50SWQxU1NzajNjZnNhVGI4bjlNZENWVmxaNTJoUkM2aUxBYzVjYzJjay1RejJlUHp3RlNyT25BaXZqTnVuNGZWR0JQS3ZJb1hEYmFuSVE4TktKTm5PdmJUZnYyVWFPVFRPYW5zLWlWWDlF?oc=5",
-      "source": "Western Post",
-      "publishedAt": "Sat, 24 Oct 2026 21:30:22 GMT",
+      "title": "Harmony Gardens to build 5,000 housing units in Lagos under Renewed Hope Agenda",
+      "description": "Harmony Gardens to build 5,000 housing units in Lagos under Renewed Hope Agenda&nbsp;&nbsp;PM News Nigeria",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPQkwtNW93NVM5d2tWalo2Y2Q3QTc3Rll1V2hMbVZCNjI4UmhvSGNkUjNNeFFtbl90cHRWVkp6MzNIY2Fob2tQYkZTdjd1MDV4UFNkb1dFRkltRVNFYW5tR1JzaXNsRU55OGhxTHlia3dUa1F4dm9ITjdGV3Ruck9zdWp6Y0RoaWV5VUY1NWpXWWN0cmRvNFVWdWRLeE5PM2xSNHlmT1NJejJuVFlibVJKTUNpcWd2VXc?oc=5",
+      "source": "PM News Nigeria",
+      "publishedAt": "Wed, 28 Oct 2026 21:02:08 GMT",
       "geoScope": "lagos",
       "sentiment": "neutral"
     },
     {
-      "title": "Sanwo-Olu says Lagos has delivered 10,623 homes in 7 years",
-      "description": "Sanwo-Olu says Lagos has delivered 10,623 homes in 7 years&nbsp;&nbsp;Realnews Magazine",
-      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQc1NmVXlDX1g2NGRDU3RyaHFibVNoT1pyT3NGY3p2aUJrbVFZWDlVa1BqWW92OEdHeXR5VWJNSG95S2RpWjZ4T2ZyNFpoX3FaMVljRUYxRmN0cjFhX0pQeWlIeWU1N0p0em5vRnZnQ0d0blFhTmp3UWVWRGNzUERNdnJxd09hQThselg1STU5aWY?oc=5",
-      "source": "Realnews Magazine",
-      "publishedAt": "Sat, 24 Oct 2026 07:09:58 GMT",
+      "title": "Dynasquare Homes completes estate, hands over keys to owners",
+      "description": "Dynasquare Homes completes estate, hands over keys to owners&nbsp;&nbsp;Vanguard News",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOdG9xWm9xb1gteUZBUTVOTU01RVlBX0dmWG1IVm9ydHJEcEw5TGpaWUlHdUh1eWhMQWNMendaV040UjRMNlY0Mko3ckwwN3o2VTVYOGQyWnFROERkaDhtZUFicVhiU0ZzSDNJLVdrckcwQThYR0NTckJyU2JsVE5LZEFEdFZXX2lteE0zWmRjbW0xdHNBUlJqbThIU2rSAaIBQVVfeXFMTnMwUXdjYnVERHctUXFGUWVRNFRFZWM4TlNOSzJJTDI0ZG9PLXNQS28xSGh6NHFDeHZKOG5IQnpMTnVfRFVqbG5UVzBGZWxHd2l5N3ZBdHR6dXhNMEozWl8yZ1FnMllhSmRydnBBNEhSdktTY2ZRMUx3NDVTenBaMjl6MDdtZlJ2SEFIc3RvQVdtWnhIV1ZFUnZUZ3Zlclp2Ujhn?oc=5",
+      "source": "Vanguard News",
+      "publishedAt": "Mon, 05 Oct 2026 07:00:00 GMT",
       "geoScope": "lagos",
       "sentiment": "neutral"
     },
     {
-      "title": "Beyond the Skyline: How Landmark Waterview Apartment Is Shaping a New Era of Premium Living in Lagos",
-      "description": "Beyond the Skyline: How Landmark Waterview Apartment Is Shaping a New Era of Premium Living in Lagos&nbsp;&nbsp;BellaNaija",
-      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9UdGM5bHBBVHhzM05sTTF6TnY3dWZfX0lLdWNWWmd2WnYtT1RiU3Rab3k1U19PQjMwcGlxVlRIck10Z2VJajNqUVA1ZEZDbXJzOFNfb0FiQ1NFQ05KLWZnUlhDWGxod1ZkOWNnZld5Q0daR2s?oc=5",
-      "source": "BellaNaija",
-      "publishedAt": "Mon, 26 Oct 2026 09:37:34 GMT",
-      "geoScope": "lagos",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "Lagos Coastal Property Boom Raises Questions About Affordability and Investment Risk",
-      "description": "Lagos Coastal Property Boom Raises Questions About Affordability and Investment Risk&nbsp;&nbsp;https://www.nigeriahousingmarket.com/",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNZkFKQWRLY1VhVkYxd3k2cGFrU2hSNkxaQ0Q4SlBYZHQzaWhmWXVWeXBvSDRqSHVCclhwOC1raE10ZEJmSTA2dnVRbXhZRllkQk1TVVc3TDZMWXNRR1VjbHFxalNvaWZzRnRoaU1EcndFazRkdmdWTWZkdFd3ZXRwLVctUEZrMTl1Sk42bkl0Q2dSNVRfaW81YjlvcTFmUWRsb1FJMGZB?oc=5",
-      "source": "https://www.nigeriahousingmarket.com/",
-      "publishedAt": "Mon, 26 Oct 2026 09:43:28 GMT",
-      "geoScope": "lagos",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "Minister: FG’s Ibeju-Lekki Housing Project 90% Complete",
-      "description": "Minister: FG’s Ibeju-Lekki Housing Project 90% Complete&nbsp;&nbsp;THISDAYLIVE",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNbnZhTEtsNUF1ZnBHRDFFNkxRZm5kcmxobXVQV09BbHR5MnBCRmk2ZF84aW8yZGFUUHp2TzlZQVUyT1gyYnM5ZE92STZqOUhfYW5nbHRpZmFtYWlhWUNvQXA4S3pEbzMteER2Q2xuYU1BTnA3bE84ei16S2t3Q3dCTF91SUlLQkJVQllfbjlWSWtSaEhqMEpN?oc=5",
-      "source": "THISDAYLIVE",
-      "publishedAt": "Tue, 16 Jun 2026 07:00:00 GMT",
+      "title": "Zenytal’s New Projects Boost Real Estate In Lagos, Rewards Realtors",
+      "description": "Zenytal’s New Projects Boost Real Estate In Lagos, Rewards Realtors&nbsp;&nbsp;LEADERSHIP Newspapers",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNUFdDQ0MwcFdxaG5USXV6OEdtOHpKT0g4MFUyRGZpVTJ2WDhibGpKT1dxQjIyOG16MWJJTF9fdGVzVzA2cERVeHFPTTM4NzR5YkR6S1pLODU5TURjdE5taVNKVTZqUUk4Sy1hMUwwLU1kMEl3QVZubnVSRkUwbTA1M1g0SW11clkzM1l0allkUnFYdw?oc=5",
+      "source": "LEADERSHIP Newspapers",
+      "publishedAt": "Sat, 23 May 2026 16:57:14 GMT",
       "geoScope": "lagos",
       "sentiment": "neutral"
     },
@@ -883,10 +901,10 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Sanwo-Olu Allocates Land To 98 Lekki Communities Amid Ownership Disputes",
-      "description": "Sanwo-Olu Allocates Land To 98 Lekki Communities Amid Ownership Disputes&nbsp;&nbsp;Arise News",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQTlJVMlMtRlQ3OURtZC1NUnhSMGRtLTN3dEUwMDExMkhNZFFrT3g3MkotRGU5REJPMFhHUlo2MktRNHgxcjFmTnhjMUhTdXVDMy1pbmhsNHFzRXJYeGNYOTZ6U3JqcExQOUZNMUhRLXhxR2syS3Z5Q2pBYzNNR25JLWlPNmt2eXlCRDF4dWY0Vjl0OUQ5dU9HVWNR?oc=5",
-      "source": "Arise News",
+      "title": "Sanwo-Olu Presents Land Allocation Letters to 98 Communities in Lekki",
+      "description": "Sanwo-Olu Presents Land Allocation Letters to 98 Communities in Lekki&nbsp;&nbsp;THISDAYLIVE",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPN1E1M211dVRaajhXV1pGbVhwTWVHbDUzWkE0Nm5CeFVlVGQ5Y3VLUlA1VEYxRXFSc2FNQ3BsbGNZMmUtdzJVck05U2JyaGhJSVlWTGN0WGpDcVJTNk11bllkZmFMMjBweUx3YW5qVWNnSFBZaHhHVjNPZW4xRTRvZWxHcVMwTWtOdzl0UFdCWEo0TXprMEdEc2xMVjZKOWJ5aHVBWnFRZ0IzNE8xeWc?oc=5",
+      "source": "THISDAYLIVE",
       "publishedAt": "Thu, 30 Jul 2026 07:00:00 GMT",
       "geoScope": "lagos",
       "sentiment": "neutral"
@@ -901,20 +919,29 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Yuletide: Gbolahan Adetayo Warns Land Buyers Over Scammers In Ibeju-Lekki",
-      "description": "Yuletide: Gbolahan Adetayo Warns Land Buyers Over Scammers In Ibeju-Lekki&nbsp;&nbsp;Independent Newspaper Nigeria",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPRndMTVlaajBPaUtlRGdQNVRUUzhGUnh0eDFhcEZ1WXBvU08xdUZGY2YtbVRxVU51eXp6TE1MSE5FUUVXNUFMcXRYOVhhWG9ZZERrMTMxNWI4aklQZ0VsblRyalJuWFd4T0ZNU1NQZUNaNWtpaHhlY01vQ3dnN3RVdk1XeTNyV3l3NE5ITXFOZ0JWM1lidkhuZTR3Z1o?oc=5",
-      "source": "Independent Newspaper Nigeria",
-      "publishedAt": "Sun, 16 Nov 2025 08:00:00 GMT",
+      "title": "Lagos Coastal Property Boom Raises Questions About Affordability and Investment Risk",
+      "description": "Lagos Coastal Property Boom Raises Questions About Affordability and Investment Risk&nbsp;&nbsp;https://www.nigeriahousingmarket.com/",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNZkFKQWRLY1VhVkYxd3k2cGFrU2hSNkxaQ0Q4SlBYZHQzaWhmWXVWeXBvSDRqSHVCclhwOC1raE10ZEJmSTA2dnVRbXhZRllkQk1TVVc3TDZMWXNRR1VjbHFxalNvaWZzRnRoaU1EcndFazRkdmdWTWZkdFd3ZXRwLVctUEZrMTl1Sk42bkl0Q2dSNVRfaW81YjlvcTFmUWRsb1FJMGZB?oc=5",
+      "source": "https://www.nigeriahousingmarket.com/",
+      "publishedAt": "Mon, 26 Oct 2026 09:43:28 GMT",
       "geoScope": "lagos",
       "sentiment": "neutral"
     },
     {
-      "title": "Court stops transfer of 13-hectare Lekki property in N21.5bn sale dispute",
-      "description": "Court stops transfer of 13-hectare Lekki property in N21.5bn sale dispute&nbsp;&nbsp;Vanguard News",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQMHI0Vmx4OFVwTlRSWF9PMXdaUmJ2QTc1TnV0MkNESDZFc0dxUWloN3hoSmtNZFVrbWtLUl9KbmtJX0pfNnQ2dFJhOGxFM3ZDT0pKOFJvV0RRQkE1ZUZwYUJRSXFaWldGQUE5VFBoODc4ZDhTcFF3NzVkYVBDYkR0dzNFNEVEQTI3dk9MN1BqMXVheTR2MnVLenFUYkFmNU1RUUJ1TGRSOUZoNmFYWlVkRE9R0gG3AUFVX3lxTE5DNUZxc2NjUV9HaWEwMkw1VU5WV0JyWGlGV2RUZG50RDRCbFBwdlhSRlc4cFRGQzdvcmItdVMxSlFUMVB4Umh0U24tY1k1blpIcERjWVVPWGg3YzF2VUVENTlnTnpxVFFMck1mX0toV2lYUjJSZUoyWHI0RUhkdWdmc1FCNC11dk1ld2gwOTBqamExbVVOZzl6WXNMYWNFcmwxRUVYLUNDdkxQRHltUjdPWlk2Y25KZw?oc=5",
-      "source": "Vanguard News",
-      "publishedAt": "Thu, 11 Dec 2025 08:00:00 GMT",
+      "title": "Fashola: Lagos Deliberately Discounted Price of Land to Attract Dangote Refinery Project",
+      "description": "Fashola: Lagos Deliberately Discounted Price of Land to Attract Dangote Refinery Project&nbsp;&nbsp;THISDAYLIVE",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQQzhLUjVycDNCMzE2SU1Yb250Sm9pczN0ZGpFYTJNaXpYVHZoWFdnZUxLXzItQ0NoWW5lRmJwcmp0WUhha1ljQ1lHNjRnUWIzclJodHd4TXgwR2tseE1TOTZad3JFd1VsZEpzUkIwVktpUzZtM2ZERW4tTnNQSGlKSlI5Q1l5emRpT3hsdnV3X05hTEJMS0pWNklhQlBLbU5ILWFTQjM1aEM4dDh6WFJuOVpmdV9ialdSVmJ0dXhsM0g1dktPaEE?oc=5",
+      "source": "THISDAYLIVE",
+      "publishedAt": "Sun, 05 Jul 2026 07:00:00 GMT",
+      "geoScope": "lagos",
+      "sentiment": "neutral"
+    },
+    {
+      "title": "Our Aim Is to Redirect Investors’ Attention to Mainland — Firm",
+      "description": "Our Aim Is to Redirect Investors’ Attention to Mainland — Firm&nbsp;&nbsp;TVC News",
+      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQZ1ZPMFVmcVgxa2pFcDNTd1VkLXIwdXZ3b3hqZy1aczRrSUtVbmx3cl9tU1cteVF6X0dZQ0Nfc3VTSWhkdkFpWERJYUFvMUVOUFBnUFAtZGdkMXdxM1B3ak92S2tEU0FobWdJaXVQUkNDWnJKNFNPdkNyR2dxYXJZVDh6aWh1TmppR2Fj?oc=5",
+      "source": "TVC News",
+      "publishedAt": "Tue, 07 Jul 2026 07:00:00 GMT",
       "geoScope": "lagos",
       "sentiment": "neutral"
     },
@@ -928,38 +955,11 @@
       "sentiment": "neutral"
     },
     {
-      "title": "Fashola: Lagos Cut Land Price To Secure Dangote Refinery Investment",
-      "description": "Fashola: Lagos Cut Land Price To Secure Dangote Refinery Investment&nbsp;&nbsp;Arise News",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNZ0hfV05QeGtNZ0hyQ25mNFpBMjJPRmFvRUVaNExEUnBYV1B3a0FpWmgzNFJpdVViRzRsYkY1ZnE4Tk4xN3J2ak45UDE5Z0JxSWRPT0J1VTBYX0w0QXhrd202cDZ5LU1nMF9oNXhYRmVFUGlmN29FeUtkNEtabUVGck8xaGxqeTNvd1pQWVRWN1Y3UQ?oc=5",
-      "source": "Arise News",
-      "publishedAt": "Sun, 05 Jul 2026 07:00:00 GMT",
-      "geoScope": "lagos",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "Beyond Land Ownership: 10 Real Estate Investment Opportunities in Lagos",
-      "description": "Beyond Land Ownership: 10 Real Estate Investment Opportunities in Lagos&nbsp;&nbsp;https://www.nigeriahousingmarket.com/",
-      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQSGlxd3BCUkdJM183SWpHSGlCV3MwQ3hwc1hJUHR3SC1VYkNweExtbXZlejlJWWdLdE9jU0liNmJJMUxaaV94SkRXaGJUUnBNa2ZGRjZDdmU5dng0Z1FueDZxV2pnQmFfMmtiMjJhaU1oS2M4RjhGNFRwUHdwQ2hKY2xZSTNxRTBNWFo5REY4bUhUQkY2a2RnTXRpSFhRSmp6anc?oc=5",
-      "source": "https://www.nigeriahousingmarket.com/",
-      "publishedAt": "Tue, 04 Aug 2026 07:00:00 GMT",
-      "geoScope": "lagos",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "Lagos Developers Warn Buyers, Tenants Will Pay More as Costs Rise",
-      "description": "Lagos Developers Warn Buyers, Tenants Will Pay More as Costs Rise&nbsp;&nbsp;https://www.nigeriahousingmarket.com/",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPOEhSR3dOYkRDUWFKWVNiVXRUenVoSU9OalVibEFCYjFOQUVLTkx6VExLa2ZBWTlKOXhnX3lNTk4xam5mM3JuTHUzMngtTVFyLWFRNXNESnVvSUNUYkQ3Uk5aMTIxZmtRbm4zTlFBVkNaRmtNTXNKVHR2NVk2d3gzMXpBbktKQk9xd21xOTExd3NSZzAyc1pQeA?oc=5",
-      "source": "https://www.nigeriahousingmarket.com/",
-      "publishedAt": "Thu, 27 Aug 2026 07:00:00 GMT",
-      "geoScope": "lagos",
-      "sentiment": "neutral"
-    },
-    {
-      "title": "Lagos Land Shortage Makes Vertical Housing Critical to Future Supply",
-      "description": "Lagos Land Shortage Makes Vertical Housing Critical to Future Supply&nbsp;&nbsp;https://www.nigeriahousingmarket.com/",
-      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxORDZHRjhoNm9wa21Cekh1OEItRUxneU5US2JfY2dFdk45NzNRVjdvazZDVzF3aWFyckRodElJekh2S2F1VVVFWV80Sm4yeWRGTWNUd3MxWWUzcW1mcFZXT1lIcUhraFdjdXNMTFV5TnlKMEdTaW5CSmx6aFkySWNuODJhSDVxME9RdnRlSUZKYlNpTWxfWTZJRHhmZE9uTTY2bGJwRmNLaGc?oc=5",
-      "source": "https://www.nigeriahousingmarket.com/",
-      "publishedAt": "Wed, 02 Sep 2026 07:00:00 GMT",
+      "title": "Experts: Land grabbers, scammers, disputes ruining property investments",
+      "description": "Experts: Land grabbers, scammers, disputes ruining property investments&nbsp;&nbsp;The Sun Nigeria",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOb2NYanc4YklKMjJsSnM1Y0hncXVfa0VxVGR5ek5rNmNmNHNxQmlKS2ZTN0gwaUl5aXJkY2M3azNIVGl5Q3ExbUJqekx4MTJfQVRMRXMxU3hVX1Y3WkZjZ0Zhbm1lVEs0ajhhZ0VPbUZvdEdMaGcwbVBQMzFPM2hqY1puajRHaDlwSVpPN3VRR1o?oc=5",
+      "source": "The Sun Nigeria",
+      "publishedAt": "Fri, 14 Aug 2026 07:00:00 GMT",
       "geoScope": "lagos",
       "sentiment": "neutral"
     }

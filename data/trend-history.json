@@ -3858,6 +3858,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-30",
+      "articleCount": 13,
+      "sentimentBreakdown": {
+        "neutral": 7,
+        "bullish": 4,
+        "bearish": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos",
+          "count": 2
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "awards",
+          "count": 1
+        },
+        {
+          "topic": "real estate sector",
+          "count": 1
+        },
+        {
+          "topic": "Africa",
+          "count": 1
+        }
+      ]
     }
   ]
 }

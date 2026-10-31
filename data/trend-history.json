@@ -3890,6 +3890,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-10-31",
+      "articleCount": 3,
+      "sentimentBreakdown": {
+        "bullish": 1,
+        "neutral": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "infrastructure",
+          "count": 2
+        },
+        {
+          "topic": "compensation",
+          "count": 2
+        },
+        {
+          "topic": "setback",
+          "count": 2
+        },
+        {
+          "topic": "housing supply",
+          "count": 1
+        },
+        {
+          "topic": "PPP",
+          "count": 1
+        }
+      ]
     }
   ]
 }

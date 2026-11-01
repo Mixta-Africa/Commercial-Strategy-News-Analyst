@@ -1,89 +1,92 @@
 {
   "7day": {
-    "articleCount": 3,
+    "articleCount": 14,
     "sentimentBreakdown": {
+      "neutral": 10,
       "bullish": 1,
-      "neutral": 2
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "compensation",
+        "topic": "affordable-housing",
         "count": 2
       },
       {
-        "topic": "setback",
-        "count": 2
-      },
-      {
-        "topic": "housing supply",
+        "topic": "GYMFest",
         "count": 1
       },
       {
-        "topic": "PPP",
+        "topic": "Lekki",
+        "count": 1
+      },
+      {
+        "topic": "The Dome",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 3,
+    "articleCount": 14,
     "sentimentBreakdown": {
+      "neutral": 10,
       "bullish": 1,
-      "neutral": 2
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "compensation",
+        "topic": "affordable-housing",
         "count": 2
       },
       {
-        "topic": "setback",
-        "count": 2
-      },
-      {
-        "topic": "housing supply",
+        "topic": "GYMFest",
         "count": 1
       },
       {
-        "topic": "PPP",
+        "topic": "Lekki",
+        "count": 1
+      },
+      {
+        "topic": "The Dome",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 3,
+    "articleCount": 14,
     "sentimentBreakdown": {
+      "neutral": 10,
       "bullish": 1,
-      "neutral": 2
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "infrastructure",
+        "topic": "Lagos real estate",
         "count": 2
       },
       {
-        "topic": "compensation",
+        "topic": "affordable-housing",
         "count": 2
       },
       {
-        "topic": "setback",
-        "count": 2
-      },
-      {
-        "topic": "housing supply",
+        "topic": "GYMFest",
         "count": 1
       },
       {
-        "topic": "PPP",
+        "topic": "Lekki",
+        "count": 1
+      },
+      {
+        "topic": "The Dome",
         "count": 1
       }
     ],

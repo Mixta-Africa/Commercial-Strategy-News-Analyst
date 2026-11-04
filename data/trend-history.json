@@ -4017,6 +4017,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-11-04",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 9,
+        "bullish": 4,
+        "bearish": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lekki",
+          "count": 2
+        },
+        {
+          "topic": "property disputes",
+          "count": 1
+        },
+        {
+          "topic": "legal enforcement",
+          "count": 1
+        },
+        {
+          "topic": "certificate of occupancy",
+          "count": 1
+        },
+        {
+          "topic": "lekki development",
+          "count": 1
+        }
+      ]
     }
   ]
 }

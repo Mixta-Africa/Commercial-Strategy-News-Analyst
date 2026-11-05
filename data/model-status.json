@@ -3,7 +3,7 @@
     "provider": "Groq",
     "model": "openai/gpt-oss-20b",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:56:42.070Z",
+    "lastProbed": "2026-11-05T15:01:34.607Z",
     "error": "401: Invalid API Key",
     "response": null
   },
@@ -11,7 +11,7 @@
     "provider": "Groq",
     "model": "openai/gpt-oss-120b",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:56:42.915Z",
+    "lastProbed": "2026-11-05T15:01:35.464Z",
     "error": "401: Invalid API Key",
     "response": null
   },
@@ -19,7 +19,7 @@
     "provider": "Gemini",
     "model": "gemini-2.5-flash",
     "status": "WORKING",
-    "lastProbed": "2026-11-04T14:56:44.188Z",
+    "lastProbed": "2026-11-05T15:01:36.763Z",
     "error": null,
     "response": "OK"
   },
@@ -43,7 +43,7 @@
     "provider": "SambaNova",
     "model": "Meta-Llama-3.3-70B-Instruct",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:56:45.072Z",
+    "lastProbed": "2026-11-05T15:01:37.751Z",
     "error": "401: Incorrect API key provided: f8976e*****f5da.",
     "response": null
   },
@@ -59,7 +59,7 @@
     "provider": "Mistral",
     "model": "mistral-small-latest",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:56:46.083Z",
+    "lastProbed": "2026-11-05T15:01:38.714Z",
     "error": "401: Request failed with status code 401",
     "response": null
   },
@@ -67,7 +67,7 @@
     "provider": "Mistral",
     "model": "open-mistral-nemo",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:56:47.087Z",
+    "lastProbed": "2026-11-05T15:01:39.647Z",
     "error": "401: Request failed with status code 401",
     "response": null
   },
@@ -75,7 +75,7 @@
     "provider": "Together",
     "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:56:48.054Z",
+    "lastProbed": "2026-11-05T15:01:40.716Z",
     "error": "401: Invalid API key provided. You can find your API key at https://api.together.ai/s",
     "response": null
   },
@@ -83,7 +83,7 @@
     "provider": "Together",
     "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:56:49.024Z",
+    "lastProbed": "2026-11-05T15:01:41.847Z",
     "error": "401: Invalid API key provided. You can find your API key at https://api.together.ai/s",
     "response": null
   },
@@ -131,7 +131,7 @@
     "provider": "OpenRouter",
     "model": "dots-studio/dots-3-note-preview:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:57:07.357Z",
+    "lastProbed": "2026-11-05T15:01:50.735Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -139,15 +139,15 @@
     "provider": "OpenRouter",
     "model": "liquid/lfm-2.5-2.6b:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:57:08.338Z",
-    "error": "429: Provider returned error",
+    "lastProbed": "2026-11-05T15:01:51.736Z",
+    "error": "ERR: Empty response from model",
     "response": null
   },
   "OpenRouter::nvidia/nemotron-3.5-lightning:free": {
     "provider": "OpenRouter",
     "model": "nvidia/nemotron-3.5-lightning:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:57:09.390Z",
+    "lastProbed": "2026-11-05T15:01:53.046Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -203,7 +203,7 @@
     "provider": "OpenRouter",
     "model": "cohere/north-mini-code:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:57:10.414Z",
+    "lastProbed": "2026-11-05T15:01:54.097Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -227,7 +227,7 @@
     "provider": "OpenRouter",
     "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:57:12.608Z",
+    "lastProbed": "2026-11-05T15:01:55.437Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -235,7 +235,7 @@
     "provider": "OpenRouter",
     "model": "nvidia/nemotron-3.5-super-vl:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:57:02.674Z",
+    "lastProbed": "2026-11-05T15:01:46.914Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -243,7 +243,7 @@
     "provider": "OpenRouter",
     "model": "xingchen-agi/xing4.0-29b-a4b:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:57:01.542Z",
+    "lastProbed": "2026-11-05T15:01:45.763Z",
     "error": "429: Provider returned error",
     "response": null
   },
@@ -259,15 +259,15 @@
     "provider": "OpenRouter",
     "model": "recursive/flint-v1.0:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:57:00.393Z",
-    "error": "ERR: timeout of 10000ms exceeded",
+    "lastProbed": "2026-11-05T15:01:44.122Z",
+    "error": "ERR: Empty response from model",
     "response": null
   },
   "OpenRouter::nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free": {
     "provider": "OpenRouter",
     "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-04T14:57:13.774Z",
+    "lastProbed": "2026-11-05T15:01:56.390Z",
     "error": "ERR: Empty response from model",
     "response": null
   }

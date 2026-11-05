@@ -4049,6 +4049,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-11-05",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 7,
+        "bearish": 2,
+        "bullish": 6
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "luxury housing",
+          "count": 2
+        },
+        {
+          "topic": "blue wave",
+          "count": 1
+        },
+        {
+          "topic": "interest rates",
+          "count": 1
+        },
+        {
+          "topic": "affordability",
+          "count": 1
+        },
+        {
+          "topic": "wealth migration",
+          "count": 1
+        }
+      ]
     }
   ]
 }

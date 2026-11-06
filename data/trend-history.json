@@ -4081,6 +4081,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-11-06",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 6,
+        "bearish": 3,
+        "bullish": 6
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Eko Atlantic",
+          "count": 3
+        },
+        {
+          "topic": "state_funding",
+          "count": 1
+        },
+        {
+          "topic": "FAAC",
+          "count": 1
+        },
+        {
+          "topic": "infra_development",
+          "count": 1
+        },
+        {
+          "topic": "Lagos_real_estate",
+          "count": 1
+        }
+      ]
     }
   ]
 }

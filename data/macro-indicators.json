@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "fetchedAt": "2026-10-31T13:13:32.971Z",
-  "lastRunAt": "2026-11-05T15:13:06.651Z",
+  "fetchedAt": "2026-11-06T14:51:15.875Z",
+  "lastRunAt": "2026-11-06T14:51:15.875Z",
   "world_bank": {
     "gdp_growth": {
       "value": 4.01,
       "year": 2025
     },
-    "fetchedAt": "2026-10-31T13:13:32.971Z",
+    "fetchedAt": "2026-11-06T14:51:15.875Z",
     "remittances_usd_bn": {
       "value": 22.8,
       "year": 2025
@@ -34,36 +34,36 @@
         "value": 14.7
       }
     },
-    "fetchedAt": "2026-10-31T13:13:32.971Z"
+    "fetchedAt": "2026-11-06T14:51:15.875Z"
   },
   "cbn_exchange_rate": {
-    "rate": 1346.47,
+    "rate": 1348.02,
     "source": "open.er-api.com (mid-market)",
-    "asOf": "Thu, 05 Nov 2026 00:02:31 +0000",
-    "fetchedAt": "2026-11-05T15:13:06.651Z"
+    "asOf": "Fri, 06 Nov 2026 00:02:31 +0000",
+    "fetchedAt": "2026-11-06T14:51:15.875Z"
   },
   "nbs_manual": null,
   "status": {
     "world_bank": {
       "ok": true,
-      "at": "2026-10-31T13:13:32.971Z",
+      "at": "2026-11-06T14:51:15.875Z",
       "indicators": 2,
       "errors": []
     },
     "imf": {
       "ok": true,
-      "at": "2026-10-31T13:13:32.971Z",
+      "at": "2026-11-06T14:51:15.875Z",
       "indicators": 2,
       "errors": []
     },
     "fx": {
       "ok": true,
-      "at": "2026-11-05T15:13:06.651Z",
+      "at": "2026-11-06T14:51:15.875Z",
       "errors": []
     },
     "nbs_manual": {
       "ok": false,
-      "at": "2026-11-05T15:13:06.651Z",
+      "at": "2026-11-06T14:51:15.875Z",
       "errors": [
         "401: Request failed with status code 401"
       ]

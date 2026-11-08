@@ -3,7 +3,7 @@
     "provider": "Groq",
     "model": "openai/gpt-oss-20b",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:38:44.506Z",
+    "lastProbed": "2026-11-08T13:57:25.066Z",
     "error": "401: Invalid API Key",
     "response": null
   },
@@ -11,7 +11,7 @@
     "provider": "Groq",
     "model": "openai/gpt-oss-120b",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:38:45.368Z",
+    "lastProbed": "2026-11-08T13:57:25.922Z",
     "error": "401: Invalid API Key",
     "response": null
   },
@@ -19,7 +19,7 @@
     "provider": "Gemini",
     "model": "gemini-2.5-flash",
     "status": "WORKING",
-    "lastProbed": "2026-11-07T13:38:46.712Z",
+    "lastProbed": "2026-11-08T13:57:27.310Z",
     "error": null,
     "response": "OK"
   },
@@ -27,7 +27,7 @@
     "provider": "Gemini",
     "model": "gemini-2.5-flash-lite",
     "status": "DEAD",
-    "lastProbed": "2026-11-01T13:54:43.391Z",
+    "lastProbed": "2026-11-08T13:57:28.285Z",
     "error": "404: This model models/gemini-2.5-flash-lite is no longer available to new users. Ple",
     "response": null
   },
@@ -35,7 +35,7 @@
     "provider": "Gemini",
     "model": "gemini-2.0-flash",
     "status": "DEAD",
-    "lastProbed": "2026-11-01T13:54:44.280Z",
+    "lastProbed": "2026-11-08T13:57:29.303Z",
     "error": "404: This model models/gemini-2.0-flash is no longer available. Please update your co",
     "response": null
   },
@@ -43,7 +43,7 @@
     "provider": "SambaNova",
     "model": "Meta-Llama-3.3-70B-Instruct",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:38:47.879Z",
+    "lastProbed": "2026-11-08T13:57:30.378Z",
     "error": "401: Incorrect API key provided: f8976e*****f5da.",
     "response": null
   },
@@ -51,7 +51,7 @@
     "provider": "SambaNova",
     "model": "Meta-Llama-3.1-405B-Instruct",
     "status": "DEAD",
-    "lastProbed": "2026-11-01T13:54:46.087Z",
+    "lastProbed": "2026-11-08T13:57:31.403Z",
     "error": "404: The model `Meta-Llama-3.1-405B-Instruct` does not exist or you do not have acces",
     "response": null
   },
@@ -59,7 +59,7 @@
     "provider": "Mistral",
     "model": "mistral-small-latest",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:38:48.851Z",
+    "lastProbed": "2026-11-08T13:57:32.359Z",
     "error": "401: Request failed with status code 401",
     "response": null
   },
@@ -67,7 +67,7 @@
     "provider": "Mistral",
     "model": "open-mistral-nemo",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:38:49.815Z",
+    "lastProbed": "2026-11-08T13:57:33.364Z",
     "error": "401: Request failed with status code 401",
     "response": null
   },
@@ -75,7 +75,7 @@
     "provider": "Together",
     "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:38:50.894Z",
+    "lastProbed": "2026-11-08T13:57:34.638Z",
     "error": "401: Invalid API key provided. You can find your API key at https://api.together.ai/s",
     "response": null
   },
@@ -83,7 +83,7 @@
     "provider": "Together",
     "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:38:51.876Z",
+    "lastProbed": "2026-11-08T13:57:35.604Z",
     "error": "401: Invalid API key provided. You can find your API key at https://api.together.ai/s",
     "response": null
   },
@@ -131,7 +131,7 @@
     "provider": "OpenRouter",
     "model": "dots-studio/dots-3-note-preview:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:38:59.084Z",
+    "lastProbed": "2026-11-08T13:57:44.614Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -139,7 +139,7 @@
     "provider": "OpenRouter",
     "model": "liquid/lfm-2.5-2.6b:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:39:00.034Z",
+    "lastProbed": "2026-11-08T13:57:45.566Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -147,7 +147,7 @@
     "provider": "OpenRouter",
     "model": "nvidia/nemotron-3.5-lightning:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:39:01.046Z",
+    "lastProbed": "2026-11-08T13:57:46.636Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -203,7 +203,7 @@
     "provider": "OpenRouter",
     "model": "cohere/north-mini-code:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:39:02.281Z",
+    "lastProbed": "2026-11-08T13:57:47.591Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -227,7 +227,7 @@
     "provider": "OpenRouter",
     "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:39:04.253Z",
+    "lastProbed": "2026-11-08T13:57:48.852Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -235,17 +235,17 @@
     "provider": "OpenRouter",
     "model": "nvidia/nemotron-3.5-super-vl:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:38:57.481Z",
+    "lastProbed": "2026-11-08T13:57:43.006Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
   "OpenRouter::xingchen-agi/xing4.0-29b-a4b:free": {
     "provider": "OpenRouter",
     "model": "xingchen-agi/xing4.0-29b-a4b:free",
-    "status": "WORKING",
-    "lastProbed": "2026-11-07T13:38:56.362Z",
-    "error": null,
-    "response": "1.  **Analy"
+    "status": "DEGRADED",
+    "lastProbed": "2026-11-08T13:57:41.895Z",
+    "error": "429: Provider returned error",
+    "response": null
   },
   "OpenRouter::minimax/minimax-m3.1-flash:free": {
     "provider": "OpenRouter",
@@ -259,7 +259,7 @@
     "provider": "OpenRouter",
     "model": "recursive/flint-v1.0:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:38:54.442Z",
+    "lastProbed": "2026-11-08T13:57:38.395Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -267,7 +267,7 @@
     "provider": "OpenRouter",
     "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:39:05.233Z",
+    "lastProbed": "2026-11-08T13:57:50.020Z",
     "error": "ERR: Empty response from model",
     "response": null
   },
@@ -283,8 +283,8 @@
     "provider": "OpenRouter",
     "model": "liquid/lfm-3-1.7b:free",
     "status": "DEGRADED",
-    "lastProbed": "2026-11-07T13:38:53.018Z",
-    "error": "429: Provider returned error",
+    "lastProbed": "2026-11-08T13:57:37.249Z",
+    "error": "ERR: Empty response from model",
     "response": null
   }
 }

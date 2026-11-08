@@ -4145,6 +4145,37 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-11-08",
+      "articleCount": 4,
+      "sentimentBreakdown": {
+        "bullish": 2,
+        "neutral": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "REITs",
+          "count": 2
+        },
+        {
+          "topic": "housing-deficit",
+          "count": 1
+        },
+        {
+          "topic": "capital-mismatch",
+          "count": 1
+        },
+        {
+          "topic": "information-asymmetry",
+          "count": 1
+        },
+        {
+          "topic": "mortgage-backed-securities",
+          "count": 1
+        }
+      ]
     }
   ]
 }

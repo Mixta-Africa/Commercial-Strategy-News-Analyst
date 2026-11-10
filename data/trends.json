@@ -2,21 +2,13 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 10,
-      "bearish": 2,
-      "bullish": 3
+      "neutral": 6,
+      "bullish": 7,
+      "bearish": 2
     },
     "topTopics": [
       {
         "topic": "affordable housing",
-        "count": 4
-      },
-      {
-        "topic": "Lagos real estate",
-        "count": 3
-      },
-      {
-        "topic": "housing",
         "count": 3
       },
       {
@@ -24,7 +16,15 @@
         "count": 2
       },
       {
-        "topic": "political litigation",
+        "topic": "Renewed Hope Housing",
+        "count": 2
+      },
+      {
+        "topic": "real-estate",
+        "count": 1
+      },
+      {
+        "topic": "global-investment",
         "count": 1
       }
     ],
@@ -33,21 +33,13 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 10,
-      "bearish": 2,
-      "bullish": 3
+      "neutral": 6,
+      "bullish": 7,
+      "bearish": 2
     },
     "topTopics": [
       {
         "topic": "affordable housing",
-        "count": 4
-      },
-      {
-        "topic": "Lagos real estate",
-        "count": 3
-      },
-      {
-        "topic": "housing",
         "count": 3
       },
       {
@@ -55,7 +47,15 @@
         "count": 2
       },
       {
-        "topic": "political litigation",
+        "topic": "Renewed Hope Housing",
+        "count": 2
+      },
+      {
+        "topic": "real-estate",
+        "count": 1
+      },
+      {
+        "topic": "global-investment",
         "count": 1
       }
     ],
@@ -64,21 +64,13 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 10,
-      "bearish": 2,
-      "bullish": 3
+      "neutral": 6,
+      "bullish": 7,
+      "bearish": 2
     },
     "topTopics": [
       {
         "topic": "affordable housing",
-        "count": 4
-      },
-      {
-        "topic": "Lagos real estate",
-        "count": 3
-      },
-      {
-        "topic": "housing",
         "count": 3
       },
       {
@@ -86,7 +78,15 @@
         "count": 2
       },
       {
-        "topic": "political litigation",
+        "topic": "Renewed Hope Housing",
+        "count": 2
+      },
+      {
+        "topic": "real-estate",
+        "count": 1
+      },
+      {
+        "topic": "global-investment",
         "count": 1
       }
     ],

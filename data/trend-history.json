@@ -4208,6 +4208,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-11-10",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 6,
+        "bullish": 7,
+        "bearish": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 3
+        },
+        {
+          "topic": "infrastructure",
+          "count": 2
+        },
+        {
+          "topic": "Renewed Hope Housing",
+          "count": 2
+        },
+        {
+          "topic": "real-estate",
+          "count": 1
+        },
+        {
+          "topic": "global-investment",
+          "count": 1
+        }
+      ]
     }
   ]
 }

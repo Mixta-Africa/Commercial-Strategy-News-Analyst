@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bullish": 7,
-      "bearish": 2
+      "neutral": 10,
+      "bullish": 1,
+      "bearish": 4
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "infrastructure",
+        "topic": "housing demand",
         "count": 2
       },
       {
-        "topic": "Renewed Hope Housing",
+        "topic": "forfeiture",
         "count": 2
       },
       {
-        "topic": "real-estate",
+        "topic": "EFCC",
+        "count": 2
+      },
+      {
+        "topic": "income generation",
         "count": 1
       },
       {
-        "topic": "global-investment",
+        "topic": "construction quality",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bullish": 7,
-      "bearish": 2
+      "neutral": 10,
+      "bullish": 1,
+      "bearish": 4
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "infrastructure",
+        "topic": "housing demand",
         "count": 2
       },
       {
-        "topic": "Renewed Hope Housing",
+        "topic": "forfeiture",
         "count": 2
       },
       {
-        "topic": "real-estate",
+        "topic": "EFCC",
+        "count": 2
+      },
+      {
+        "topic": "income generation",
         "count": 1
       },
       {
-        "topic": "global-investment",
+        "topic": "construction quality",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bullish": 7,
-      "bearish": 2
+      "neutral": 10,
+      "bullish": 1,
+      "bearish": 4
     },
     "topTopics": [
       {
-        "topic": "affordable housing",
-        "count": 3
-      },
-      {
-        "topic": "infrastructure",
+        "topic": "housing demand",
         "count": 2
       },
       {
-        "topic": "Renewed Hope Housing",
+        "topic": "forfeiture",
         "count": 2
       },
       {
-        "topic": "real-estate",
+        "topic": "EFCC",
+        "count": 2
+      },
+      {
+        "topic": "income generation",
         "count": 1
       },
       {
-        "topic": "global-investment",
+        "topic": "construction quality",
         "count": 1
       }
     ],

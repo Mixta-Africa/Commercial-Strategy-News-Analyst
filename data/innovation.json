@@ -1,7 +1,40 @@
 {
-  "generatedAt": "2026-11-11T14:47:53.744Z",
-  "count": 8,
+  "generatedAt": "2026-11-12T15:40:13.736Z",
+  "count": 11,
   "articles": [
+    {
+      "title": "Building a GPU workstation for visual effects with Amazon EC2: Part 5 – Security",
+      "description": "The final post in our GPU workstation series covers security for visual effects workstations on Amazon EC2: controlling who can reach the desktop, protecting the Amazon DCV session in transit, and safeguarding credentials, images, and storage, plus IAM, encry…",
+      "content": "For many years Amazon Web Services (AWS) has been guiding users in the deployment of powerful NVIDIA GPU backed workstations for graphics intensive workloads. With the recent expansion of our G-serie… [+16143 chars]",
+      "url": "https://aws.amazon.com/blogs/compute/building-a-gpu-workstation-for-visual-effects-with-amazon-ec2-part-5-security/",
+      "source": "Amazon.com",
+      "publishedAt": "2026-11-11T15:27:23Z",
+      "image": "https://d2908q01vomqb2.cloudfront.net/1b6453892473a467d07372d45eb05abc2031647a/2026/10/23/ComputeBlog-2763-featured-image.png",
+      "_lane": "innovation",
+      "geoScope": "global"
+    },
+    {
+      "title": "Building a GPU workstation for visual effects with Amazon EC2: Part 4 – Optimizations",
+      "description": "Part 4 of our series on building GPU workstations for visual effects on Amazon EC2. This post covers standardizing VFX workstation configurations with custom AMIs and launch templates, GPU performance optimizations such as disabling ECC, and security consider…",
+      "content": "For many years, Amazon Web Services (AWS) has been guiding customers in deploying powerful workstations backed by NVIDIA graphics processing units (GPUs) for graphics-intensive workloads. With the re… [+21332 chars]",
+      "url": "https://aws.amazon.com/blogs/compute/building-a-gpu-workstation-for-visual-effects-with-amazon-ec2-part-4-optimizations/",
+      "source": "Amazon.com",
+      "publishedAt": "2026-11-11T15:27:19Z",
+      "image": "https://d2908q01vomqb2.cloudfront.net/1b6453892473a467d07372d45eb05abc2031647a/2026/10/23/ComputeBlog-2762-featured-image.png",
+      "_lane": "innovation",
+      "geoScope": "global"
+    },
+    {
+      "title": "Build a GPU workstation for visual effects on Amazon EC2: Part 1 – Setup",
+      "description": "The first in a five-part series on building NVIDIA GPU-powered virtual workstations on Amazon EC2 G-series instances. Part 1 covers the G instance families, Amazon DCV desktop streaming, connectivity options, and the account, service quota, networking, and IA…",
+      "content": "For many years Amazon Web Services (AWS) has been guiding users in the deployment of powerful NVIDIA GPU-backed workstations for graphics-intensive workloads. With the recent expansion of our G-serie… [+37687 chars]",
+      "url": "https://aws.amazon.com/blogs/compute/build-a-gpu-workstation-for-visual-effects-on-amazon-ec2-part-1-setup/",
+      "source": "Amazon.com",
+      "publishedAt": "2026-11-11T15:27:06Z",
+      "image": "https://d2908q01vomqb2.cloudfront.net/1b6453892473a467d07372d45eb05abc2031647a/2026/10/23/ComputeBlog-2764-featured-image.png",
+      "_lane": "innovation",
+      "geoScope": "global"
+    },
     {
       "title": "Podcast: How CRE Adopts AI, with JLL Spark’s Managing Partner Raj Singh",
       "description": "Raj Singh is the Managing Partner at JLL Spark, JLL’s corporate venture fund focused on PropTech investment and innovation. The fund backs early-stage companies building technology for the commercial real estate industry. Before JLL Spark, Raj held roles in c…",

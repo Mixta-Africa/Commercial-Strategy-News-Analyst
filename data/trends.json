@@ -1,92 +1,92 @@
 {
   "7day": {
-    "articleCount": 9,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bullish": 1,
-      "bearish": 2
+      "neutral": 8,
+      "bullish": 3,
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "security",
+        "topic": "infrastructure investment",
         "count": 2
       },
       {
-        "topic": "climate-smart agriculture",
+        "topic": "Abuja real estate",
+        "count": 2
+      },
+      {
+        "topic": "Abuja",
+        "count": 2
+      },
+      {
+        "topic": "2027",
         "count": 1
       },
       {
-        "topic": "solar irrigation",
-        "count": 1
-      },
-      {
-        "topic": "electric tractors",
-        "count": 1
-      },
-      {
-        "topic": "sustainable farming",
+        "topic": "Dubai real estate",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 9,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bullish": 1,
-      "bearish": 2
+      "neutral": 8,
+      "bullish": 3,
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "security",
+        "topic": "infrastructure investment",
         "count": 2
       },
       {
-        "topic": "climate-smart agriculture",
+        "topic": "Abuja real estate",
+        "count": 2
+      },
+      {
+        "topic": "Abuja",
+        "count": 2
+      },
+      {
+        "topic": "2027",
         "count": 1
       },
       {
-        "topic": "solar irrigation",
-        "count": 1
-      },
-      {
-        "topic": "electric tractors",
-        "count": 1
-      },
-      {
-        "topic": "sustainable farming",
+        "topic": "Dubai real estate",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 9,
+    "articleCount": 14,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bullish": 1,
-      "bearish": 2
+      "neutral": 8,
+      "bullish": 3,
+      "bearish": 3
     },
     "topTopics": [
       {
-        "topic": "security",
+        "topic": "infrastructure investment",
         "count": 2
       },
       {
-        "topic": "climate-smart agriculture",
+        "topic": "Abuja real estate",
+        "count": 2
+      },
+      {
+        "topic": "Abuja",
+        "count": 2
+      },
+      {
+        "topic": "2027",
         "count": 1
       },
       {
-        "topic": "solar irrigation",
-        "count": 1
-      },
-      {
-        "topic": "electric tractors",
-        "count": 1
-      },
-      {
-        "topic": "sustainable farming",
+        "topic": "Dubai real estate",
         "count": 1
       }
     ],

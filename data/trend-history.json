@@ -4304,6 +4304,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-11-13",
+      "articleCount": 14,
+      "sentimentBreakdown": {
+        "neutral": 8,
+        "bullish": 3,
+        "bearish": 3
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "infrastructure investment",
+          "count": 2
+        },
+        {
+          "topic": "Abuja real estate",
+          "count": 2
+        },
+        {
+          "topic": "Abuja",
+          "count": 2
+        },
+        {
+          "topic": "2027",
+          "count": 1
+        },
+        {
+          "topic": "Dubai real estate",
+          "count": 1
+        }
+      ]
     }
   ]
 }

@@ -4336,6 +4336,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-11-14",
+      "articleCount": 6,
+      "sentimentBreakdown": {
+        "neutral": 2,
+        "bullish": 2,
+        "bearish": 2
+      },
+      "averageSentiment": "bearish",
+      "topTopics": [
+        {
+          "topic": "FCCPC",
+          "count": 2
+        },
+        {
+          "topic": "Dubai real estate",
+          "count": 1
+        },
+        {
+          "topic": "premium investment",
+          "count": 1
+        },
+        {
+          "topic": "Golden Visa",
+          "count": 1
+        },
+        {
+          "topic": "off‑plan payment",
+          "count": 1
+        }
+      ]
     }
   ]
 }

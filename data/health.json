@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-14T13:51:18.676Z",
+  "timestamp": "2026-11-15T14:24:51.071Z",
   "status": "healthy",
   "sources": {
     "gnews": {
@@ -9,7 +9,7 @@
     },
     "newsapi": {
       "ok": true,
-      "count": 68,
+      "count": 69,
       "error": null
     },
     "googlenews": {
@@ -18,16 +18,16 @@
       "error": null
     },
     "rss": {
-      "total": 34,
+      "total": 32,
       "feeds": {
         "ThisDay": {
           "ok": true,
-          "count": 4,
+          "count": 3,
           "error": null
         },
         "Premium Times": {
           "ok": true,
-          "count": 2,
+          "count": 1,
           "error": null
         },
         "BusinessDay": {
@@ -37,12 +37,12 @@
         },
         "Nairametrics": {
           "ok": true,
-          "count": 5,
+          "count": 3,
           "error": null
         },
         "Daily Trust": {
           "ok": true,
-          "count": 3,
+          "count": 5,
           "error": null
         },
         "The Punch (Business)": {
@@ -79,14 +79,14 @@
     }
   },
   "counts": {
-    "raw": 230,
-    "filtered": 6,
-    "analyzed": 6,
-    "aiFallbacks": 0
+    "raw": 229,
+    "filtered": 8,
+    "analyzed": 8,
+    "aiFallbacks": 1
   },
   "synthesis": {
     "ok": true,
-    "themes": 3
+    "themes": 2
   },
   "email": {
     "sent": true

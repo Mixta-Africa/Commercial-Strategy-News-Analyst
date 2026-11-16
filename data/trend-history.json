@@ -4400,6 +4400,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-11-16",
+      "articleCount": 11,
+      "sentimentBreakdown": {
+        "neutral": 9,
+        "bearish": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "female leadership",
+          "count": 1
+        },
+        {
+          "topic": "real estate awards",
+          "count": 1
+        },
+        {
+          "topic": "Lagos property sector",
+          "count": 1
+        },
+        {
+          "topic": "awards",
+          "count": 1
+        },
+        {
+          "topic": "property-development",
+          "count": 1
+        }
+      ]
     }
   ]
 }

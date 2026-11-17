@@ -4431,6 +4431,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-11-17",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bullish": 4,
+        "bearish": 2,
+        "neutral": 9
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "FMBN",
+          "count": 2
+        },
+        {
+          "topic": "rent‑to‑own",
+          "count": 1
+        },
+        {
+          "topic": "mortgage",
+          "count": 1
+        },
+        {
+          "topic": "MOFI",
+          "count": 1
+        }
+      ]
     }
   ]
 }

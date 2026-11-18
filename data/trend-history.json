@@ -4463,6 +4463,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-11-18",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bearish": 4,
+        "neutral": 8,
+        "bullish": 3
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "mortgage rates",
+          "count": 2
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "housing finance",
+          "count": 2
+        },
+        {
+          "topic": "Tinubu",
+          "count": 2
+        },
+        {
+          "topic": "pending sales",
+          "count": 1
+        }
+      ]
     }
   ]
 }

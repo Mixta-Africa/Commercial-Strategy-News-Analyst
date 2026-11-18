@@ -2,29 +2,29 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 4,
-      "bearish": 2,
-      "neutral": 9
+      "bearish": 4,
+      "neutral": 8,
+      "bullish": 3
     },
     "topTopics": [
+      {
+        "topic": "mortgage rates",
+        "count": 2
+      },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "FMBN",
+        "topic": "housing finance",
         "count": 2
       },
       {
-        "topic": "rent‑to‑own",
-        "count": 1
+        "topic": "Tinubu",
+        "count": 2
       },
       {
-        "topic": "mortgage",
-        "count": 1
-      },
-      {
-        "topic": "MOFI",
+        "topic": "pending sales",
         "count": 1
       }
     ],
@@ -33,29 +33,29 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 4,
-      "bearish": 2,
-      "neutral": 9
+      "bearish": 4,
+      "neutral": 8,
+      "bullish": 3
     },
     "topTopics": [
+      {
+        "topic": "mortgage rates",
+        "count": 2
+      },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "FMBN",
+        "topic": "housing finance",
         "count": 2
       },
       {
-        "topic": "rent‑to‑own",
-        "count": 1
+        "topic": "Tinubu",
+        "count": 2
       },
       {
-        "topic": "mortgage",
-        "count": 1
-      },
-      {
-        "topic": "MOFI",
+        "topic": "pending sales",
         "count": 1
       }
     ],
@@ -64,29 +64,29 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bullish": 4,
-      "bearish": 2,
-      "neutral": 9
+      "bearish": 4,
+      "neutral": 8,
+      "bullish": 3
     },
     "topTopics": [
+      {
+        "topic": "mortgage rates",
+        "count": 2
+      },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "FMBN",
+        "topic": "housing finance",
         "count": 2
       },
       {
-        "topic": "rent‑to‑own",
-        "count": 1
+        "topic": "Tinubu",
+        "count": 2
       },
       {
-        "topic": "mortgage",
-        "count": 1
-      },
-      {
-        "topic": "MOFI",
+        "topic": "pending sales",
         "count": 1
       }
     ],

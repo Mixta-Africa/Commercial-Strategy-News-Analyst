@@ -4495,6 +4495,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-11-19",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 7,
+        "bullish": 7,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "Lagos real estate",
+          "count": 3
+        },
+        {
+          "topic": "MREIF",
+          "count": 3
+        },
+        {
+          "topic": "mortgage",
+          "count": 3
+        },
+        {
+          "topic": "affordable housing",
+          "count": 2
+        },
+        {
+          "topic": "housing-loan",
+          "count": 2
+        }
+      ]
     }
   ]
 }

@@ -2,30 +2,30 @@
   "7day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 4,
-      "neutral": 8,
-      "bullish": 3
+      "neutral": 7,
+      "bullish": 7,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "mortgage rates",
-        "count": 2
+        "topic": "Lagos real estate",
+        "count": 3
+      },
+      {
+        "topic": "MREIF",
+        "count": 3
+      },
+      {
+        "topic": "mortgage",
+        "count": 3
       },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "housing finance",
+        "topic": "housing-loan",
         "count": 2
-      },
-      {
-        "topic": "Tinubu",
-        "count": 2
-      },
-      {
-        "topic": "pending sales",
-        "count": 1
       }
     ],
     "averageSentiment": "neutral"
@@ -33,30 +33,30 @@
   "30day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 4,
-      "neutral": 8,
-      "bullish": 3
+      "neutral": 7,
+      "bullish": 7,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "mortgage rates",
-        "count": 2
+        "topic": "Lagos real estate",
+        "count": 3
+      },
+      {
+        "topic": "MREIF",
+        "count": 3
+      },
+      {
+        "topic": "mortgage",
+        "count": 3
       },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "housing finance",
+        "topic": "housing-loan",
         "count": 2
-      },
-      {
-        "topic": "Tinubu",
-        "count": 2
-      },
-      {
-        "topic": "pending sales",
-        "count": 1
       }
     ],
     "averageSentiment": "neutral"
@@ -64,30 +64,30 @@
   "90day": {
     "articleCount": 15,
     "sentimentBreakdown": {
-      "bearish": 4,
-      "neutral": 8,
-      "bullish": 3
+      "neutral": 7,
+      "bullish": 7,
+      "bearish": 1
     },
     "topTopics": [
       {
-        "topic": "mortgage rates",
-        "count": 2
+        "topic": "Lagos real estate",
+        "count": 3
+      },
+      {
+        "topic": "MREIF",
+        "count": 3
+      },
+      {
+        "topic": "mortgage",
+        "count": 3
       },
       {
         "topic": "affordable housing",
         "count": 2
       },
       {
-        "topic": "housing finance",
+        "topic": "housing-loan",
         "count": 2
-      },
-      {
-        "topic": "Tinubu",
-        "count": 2
-      },
-      {
-        "topic": "pending sales",
-        "count": 1
       }
     ],
     "averageSentiment": "neutral"

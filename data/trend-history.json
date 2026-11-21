@@ -4559,6 +4559,37 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-11-21",
+      "articleCount": 9,
+      "sentimentBreakdown": {
+        "neutral": 6,
+        "bullish": 3
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "property investment",
+          "count": 1
+        },
+        {
+          "topic": "transparency",
+          "count": 1
+        },
+        {
+          "topic": "capital markets",
+          "count": 1
+        },
+        {
+          "topic": "real assets",
+          "count": 1
+        },
+        {
+          "topic": "AI",
+          "count": 1
+        }
+      ]
     }
   ]
 }

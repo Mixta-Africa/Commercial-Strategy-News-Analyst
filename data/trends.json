@@ -1,92 +1,89 @@
 {
   "7day": {
-    "articleCount": 7,
+    "articleCount": 9,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 1,
-      "bearish": 1
+      "neutral": 6,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "handover",
+        "topic": "property investment",
         "count": 1
       },
       {
-        "topic": "property-ownership",
+        "topic": "transparency",
         "count": 1
       },
       {
-        "topic": "construction-delivery",
+        "topic": "capital markets",
         "count": 1
       },
       {
-        "topic": "buyer-responsibilities",
+        "topic": "real assets",
         "count": 1
       },
       {
-        "topic": "Lagos-real-estate",
+        "topic": "AI",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 7,
+    "articleCount": 9,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 1,
-      "bearish": 1
+      "neutral": 6,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "handover",
+        "topic": "property investment",
         "count": 1
       },
       {
-        "topic": "property-ownership",
+        "topic": "transparency",
         "count": 1
       },
       {
-        "topic": "construction-delivery",
+        "topic": "capital markets",
         "count": 1
       },
       {
-        "topic": "buyer-responsibilities",
+        "topic": "real assets",
         "count": 1
       },
       {
-        "topic": "Lagos-real-estate",
+        "topic": "AI",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 7,
+    "articleCount": 9,
     "sentimentBreakdown": {
-      "neutral": 5,
-      "bullish": 1,
-      "bearish": 1
+      "neutral": 6,
+      "bullish": 3
     },
     "topTopics": [
       {
-        "topic": "handover",
+        "topic": "property investment",
         "count": 1
       },
       {
-        "topic": "property-ownership",
+        "topic": "transparency",
         "count": 1
       },
       {
-        "topic": "construction-delivery",
+        "topic": "capital markets",
         "count": 1
       },
       {
-        "topic": "buyer-responsibilities",
+        "topic": "real assets",
         "count": 1
       },
       {
-        "topic": "Lagos-real-estate",
+        "topic": "AI",
         "count": 1
       }
     ],

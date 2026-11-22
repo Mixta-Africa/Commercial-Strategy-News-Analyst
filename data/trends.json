@@ -1,89 +1,92 @@
 {
   "7day": {
-    "articleCount": 9,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bullish": 3
+      "neutral": 11,
+      "bearish": 2,
+      "bullish": 2
     },
     "topTopics": [
       {
-        "topic": "property investment",
-        "count": 1
+        "topic": "infrastructure",
+        "count": 3
       },
       {
-        "topic": "transparency",
-        "count": 1
+        "topic": "affordable housing",
+        "count": 3
       },
       {
-        "topic": "capital markets",
-        "count": 1
+        "topic": "IDP",
+        "count": 2
       },
       {
-        "topic": "real assets",
-        "count": 1
+        "topic": "real estate development",
+        "count": 2
       },
       {
-        "topic": "AI",
+        "topic": "tourism",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "30day": {
-    "articleCount": 9,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bullish": 3
+      "neutral": 11,
+      "bearish": 2,
+      "bullish": 2
     },
     "topTopics": [
       {
-        "topic": "property investment",
-        "count": 1
+        "topic": "infrastructure",
+        "count": 3
       },
       {
-        "topic": "transparency",
-        "count": 1
+        "topic": "affordable housing",
+        "count": 3
       },
       {
-        "topic": "capital markets",
-        "count": 1
+        "topic": "IDP",
+        "count": 2
       },
       {
-        "topic": "real assets",
-        "count": 1
+        "topic": "real estate development",
+        "count": 2
       },
       {
-        "topic": "AI",
+        "topic": "tourism",
         "count": 1
       }
     ],
     "averageSentiment": "neutral"
   },
   "90day": {
-    "articleCount": 9,
+    "articleCount": 15,
     "sentimentBreakdown": {
-      "neutral": 6,
-      "bullish": 3
+      "neutral": 11,
+      "bearish": 2,
+      "bullish": 2
     },
     "topTopics": [
       {
-        "topic": "property investment",
-        "count": 1
+        "topic": "infrastructure",
+        "count": 3
       },
       {
-        "topic": "transparency",
-        "count": 1
+        "topic": "affordable housing",
+        "count": 3
       },
       {
-        "topic": "capital markets",
-        "count": 1
+        "topic": "IDP",
+        "count": 2
       },
       {
-        "topic": "real assets",
-        "count": 1
+        "topic": "real estate development",
+        "count": 2
       },
       {
-        "topic": "AI",
+        "topic": "tourism",
         "count": 1
       }
     ],

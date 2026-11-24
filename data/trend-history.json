@@ -4654,6 +4654,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-11-24",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bullish": 4,
+        "neutral": 9,
+        "bearish": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 5
+        },
+        {
+          "topic": "infrastructure",
+          "count": 2
+        },
+        {
+          "topic": "property rights",
+          "count": 2
+        },
+        {
+          "topic": "land grabbing",
+          "count": 2
+        },
+        {
+          "topic": "investor confidence",
+          "count": 2
+        }
+      ]
     }
   ]
 }

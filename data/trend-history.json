@@ -4686,6 +4686,37 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-11-25",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "neutral": 13,
+        "bullish": 2
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "market trends",
+          "count": 2
+        },
+        {
+          "topic": "privacy",
+          "count": 2
+        },
+        {
+          "topic": "advertising",
+          "count": 2
+        },
+        {
+          "topic": "property-tax",
+          "count": 1
+        },
+        {
+          "topic": "misinformation",
+          "count": 1
+        }
+      ]
     }
   ]
 }

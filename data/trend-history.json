@@ -4717,6 +4717,38 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-11-26",
+      "articleCount": 12,
+      "sentimentBreakdown": {
+        "bullish": 6,
+        "neutral": 5,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "housing finance",
+          "count": 2
+        },
+        {
+          "topic": "job creation",
+          "count": 2
+        },
+        {
+          "topic": "MOFI",
+          "count": 2
+        },
+        {
+          "topic": "MREIF",
+          "count": 2
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 2
+        }
+      ]
     }
   ]
 }

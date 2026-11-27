@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "fetchedAt": "2026-11-24T18:37:04.915Z",
-  "lastRunAt": "2026-11-26T17:31:55.913Z",
+  "lastRunAt": "2026-11-27T17:11:53.852Z",
   "world_bank": {
     "gdp_growth": {
       "value": 4.01,
@@ -37,10 +37,10 @@
     "fetchedAt": "2026-11-24T18:37:04.915Z"
   },
   "cbn_exchange_rate": {
-    "rate": 1367.78,
+    "rate": 1365.96,
     "source": "open.er-api.com (mid-market)",
-    "asOf": "Thu, 26 Nov 2026 00:02:31 +0000",
-    "fetchedAt": "2026-11-26T17:31:55.913Z"
+    "asOf": "Fri, 27 Nov 2026 00:02:31 +0000",
+    "fetchedAt": "2026-11-27T17:11:53.852Z"
   },
   "nbs_manual": null,
   "status": {
@@ -58,12 +58,12 @@
     },
     "fx": {
       "ok": true,
-      "at": "2026-11-26T17:31:55.913Z",
+      "at": "2026-11-27T17:11:53.852Z",
       "errors": []
     },
     "nbs_manual": {
       "ok": false,
-      "at": "2026-11-26T17:31:55.913Z",
+      "at": "2026-11-27T17:11:53.852Z",
       "errors": [
         "401: Request failed with status code 401"
       ]

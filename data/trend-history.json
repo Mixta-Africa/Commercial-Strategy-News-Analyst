@@ -4749,6 +4749,38 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-11-27",
+      "articleCount": 15,
+      "sentimentBreakdown": {
+        "bullish": 5,
+        "neutral": 9,
+        "bearish": 1
+      },
+      "averageSentiment": "neutral",
+      "topTopics": [
+        {
+          "topic": "affordable housing",
+          "count": 3
+        },
+        {
+          "topic": "infrastructure",
+          "count": 2
+        },
+        {
+          "topic": "Lagos real estate",
+          "count": 2
+        },
+        {
+          "topic": "housing",
+          "count": 2
+        },
+        {
+          "topic": "housing deficit",
+          "count": 1
+        }
+      ]
     }
   ]
 }
